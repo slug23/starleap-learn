@@ -169,7 +169,7 @@ footer.lesson-foot {
 </style>
 </head>
 <body>
-<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html" class="cur">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1644</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html" class="cur">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
 #sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
 html.nav-open #sidenav{transform:none}
 #sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
@@ -184,11 +184,14 @@ html{scroll-behavior:smooth}
 #sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
 html.nav-open body{margin-left:248px;margin-right:auto}
 @media(max-width:899px){html.nav-open body{margin-left:auto}}
-@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+@media screen and (max-width:899px){body{padding-top:56px}}
+@media screen and (max-width:599px){.val{white-space:normal}}
+.sn-tbl{overflow-x:auto}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}.sn-tbl{overflow:visible}}
 </style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
 
 <header class="lesson-head">
-  <p class="kicker">Electronics · Math shelf · Optional — for the curious &middot; build 2026.09.23-1531</p>
+  <p class="kicker">Electronics · Math shelf · Optional — for the curious &middot; build 2026.09.23-1644</p>
   <h1>P = IV</h1>
 </header>
 
@@ -201,12 +204,12 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 <p>Energy is the stuff (measured in joules); <strong>power is how fast it moves</strong> (joules per second = watts). A part with current flowing <em>through</em> it and voltage dropping <em>across</em> it is taking energy out of the circuit at P = I × V watts — the LED turns its share into light, the resistor turns its share into heat. (Why the units multiply out so neatly is on the <a href="math-whats-a-coulomb.html">What's a Coulomb?</a> sheet — it's arithmetic, not coincidence.)</p>
 
 <h2>Three ways to hold it</h2>
-<table>
+<div class="sn-tbl"><table>
   <tr><th>You know</th><th>You want</th><th>Use</th></tr>
   <tr><td>current and voltage</td><td>the power</td><td><span class="val">P = I × V</span></td></tr>
   <tr><td>power and voltage</td><td>the current</td><td><span class="val">I = P ÷ V</span></td></tr>
   <tr><td>power and current</td><td>the voltage</td><td><span class="val">V = P ÷ I</span></td></tr>
-</table>
+</table></div>
 
 <figure class="schematic">
   <svg viewBox="0 0 300 180" role="img" aria-label="The power triangle: P on top, I and V side by side below">
@@ -222,23 +225,23 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 
 <h2>Worked: the energy books of one LED loop</h2>
 <p>The classic loop — 5 V supply, red LED (2.0 V drop), 220 Ω resistor (3.0 V drop), 14 mA everywhere:</p>
-<table>
+<div class="sn-tbl"><table>
   <tr><th>Part</th><th>P = I × V</th><th>Becomes</th></tr>
   <tr><td>LED</td><td>14 mA × 2.0 V = <span class="val">28 mW</span></td><td>light (and a little warmth)</td></tr>
   <tr><td>Resistor</td><td>14 mA × 3.0 V = <span class="val">42 mW</span></td><td>heat, on purpose</td></tr>
   <tr><td><strong>Supply delivers</strong></td><td>14 mA × 5.0 V = <span class="val">70 mW</span></td><td>28 + 42 ✓ — the books balance</td></tr>
-</table>
+</table></div>
 <p>Notice the quiet scandal: <strong>the resistor throws away more power than the LED uses.</strong> That's the price of the simple circuit — the resistor's job is to burn off the extra push as heat, and 42 mW of heat is so little you'll never feel it.</p>
 
 <h2>Why kit resistors have a rating</h2>
 <p>Our resistors are rated <strong>¼ W = 250 mW</strong> — the most heat they can shed before they cook. The classic loop's 42 mW isn't close. But watch what happens as resistance falls across the full 5 V:</p>
-<table>
+<div class="sn-tbl"><table>
   <tr><th>Straight across 5 V</th><th>Current (I = V ÷ R)</th><th>Power (P = I × V)</th><th>Verdict</th></tr>
   <tr><td>1 kΩ</td><td>5 mA</td><td>25 mW</td><td>cool</td></tr>
   <tr><td>220 Ω</td><td>≈ 23 mA</td><td>≈ 114 mW</td><td>warm, fine</td></tr>
   <tr><td>100 Ω</td><td>50 mA</td><td>250 mW</td><td><strong>at the limit</strong> — noticeably hot</td></tr>
   <tr><td>a bare wire (≈ 0 Ω)</td><td>everything the supply has</td><td>all of it, in the wire</td><td><strong>this is a short — this is why shorts burn</strong></td></tr>
-</table>
+</table></div>
 <p>Smaller resistance means more current <em>and</em> the same voltage — power climbs fast. A short circuit is the limit of that story: huge current, all the supply's power converted to heat in a wire that was never meant to shed any.</p>
 
 <h2>For scale</h2>
