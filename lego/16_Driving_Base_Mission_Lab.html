@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 16: Driving Base Mission Lab · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html" aria-current="page">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Goal</a></li><li><a href="#section-3">Build</a></li><li><a href="#section-4">What You Will Learn</a></li><li><a href="#section-5">Step 1: Test Wheels</a></li><li><a href="#section-6">Step 2: Build Mission Functions</a></li><li><a href="#section-7">Step 3: Test One Function At A Time</a></li><li><a href="#section-8">Physical Challenge: Mini Mission</a></li><li><a href="#section-9">Teacher Check</a></li><li><a href="#section-10">Before You Put The Kit Away</a></li></ul></details><h1 id="section-1">Project 16: Driving Base Mission Lab</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set and the SPIKE App Python editor.</p>
+<h2 id="section-2">Goal</h2>
+<p>Build a reliable multi-step robot mission using named functions.</p>
+<p>This project is good for pairs who are ready for longer routines.</p>
+<h2 id="section-3">Build</h2>
+<p>Use one of these from the LEGO SPIKE Prime building instructions:</p>
+<ul><li>Driving Base 1, 2, or 3</li><li>Advanced Driving Base</li><li>Dozer Blade</li><li>Lift Arm</li><li>Crates</li><li>Game Module</li><li>Line Module</li></ul>
+<p>Starting ports in this packet:</p>
+<ul><li>left wheel: Port B</li><li>right wheel: Port F</li><li>attachment motor: Port A</li></ul>
+<p>Change the labels to match your build.</p>
+<p><strong>Using the code:</strong> gray lines are already in your program; dark lines are the edit. Keep the shown indentation. Replace a displayed <code>main()</code> definition as a whole, keeping imports and the final start call.</p>
+<h2 id="section-4">What You Will Learn</h2>
+<ul><li>A reliable mission is several small functions in a known order.</li><li>Print labels make the mission easier to debug.</li><li>Tune and test one function before running the whole mission.</li></ul>
+<p class="callout">Before you run: use a clear floor area away from table edges. Test the wheel direction with the wheels lifted, then stop before placing the robot on the floor.</p>
+<h2 id="section-5">Step 1: Test Wheels</h2>
+<p>Open a new Python project named <code>Mission Lab</code>.</p>
+<p>Start with this short code:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import runloop</span>
+<span class="new">import motor_pair</span>
+<span class="new"></span>
+<span class="new">left_wheel = port.B</span>
+<span class="new">right_wheel = port.F</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    motor_pair.pair(motor_pair.PAIR_1, left_wheel, right_wheel)</span>
+<span class="new">    await motor_pair.move_for_degrees(motor_pair.PAIR_1, 360, 0, velocity=300)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: The robot drives forward. If it spins, stop and check the physical motor orientation and whether the wires match the left and right wheel labels. Test again with the wheels lifted before putting it on the floor.</p>
+<h2 id="section-6">Step 2: Build Mission Functions</h2>
+<p>Update your existing program to match this version. Keep the gray reference lines; add or change the dark lines:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import light_matrix, port</span>
+<span class="reference">import runloop</span>
+<span class="new">import motor</span>
+<span class="reference">import motor_pair</span>
+<span class="reference"></span>
+<span class="reference">left_wheel = port.B</span>
+<span class="reference">right_wheel = port.F</span>
+<span class="new">attachment_motor = port.A</span>
+<span class="new"></span>
+<span class="new">drive_degrees = 720</span>
+<span class="new">turn_degrees = 180</span>
+<span class="new"></span>
+<span class="new">async def drive_forward():</span>
+<span class="new">    print(&quot;drive forward&quot;)</span>
+<span class="new">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, drive_degrees, 0, velocity=300,</span>
+<span class="new">    )</span>
+<span class="new"></span>
+<span class="new">async def turn_right():</span>
+<span class="new">    print(&quot;turn right&quot;)</span>
+<span class="new">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, turn_degrees, 100, velocity=250,</span>
+<span class="new">    )</span>
+<span class="new"></span>
+<span class="new">async def use_attachment():</span>
+<span class="new">    print(&quot;use attachment&quot;)</span>
+<span class="new">    await motor.run_for_degrees(attachment_motor, 90, 300)</span>
+<span class="new">    await motor.run_for_degrees(attachment_motor, -90, 300)</span>
+<span class="reference"></span>
+<span class="reference">async def main():</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, left_wheel, right_wheel)</span>
+<span class="new">    light_matrix.show_image(light_matrix.IMAGE_ARROW_N)</span>
+<span class="new">    await drive_forward()</span>
+<span class="new">    await turn_right()</span>
+<span class="new">    await use_attachment()</span>
+<span class="new">    light_matrix.show_image(light_matrix.IMAGE_YES)</span>
+<span class="reference"></span>
+<span class="reference">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: The robot does three named steps.</p>
+<h2 id="section-7">Step 3: Test One Function At A Time</h2>
+<p>In <code>main()</code>, comment out two steps:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">    await drive_forward()</span>
+<span class="new">    # await turn_right()</span>
+<span class="new">    # await use_attachment()</span></code></pre>
+<p class="callout">Run the program with only one movement call active until it works.</p>
+<p>Then test the next step.</p>
+<h2 id="section-8">Physical Challenge: Mini Mission</h2>
+<p>Choose one mission:</p>
+<ul><li>push a crate to a target</li><li>drive around the bin and return</li><li>lift or drop an object</li><li>score on a game module</li><li>drive to a marker and stop</li></ul>
+<p>Levels:</p>
+<ul><li>Level 1: one function works</li><li>Level 2: three functions work in order</li><li>Level 3: mission works twice in a row</li><li>Level 4: add a start button or tap</li></ul>
+<p>Extra setup ideas: Try Line Ladder, Crater Turn Course, Collect And Return, or Disaster Site Lite from the Challenge Setups sheet.</p>
+<h2 id="section-9">Teacher Check</h2>
+<p>Show your teacher:</p>
+<ul><li>three named functions</li><li>one print label</li><li>one function you tested by itself</li><li>the physical mission working</li></ul>
+<h2 id="section-10">Before You Put The Kit Away</h2>
+<p>Save your program. Stop the program before moving wires or changing the build. Show the teacher your working behavior, point to one changed line, and explain what it controls. Keep your place for next time.</p><nav class="pager" aria-label="Previous and next"><a href="15_Package_Sorter.html">Previous: Project 15: Package Sorter</a><a href="17_Smart_Bike_Slope_Lab.html">Next: Project 17: Smart Bike Slope Lab</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

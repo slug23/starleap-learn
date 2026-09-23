@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 09: Parking Approach Alarm · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html" aria-current="page">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Goal</a></li><li><a href="#section-3">Step 1: Start With A Fresh Code Outline</a></li><li><a href="#section-4">Step 2: Keep The Robot Still</a></li><li><a href="#section-5">Step 3: Define A Beep With A Fixed Pause</a></li><li><a href="#section-6">Step 4: Call The Helper Once</a></li><li><a href="#section-7">Step 5: Hear The Fixed-Pause Limit</a></li><li><a href="#section-8">Step 6: Give The Helper A Parameter</a></li><li><a href="#section-9">Step 7: Let One Call Choose A Shorter Pause</a></li><li><a href="#section-10">Step 8: Start With Two Distance Choices</a></li><li><a href="#section-11">Step 9: Add The Stop Choice</a></li><li><a href="#section-12">Step 10: Add One Warning Zone</a></li><li><a href="#section-13">Step 11: Split Off A Fast-Beep Zone</a></li><li><a href="#section-14">Step 12: Add The Middle Zone</a></li><li><a href="#section-15">Check The Whole Chain</a></li><li><a href="#section-16">Step 13: Add Movement To The Tested Choices</a></li><li><a href="#section-17">Step 14: Tune A Slow Approach</a></li><li><a href="#section-18">Physical Challenge: Alarm Parking</a></li><li><a href="#section-19">Teacher Check</a></li><li><a href="#section-20">Before You Put The Kit Away</a></li></ul></details><h1 id="section-1">Project 09: Parking Approach Alarm</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set and the SPIKE App Python editor. Keep <strong>Driving Base 2</strong> from Project 08, including its forward-facing distance-sensor attachment: left wheel motor on Port C, right wheel motor on Port D, and distance sensor on Port F. Keep the same wall or bin target.</p>
+<h2 id="section-2">Goal</h2>
+<p>Make a parking alarm with slow, medium, and fast beeps as the robot approaches a wall. First test the sounds with the robot still. Then build the distance choices one at a time. Add movement after those choices work.</p>
+<h2 id="section-3">Step 1: Start With A Fresh Code Outline</h2>
+<p>Create a <strong>new Python project</strong> in the SPIKE App named <code>Parking Approach Alarm</code>. Keep Driving Base 2 assembled from Project 08. Type this outline into the new project:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import light_matrix, port</span>
+<span class="new">import distance_sensor</span>
+<span class="new">import motor_pair</span>
+<span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">left_wheel = port.C</span>
+<span class="new">right_wheel = port.D</span>
+<span class="new">distance_port = port.F</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    pass</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p>The imports make our tools available. The three port variables match the robot&#x27;s wires. <code>main()</code> is where we will add instructions, and the final line starts it.</p>
+<p><code>pass</code> is a placeholder that does nothing. Python needs something inside the function while we build the program, so <code>pass</code> lets this outline run.</p>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: The program ends without moving or beeping. That is expected. If you see an error, check the imports, capitalization, colon, and the four spaces before <code>pass</code>.</p>
+<p><strong>Using the code:</strong> gray lines are already there; dark lines are the edit. Keep the shown indentation: four spaces inside <code>main()</code>, eight inside its loop, and twelve inside a choice in that loop. A line that moves back to the left ends the indented part above it.</p>
+<p>Before the next test: lift the drive wheels. Stop the program before moving wires or changing the build. Save after each successful step so you can continue next time.</p>
+<h2 id="section-4">Step 2: Keep The Robot Still</h2>
+<p>Replace only the <code>pass</code> line with these two instructions inside <code>main()</code>. Keep the imports and port variables above it and the final <code>runloop.run(main())</code> below it.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    motor_pair.pair(motor_pair.PAIR_1, left_wheel, right_wheel)</span>
+<span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span></code></pre>
+<p>The first line groups the two wheel motors as a pair. The second tells that pair to stop. We will keep this stop at the beginning of <code>main()</code> as we add the alarm.</p>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: The wheels stay still. The program ends without beeping. This gives us a quiet place to test the new sound helper.</p>
+<h2 id="section-5">Step 3: Define A Beep With A Fixed Pause</h2>
+<p>Change the first import to include <code>sound</code>:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import light_matrix, port, sound</span></code></pre>
+<p>Add this helper above <code>main()</code> and below your variables. Start <code>async def</code> at the left edge. Its two instructions begin four spaces in.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">async def warning_beep():</span>
+<span class="new">    await sound.beep(700, 80, 100)</span>
+<span class="new">    await runloop.sleep_ms(700)</span></code></pre>
+<p>The helper makes one beep, then waits 700 milliseconds. The empty parentheses mean we are not asking a call to supply a value yet. Keep <code>async</code> and <code>await</code>: this helper waits for the sound and the pause to finish.</p>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: You still hear nothing. Defining a function gives it a name and instructions. We have not called it yet.</p>
+<h2 id="section-6">Step 4: Call The Helper Once</h2>
+<p>Add one line at the end of <code>main()</code>, four spaces in:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, left_wheel, right_wheel)</span>
+<span class="reference">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">    await warning_beep()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: You hear one beep. The call runs the helper&#x27;s instructions. After its pause, the program ends. <code>await</code> means this part of the program waits for the helper to finish.</p>
+<p class="callout">Fix it: If there is no sound, check that the call is inside <code>main()</code> and that the final <code>runloop.run(main())</code> line is still at the left edge.</p>
+<h2 id="section-7">Step 5: Hear The Fixed-Pause Limit</h2>
+<p>Add two more calls directly below the first, at the same indentation:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    await warning_beep()</span>
+<span class="new">    await warning_beep()</span>
+<span class="new">    await warning_beep()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: You hear three beeps with the same pause between them. Each call runs the same two instructions.</p>
+<p>In the helper, change only <code>await runloop.sleep_ms(700)</code> to <code>await runloop.sleep_ms(150)</code>. Leave the <code>sound.beep</code> line unchanged.</p>
+<p class="callout">Run the program again.</p>
+<p class="callout">Observe: Both pauses between the three beeps are shorter. Changing the fixed number changes every call. We need a way for one call to choose a long pause and another call to choose a short pause.</p>
+<p>Change the helper&#x27;s pause back to <code>700</code>, then run the program once more to hear the original spacing.</p>
+<h2 id="section-8">Step 6: Give The Helper A Parameter</h2>
+<p>We can give each call control of the pause. Make both edits below before running.</p>
+<p>First, add the name <code>gap_ms</code> inside the helper&#x27;s parentheses. Replace the fixed pause number with that name:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">async def warning_beep(gap_ms):</span>
+<span class="reference">    await sound.beep(700, 80, 100)</span>
+<span class="new">    await runloop.sleep_ms(gap_ms)</span></code></pre>
+<p><code>gap_ms</code> is a <strong>parameter</strong>: a name for a value the helper receives when it is called. Here it controls the pause after a beep, in milliseconds. It does not change the sound&#x27;s pitch or length.</p>
+<p>Next, put <code>700</code> inside the parentheses of all three calls in <code>main()</code>:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">    await warning_beep(700)</span>
+<span class="new">    await warning_beep(700)</span>
+<span class="new">    await warning_beep(700)</span></code></pre>
+<p><code>700</code> is an <strong>argument</strong>: the value this call supplies. For <code>warning_beep(700)</code>, the helper uses <code>700</code> as <code>gap_ms</code>, so its last line waits 700 milliseconds.</p>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: The beeps sound just like Step 5&#x27;s original version. We changed how the pause is supplied; each call still supplies the same value.</p>
+<p class="callout">Fix it: If the program reports a missing argument, find a leftover <code>warning_beep()</code> call with empty parentheses. It now needs a pause value.</p>
+<h2 id="section-9">Step 7: Let One Call Choose A Shorter Pause</h2>
+<p>Change only the middle call&#x27;s argument:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    await warning_beep(700)</span>
+<span class="new">    await warning_beep(150)</span>
+<span class="reference">    await warning_beep(700)</span></code></pre>
+<p class="callout">Predict: Which two beeps will be closer together?</p>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: There is a long pause after the first beep and a short pause after the second. The third call also waits after its beep, but there is no fourth beep to mark the end of that pause.</p>
+<p>The helper is defined once. Each call supplies its own argument. Try <code>350</code> in the middle call, then run the program again. That pause should fall between the long and short pauses you just heard. Keep the helper itself unchanged.</p>
+<h2 id="section-10">Step 8: Start With Two Distance Choices</h2>
+<p>Keep the helper and its parameter. Replace only <code>main()</code> with this version. This replaces the three sound-test calls with our first sensor loop. Keep your imports, variables, and final start line.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, left_wheel, right_wheel)</span>
+<span class="reference">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">    while True:</span>
+<span class="new">        distance = distance_sensor.distance(distance_port)</span>
+<span class="new">        print(distance)</span>
+<span class="new">        if distance == -1:</span>
+<span class="new">            motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">            print(&quot;no reading&quot;)</span>
+<span class="new">        else:</span>
+<span class="new">            print(&quot;valid reading&quot;)</span>
+<span class="new">        await runloop.sleep_ms(100)</span></code></pre>
+<p><code>if</code> tests the first condition. <code>else</code> handles the remaining case. Here, <code>-1</code> means the sensor has no usable reading; it is not a distance to the wall.</p>
+<p class="callout">Run the program and move a flat target in front of the sensor.</p>
+<p class="callout">Observe: A usable distance prints <code>valid reading</code>. When the sensor reports <code>-1</code>, the program prints <code>no reading</code>. The robot stays still and silent. Stop the program before the next edit.</p>
+<p><strong>Indentation check:</strong> <code>if</code> and <code>else</code> line up eight spaces in. Their instructions begin twelve spaces in. The final pause moves back to eight spaces, so it runs after either choice on each trip through the loop. Keep it there in the next steps.</p>
+<h2 id="section-11">Step 9: Add The Stop Choice</h2>
+<p>First, define the stopping distance. Add the dark line directly below <code>distance_port</code>, <strong>above the helper and outside both functions</strong>. Start it at the left edge, with no indentation. Keep the helper&#x27;s existing body below its gray header.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">distance_port = port.F</span>
+<span class="new">too_close = 80</span>
+<span class="reference"></span>
+<span class="reference">async def warning_beep(gap_ms):</span></code></pre>
+<p><code>too_close</code> is a variable storing our stopping distance: <strong>80 millimeters</strong>. The assignment gives the name a value; the condition below reads that value.</p>
+<p>Next, insert this new <code>elif</code> just before the existing <code>else</code>. Change the text inside that <code>else</code> to <code>clear</code>. Keep the first <code>if distance == -1</code> block above this edit. Make both edits before running.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">        elif distance &lt;= too_close:</span>
+<span class="new">            motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">            print(&quot;stop&quot;)</span>
+<span class="new">            light_matrix.show_image(light_matrix.IMAGE_YES)</span>
+<span class="new">            break</span>
+<span class="reference">        else:</span>
+<span class="new">            print(&quot;clear&quot;)</span>
+<span class="reference">        await runloop.sleep_ms(100)</span></code></pre>
+<p><code>elif</code> means &quot;otherwise, if.&quot; This condition is tested only when the first <code>if</code> was false. <code>&lt;=</code> means &quot;less than or equal to,&quot; so this branch handles a valid distance of 80 millimeters or less. <code>break</code> ends the loop after the success image.</p>
+<p class="callout">Run the program with the target farther than 80 millimeters away. Move it slowly closer while watching the printed distance.</p>
+<p class="callout">Observe: The console changes from <code>clear</code> to <code>stop</code> at 80 or less. The success image appears and the loop ends. Move the target back and run the program again for another test.</p>
+<h2 id="section-12">Step 10: Add One Warning Zone</h2>
+<p>First, add <code>too_far</code> below <code>too_close</code> in the same variable block. It stores <strong>300 millimeters</strong>, the outer edge of the warning zone. Keep these assignments at the left edge, above the helper.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">too_close = 80</span>
+<span class="new">too_far = 300</span>
+<span class="reference"></span>
+<span class="reference">async def warning_beep(gap_ms):</span></code></pre>
+<p>Insert one <code>elif</code> directly before the final <code>else</code>. Keep the no-reading and stop choices above it:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">        elif distance &lt;= too_far:</span>
+<span class="new">            print(&quot;slow beep&quot;)</span>
+<span class="new">            await warning_beep(700)</span>
+<span class="reference">        else:</span>
+<span class="reference">            print(&quot;clear&quot;)</span>
+<span class="reference">        await runloop.sleep_ms(100)</span></code></pre>
+<p>The stop choice already catches 80 or less. This new choice therefore handles distances above 80 and up to 300. The remaining <code>else</code> handles distances above 300.</p>
+<p class="callout">Run the program. Start beyond 300, then move the target to about 250 millimeters.</p>
+<p class="callout">Observe: The robot stays still. <code>clear</code> is silent; <code>slow beep</code> repeats the helper with a 700-millisecond pause. Move to 80 or less to check that the stop choice still ends the loop.</p>
+<h2 id="section-13">Step 11: Split Off A Fast-Beep Zone</h2>
+<p>First, add <code>close_distance</code> between the existing cutoffs above the helper. It stores <strong>130 millimeters</strong>, the outer edge of the fast-beep zone. Only the dark assignment is new:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">too_close = 80</span>
+<span class="new">close_distance = 130</span>
+<span class="reference">too_far = 300</span></code></pre>
+<p>Insert a new <code>elif</code> immediately before <code>elif distance &lt;= too_far</code>. Keep the existing slow-beep branch below it:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">        elif distance &lt;= close_distance:</span>
+<span class="new">            print(&quot;fast beep&quot;)</span>
+<span class="new">            await warning_beep(150)</span>
+<span class="reference">        elif distance &lt;= too_far:</span>
+<span class="reference">            print(&quot;slow beep&quot;)</span>
+<span class="reference">            await warning_beep(700)</span></code></pre>
+<p class="callout">Run the program with the target around 100 millimeters away. Then move it to about 250.</p>
+<p class="callout">Observe: Around 100, you get fast beeps. Around 250, you still get slow beeps. The stop and clear choices still work.</p>
+<p><strong>Why this order matters:</strong> A distance of 100 is less than both 130 and 300. Python uses the first true branch in this chain and skips the later branches for that reading. The smaller cutoff must come first. Keep <code>elif</code> aligned with <code>if</code>; adding a separate <code>if</code> would start a second chain.</p>
+<h2 id="section-14">Step 12: Add The Middle Zone</h2>
+<p>First, add <code>medium_distance</code> to the same variable block above the helper. It stores <strong>200 millimeters</strong>, the outer edge of the medium-beep zone. Your four cutoff definitions should now look like this:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">too_close = 80</span>
+<span class="reference">close_distance = 130</span>
+<span class="new">medium_distance = 200</span>
+<span class="reference">too_far = 300</span></code></pre>
+<p>These four numbers are distances in millimeters. The arguments in <code>warning_beep(...)</code> are pauses in milliseconds; they control something different.</p>
+<p>Next, insert one more branch between the fast-beep and slow-beep branches:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        elif distance &lt;= close_distance:</span>
+<span class="reference">            print(&quot;fast beep&quot;)</span>
+<span class="reference">            await warning_beep(150)</span>
+<span class="new">        elif distance &lt;= medium_distance:</span>
+<span class="new">            print(&quot;medium beep&quot;)</span>
+<span class="new">            await warning_beep(350)</span>
+<span class="reference">        elif distance &lt;= too_far:</span>
+<span class="reference">            print(&quot;slow beep&quot;)</span>
+<span class="reference">            await warning_beep(700)</span></code></pre>
+<p class="callout">Run the program. Try readings near 100, 160, and 250 millimeters.</p>
+<p class="callout">Observe: You hear fast, medium, and slow spacing. Only one branch responds to each reading. A smaller argument gives a shorter pause after the beep.</p>
+<h3 id="section-15">Check The Whole Chain</h3>
+<p>Read your choices from top to bottom. There is one <code>if</code>, four <code>elif</code> lines, and one final <code>else</code>. They should appear in this order:</p>
+<div class="table-scroll" tabindex="0"><table><thead><tr><th>Reading in millimeters</th><th>First matching choice</th><th>Result</th></tr></thead><tbody><tr><td>-1</td><td><code>if distance == -1</code></td><td>No reading; stop motors, no beep</td></tr><tr><td>0 through 80</td><td><code>elif distance &lt;= too_close</code></td><td>Stop, success image, end loop</td></tr><tr><td>81 through 130</td><td><code>elif distance &lt;= close_distance</code></td><td>Fast beep; argument <code>150</code></td></tr><tr><td>131 through 200</td><td><code>elif distance &lt;= medium_distance</code></td><td>Medium beep; argument <code>350</code></td></tr><tr><td>201 through 300</td><td><code>elif distance &lt;= too_far</code></td><td>Slow beep; argument <code>700</code></td></tr><tr><td>Above 300</td><td><code>else</code></td><td>Clear; no beep</td></tr></tbody></table></div>
+<p class="callout">Predict: For a reading of 160, which conditions are false before Python reaches the matching branch? Which argument reaches <code>gap_ms</code>?</p>
+<p class="callout">Run the program to check. Then test the stop choice and a missing reading. Keep the final 100-millisecond loop pause; during a warning, it comes after the helper&#x27;s beep and chosen pause.</p>
+<h2 id="section-16">Step 13: Add Movement To The Tested Choices</h2>
+<p class="callout">Before you run: keep the wheels lifted for this edit. Leave both <code>motor_pair.stop</code> lines in the no-reading and stop choices. Leave the stop at the beginning of <code>main()</code> too.</p>
+<p>Add one movement line after the <code>print</code> in each of the four choices below. These are separate edits to branches you already tested. Make all four edits before running; keep the rest of the chain and the final loop pause.</p>
+<p>Inside the fast-beep choice:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">            print(&quot;fast beep&quot;)</span>
+<span class="new">            motor_pair.move(motor_pair.PAIR_1, 0, velocity=80)</span>
+<span class="reference">            await warning_beep(150)</span></code></pre>
+<p>Inside the medium-beep choice:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">            print(&quot;medium beep&quot;)</span>
+<span class="new">            motor_pair.move(motor_pair.PAIR_1, 0, velocity=120)</span>
+<span class="reference">            await warning_beep(350)</span></code></pre>
+<p>Inside the slow-beep choice:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">            print(&quot;slow beep&quot;)</span>
+<span class="new">            motor_pair.move(motor_pair.PAIR_1, 0, velocity=160)</span>
+<span class="reference">            await warning_beep(700)</span></code></pre>
+<p>Inside the final <code>else</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">            print(&quot;clear&quot;)</span>
+<span class="new">            motor_pair.move(motor_pair.PAIR_1, 0, velocity=200)</span></code></pre>
+<p class="callout">Run the program with the wheels lifted and move the target through the zones.</p>
+<p class="callout">Observe: The wheels turn forward and slow down as the target gets closer. A reading of 80 or less, or a missing reading, stops them. If a direction is wrong, stop and check the Project 08 wiring and wheel test before continuing.</p>
+<h2 id="section-17">Step 14: Tune A Slow Approach</h2>
+<p>Stop the program. Put the robot on a clear floor with the sensor facing the wall. Run the program and keep the stop control ready.</p>
+<p>The robot approaches forward. The beeps imitate a reversing vehicle&#x27;s warning pattern. The wheels keep moving during each beep and pause; the sensor is checked again on the next trip through the loop. A long pause lets the robot travel farther before that next check.</p>
+<p>Change one thing at a time, then run the program after each change:</p>
+<ul><li>To change <strong>where</strong> a zone begins, change its distance cutoff. Keep <code>too_close &lt; close_distance &lt; medium_distance &lt; too_far</code>.</li><li>To change <strong>how quickly</strong> that zone beeps, change the argument in its <code>warning_beep(...)</code> call. Keep the helper&#x27;s <code>gap_ms</code> parameter as it is.</li><li>To slow the robot&#x27;s approach, lower the velocity in the relevant branch. If it travels too far between checks, shorten the pause or slow the robot and test again with the wheels lifted first.</li></ul>
+<h2 id="section-18">Physical Challenge: Alarm Parking</h2>
+<p>Use the Parking Wall setup from the Challenge Setups sheet.</p>
+<ul><li>Approach silently while the wall is beyond the warning zone.</li><li>Show slow, medium, then fast beeps as the robot gets closer.</li><li>Stop before touching the wall.</li><li>Make one purposeful adjustment and repeat the approach three times.</li></ul>
+<h2 id="section-19">Teacher Check</h2>
+<p>Show your teacher:</p>
+<ul><li>the helper&#x27;s <code>gap_ms</code> parameter and one call&#x27;s argument; explain how that value reaches <code>sleep_ms</code></li><li>why the fixed-pause helper could not give different calls different pauses</li><li>which branch runs for a reading near 160, and why later branches are skipped</li><li>slow, medium, and fast beeps; a stop before the wall; and a stop when the sensor has no reading</li><li>one cutoff or argument you changed and what changed on the robot</li></ul>
+<h2 id="section-20">Before You Put The Kit Away</h2>
+<p>Save your program. Stop it before moving wires or changing the build. Keep your place for next time.</p><nav class="pager" aria-label="Previous and next"><a href="08_Driving_Base_2_Parking_Zone.html">Previous: Project 08: Driving Base 2 Parking Zone</a><a href="10_Claw_Relay.html">Next: Project 10: Claw Relay</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

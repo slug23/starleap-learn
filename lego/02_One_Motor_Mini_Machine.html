@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 02: One Motor Mini Machine · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html" aria-current="page">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Turn Once</a></li><li><a href="#section-3">Step 2 - Change The Amount</a></li><li><a href="#section-4">Step 3 - Come Back</a></li><li><a href="#section-5">Step 4 - Pause At The Far End</a></li><li><a href="#section-6">Step 5 - Name The Amount</a></li><li><a href="#section-7">Step 6 - Name The Speed</a></li><li><a href="#section-8">Step 7 - Prepare One Slow Movement</a></li><li><a href="#section-9">Step 8 - Beep After The Movement Finishes</a></li><li><a href="#section-10">Step 9 - Try The Motor Without Await</a></li><li><a href="#section-11">Step 10 - Put Await Back And Compare</a></li><li><a href="#section-12">Step 11 - Bring Back The Return Movement</a></li><li><a href="#section-13">Physical Challenge And Teacher Check</a></li></ul></details><h1 id="section-1">Project 02: One Motor Mini Machine</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set and the SPIKE App Python editor. Connect one motor to Port A. Attach a small pointer that can turn freely.</p>
+<p>Make a pointer move out and back. Then use a beep to hear what <code>await</code> does. Start with an unloaded motor and keep fingers clear of moving parts. Stop the program before changing the attachment.</p>
+<h2 id="section-2">Step 1 - Turn Once</h2>
+<p>Open a new Python project named <code>Mini Machine</code>. Type the starter. Code inside <code>main()</code> has four leading spaces.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import runloop</span>
+<span class="new">import motor</span>
+<span class="new"></span>
+<span class="new">pointer_motor = port.A</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    await motor.run_for_degrees(pointer_motor, 360, 300)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p><code>pointer_motor = port.A</code> gives the port a meaningful name. Keep this variable at the top, after the imports. The movement line uses <code>pointer_motor</code> so you can read which part will move. If the wiring changes, update this one assignment.</p>
+<p class="callout">Run the program. The motor should make one full turn and stop. The <code>360</code> sets motor degrees; <code>300</code> sets velocity in degrees per second.</p>
+<h2 id="section-3">Step 2 - Change The Amount</h2>
+<p>Replace only the movement line. Gray lines are already in your program.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    await motor.run_for_degrees(pointer_motor, 180, 300)</span>
+<span class="reference"></span>
+<span class="reference">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program. The motor should move half as far. Keep the speed unchanged so you can compare the amount of movement.</p>
+<h2 id="section-4">Step 3 - Come Back</h2>
+<p>Add the dark line after the first movement, with the same indentation.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    await motor.run_for_degrees(pointer_motor, 180, 300)</span>
+<span class="new">    await motor.run_for_degrees(pointer_motor, -180, 300)</span></code></pre>
+<p class="callout">Run the program. The pointer should move out, then return. A negative degree value reverses the movement when the speed stays positive.</p>
+<h2 id="section-5">Step 4 - Pause At The Far End</h2>
+<p>Add a pause between the two moves.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    await motor.run_for_degrees(pointer_motor, 180, 300)</span>
+<span class="new">    await runloop.sleep_ms(1000)</span>
+<span class="reference">    await motor.run_for_degrees(pointer_motor, -180, 300)</span></code></pre>
+<p class="callout">Run the program. The pointer should wait one second before coming back. Change only the pause to <code>500</code>, then run the program again.</p>
+<h2 id="section-6">Step 5 - Name The Amount</h2>
+<p>Add a variable after the imports and before <code>main()</code>.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">pointer_motor = port.A</span>
+<span class="new">turn_degrees = 180</span></code></pre>
+<p>Replace both degree values with the name. Keep the minus sign on the return move.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    await motor.run_for_degrees(pointer_motor, turn_degrees, 300)</span>
+<span class="reference">    await runloop.sleep_ms(500)</span>
+<span class="new">    await motor.run_for_degrees(pointer_motor, -turn_degrees, 300)</span></code></pre>
+<p class="callout">Run the program. The amount should stay the same. Change only <code>turn_degrees = 180</code> to <code>turn_degrees = 90</code>, then run the program again. Both movements should now be quarter turns.</p>
+<h2 id="section-7">Step 6 - Name The Speed</h2>
+<p>Add the dark assignment beside <code>turn_degrees</code>, above <code>main()</code>. Keep both at the left edge:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">turn_degrees = 90</span>
+<span class="new">speed = 200</span></code></pre>
+<p>Replace <code>300</code> in both movement lines with <code>speed</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    await motor.run_for_degrees(pointer_motor, turn_degrees, speed)</span>
+<span class="reference">    await runloop.sleep_ms(500)</span>
+<span class="new">    await motor.run_for_degrees(pointer_motor, -turn_degrees, speed)</span></code></pre>
+<p class="callout">Run the program. The pointer should move more slowly over the same amount.</p>
+<p class="callout">Fix it: if nothing moves, check Port A, the motor import, and the final start call. If it cannot return, check the minus sign and make sure the attachment has room to move.</p>
+<h2 id="section-8">Step 7 - Prepare One Slow Movement</h2>
+<p>Save your working out-and-back program. For the next few tests, use a small pointer with room for a half turn. We will bring back the return movement in Step 11.</p>
+<p>Change your amount and speed variables to these values. Keep <code>pointer_motor</code> unchanged. Do not add a second copy of either assignment:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">turn_degrees = 180</span>
+<span class="new">speed = 90</span></code></pre>
+<p>Replace only <code>main()</code> with this version. Keep the imports and variables above it and the final <code>runloop.run(main())</code> below it:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    await motor.run_for_degrees(pointer_motor, turn_degrees, speed)</span>
+<span class="new">    await runloop.sleep_ms(3000)</span>
+<span class="new">    motor.stop(pointer_motor)</span></code></pre>
+<p class="callout">Run the program. The pointer should make a slow half turn, then stay still during a three-second observation pause. The final stop tells the motor to stay stopped.</p>
+<p>Keep these numbers unchanged through Step 10. The pause keeps the program running long enough to watch what happens in the comparison. It is a fixed amount of time, not a check that the movement has finished.</p>
+<h2 id="section-9">Step 8 - Beep After The Movement Finishes</h2>
+<p>Change the first import to include the hub&#x27;s speaker:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port, sound</span></code></pre>
+<p>Add one beep <strong>immediately after the motor movement and before the pause</strong>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    await motor.run_for_degrees(pointer_motor, turn_degrees, speed)</span>
+<span class="new">    await sound.beep(700, 200, 100)</span>
+<span class="reference">    await runloop.sleep_ms(3000)</span>
+<span class="reference">    motor.stop(pointer_motor)</span></code></pre>
+<p>The beep comes from the hub. <code>700</code> sets its pitch, <code>200</code> sets its length in milliseconds, and <code>100</code> sets its volume.</p>
+<p class="callout">Predict: Will the beep start while the pointer is turning or after it stops?</p>
+<p class="callout">Run the program. Watch the pointer and listen.</p>
+<p class="callout">Observe: The motor finishes its half turn, then the beep starts. <code>await</code> on the motor line makes <code>main()</code> wait for that movement command to finish before starting the next line. The <code>await</code> on the beep line waits for the beep to finish before the observation pause begins.</p>
+<p class="callout">Fix it: If you hear nothing, check that <code>sound</code> is in the first import and that the beep line is inside <code>main()</code>, four spaces in.</p>
+<h2 id="section-10">Step 9 - Try The Motor Without Await</h2>
+<p>Remove <strong>only</strong> <code>await</code> from the motor movement line. Keep the four leading spaces. Keep <code>await</code> on the beep and the pause, and keep the final stop:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    motor.run_for_degrees(pointer_motor, turn_degrees, speed)</span>
+<span class="reference">    await sound.beep(700, 200, 100)</span>
+<span class="reference">    await runloop.sleep_ms(3000)</span>
+<span class="reference">    motor.stop(pointer_motor)</span></code></pre>
+<p class="callout">Predict: The numbers and line order are unchanged. When will the beep start this time?</p>
+<p class="callout">Run the program. Watch the pointer and listen.</p>
+<p class="callout">Observe: The beep starts near the start of the turn, while the motor is still moving. In the SPIKE App, this motor command starts its movement even without <code>await</code>. <code>main()</code> continues straight to the beep instead of waiting for the motor to finish. The motor and beep can overlap.</p>
+<p>The beep is now too early to mean &quot;movement finished.&quot; The remaining beep and pause give the motor time to continue, and the final stop ends any remaining movement. Do not remove them in this test.</p>
+<p><strong>What changed?</strong> Removing <code>await</code> changed when the next instruction could start. It did not change the requested degrees or speed. This behavior belongs to SPIKE&#x27;s awaitable motor command; do not assume every Python function behaves this way.</p>
+<h2 id="section-11">Step 10 - Put Await Back And Compare</h2>
+<p>Put <code>await</code> back on that same motor line. Change nothing else:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    await motor.run_for_degrees(pointer_motor, turn_degrees, speed)</span>
+<span class="reference">    await sound.beep(700, 200, 100)</span>
+<span class="reference">    await runloop.sleep_ms(3000)</span>
+<span class="reference">    motor.stop(pointer_motor)</span></code></pre>
+<p class="callout">Run the program again. The beep should follow the completed turn again.</p>
+<div class="table-scroll" tabindex="0"><table><thead><tr><th>Motor line</th><th>When the beep starts</th></tr></thead><tbody><tr><td>With <code>await</code></td><td>After the movement command finishes</td></tr><tr><td>Without <code>await</code></td><td>Near the start, without waiting for completion</td></tr></tbody></table></div>
+<p>The three-second pause is <strong>after</strong> the beep in both versions. It cannot make an early beep wait for the motor. Keeping <code>await</code> on the motor line connects the beep to motor completion instead of to a guessed delay.</p>
+<p>Show the two versions to your teacher and explain which single word changes their timing. Keep the version with <code>await</code> before continuing.</p>
+<h2 id="section-12">Step 11 - Bring Back The Return Movement</h2>
+<p>Now use the beep as a marker in your mini machine. Keep the imports and variables. Replace <code>main()</code> with this version, which shortens the pause and restores the awaited return move:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    await motor.run_for_degrees(pointer_motor, turn_degrees, speed)</span>
+<span class="reference">    await sound.beep(700, 200, 100)</span>
+<span class="new">    await runloop.sleep_ms(500)</span>
+<span class="new">    await motor.run_for_degrees(pointer_motor, -turn_degrees, speed)</span>
+<span class="new">    await sound.beep(400, 200, 100)</span>
+<span class="reference">    motor.stop(pointer_motor)</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: The pointer moves out, makes a higher beep, pauses, moves back, and makes a lower beep. Each motor move is awaited, so its beep follows its completion. Changing the second beep&#x27;s first number changes pitch; its length and volume stay the same.</p>
+<h2 id="section-13">Physical Challenge And Teacher Check</h2>
+<p>Make a pointer, arm, or gate move out and back without striking its stops. Choose a degree value that fits your attachment&#x27;s travel. Keep <code>await</code> on both motor movements.</p>
+<p>Show your teacher:</p>
+<ul><li>the port, amount and speed variables, and one change you tested</li><li>the beep after each completed movement</li><li>which word you removed in Step 9 and how that changed the beep&#x27;s timing</li><li>why a pause after the beep cannot make that beep wait for the motor</li></ul>
+<p>For a stretch, display a hub image during the pause.</p>
+<p>Save your program and stop it before changing the build.</p><nav class="pager" aria-label="Previous and next"><a href="01_Hub_Signal_Board.html">Previous: Project 01: Hub Signal Board</a><a href="03_Hopper_Driver.html">Next: Project 03: Hopper Driver</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

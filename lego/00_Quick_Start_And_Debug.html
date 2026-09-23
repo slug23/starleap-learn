@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick Start And Debug Sheet · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html" aria-current="page">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Start Every Project</a></li><li><a href="#section-3">How To Use Project Code</a></li><li><a href="#section-4">Usual Program Shape</a></li><li><a href="#section-5">Common Imports</a></li><li><a href="#section-6">Small Code Moves</a></li><li><a href="#section-7">If Something Breaks</a></li><li><a href="#section-8">Teacher Check Sentence</a></li></ul></details><h1 id="section-1">Quick Start And Debug Sheet</h1>
+<p>Keep this sheet near your computer.</p>
+<h2 id="section-2">Start Every Project</h2>
+<ol><li>Turn on the hub.</li><li>Open the SPIKE App.</li><li>Choose SPIKE Prime.</li><li>Open or create the correct Python project.</li><li>Connect the hub.</li><li>Check every wire matches the port in your code.</li><li>Run after each small change.</li></ol>
+<h2 id="section-3">How To Use Project Code</h2>
+<p>Do not paste a whole finished program and race ahead. Build the smallest starter code first, run it, then make one change at a time.</p>
+<p>After each run, be ready to point to one line and say what that line controls.</p>
+<h2 id="section-4">Usual Program Shape</h2>
+<p>Most programs look like this:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    # Replace pass with your code.</span>
+<span class="new">    pass</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p>Code inside <code>main()</code> is indented 4 spaces.</p>
+<h2 id="section-5">Common Imports</h2>
+<p>Hub screen:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import light_matrix</span></code></pre>
+<p>Hub ports:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span></code></pre>
+<p>One motor:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import motor</span></code></pre>
+<p>Two motors:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import motor_pair</span></code></pre>
+<p>Sensors:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import force_sensor</span>
+<span class="new">import distance_sensor</span>
+<span class="new">import color_sensor</span>
+<span class="new">import color</span></code></pre>
+<p>App sounds:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from app import sound</span></code></pre>
+<p>Hub beep:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import sound</span></code></pre>
+<h2 id="section-6">Small Code Moves</h2>
+<p>Write text:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">await light_matrix.write(&quot;GO&quot;)</span></code></pre>
+<p>Show image:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">light_matrix.show_image(light_matrix.IMAGE_HAPPY)</span></code></pre>
+<p>Wait:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">await runloop.sleep_ms(1000)</span></code></pre>
+<p>Run one motor: define its port after the imports, before your functions.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">pointer_motor = port.A</span></code></pre>
+<p>Inside <code>main()</code>, use the name:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">await motor.run_for_degrees(pointer_motor, 360, 500)</span></code></pre>
+<p>Pair two motors: define both ports at the top, after the imports. Match the names and letters to your build.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">left_motor = port.E</span>
+<span class="new">right_motor = port.F</span></code></pre>
+<p>Inside <code>main()</code>, use the names:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">motor_pair.pair(motor_pair.PAIR_1, left_motor, right_motor)</span></code></pre>
+<p>Move motor pair:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">await motor_pair.move_for_degrees(motor_pair.PAIR_1, 360, 0, velocity=400)</span></code></pre>
+<h2 id="section-7">If Something Breaks</h2>
+<p>Check in this order:</p>
+<ol><li>Is the hub connected?</li><li>Is the wire in the right port?</li><li>Is the import line there?</li><li>Is capitalization exact?</li><li>Is there a colon after <code>def</code>, <code>if</code>, <code>elif</code>, <code>else</code>, <code>for</code>, or <code>while</code>?</li><li>Is indented code inside the block?</li><li>Did you use <code>await</code> on a command that takes time?</li><li>Can you run just the first small piece?</li></ol>
+<h2 id="section-8">Teacher Check Sentence</h2>
+<p>Be ready to say:</p>
+<p>&quot;I changed <code>__________</code>, and it made the robot <code>__________</code>.&quot;</p><nav class="pager" aria-label="Previous and next"><a href="22_Smart_Bike_Route_Data_Recorder.html">Previous: Project 22: Smart Bike Route Data Recorder</a><a href="Build_Menu_From_LEGO.html">Next: LEGO Build Menu For Python Projects</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

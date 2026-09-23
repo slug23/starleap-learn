@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 17: Smart Bike Slope Lab · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html" aria-current="page">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Goal</a></li><li><a href="#section-3">Step 1: Read The Hub While The Bike Stays Still</a></li><li><a href="#section-4">Step 2: Choose The Number That Follows The Slope</a></li><li><a href="#section-5">Step 3: Turn Tenths Of A Degree Into Degrees</a></li><li><a href="#section-6">Step 4: Remember What Level Looks Like</a></li><li><a href="#section-7">Step 5: Measure Change From Level</a></li><li><a href="#section-8">Step 6: Make Positive Mean Uphill</a></li><li><a href="#section-9">Step 7: Recognize Uphill</a></li><li><a href="#section-10">Step 8: Separate Downhill From Level</a></li><li><a href="#section-11">Step 9: End A Test If The Tilt Is Too Large</a></li><li><a href="#section-12">Step 10: Limit How Many Readings We Take</a></li><li><a href="#section-13">Step 11: Choose A Speed Without Moving Yet</a></li><li><a href="#section-14">Step 12: Prove The Motors In A Separate Short Test</a></li><li><a href="#section-15">Step 13: Let The Slope Choose A Short Movement</a></li><li><a href="#section-16">Physical Challenge: A Gentle Slope Ride</a></li><li><a href="#section-17">Teacher Check</a></li><li><a href="#section-18">Before You Put The Kit Away</a></li></ul></details><h1 id="section-1">Project 17: Smart Bike Slope Lab</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set, the SPIKE App Python editor, and the <strong>Smart Bike</strong> build. Complete both Bike and Biker instructions in the app. Connect the two motors to <strong>C and E</strong>. Keep the model&#x27;s support wheels in place. Later, use a wide, low, stable board on the floor for gentle slopes.</p>
+<h2 id="section-2">Goal</h2>
+<p>Use the hub&#x27;s built-in motion sensor to tell when the bike points uphill, downhill, or along level ground. Then let that reading choose a motor speed for a short ride.</p>
+<p>The hub contains a gyro and an accelerometer. <code>motion_sensor.tilt_angles()</code> gives its estimated orientation. No separate gyro sensor or sensor cable is needed. This lesson uses <strong>tilt angles</strong>, not the speed at which the hub rotates.</p>
+<p>Build on the loops from Project 04 and the choices from Project 09. Work at your own pace; building, sensor tests, and driving can take separate sessions.</p>
+<p><strong>Using the code:</strong> gray lines are already there; dark lines are the edit. Keep four spaces inside <code>main()</code>, eight inside its loop, and twelve inside a choice in that loop. Stop the program before each edit, and save after each successful step.</p>
+<h2 id="section-3">Step 1: Read The Hub While The Bike Stays Still</h2>
+<p>Create a Python project named <code>Smart Bike Slope Lab</code>. Place the bike on a level surface and enter this small program:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import motion_sensor</span>
+<span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    while True:</span>
+<span class="new">        angles = motion_sensor.tilt_angles()</span>
+<span class="new">        print(angles)</span>
+<span class="new">        await runloop.sleep_ms(100)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program. Watch the console, then gently raise the front of the bike a little. Return it to level, then raise the back a little. Support the bike by its frame. Keep its heading and sideways lean as steady as you can.</p>
+<p class="callout">Observe: Three numbers print together. Some change when you tilt the bike. The motors stay still because this program has no motor instructions.</p>
+<h2 id="section-4">Step 2: Choose The Number That Follows The Slope</h2>
+<p>The three numbers form a <strong>tuple</strong>, an ordered group of values. Python counts their positions from zero:</p>
+<div class="table-scroll" tabindex="0"><table><thead><tr><th>Position</th><th>Hub angle</th><th>What to know</th></tr></thead><tbody><tr><td>0</td><td>yaw</td><td>turning around the vertical axis</td></tr><tr><td>1</td><td>pitch</td><td>one direction of tilt</td></tr><tr><td>2</td><td>roll</td><td>the other direction of tilt</td></tr></tbody></table></div>
+<p>These directions belong to the hub. Which one follows the bike&#x27;s nose depends on how the hub is mounted.</p>
+<p>Add <code>tilt_axis = 1</code> above <code>main()</code>. Inside the loop, replace <code>print(angles)</code> with these two lines:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        angles = motion_sensor.tilt_angles()</span>
+<span class="new">        raw_angle = angles[tilt_axis]</span>
+<span class="new">        print(raw_angle)</span>
+<span class="reference">        await runloop.sleep_ms(100)</span></code></pre>
+<p><code>angles[1]</code> selects pitch; <code>angles[2]</code> selects roll. The brackets select one value. Keep the parentheses in <code>tilt_angles()</code> because that is a function call.</p>
+<p class="callout">Run the program and repeat the gentle front-up and back-up tests. If this value barely changes, change <code>tilt_axis</code> to <code>2</code> and run again. Choose the value that changes smoothly in opposite directions for the two tilts. Keep that choice for the rest of the lesson.</p>
+<p class="callout">Fix it: If neither choice follows the slope, or the number suddenly jumps between large positive and negative values, show the teacher your build and readings before continuing. Do not use yaw as a substitute for slope.</p>
+<h2 id="section-5">Step 3: Turn Tenths Of A Degree Into Degrees</h2>
+<p>A raw reading of <code>120</code> means 12 degrees. The API reports <strong>tenths of a degree</strong>, also called decidegrees. Divide by 10 to get degrees.</p>
+<p>Keep the <code>raw_angle</code> line. Replace its print line with:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        raw_angle = angles[tilt_axis]</span>
+<span class="new">        angle = raw_angle / 10</span>
+<span class="new">        print(angle)</span>
+<span class="reference">        await runloop.sleep_ms(100)</span></code></pre>
+<p class="callout">Run the program. Repeat the same gentle tilt.</p>
+<p class="callout">Observe: The number is one tenth as large, and may include a decimal point. A level bike may not read zero because the hub is mounted at an angle. Next we will give our program a level starting value.</p>
+<h2 id="section-6">Step 4: Remember What Level Looks Like</h2>
+<p>Place the bike level and keep it still. Add these three lines inside <code>main()</code>, before the loop:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    await runloop.sleep_ms(1000)</span>
+<span class="new">    level_angle = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="new">    print(&quot;level angle&quot;, level_angle)</span>
+<span class="reference">    while True:</span></code></pre>
+<p>The one-second pause gives you time to let go. <code>level_angle</code> saves one reading in degrees. Keep this line <strong>outside the loop</strong> so the starting value is not replaced on every reading.</p>
+<p class="callout">Run the program with the bike level. Then gently tilt it.</p>
+<p class="callout">Observe: <code>level angle</code> prints once, followed by changing angle readings. Run again only after returning the bike to level. Each new run records a new starting value.</p>
+<h2 id="section-7">Step 5: Measure Change From Level</h2>
+<p>Inside the loop, replace <code>print(angle)</code> with:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        angle = raw_angle / 10</span>
+<span class="new">        slope = angle - level_angle</span>
+<span class="new">        print(&quot;slope&quot;, slope)</span>
+<span class="reference">        await runloop.sleep_ms(100)</span></code></pre>
+<p>For example, if the level reading was 30 degrees and the new reading is 38 degrees, the change is 8 degrees. Subtracting the starting value makes level close to zero.</p>
+<p class="callout">Run the program, starting level. Raise the front, return to level, then raise the back.</p>
+<p class="callout">Observe: Level is near zero. The two tilts should give opposite signs. Note whether front-up is positive or negative; the next edit will make our program use one consistent meaning.</p>
+<h2 id="section-8">Step 6: Make Positive Mean Uphill</h2>
+<p>Add <code>up_sign = 1</code> beside <code>tilt_axis</code> above <code>main()</code>. Replace only the slope calculation:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">        slope = (angle - level_angle) * up_sign</span>
+<span class="reference">        print(&quot;slope&quot;, slope)</span></code></pre>
+<p class="callout">Run the program from level. If raising the front gives a negative slope, change <code>up_sign</code> to <code>-1</code>, then run again from level. Multiplying by <code>-1</code> reverses the sign. Leave it as <code>1</code> if front-up is already positive.</p>
+<p class="callout">Observe: Front-up is now positive, back-up is negative, and level is near zero. Show these three readings to your teacher before adding choices. Use small tilts with no sudden reading jumps.</p>
+<h2 id="section-9">Step 7: Recognize Uphill</h2>
+<p>Add <code>hill_cutoff = 5</code> beside the variables above <code>main()</code>. Keep <code>print(&quot;slope&quot;, slope)</code> and add this choice just below it, before the pause:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">        if slope &gt; hill_cutoff:</span>
+<span class="new">            print(&quot;uphill&quot;)</span>
+<span class="new">        else:</span>
+<span class="new">            print(&quot;not uphill&quot;)</span>
+<span class="reference">        await runloop.sleep_ms(100)</span></code></pre>
+<p class="callout">Run the program from level. Gently raise the front until the printed slope is more than 5 degrees.</p>
+<p class="callout">Observe: The label changes to <code>uphill</code>. At 5 degrees or less, this version says <code>not uphill</code>. The motors still stay still.</p>
+<h2 id="section-10">Step 8: Separate Downhill From Level</h2>
+<p>Insert one <code>elif</code> before the existing <code>else</code>. Change the text in <code>else</code> to <code>level</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        if slope &gt; hill_cutoff:</span>
+<span class="reference">            print(&quot;uphill&quot;)</span>
+<span class="new">        elif slope &lt; -hill_cutoff:</span>
+<span class="new">            print(&quot;downhill&quot;)</span>
+<span class="reference">        else:</span>
+<span class="new">            print(&quot;level&quot;)</span>
+<span class="reference">        await runloop.sleep_ms(100)</span></code></pre>
+<p><code>-hill_cutoff</code> is -5. Python checks the downhill condition only if the uphill condition was false. The final <code>else</code> handles everything left: from -5 through +5 degrees, including both endpoints.</p>
+<p class="callout">Run the program from level. Test all three labels while the bike stays in your hands or on the surface.</p>
+<p class="callout">Observe: Small movements around zero stay <code>level</code>. This range prevents a tiny wobble from changing the label constantly. We do not need the reading to equal exactly zero.</p>
+<h2 id="section-11">Step 9: End A Test If The Tilt Is Too Large</h2>
+<p>Add <code>stop_slope = 20</code> above <code>main()</code>. Insert this separate guard after the slope print and <strong>before</strong> the uphill choice:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        print(&quot;slope&quot;, slope)</span>
+<span class="new">        if abs(slope) &gt; stop_slope:</span>
+<span class="new">            print(&quot;tilt limit - test ended&quot;)</span>
+<span class="new">            break</span>
+<span class="reference">        if slope &gt; hill_cutoff:</span>
+<span class="reference">            print(&quot;uphill&quot;)</span></code></pre>
+<p><code>abs()</code> gives a number&#x27;s size without its sign: <code>abs(-21)</code> and <code>abs(21)</code> are both 21. <code>break</code> ends the loop, so no later instruction in that loop runs for this reading.</p>
+<p class="callout">Run the program from level. While the motors are still unused, support the frame and gently tilt past 20 degrees in either direction.</p>
+<p class="callout">Observe: The limit message prints and the program ends. This is a software test limit, not a guarantee that every smaller physical slope is suitable. Return to level before running again.</p>
+<h2 id="section-12">Step 10: Limit How Many Readings We Take</h2>
+<p>Replace only <code>while True:</code> with <code>for sample in range(20):</code>. Keep everything inside the loop indented as it was. Add the final print below the whole loop, four spaces in:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">    for sample in range(20):</span>
+<span class="reference">        angles = motion_sensor.tilt_angles()</span></code></pre>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        await runloop.sleep_ms(100)</span>
+<span class="new">    print(&quot;test finished&quot;)</span></code></pre>
+<p class="callout">Run the program from level. Keep the tilt small.</p>
+<p class="callout">Observe: The program takes 20 readings, then ends. It also ends early if the tilt guard runs. This gives our later driving test a clear stopping point.</p>
+<h2 id="section-13">Step 11: Choose A Speed Without Moving Yet</h2>
+<p>Add one assignment to each branch of the existing uphill/downhill/level chain. Add one print after the entire chain, aligned with <code>if</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        if slope &gt; hill_cutoff:</span>
+<span class="reference">            print(&quot;uphill&quot;)</span>
+<span class="new">            speed = 180</span>
+<span class="reference">        elif slope &lt; -hill_cutoff:</span>
+<span class="reference">            print(&quot;downhill&quot;)</span>
+<span class="new">            speed = 80</span>
+<span class="reference">        else:</span>
+<span class="reference">            print(&quot;level&quot;)</span>
+<span class="new">            speed = 120</span>
+<span class="new">        print(&quot;motor speed&quot;, speed)</span>
+<span class="reference">        await runloop.sleep_ms(100)</span></code></pre>
+<p class="callout">Run the program from level, then tilt gently uphill or downhill. Repeat for another test.</p>
+<p class="callout">Observe: The program selects 180 uphill, 80 downhill, and 120 level. These are starting values for <strong>motor degrees per second</strong>. They are not wheel travel distances or percentages of electrical power. The bike&#x27;s actual ground speed also depends on its build and the surface.</p>
+<p>Each branch gives <code>speed</code> a value. The print below the chain uses the one that was selected. The motors still stay still.</p>
+<h2 id="section-14">Step 12: Prove The Motors In A Separate Short Test</h2>
+<p>Save <code>Smart Bike Slope Lab</code>. Create a <strong>second</strong> Python project named <code>Smart Bike Motor Test</code>. Keep your slope program saved; you will return to it in Step 13.</p>
+<p>With the drive wheels lifted clear, enter this short program:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import motor_pair</span>
+<span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">bike_motor = port.C</span>
+<span class="new">rider_motor = port.E</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="new">    await motor_pair.move_for_time(</span>
+<span class="new">        motor_pair.PAIR_1, 300, 0, velocity=120)</span>
+<span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p><code>bike_motor</code> names the bike motor on C; <code>rider_motor</code> names the rider motor on E. These variables keep the wiring at the top and make the commands easier to read.</p>
+<p class="callout">Run the program. The two motors should turn briefly and stop. <code>300</code> is the duration in milliseconds; <code>0</code> is straight steering. <code>await</code> lets this movement finish before the next instruction.</p>
+<p>Then place the bike on a clear, level floor and run once. Check that it travels forward a short distance. If it twists, goes backward, or strains, stop and check the C/E wiring and model assembly with your teacher before continuing. Keep hands clear of moving parts.</p>
+<h2 id="section-15">Step 13: Let The Slope Choose A Short Movement</h2>
+<p>Return to your saved <strong>Smart Bike Slope Lab</strong> project. Change the first import, add the motor-pair import, and define the two port variables after the imports at the top:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import motion_sensor, port</span>
+<span class="new">import motor_pair</span>
+<span class="reference">import runloop</span>
+<span class="new"></span>
+<span class="new">bike_motor = port.C</span>
+<span class="new">rider_motor = port.E</span></code></pre>
+<p>At the start of <code>main()</code>, before the existing one-second pause, add:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="reference">    await runloop.sleep_ms(1000)</span></code></pre>
+<p>Keep the calibration, 20-reading loop, tilt guard, and speed choices. After <code>print(&quot;motor speed&quot;, speed)</code> and before the existing loop pause, add:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        print(&quot;motor speed&quot;, speed)</span>
+<span class="new">        await motor_pair.move_for_time(</span>
+<span class="new">            motor_pair.PAIR_1, 200, 0, velocity=speed)</span>
+<span class="reference">        await runloop.sleep_ms(100)</span></code></pre>
+<p>Finally, add a stop after the whole loop and before its final print, four spaces in:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="reference">    print(&quot;test finished&quot;)</span></code></pre>
+<p>For the first run, support the bike securely with its drive wheels clear and its frame level during the starting pause. After calibration, tilt gently while keeping clear of the wheels.</p>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: Each reading chooses a speed for a 200-millisecond movement, which brakes at the end by default. The pause follows, then the next reading. Expect short pulses. At most 20 pulses run; the tilt guard can end the test sooner. It checks between pulses, so use the app&#x27;s stop control whenever you need to stop immediately.</p>
+<h2 id="section-16">Physical Challenge: A Gentle Slope Ride</h2>
+<p>Keep the support wheels fitted. Use a wide, stable board close to the floor, with a gentle incline and a clear stopping area. Secure it so it cannot slide or tip. Have your teacher check the setup.</p>
+<p>Start each run with the bike on <strong>level ground</strong> for calibration. Give it a level approach to the board. Do not start on the slope: the program would record that slope as its new zero. Test uphill and downhill as separate short runs, each beginning with a level approach. For downhill, use a level upper starting section before the descent. Stop before repositioning the bike.</p>
+<ul><li>Level 1: Show all three slope labels in the stationary sensor program.</li><li>Level 2: Complete a bounded level-floor ride with the motor version.</li><li>Level 3: Show the speed choice changing during a gentle slope ride.</li><li>Level 4: Tune one speed value, keep the time and tilt limits, and repeat the same route twice. Explain what changed.</li></ul>
+<p>If the bike stalls or slips, stop and reduce the slope or fix the build before tuning the speed. The printed number is the requested motor speed; it does not prove the bike maintained a particular ground speed.</p>
+<h2 id="section-17">Teacher Check</h2>
+<p>Show your teacher:</p>
+<ul><li>which tuple position follows the bike&#x27;s slope, and why you divide by 10</li><li>where <code>level_angle</code> is saved once, and why every run starts level</li><li>positive uphill, negative downhill, and near-zero level readings</li><li>why exactly -5 and +5 use the <code>else</code> branch</li><li>a short ride that stops, plus the tilt-limit behavior with the wheels clear</li><li>one number you changed and the effect you observed</li></ul>
+<h2 id="section-18">Before You Put The Kit Away</h2>
+<p>Save both programs. Stop the program before moving wires or changing the build. Keep your working <code>tilt_axis</code> and <code>up_sign</code> values. Recheck them if you remount the hub. Mark the last step that worked so you can continue next time.</p><nav class="pager" aria-label="Previous and next"><a href="16_Driving_Base_Mission_Lab.html">Previous: Project 16: Driving Base Mission Lab</a><a href="18_Choice_Build_Remix.html">Next: Project 18: Choice Build Remix</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

@@ -1,0 +1,202 @@
+{
+  "course": "lego-python",
+  "build": "2026.09.22-090630-0400",
+  "pages": [
+    {
+      "file": "00_Project_Path.html",
+      "title": "Self-Paced Project Path",
+      "group": "Projects",
+      "source": "handouts/00_Project_Path.md",
+      "sha256": "969cad100ec72c5df4f749658fe9409ed8c78d3311672f6b40061efa9d2d28c8"
+    },
+    {
+      "file": "01_Hub_Signal_Board.html",
+      "title": "Project 01: Hub Signal Board",
+      "group": "Projects",
+      "source": "handouts/01_Hub_Signal_Board.md",
+      "sha256": "f7158c82b7193bb04e8a87add0d91c68a395fe3f128bee3501c2cfd64e63ec31"
+    },
+    {
+      "file": "02_One_Motor_Mini_Machine.html",
+      "title": "Project 02: One Motor Mini Machine",
+      "group": "Projects",
+      "source": "handouts/02_One_Motor_Mini_Machine.md",
+      "sha256": "ddb223147876f2c567bf13f5b4f6b60686ea0355569894a6fcb683cb05fc7777"
+    },
+    {
+      "file": "03_Hopper_Driver.html",
+      "title": "Project 03: Hopper Driver",
+      "group": "Projects",
+      "source": "handouts/03_Hopper_Driver.md",
+      "sha256": "20b3192846b022e497ced91b575cc29bc90dfa78b0039a73d4b4c044c046b597"
+    },
+    {
+      "file": "04_LEGO_Bin_Rectangle.html",
+      "title": "Project 04: LEGO Bin Rectangle",
+      "group": "Projects",
+      "source": "handouts/04_LEGO_Bin_Rectangle.md",
+      "sha256": "ed6da9bf8497cf00c9d44b6efe3f0f3b0a30aeaf902ef29dff141ed6d47dea57"
+    },
+    {
+      "file": "05_Force_Button_Machine.html",
+      "title": "Project 05: Force Button Machine",
+      "group": "Projects",
+      "source": "handouts/05_Force_Button_Machine.md",
+      "sha256": "f426ad896cd442a090b4f6408769a0b29e4ae78d473ea91f920ba59b400c2076"
+    },
+    {
+      "file": "06_Bouncing_Rhino_Arena.html",
+      "title": "Project 06: Bouncing Rhino Arena",
+      "group": "Projects",
+      "source": "handouts/06_Bouncing_Rhino_Arena.md",
+      "sha256": "bd3537f754657878497a815a2fd167ad5795554f4fd7cd0d246ad654a1cf3998"
+    },
+    {
+      "file": "07_Parking_Beeper.html",
+      "title": "Project 07: Parking Beeper",
+      "group": "Projects",
+      "source": "handouts/07_Parking_Beeper.md",
+      "sha256": "43d6aa661166627771b122c9408ddd4a3e78d36e2474f4fb04446b2ac4d0a05a"
+    },
+    {
+      "file": "08_Driving_Base_2_Parking_Zone.html",
+      "title": "Project 08: Driving Base 2 Parking Zone",
+      "group": "Projects",
+      "source": "handouts/08_Driving_Base_2_Parking_Zone.md",
+      "sha256": "571eb2a1a8702cae0f1b1d3c5d799b5ae557c44ddcbf856ebae80200963cd8cb"
+    },
+    {
+      "file": "09_Parking_Approach_Alarm.html",
+      "title": "Project 09: Parking Approach Alarm",
+      "group": "Projects",
+      "source": "handouts/09_Parking_Approach_Alarm.md",
+      "sha256": "fe5225bf8c394f791fe14f21718e4acbd60ed42a23b7480928267d5872536024"
+    },
+    {
+      "file": "10_Claw_Relay.html",
+      "title": "Project 10: Claw Relay",
+      "group": "Projects",
+      "source": "handouts/10_Claw_Relay.md",
+      "sha256": "a2fb3cae240cce7dbe4e9f23344c3d747c54d3d6386e9fc3e6ae5806830b76fc"
+    },
+    {
+      "file": "11_Kiki_Color_Station.html",
+      "title": "Project 11: Kiki Color Station",
+      "group": "Projects",
+      "source": "handouts/11_Kiki_Color_Station.md",
+      "sha256": "f00b8d937955d0deeb4064ebb48d3d4ffde6fec64a913e105eb7eeca18a2dee0"
+    },
+    {
+      "file": "12_Tabletop_Score_Shooter.html",
+      "title": "Project 12: Tabletop Score Shooter",
+      "group": "Projects",
+      "source": "handouts/12_Tabletop_Score_Shooter.md",
+      "sha256": "cefcbc15414da43676ec69d2e618535222ed62ab4e0d2a2be8669f0f90d8926e"
+    },
+    {
+      "file": "13_Coach_Dance_Reps.html",
+      "title": "Project 13: Coach Dance Reps",
+      "group": "Projects",
+      "source": "handouts/13_Coach_Dance_Reps.md",
+      "sha256": "8af0020e2d8563d40b02173627edcacaea5ac54de0bb1e041626e8b3376b84c3"
+    },
+    {
+      "file": "14_Safe_Deposit_Box_Lock.html",
+      "title": "Project 14: Safe Deposit Box Lock",
+      "group": "Projects",
+      "source": "handouts/14_Safe_Deposit_Box_Lock.md",
+      "sha256": "9b283c22173182a1a004f7755042ebff45406c215dd96d055c25aa8d9458d2bc"
+    },
+    {
+      "file": "15_Package_Sorter.html",
+      "title": "Project 15: Package Sorter",
+      "group": "Projects",
+      "source": "handouts/15_Package_Sorter.md",
+      "sha256": "be3ee5a9f7869255c841331ee4b7429ebebed247c9cd9f5bf2de1ba8ee67d8c6"
+    },
+    {
+      "file": "16_Driving_Base_Mission_Lab.html",
+      "title": "Project 16: Driving Base Mission Lab",
+      "group": "Projects",
+      "source": "handouts/16_Driving_Base_Mission_Lab.md",
+      "sha256": "1c169d51effe2c3089359197d07e3fda44d65a12a022719f4656896f028b1f9c"
+    },
+    {
+      "file": "17_Smart_Bike_Slope_Lab.html",
+      "title": "Project 17: Smart Bike Slope Lab",
+      "group": "Projects",
+      "source": "handouts/17_Smart_Bike_Slope_Lab.md",
+      "sha256": "2adc51d5f125429b67d24e436e4b4ef14bb24f3da0337c9dcfa858f6321a86b6"
+    },
+    {
+      "file": "18_Choice_Build_Remix.html",
+      "title": "Project 18: Choice Build Remix",
+      "group": "Projects",
+      "source": "handouts/18_Choice_Build_Remix.md",
+      "sha256": "90e88968a0d4aafd8c2f81c159f6b98e80fd9622c3cb68ae13bac9c05264fc44"
+    },
+    {
+      "file": "19_Smart_Bike_Speed_Modes.html",
+      "title": "Project 19: Smart Bike Speed Modes",
+      "group": "Projects",
+      "source": "handouts/19_Smart_Bike_Speed_Modes.md",
+      "sha256": "4f0f1eaa15d5d51513e2a2dd2893201099121d7f8c0d9214044334eb834e2d6d"
+    },
+    {
+      "file": "20_Smart_Bike_Trip_Computer.html",
+      "title": "Project 20: Smart Bike Trip Computer",
+      "group": "Projects",
+      "source": "handouts/20_Smart_Bike_Trip_Computer.md",
+      "sha256": "5cbef37f87487b1ca01d09d09545d025db1311da36a00731922ea7969f5b3caa"
+    },
+    {
+      "file": "21_Smart_Bike_Security_Alarm.html",
+      "title": "Project 21: Smart Bike Security Alarm",
+      "group": "Projects",
+      "source": "handouts/21_Smart_Bike_Security_Alarm.md",
+      "sha256": "df2b9532e645cafb368edc4d4e9890747542c90224c6d2bfd73132d79b5178d8"
+    },
+    {
+      "file": "22_Smart_Bike_Route_Data_Recorder.html",
+      "title": "Project 22: Smart Bike Route Data Recorder",
+      "group": "Projects",
+      "source": "handouts/22_Smart_Bike_Route_Data_Recorder.md",
+      "sha256": "14cc5edecc7c496f1265b701aad7d80b92b6d9b455c4b60d924e263a005f366c"
+    },
+    {
+      "file": "00_Quick_Start_And_Debug.html",
+      "title": "Quick Start And Debug Sheet",
+      "group": "Reference sheets",
+      "source": "reference/00_Quick_Start_And_Debug.md",
+      "sha256": "7d57e4fa653c24a94c1757f1d4884735c66981cdde34623bc3810dc986c098f2"
+    },
+    {
+      "file": "Build_Menu_From_LEGO.html",
+      "title": "LEGO Build Menu For Python Projects",
+      "group": "Reference sheets",
+      "source": "reference/Build_Menu_From_LEGO.md",
+      "sha256": "acf0184126292707f14ef676adb01c3f896846f0f31a8dfee7549cf4fdbe2004"
+    },
+    {
+      "file": "Challenge_Setups_And_Props.html",
+      "title": "Challenge Setups And Props",
+      "group": "Reference sheets",
+      "source": "reference/Challenge_Setups_And_Props.md",
+      "sha256": "2c8c0e533fe6bd32643c25bd3f258b545c71882099fe8c4a79868c0d5890ef12"
+    },
+    {
+      "file": "Debugging_Field_Guide.html",
+      "title": "Debugging Field Guide",
+      "group": "Reference sheets",
+      "source": "reference/Debugging_Field_Guide.md",
+      "sha256": "f596c28a6f671e786de312ec763b1c5ad3d80114e5cbb1b276c33bbf3d6bedb6"
+    },
+    {
+      "file": "Project_Checkpoint_Card.html",
+      "title": "Project Checkpoint Card",
+      "group": "Reference sheets",
+      "source": "reference/Project_Checkpoint_Card.md",
+      "sha256": "27b498c6bcd1cd050a3cb50bfb7094af702a2cec02c44e35cfc8b0caf5727b2f"
+    }
+  ]
+}

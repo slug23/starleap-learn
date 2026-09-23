@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 21: Smart Bike Security Alarm · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html" aria-current="page">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1: Read The Parked Bike</a></li><li><a href="#section-3">Step 2: Select Your Tested Tilt Axis</a></li><li><a href="#section-4">Step 3: Remember The Parked Angle</a></li><li><a href="#section-5">Step 4: Measure Change In Either Direction</a></li><li><a href="#section-6">Step 5: Make One Condition</a></li><li><a href="#section-7">Step 6: Hear The Alarm</a></li><li><a href="#section-8">Step 7: Remember Whether It Is Armed</a></li><li><a href="#section-9">Step 8: Start Disarmed And Read The Buttons</a></li><li><a href="#section-10">Step 9: Arm Once, From A Fresh Parked Position</a></li><li><a href="#section-11">Step 10: Add A Disarm Button</a></li><li><a href="#section-12">Step 11: Prove The State Changes</a></li><li><a href="#section-13">Teacher Check</a></li></ul></details><h1 id="section-1">Project 21: Smart Bike Security Alarm</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set, the Smart Bike (Bike and Biker), its hub, and the SPIKE App Python editor. Keep the support wheels. Finish the sensor calibration in Project 17 first. This project does not run the motors.</p>
+<p>Make a parked-bike alarm. Arm it with the right hub button, gently tilt the bike to trigger one beep, and use the left button to disarm it. It detects a change in tilt, not every possible movement: a bike can move across a floor without changing its tilt.</p>
+<p>Stop any driving program before starting. Support the bike by its frame when tilting it. Gray code is already there; dark code is the edit. Keep the final <code>runloop.run(main())</code> throughout.</p>
+<h2 id="section-2">Step 1: Read The Parked Bike</h2>
+<p>Create a fresh Python project named <code>Bike Security Alarm</code>:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import motion_sensor</span>
+<span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    while True:</span>
+<span class="new">        angles = motion_sensor.tilt_angles()</span>
+<span class="new">        print(angles)</span>
+<span class="new">        await runloop.sleep_ms(100)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program. The console shows three angles, and the bike stays still. Gently raise the front, then return it to its parked position. Stop the program before editing.</p>
+<h2 id="section-3">Step 2: Select Your Tested Tilt Axis</h2>
+<p>Add this assignment below the imports. Use the axis you verified in Project 17: 1 or 2, depending on the hub&#x27;s mounting. The shown value is an example:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">tilt_axis = 1</span></code></pre>
+<p>Replace the two lines that read and print the whole tuple:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">        angle = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="new">        print(angle)</span></code></pre>
+<p class="callout">Run the program and gently raise the front again. The selected angle should change. Dividing by 10 converts decidegrees to degrees. If it barely changes, stop and check the axis before continuing.</p>
+<h2 id="section-4">Step 3: Remember The Parked Angle</h2>
+<p>Replace <code>main()</code> with this version:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    baseline = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="reference">    while True:</span>
+<span class="reference">        angle = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="new">        change = angle - baseline</span>
+<span class="new">        print(change)</span>
+<span class="reference">        await runloop.sleep_ms(100)</span></code></pre>
+<p>Park the bike and run the program. It should begin near zero. Gently tilt it and return it to the parked position. <code>baseline</code> is read once before the loop; each new reading is compared with that remembered position.</p>
+<h2 id="section-5">Step 4: Measure Change In Either Direction</h2>
+<p>Replace the subtraction line:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">        change = abs(angle - baseline)</span></code></pre>
+<p class="callout">Run the program. Front-up and back-up changes should both produce positive amounts. <code>abs()</code> gives the size of a difference without its sign. We care how far it tilted, not which way.</p>
+<h2 id="section-6">Step 5: Make One Condition</h2>
+<p>Add a threshold beside <code>tilt_axis</code>, outside <code>main()</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">tilt_axis = 1</span>
+<span class="new">tilt_limit = 10</span></code></pre>
+<p>Keep your tested axis if it is 2; do not change it just to match the gray example. Replace <code>print(change)</code> inside the loop:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">        if change &gt; tilt_limit:</span>
+<span class="new">            print(&quot;tilt detected&quot;)</span>
+<span class="new">        else:</span>
+<span class="new">            print(&quot;parked&quot;)</span></code></pre>
+<p class="callout">Run the program. Gently tilt past the threshold, then return. A change of exactly 10 does not pass <code>&gt;</code>; more than 10 does. Tiny sensor changes around the parked position should not trigger it.</p>
+<h2 id="section-7">Step 6: Hear The Alarm</h2>
+<p>Replace the first import:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import motion_sensor, sound</span></code></pre>
+<p>Add a beep under the detection message, at the same indentation:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        if change &gt; tilt_limit:</span>
+<span class="reference">            print(&quot;tilt detected&quot;)</span>
+<span class="new">            await sound.beep(700, 200, 100)</span></code></pre>
+<p class="callout">Run the program. When you hold the bike tilted, the beep repeats because the loop tests the condition again. The beep is 700 Hz, lasts 200 milliseconds, and uses volume 100. Return to the parked position and stop the program.</p>
+<h2 id="section-8">Step 7: Remember Whether It Is Armed</h2>
+<p>Add a variable after the baseline, before the loop:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    baseline = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="new">    armed = True</span>
+<span class="reference">    while True:</span></code></pre>
+<p>Change the condition and add a line after the beep:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">        if armed and change &gt; tilt_limit:</span>
+<span class="reference">            print(&quot;tilt detected&quot;)</span>
+<span class="reference">            await sound.beep(700, 200, 100)</span>
+<span class="new">            armed = False</span></code></pre>
+<p>Remove the old <code>else:</code> and <code>print(&quot;parked&quot;)</code> lines; they would misleadingly label a disarmed, tilted bike as parked.</p>
+<p class="callout">Run the program. Tilt beyond the limit and keep holding it. Only one beep should sound. <code>and</code> requires both facts: it is armed, and the change is large. After the beep, <code>False</code> makes later tests fail. Restarting currently arms it again.</p>
+<h2 id="section-9">Step 8: Start Disarmed And Read The Buttons</h2>
+<p>Replace the first import and change the existing initial state:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import motion_sensor, sound, button</span></code></pre>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    baseline = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="new">    armed = False</span></code></pre>
+<p>Add this test at the beginning of the loop, before <code>angle = ...</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    while True:</span>
+<span class="new">        if button.pressed(button.RIGHT):</span>
+<span class="new">            armed = True</span>
+<span class="new">            print(&quot;armed&quot;)</span>
+<span class="reference">        angle = motion_sensor.tilt_angles()[tilt_axis] / 10</span></code></pre>
+<p class="callout">Run the program. Tilting before pressing right should do nothing. Park the bike, tap right, then tilt it after letting go. A held right button can re-arm repeatedly in this temporary version. We will fix that next.</p>
+<h2 id="section-10">Step 9: Arm Once, From A Fresh Parked Position</h2>
+<p>Replace just the right-button block with these lines:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        if button.pressed(button.RIGHT):</span>
+<span class="new">            while button.pressed(button.RIGHT):</span>
+<span class="new">                await runloop.sleep_ms(50)</span>
+<span class="new">            await runloop.sleep_ms(500)</span>
+<span class="new">            baseline = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="reference">            armed = True</span>
+<span class="reference">            print(&quot;armed&quot;)</span></code></pre>
+<p class="callout">Run the program. Park the bike, press and release right, then keep it still for half a second. When <code>armed</code> prints, gently tilt it. Holding right should no longer repeatedly re-arm the alarm. The fresh baseline records where the bike is parked each time.</p>
+<p class="callout">Fix it: If pressing the button immediately triggers a beep, keep the frame still during the half-second settling pause. This simple angle subtraction is for gentle tilts near the calibrated pose, not a full upside-down rotation.</p>
+<h2 id="section-11">Step 10: Add A Disarm Button</h2>
+<p>Replace the start of the right-button block with a left-first choice. Keep all the existing right-button body below the new <code>elif</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">        if button.pressed(button.LEFT):</span>
+<span class="new">            armed = False</span>
+<span class="new">        elif button.pressed(button.RIGHT):</span>
+<span class="reference">            while button.pressed(button.RIGHT):</span>
+<span class="reference">                await runloop.sleep_ms(50)</span></code></pre>
+<p class="callout">Run the program. Arm, press left, release it, then tilt: there should be no beep. Arm again and tilt without pressing left: it should beep once. If both buttons are held when this choice is checked, the left branch wins and does not arm the alarm.</p>
+<p>Button input is checked between readings; it is not checked during the short beep or the arming pause. Release right and let arming finish before testing left.</p>
+<h2 id="section-12">Step 11: Prove The State Changes</h2>
+<p>Test this sequence without editing code:</p>
+<div class="table-scroll" tabindex="0"><table><thead><tr><th>Your action</th><th>Expected result</th></tr></thead><tbody><tr><td>Start the program, then tilt</td><td>No beep; starts disarmed</td></tr><tr><td>Park, press and release right, wait</td><td>Fresh baseline; armed</td></tr><tr><td>Gently tilt more than the limit</td><td>One beep; becomes disarmed</td></tr><tr><td>Return and tilt again</td><td>No second beep</td></tr><tr><td>Park and arm again, then press left</td><td>Disarmed before a tilt</td></tr></tbody></table></div>
+<p>Try one small adjustment to <code>tilt_limit</code>, then repeat the tests. Explain the tradeoff between detecting smaller changes and triggering on small bumps.</p>
+<h2 id="section-13">Teacher Check</h2>
+<p>Show your teacher the test sequence. Point to where <code>armed</code> becomes <code>True</code>, the two places it becomes <code>False</code> during the loop, and the baseline update. Explain why the alarm cannot detect every theft or movement.</p>
+<p>Save your program and stop it. Optional next project: Project 22 records a whole series of slope readings.</p><nav class="pager" aria-label="Previous and next"><a href="20_Smart_Bike_Trip_Computer.html">Previous: Project 20: Smart Bike Trip Computer</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Next: Project 22: Smart Bike Route Data Recorder</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

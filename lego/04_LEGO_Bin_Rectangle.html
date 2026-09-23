@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 04: LEGO Bin Rectangle · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html" aria-current="page">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Goal</a></li><li><a href="#section-3">Build</a></li><li><a href="#section-4">What You Will Learn</a></li><li><a href="#section-5">Step 1: One Side And One Turn</a></li><li><a href="#section-6">Step 2: Repeat The Pattern</a></li><li><a href="#section-7">Step 3: Tune One Number At A Time</a></li><li><a href="#section-8">Step 4: Add A Start Signal</a></li><li><a href="#section-9">Physical Challenge: Around The LEGO Bin</a></li><li><a href="#section-10">Teacher Check</a></li><li><a href="#section-11">Before You Put The Kit Away</a></li></ul></details><h1 id="section-1">Project 04: LEGO Bin Rectangle</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set and the SPIKE App Python editor.</p>
+<h2 id="section-2">Goal</h2>
+<p>Tune a driving robot so it goes around the LEGO bin in a rectangle.</p>
+<p>This is a core class challenge. It will probably not work on the first try. That is the point.</p>
+<h2 id="section-3">Build</h2>
+<p>Use a Driving Base, Hopper-style vehicle, or any two-motor driving robot.</p>
+<p>Use these starting ports unless your build uses different ones:</p>
+<ul><li>left motor: Port E</li><li>right motor: Port F</li></ul>
+<p>Put a LEGO bin on the floor or table. Leave enough space around it for the robot to turn.</p>
+<p><strong>Using the code:</strong> gray lines are already in your program; dark lines are the edit. Keep the shown indentation. Replace a displayed <code>main()</code> definition as a whole, keeping imports and the final start call.</p>
+<h2 id="section-4">What You Will Learn</h2>
+<ul><li>Variables let you tune the path without digging through the whole program.</li><li>A <code>for</code> loop repeats the same side-and-turn pattern.</li><li>Driving around a real object means tuning one number at a time.</li></ul>
+<p>Motor degrees measure wheel rotation, not the angle of the whole robot. A <code>turn_degrees</code> value of 120 is a starting test value; tune it until the chassis makes a corner. Start from the same floor mark for each test.</p>
+<p class="callout">Before you run: use a clear floor area away from table edges. Test the wheel direction with the wheels lifted, then stop before placing the robot on the floor.</p>
+<h2 id="section-5">Step 1: One Side And One Turn</h2>
+<p>Open a new Python project named <code>Bin Rectangle</code>.</p>
+<p>Start with this short code:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import runloop</span>
+<span class="new">import motor_pair</span>
+<span class="new"></span>
+<span class="new">left_wheel = port.E</span>
+<span class="new">right_wheel = port.F</span>
+<span class="new"></span>
+<span class="new">long_side = 540</span>
+<span class="new">short_side = 360</span>
+<span class="new">turn_degrees = 120</span>
+<span class="new">drive_speed = 400</span>
+<span class="new">turn_speed = 300</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    motor_pair.pair(motor_pair.PAIR_1, left_wheel, right_wheel)</span>
+<span class="new">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, long_side, 0, velocity=drive_speed,</span>
+<span class="new">    )</span>
+<span class="new">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, turn_degrees, 100, velocity=turn_speed,</span>
+<span class="new">    )</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: The robot drives one side, then turns.</p>
+<h2 id="section-6">Step 2: Repeat The Pattern</h2>
+<p>Replace only <code>main()</code> with this version. Each repetition drives a long side, turns, drives a short side, and turns again. Keep the imports, variables, and final <code>runloop.run(main())</code> line.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, left_wheel, right_wheel)</span>
+<span class="reference"></span>
+<span class="new">    for pair in range(2):</span>
+<span class="new">        await motor_pair.move_for_degrees(</span>
+<span class="new">            motor_pair.PAIR_1, long_side, 0, velocity=drive_speed,</span>
+<span class="new">        )</span>
+<span class="new">        await motor_pair.move_for_degrees(</span>
+<span class="new">            motor_pair.PAIR_1, turn_degrees, 100, velocity=turn_speed,</span>
+<span class="new">        )</span>
+<span class="new">        await motor_pair.move_for_degrees(</span>
+<span class="new">            motor_pair.PAIR_1, short_side, 0, velocity=drive_speed,</span>
+<span class="new">        )</span>
+<span class="new">        await motor_pair.move_for_degrees(</span>
+<span class="new">            motor_pair.PAIR_1, turn_degrees, 100, velocity=turn_speed,</span>
+<span class="new">        )</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: Two repetitions make four sides and four turns. Unlike a square, this route has two separately tunable side lengths.</p>
+<h2 id="section-7">Step 3: Tune One Number At A Time</h2>
+<p>If the robot hits the bin or drifts away, decide which part is wrong:</p>
+<ul><li>Straight side too short or too long? Change <code>long_side</code> or <code>short_side</code>, whichever side you are testing.</li><li>Turn too small or too big? Change <code>turn_degrees</code>.</li><li>Moving too fast to see clearly? Change <code>drive_speed</code> or <code>turn_speed</code>.</li></ul>
+<p>Change one value, run, then change again.</p>
+<h2 id="section-8">Step 4: Add A Start Signal</h2>
+<p>Add this import:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import light_matrix, port</span></code></pre>
+<p>Replace the old <code>from hub import port</code> line with that one.</p>
+<p>Add this at the start of <code>main()</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    await light_matrix.write(&quot;GO&quot;)</span></code></pre>
+<p class="callout">Run the program.</p>
+<h2 id="section-9">Physical Challenge: Around The LEGO Bin</h2>
+<ul><li>Level 1: robot goes around two sides without touching the bin</li><li>Level 2: robot goes around all four sides once</li><li>Level 3: robot ends near where it started</li><li>Level 4: robot goes around the bin twice in a row</li></ul>
+<p>Extra setup idea: Try the Line Ladder or Crater Turn Course from the Challenge Setups sheet.</p>
+<h2 id="section-10">Teacher Check</h2>
+<p>Show your teacher:</p>
+<ul><li>the loop</li><li><code>long_side</code> and <code>short_side</code></li><li><code>turn_degrees</code></li><li>the robot going around at least two sides of the bin</li></ul>
+<h2 id="section-11">Before You Put The Kit Away</h2>
+<p>Save your program. Stop the program before moving wires or changing the build. Show the teacher your working behavior, point to one changed line, and explain what it controls. Keep your place for next time.</p><nav class="pager" aria-label="Previous and next"><a href="03_Hopper_Driver.html">Previous: Project 03: Hopper Driver</a><a href="05_Force_Button_Machine.html">Next: Project 05: Force Button Machine</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

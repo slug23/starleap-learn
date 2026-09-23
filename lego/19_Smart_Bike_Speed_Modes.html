@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 19: Smart Bike Speed Modes · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html" aria-current="page">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1: Make One Short Ride</a></li><li><a href="#section-3">Step 2: Change Speed, Keep The Amount</a></li><li><a href="#section-4">Step 3: Name The Setting</a></li><li><a href="#section-5">Step 4: Calculate A New Setting</a></li><li><a href="#section-6">Step 5: Put A Ride In A Function</a></li><li><a href="#section-7">Step 6: Give The Function A Speed</a></li><li><a href="#section-8">Step 7: Repeat Three Rides Without Buttons</a></li><li><a href="#section-9">Step 8: Increase Speed Each Time</a></li><li><a href="#section-10">Step 9: Read Buttons With The Motors Stopped</a></li><li><a href="#section-11">Step 10: Make One Press Count Once</a></li><li><a href="#section-12">Step 11: Limit The Three Modes</a></li><li><a href="#section-13">Step 12: Ride After Confirming</a></li><li><a href="#section-14">Teacher Check</a></li><li><a href="#section-15">Optional Challenges</a></li></ul></details><h1 id="section-1">Project 19: Smart Bike Speed Modes</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set, the SPIKE App Python editor, and the <strong>Smart Bike</strong> with both Bike and Biker built. Connect its motors to <strong>C and E</strong>. Keep its support wheels and use a clear, level floor.</p>
+<p>Make short rides that get faster automatically in a <code>for</code> loop. Then use the left hub button to choose a setting and the right button to start. Start here in the Smart Bike route: <strong>19 -&gt; 20 -&gt; 17 -&gt; 21 or 22</strong>. Project numbers from earlier packets have stayed the same.</p>
+<p>Use the motor-pair ideas from Project 03 and the function-argument practice from Project 09. Stop the program before each edit. Gray lines are already there; dark lines are new or changed. Keep four spaces inside a function.</p>
+<h2 id="section-2">Step 1: Make One Short Ride</h2>
+<p>Create a new Python project named <code>Bike Speed Modes</code>. Type this starter:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import motor_pair</span>
+<span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">bike_motor = port.C</span>
+<span class="new">rider_motor = port.E</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="new">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, 360, 0, velocity=100)</span>
+<span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p><code>bike_motor</code> names the bike motor on C; <code>rider_motor</code> names the rider motor on E. Define these port variables after the imports, before any functions. Use the names in commands so the code tells you which parts it controls.</p>
+<p class="callout">Run the program on the clear floor. The bike should make one short forward ride and stop. The <code>360</code> is motor degrees, not centimetres. The <code>0</code> requests straight movement. Check the build and C/E wiring with your teacher if it does not travel forward; do not try random port changes.</p>
+<h2 id="section-3">Step 2: Change Speed, Keep The Amount</h2>
+<p>Change only the velocity to <code>150</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, 360, 0, velocity=150)</span></code></pre>
+<p class="callout">Predict: Will the bike request more motor rotation, or complete the same rotation faster?</p>
+<p class="callout">Run the program from the same mark. The requested amount is still 360 degrees. Compare how long it takes. Small differences in the stopping place can come from the physical bike and floor.</p>
+<h2 id="section-4">Step 3: Name The Setting</h2>
+<p>Replace <code>main()</code> with this version. Keep the imports and final start call:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    speed = 150</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="reference">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, 360, 0, velocity=speed)</span>
+<span class="reference">    motor_pair.stop(motor_pair.PAIR_1)</span></code></pre>
+<p class="callout">Run the program. It should behave as before. <code>speed</code> is a variable inside <code>main()</code>; its value is a requested motor velocity in degrees per second.</p>
+<h2 id="section-5">Step 4: Calculate A New Setting</h2>
+<p>Insert the dark line immediately after the assignment:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    speed = 150</span>
+<span class="new">    speed = speed + 50</span></code></pre>
+<p>Predict the value of <code>speed</code> after both lines. Run the program and compare the ride with Step 3. Python calculates the right side first, then stores the new value. The result is 200, not a second motor command.</p>
+<h2 id="section-6">Step 5: Put A Ride In A Function</h2>
+<p>Add this definition below the port variables and above <code>main()</code>:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">async def ride():</span>
+<span class="new">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, 360, 0, velocity=200)</span>
+<span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span></code></pre>
+<p>Replace <code>main()</code> with these lines. This removes the old movement so the bike does not ride twice:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="new">    await ride()</span></code></pre>
+<p class="callout">Run the program. The one short ride should stay the same. The definition describes the job; <code>await ride()</code> calls it and waits for it to finish.</p>
+<h2 id="section-7">Step 6: Give The Function A Speed</h2>
+<p>Replace the whole <code>ride()</code> definition:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">async def ride(chosen_speed):</span>
+<span class="reference">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, 360, 0, velocity=chosen_speed)</span>
+<span class="reference">    motor_pair.stop(motor_pair.PAIR_1)</span></code></pre>
+<p>Then replace <code>main()</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    speed = 100</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="new">    await ride(speed)</span></code></pre>
+<p class="callout">Run the program. The bike should use the slower setting. The argument <code>speed</code> passes 100 into the parameter <code>chosen_speed</code>. Without a parameter, our old function always used 200. Point to where the supplied number reaches the motor command.</p>
+<h2 id="section-8">Step 7: Repeat Three Rides Without Buttons</h2>
+<p>Replace <code>main()</code> with this version. Keep the port variables, <code>ride(chosen_speed)</code>, and the final start call:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    speed = 100</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="new">    for ride_number in range(3):</span>
+<span class="new">        print(speed)</span>
+<span class="new">        await ride(speed)</span>
+<span class="new">        await runloop.sleep_ms(1000)</span></code></pre>
+<p><code>range(3)</code> repeats the indented block three times. <code>ride_number</code> is the loop variable; it takes the values 0, 1, and 2. We do not need to use it inside this block yet. The print, ride, and pause are all eight spaces in, so all three happen on each repeat.</p>
+<p class="callout">Before you run: Clear enough floor for three short rides in the same direction. Each ride requests 360 motor degrees, so this program travels farther than the one-ride version. Keep hands away and use the SPIKE App stop control if needed.</p>
+<p class="callout">Run the program without touching any buttons. Watch three rides with a one-second pause after each. The console should show 100 three times. The loop repeats the movement, but it does not change <code>speed</code> yet.</p>
+<h2 id="section-9">Step 8: Increase Speed Each Time</h2>
+<p>Add a variable beside <code>speed</code>, before the loop:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    speed = 100</span>
+<span class="new">    speed_increase = 50</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span></code></pre>
+<p>Then add the dark line after the pause, still eight spaces in, inside the loop:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        await ride(speed)</span>
+<span class="reference">        await runloop.sleep_ms(1000)</span>
+<span class="new">        speed = speed + speed_increase</span></code></pre>
+<p>Predict the three numbers that will print. The starting assignment is outside the loop, so it runs once. The addition is inside the loop, so it runs after every ride and pause.</p>
+<p class="callout">Run the program on the clear three-ride route. The console should show 100, 150, then 200. Each ride still requests 360 motor degrees, but the rides should take less time as the speed increases. The loop finishes after three rides. Its last addition makes <code>speed</code> 250, but there is no fourth ride using that value.</p>
+<p>Change only <code>speed_increase</code> to <code>25</code>. Predict, run, and compare: the three settings should be 100, 125, and 150. Restore <code>50</code> after testing. Keep three repeats for these tests.</p>
+<p class="callout">Fix it: If every ride uses 100, check that the starting assignment is above the loop and the addition is inside it. If the console changes but the bike does not, check that <code>await ride(speed)</code> passes the variable into the function.</p>
+<p>Save this automatic version as <code>Bike Automatic Speeds</code> before continuing. Keep it for your teacher check and optional challenges. Continue editing a separate copy named <code>Bike Speed Modes</code>; the next step replaces the automatic loop with a button test.</p>
+<h2 id="section-10">Step 9: Read Buttons With The Motors Stopped</h2>
+<p>Replace the first import:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port, button</span></code></pre>
+<p>Temporarily replace <code>main()</code> with this button test. Keep the <code>ride(chosen_speed)</code> definition, but do not call it:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">    for test in range(30):</span>
+<span class="new">        print(button.pressed(button.LEFT))</span>
+<span class="new">        await runloop.sleep_ms(100)</span></code></pre>
+<p class="callout">Run the program. Hold and release the left hub button while watching the console. A pressed reading is nonzero; a released reading is zero. The bike stays still. Thirty short pauses give you roughly three seconds to test.</p>
+<h2 id="section-11">Step 10: Make One Press Count Once</h2>
+<p>Replace <code>main()</code> with this selector test. The bike still stays stopped:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    speed = 100</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="reference">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">    print(speed)</span>
+<span class="new">    while not button.pressed(button.RIGHT):</span>
+<span class="new">        if button.pressed(button.LEFT):</span>
+<span class="new">            speed = speed + 50</span>
+<span class="new">            print(speed)</span>
+<span class="new">            while button.pressed(button.LEFT):</span>
+<span class="new">                await runloop.sleep_ms(50)</span>
+<span class="new">        await runloop.sleep_ms(50)</span>
+<span class="new">    print(&quot;selection finished&quot;)</span></code></pre>
+<p class="callout">Run the program. Tap left, then hold it. Each press should add 50 only once because the inner <code>while</code> waits for release. Press right after releasing left to finish. <code>not</code> means the outer loop continues while right is not pressed. The pauses let the program yield between checks.</p>
+<h2 id="section-12">Step 11: Limit The Three Modes</h2>
+<p>Add this <code>if</code> immediately after the addition and before <code>print(speed)</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">            speed = speed + 50</span>
+<span class="new">            if speed &gt; 200:</span>
+<span class="new">                speed = 200</span>
+<span class="reference">            print(speed)</span></code></pre>
+<p class="callout">Run the program. The settings should be 100, 150, then 200. More left presses should leave it at 200. These are our slow, medium and fast modes for this short test. They are motor settings, not measured road speeds. Restart to choose 100 again. Finish with right.</p>
+<h2 id="section-13">Step 12: Ride After Confirming</h2>
+<p>Replace the final <code>print(&quot;selection finished&quot;)</code> with these lines, indented four spaces inside <code>main()</code>, after the selection loop:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">    while button.pressed(button.RIGHT):</span>
+<span class="new">        await runloop.sleep_ms(50)</span>
+<span class="new">    await runloop.sleep_ms(1000)</span>
+<span class="new">    await ride(speed)</span></code></pre>
+<p class="callout">Before you run: Clear the floor. After you press and release right, the bike waits one second, then rides once. Move your hands away during that pause. The right button is a start button here, not an emergency stop while moving; use the SPIKE App stop control if needed.</p>
+<p class="callout">Run the program three times, starting at the same mark. Choose 100, 150 and 200 on separate runs. The degree amount stays 360 in every mode.</p>
+<p class="callout">Fix it: If one hold changes the setting repeatedly, check the inner release loop. If the function reports a missing argument, check both <code>ride(chosen_speed)</code> and <code>await ride(speed)</code>. If the bike starts during selection, check that the call is after the loop, not inside it.</p>
+<h2 id="section-14">Teacher Check</h2>
+<p>Show your teacher:</p>
+<ul><li>the saved automatic loop making three rides at increasing speeds without buttons</li><li>the predicted and observed speeds for increments of 50 and 25</li><li>three button-selected speed settings with the same requested motor rotation</li><li>a held left button counting once, and repeated presses staying at 200</li><li>the argument passed from <code>main()</code> into <code>chosen_speed</code></li><li>why this program waits for the right button to be released</li></ul>
+<h2 id="section-15">Optional Challenges</h2>
+<p>Choose either challenge. Work out your own program and show your teacher the result. Revisit this project&#x27;s automatic loop and Project 02 if you need a refresher.</p>
+<ul><li><strong>Speed up, then slow down:</strong> Make the bike increase its speed in steps, then decrease its speed in steps, and finish stopped.</li><li><strong>Return in reverse:</strong> Make the bike travel away from its starting point, then return to that point in reverse and stop.</li></ul>
+<p>Save your program. Continue to Project 20 to calculate rides in centimetres.</p><nav class="pager" aria-label="Previous and next"><a href="18_Choice_Build_Remix.html">Previous: Project 18: Choice Build Remix</a><a href="20_Smart_Bike_Trip_Computer.html">Next: Project 20: Smart Bike Trip Computer</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

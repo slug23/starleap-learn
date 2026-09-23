@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 22: Smart Bike Route Data Recorder · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html" aria-current="page">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1: Read One Angle</a></li><li><a href="#section-3">Step 2: Calibrate Level And Sign</a></li><li><a href="#section-4">Step 3: Save The Readings In A List</a></li><li><a href="#section-5">Step 4: Count What Was Saved</a></li><li><a href="#section-6">Step 5: Find The Lowest And Highest Slopes</a></li><li><a href="#section-7">Step 6: Find The Steepest Tilt In Either Direction</a></li><li><a href="#section-8">Step 7: Stop Sampling At A Large Tilt</a></li><li><a href="#section-9">Step 8: Print Rows For A Graph</a></li><li><a href="#section-10">Step 9: Test A Motor Pulse Separately</a></li><li><a href="#section-11">Step 10: Add Short Rides Between Readings</a></li><li><a href="#section-12">Step 11: Compare Two Routes</a></li><li><a href="#section-13">Teacher Check</a></li></ul></details><h1 id="section-1">Project 22: Smart Bike Route Data Recorder</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set, the Smart Bike (Bike and Biker), motors <strong>C and E</strong>, support wheels, the SPIKE App Python editor, and a wide, low, stable slope board on the floor. Finish Project 17&#x27;s axis and sign calibration first.</p>
+<p>Record a short series of slope readings, find the lowest and highest values, then compare two routes. Start with stationary tests. Powered movement comes only after your teacher checks the readings. This records tilt; it does not measure electrical power, energy, or distance.</p>
+<p>Create a fresh project. Every variable needed here is defined below. Gray lines are already there; dark lines are the edit. Stop the program before each change.</p>
+<h2 id="section-2">Step 1: Read One Angle</h2>
+<p>Name your project <code>Bike Route Recorder</code> and type:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import motion_sensor</span>
+<span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">tilt_axis = 1</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    for sample in range(20):</span>
+<span class="new">        angle = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="new">        print(angle)</span>
+<span class="new">        await runloop.sleep_ms(250)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p>Use your tested <code>tilt_axis</code> from Project 17, which may be 2 instead of 1. Run the program with the motors still. Gently raise and lower the front. It takes 20 readings with a quarter-second pause after each. That is roughly five seconds, plus the time spent reading and printing.</p>
+<h2 id="section-3">Step 2: Calibrate Level And Sign</h2>
+<p>Add your tested sign beside the axis. Use 1 or -1 so front-up will be positive:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">tilt_axis = 1</span>
+<span class="new">tilt_sign = 1</span></code></pre>
+<p>Replace <code>main()</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    baseline = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="reference">    for sample in range(20):</span>
+<span class="reference">        angle = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="new">        slope = (angle - baseline) * tilt_sign</span>
+<span class="new">        print(slope)</span>
+<span class="reference">        await runloop.sleep_ms(250)</span></code></pre>
+<p class="callout">Run the program starting on level ground. Front-up should be positive, back-up negative, and level close to zero. Stop and fix the axis or sign if those observations disagree. Do not move the baseline assignment inside the loop.</p>
+<h2 id="section-4">Step 3: Save The Readings In A List</h2>
+<p>Insert an empty list after the baseline:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    baseline = motion_sensor.tilt_angles()[tilt_axis] / 10</span>
+<span class="new">    samples = []</span>
+<span class="reference">    for sample in range(20):</span></code></pre>
+<p>Add one line immediately after calculating <code>slope</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        slope = (angle - baseline) * tilt_sign</span>
+<span class="new">        samples.append(slope)</span>
+<span class="reference">        print(slope)</span></code></pre>
+<p>After the loop, at four spaces, add:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">    print(&quot;saved readings&quot;)</span>
+<span class="new">    print(samples)</span></code></pre>
+<p class="callout">Run the program. You should see individual readings while it runs and a bracketed list at the end. <code>append()</code> adds one value to the end of the list. The list starts fresh each run.</p>
+<h2 id="section-5">Step 4: Count What Was Saved</h2>
+<p>Add this after <code>print(samples)</code>, outside the loop:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">    print(&quot;sample count&quot;)</span>
+<span class="new">    print(len(samples))</span></code></pre>
+<p class="callout">Run the program. The count should be 20. <code>len()</code> gives the number of saved values, not the largest angle. Keep the loop count at 20 for the rest of the lesson.</p>
+<h2 id="section-6">Step 5: Find The Lowest And Highest Slopes</h2>
+<p>Add these lines after the sample count:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">    if len(samples) &gt; 0:</span>
+<span class="new">        print(&quot;lowest slope&quot;)</span>
+<span class="new">        print(min(samples))</span>
+<span class="new">        print(&quot;highest slope&quot;)</span>
+<span class="new">        print(max(samples))</span></code></pre>
+<p class="callout">Run the program while gently tilting both ways. A downhill reading can be the lowest because it is negative. <code>max()</code> finds the most positive reading, not necessarily the steepest tilt. The <code>if</code> avoids asking for a minimum or maximum of an empty list.</p>
+<h2 id="section-7">Step 6: Find The Steepest Tilt In Either Direction</h2>
+<p>Add this inside the summary&#x27;s <code>if</code>, after <code>print(max(samples))</code>:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">        steepest = max(abs(min(samples)), abs(max(samples)))</span>
+<span class="new">        print(&quot;steepest tilt size&quot;)</span>
+<span class="new">        print(steepest)</span></code></pre>
+<p>For example, if the lowest reading is -12 and the highest is 7, the steepest size is 12. <code>abs()</code> removes each sign before the outer <code>max()</code> compares their sizes.</p>
+<p class="callout">Run the program. Make the downhill tilt larger than the uphill tilt. Check that the steepest value follows the larger size, not just the positive reading.</p>
+<h2 id="section-8">Step 7: Stop Sampling At A Large Tilt</h2>
+<p>Add this definition beside your other top-level settings:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">tilt_sign = 1</span>
+<span class="new">tilt_limit = 20</span></code></pre>
+<p>Keep your own tested sign. Inside the loop, insert this after <code>print(slope)</code> and before the pause:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        print(slope)</span>
+<span class="new">        if abs(slope) &gt; tilt_limit:</span>
+<span class="new">            print(&quot;tilt limit: recording ended&quot;)</span>
+<span class="new">            break</span>
+<span class="reference">        await runloop.sleep_ms(250)</span></code></pre>
+<p class="callout">Run the program and gently tilt past 20 degrees while holding the stationary bike by its frame. <code>break</code> exits the recording loop, then the summary still runs. The out-of-range reading was appended before the check, so it appears in the count and summary. Exactly 20 does not pass <code>&gt;</code>.</p>
+<h2 id="section-9">Step 8: Print Rows For A Graph</h2>
+<p>Add this after the whole summary block, at four spaces inside <code>main()</code>:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">    print(&quot;sample,slope_degrees&quot;)</span>
+<span class="new">    for index in range(len(samples)):</span>
+<span class="new">        print(str(index) + &quot;,&quot; + str(samples[index]))</span></code></pre>
+<p class="callout">Run the program. <code>index</code> starts at zero; <code>samples[index]</code> selects that saved reading. <code>str()</code> converts each number to text, and <code>+</code> joins it with a comma into one row. Copy only the header and rows into a spreadsheet if available, or plot the values on paper.</p>
+<p>Use sample number on the horizontal axis and slope degrees on the vertical axis. These rows are not exact timestamps or distance measurements.</p>
+<h2 id="section-10">Step 9: Test A Motor Pulse Separately</h2>
+<p>Save the recorder. Create a separate Python project named <code>Bike Recorder Motor Test</code>:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import motor_pair</span>
+<span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">bike_motor = port.C</span>
+<span class="new">rider_motor = port.E</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="new">    await motor_pair.move_for_time(</span>
+<span class="new">        motor_pair.PAIR_1, 200, 0, velocity=120)</span>
+<span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p><code>bike_motor</code> names the bike motor on C; <code>rider_motor</code> names the rider motor on E. Put these variables after the imports so commands can use names instead of port letters.</p>
+<p class="callout">Run the program once on a clear, level floor. It should make a short forward pulse and stop. Have your teacher check the build, direction, support wheels, and room for 20 pulses before combining the programs. Fix a failed motor test before continuing.</p>
+<h2 id="section-11">Step 10: Add Short Rides Between Readings</h2>
+<p>Reopen <code>Bike Route Recorder</code>. Replace the first import and add the motor-pair import. Keep <code>import runloop</code> with the imports. Add the two port variables just below all imports, before <code>tilt_axis</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import motion_sensor, port</span>
+<span class="new">import motor_pair</span>
+<span class="reference">import runloop</span>
+<span class="new"></span>
+<span class="new">bike_motor = port.C</span>
+<span class="new">rider_motor = port.E</span></code></pre>
+<p>At the start of <code>main()</code>, before the baseline, insert:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="reference">    baseline = motion_sensor.tilt_angles()[tilt_axis] / 10</span></code></pre>
+<p>Replace only the loop&#x27;s <code>await runloop.sleep_ms(250)</code> with these lines. Keep them after the tilt check and its <code>break</code>:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">        await motor_pair.move_for_time(</span>
+<span class="new">            motor_pair.PAIR_1, 200, 0, velocity=120)</span>
+<span class="new">        await runloop.sleep_ms(50)</span></code></pre>
+<p>Add an explicit stop after the loop, before <code>print(&quot;saved readings&quot;)</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="reference">    print(&quot;saved readings&quot;)</span></code></pre>
+<p class="callout">Before you run: Start level, with the whole short route clear. Use only gentle slopes and a level starting approach. Keep the support wheels and the floor underneath the board. Do not touch hub buttons on a moving bike.</p>
+<p class="callout">Run the program. It records an angle, checks it, then makes a short pulse. At most 20 pulses run; a large tilt ends the loop before the next pulse. The guard cannot detect a change during a pulse and is not continuous tip protection. Use the app&#x27;s stop control if needed.</p>
+<h2 id="section-12">Step 11: Compare Two Routes</h2>
+<p>Run once on a flat route. Then run on a gentle route with a level start and a low rise. Keep the speed, pulse length, sample count, axis and sign unchanged. Recalibrate by starting each run level.</p>
+<p>Save the printed rows from each run and sketch or graph them. Mark the highest and lowest values. A single reading is a sample: a bump between samples might be missed. The last reading happens before the last pulse; this is a series of sampled positions, not a continuous trace of every part of the ride.</p>
+<p class="callout">Fix it: If every result is near zero on a clear slope, check the chosen axis. If uphill is negative, check the sign. If the list only contains one value, check that <code>samples = []</code> is above the loop. If the motor still moves after a guard message, check that the movement is below <code>break</code> and outside the <code>if</code> block.</p>
+<h2 id="section-13">Teacher Check</h2>
+<p>Show your teacher:</p>
+<ul><li>level, uphill and downhill readings with the correct signs</li><li>the list, its count, its lowest/highest readings and steepest size</li><li>a stationary test where the tilt guard shortens the recording</li><li>two sets of graph rows from different routes</li><li>why sample number is neither exact elapsed time nor distance</li></ul>
+<p>Save and stop the program. Your data describes orientation; do not label requested motor speed or tilt as measured electrical power.</p><nav class="pager" aria-label="Previous and next"><a href="21_Smart_Bike_Security_Alarm.html">Previous: Project 21: Smart Bike Security Alarm</a><a href="00_Quick_Start_And_Debug.html">Next: Quick Start And Debug Sheet</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

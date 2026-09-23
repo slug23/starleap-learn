@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 01: Hub Signal Board · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html" aria-current="page">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Part 1 - Connect And Find The Hardware</a></li><li><a href="#section-3">Part 2 - Start With One Message</a></li><li><a href="#section-4">Edit - Change The Message</a></li><li><a href="#section-5">Part 3 - Give Images Time</a></li><li><a href="#section-6">Step 1 - Show Two Images</a></li><li><a href="#section-7">Step 2 - Add One Pause</a></li><li><a href="#section-8">Step 3 - Finish With A Blank Screen</a></li><li><a href="#section-9">Part 4 - Hear Two Sound Tools</a></li><li><a href="#section-10">Step 4 - Add An App Sound</a></li><li><a href="#section-11">Step 5 - Add A Hub Beep</a></li><li><a href="#section-12">Step 6 - Tune One Value</a></li><li><a href="#section-13">Part 5 - Give A Value A Name</a></li><li><a href="#section-14">Step 7 - Name The Pause</a></li><li><a href="#section-15">Step 8 - Name A Message</a></li><li><a href="#section-16">Physical Challenge - Reusable Start Signal</a></li><li><a href="#section-17">Teacher Check</a></li></ul></details><h1 id="section-1">Project 01: Hub Signal Board</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set, its hub, and the SPIKE App Python editor. No robot build is needed yet.</p>
+<p>Make a reusable start signal: a message, two pictures, a pause, and sound. Build one small working piece before adding the next.</p>
+<h2 id="section-2">Part 1 - Connect And Find The Hardware</h2>
+<p>Turn on the hub, open a Python project in the SPIKE App, connect the hub, and name the project <code>Signal Board</code>. Find the light matrix, left and right buttons, speaker, and lettered ports. Find one motor and one sensor in the set.</p>
+<p>Hardware is the physical equipment. Software is the program you write. An import gives your program a name for a tool it can use.</p>
+<h2 id="section-3">Part 2 - Start With One Message</h2>
+<p>Type this starter program. Keep the four spaces before <code>await</code>.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import light_matrix</span>
+<span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    await light_matrix.write(&quot;Hi&quot;)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program. The hub should scroll <code>Hi</code>.</p>
+<p><code>async def main():</code> names the chunk that will run. The indented line belongs to <code>main</code>. <code>await</code> waits for the message to finish. The final line starts <code>main</code>; it belongs at the left edge.</p>
+<h3 id="section-4">Edit - Change The Message</h3>
+<p>Change only the text inside the quotes. Gray lines show code already in your program; do not type them again or type the <code>~</code> marker from the Markdown source.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    await light_matrix.write(&quot;GO&quot;)</span>
+<span class="reference"></span>
+<span class="reference">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program. The hub should scroll <code>GO</code>. Point to the exact text you changed.</p>
+<p class="callout">Fix it: if nothing scrolls, check the connection and the final <code>runloop.run(main())</code> line. Match the capitalization in <code>light_matrix</code> exactly.</p>
+<h2 id="section-5">Part 3 - Give Images Time</h2>
+<p>Already completed the early hub work? First run the starter from Part 2 to prove your setup, then continue here.</p>
+<h3 id="section-6">Step 1 - Show Two Images</h3>
+<p>Replace only the whole <code>main()</code> definition with this version. Keep the imports above and <code>runloop.run(main())</code> below it.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="new">    light_matrix.show_image(light_matrix.IMAGE_ANGRY)</span>
+<span class="new">    light_matrix.show_image(light_matrix.IMAGE_HAPPY)</span></code></pre>
+<p class="callout">Run the program. The happy face should appear. The first image may change too quickly for you to see.</p>
+<h3 id="section-7">Step 2 - Add One Pause</h3>
+<p>Add the dark line between the two images. It has the same four-space indent as the image lines.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    light_matrix.show_image(light_matrix.IMAGE_ANGRY)</span>
+<span class="new">    await runloop.sleep_ms(2000)</span>
+<span class="reference">    light_matrix.show_image(light_matrix.IMAGE_HAPPY)</span></code></pre>
+<p class="callout">Run the program. The angry face should stay for two seconds before the happy face appears. Change only <code>2000</code> to <code>500</code>, then run the program again. What changed?</p>
+<h3 id="section-8">Step 3 - Finish With A Blank Screen</h3>
+<p>Add these two dark lines after the happy face, still inside <code>main()</code>.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    light_matrix.show_image(light_matrix.IMAGE_HAPPY)</span>
+<span class="new">    await runloop.sleep_ms(1000)</span>
+<span class="new">    light_matrix.clear()</span></code></pre>
+<p class="callout">Run the program. Both faces should be visible in order, then the screen should clear.</p>
+<p class="callout">Fix it: leading spaces show which chunk owns a line. All five actions inside <code>main()</code> start four spaces in. Keep the start call at the left edge, outside that chunk.</p>
+<h2 id="section-9">Part 4 - Hear Two Sound Tools</h2>
+<p>App sounds play through the computer or tablet. A hub beep plays through the hub. Both modules are called <code>sound</code>, so give each one a clear name with <code>as</code>.</p>
+<h3 id="section-10">Step 4 - Add An App Sound</h3>
+<p>Add the dark import at the top of the file.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">from hub import light_matrix</span>
+<span class="new">from app import sound as app_sound</span>
+<span class="reference">import runloop</span></code></pre>
+<p>Inside <code>main()</code>, add a sound before the screen clears.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    await runloop.sleep_ms(1000)</span>
+<span class="new">    await app_sound.play(&quot;Triumph&quot;)</span>
+<span class="reference">    light_matrix.clear()</span></code></pre>
+<p class="callout">Run the program. Listen at the computer or tablet. If the signal is silent, check its volume and the exact sound name in the SPIKE App sound list.</p>
+<h3 id="section-11">Step 5 - Add A Hub Beep</h3>
+<p>Add the dark import beside the other imports.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">from app import sound as app_sound</span>
+<span class="new">from hub import sound as hub_sound</span>
+<span class="reference">import runloop</span></code></pre>
+<p>Add the beep immediately after the app sound, inside <code>main()</code>.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    await app_sound.play(&quot;Triumph&quot;)</span>
+<span class="new">    await hub_sound.beep(440, 500, 100)</span>
+<span class="reference">    light_matrix.clear()</span></code></pre>
+<p class="callout">Run the program. Listen for the app sound, then a half-second beep on the hub. The beep values control pitch, duration in milliseconds, and volume.</p>
+<h3 id="section-12">Step 6 - Tune One Value</h3>
+<p>Change only <code>440</code> to <code>660</code>, then run the program. Keep the duration and volume unchanged. Explain which part of the sound changed.</p>
+<h2 id="section-13">Part 5 - Give A Value A Name</h2>
+<p>A variable is a name attached to a value. It lets you tune the signal in one easy-to-find place.</p>
+<h3 id="section-14">Step 7 - Name The Pause</h3>
+<p>Add the dark line after the imports and before <code>main()</code>, at the left edge.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">import runloop</span>
+<span class="new"></span>
+<span class="new">wait_time = 1000</span>
+<span class="new"></span>
+<span class="reference">async def main():</span></code></pre>
+<p>Replace the pause between the two images with the variable name. Do not put quotes around <code>wait_time</code>.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    light_matrix.show_image(light_matrix.IMAGE_ANGRY)</span>
+<span class="new">    await runloop.sleep_ms(wait_time)</span>
+<span class="reference">    light_matrix.show_image(light_matrix.IMAGE_HAPPY)</span></code></pre>
+<p class="callout">Run the program. The first image should stay for one second. Change the value stored in <code>wait_time</code> to <code>2000</code>, then run the program again.</p>
+<h3 id="section-15">Step 8 - Name A Message</h3>
+<p>Add <code>message</code> beside <code>wait_time</code>, then add the write line as the first action inside <code>main()</code>.</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">wait_time = 2000</span>
+<span class="new">message = &quot;GO&quot;</span>
+<span class="reference"></span>
+<span class="reference">async def main():</span>
+<span class="new">    await light_matrix.write(message)</span>
+<span class="reference">    light_matrix.show_image(light_matrix.IMAGE_ANGRY)</span></code></pre>
+<p class="callout">Run the program. The text should scroll before the images. Change only the value of <code>message</code>, then run the program again.</p>
+<h2 id="section-16">Physical Challenge - Reusable Start Signal</h2>
+<p>Keep a short message, two visible images, an app sound, and a hub beep. Tune one value at a time. For a stretch, name the sound with <code>sound_name = &quot;Triumph&quot;</code> and pass that variable to <code>app_sound.play(sound_name)</code>.</p>
+<h2 id="section-17">Teacher Check</h2>
+<p>Show the whole signal. Point to one import, one variable, and the line that uses that variable. Explain which sound comes from each device and how the pause changes your signal.</p>
+<p>Save your program. Stop it and keep your place for next time.</p><nav class="pager" aria-label="Previous and next"><a href="00_Project_Path.html">Previous: Self-Paced Project Path</a><a href="02_One_Motor_Mini_Machine.html">Next: Project 02: One Motor Mini Machine</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

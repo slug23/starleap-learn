@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 18: Choice Build Remix · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html" aria-current="page">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Goal</a></li><li><a href="#section-3">Choose A Build</a></li><li><a href="#section-4">Choose A Coding Skill</a></li><li><a href="#section-5">Step 1: Prove One Input Works</a></li><li><a href="#section-6">Step 2: Prove One Output Works</a></li><li><a href="#section-7">Step 3: Combine Input And Output</a></li><li><a href="#section-8">Physical Challenge</a></li><li><a href="#section-9">Teacher Check</a></li><li><a href="#section-10">Before You Put The Kit Away</a></li></ul></details><h1 id="section-1">Project 18: Choice Build Remix</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set and the SPIKE App Python editor.</p>
+<h2 id="section-2">Goal</h2>
+<p>Choose a LEGO build, then program it with skills you already know.</p>
+<p>This project is for pairs who are ready to make choices but still need a clear plan.</p>
+<h2 id="section-3">Choose A Build</h2>
+<p>Use the LEGO build menu or the SPIKE App building instructions.</p>
+<p>Good choices:</p>
+<ul><li>Weathercaster</li><li>Wind Indicator</li><li>Tomato-meter</li><li>Game Master</li><li>Quality Check Robot</li><li>The Tracker</li><li>CNC Machine</li><li>Prosthesis</li><li>Super-Safe-Deposit Box</li><li>Advanced Driving Base with tools</li></ul>
+<h2 id="section-4">Choose A Coding Skill</h2>
+<p>Pick one input:</p>
+<ul><li>hub button</li><li>hub tap</li><li>force sensor</li><li>distance sensor</li><li>color sensor</li></ul>
+<p>Pick one output:</p>
+<ul><li>motor movement</li><li>motor pair driving</li><li>light matrix image</li><li>app sound</li><li>hub beep</li><li>printed score or sensor reading</li></ul>
+<p>Pick one structure:</p>
+<ul><li>variable labels</li><li>helper function</li><li><code>if/elif/else</code></li><li><code>for</code> loop</li><li><code>while True</code></li></ul>
+<h2 id="section-5">Step 1: Prove One Input Works</h2>
+<p>Start with the smallest input test.</p>
+<p>Example for a force sensor:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import runloop</span>
+<span class="new">import force_sensor</span>
+<span class="new"></span>
+<span class="new">force_port = port.D</span>
+<span class="new"></span>
+<span class="new">def is_pressed():</span>
+<span class="new">    return force_sensor.pressed(force_port)</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    await runloop.until(is_pressed)</span>
+<span class="new">    print(&quot;pressed&quot;)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: Your input should print a message.</p>
+<h2 id="section-6">Step 2: Prove One Output Works</h2>
+<p>Example for one motor:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">from hub import port</span>
+<span class="reference">import runloop</span>
+<span class="new">import motor</span>
+<span class="reference"></span>
+<span class="new">motor_port = port.A</span>
+<span class="reference"></span>
+<span class="reference">async def main():</span>
+<span class="new">    await motor.run_for_degrees(motor_port, 180, 300)</span>
+<span class="reference"></span>
+<span class="reference">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: Your output should move, show, beep, or print.</p>
+<h2 id="section-7">Step 3: Combine Input And Output</h2>
+<p>Use this shape:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">from hub import port</span>
+<span class="reference">import runloop</span>
+<span class="new">import force_sensor</span>
+<span class="reference">import motor</span>
+<span class="reference"></span>
+<span class="new">force_port = port.D</span>
+<span class="reference">motor_port = port.A</span>
+<span class="reference"></span>
+<span class="new">def is_pressed():</span>
+<span class="new">    return force_sensor.pressed(force_port)</span>
+<span class="new"></span>
+<span class="reference">async def main():</span>
+<span class="new">    await runloop.until(is_pressed)</span>
+<span class="reference">    await motor.run_for_degrees(motor_port, 180, 300)</span>
+<span class="reference"></span>
+<span class="reference">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: The input should trigger the output.</p>
+<h2 id="section-8">Physical Challenge</h2>
+<p>Make your build do one real job:</p>
+<ul><li>point to a category</li><li>open or close a door</li><li>sort one object</li><li>move to a target</li><li>warn before getting too close</li><li>score a point</li><li>push or lift an object</li></ul>
+<p>Levels:</p>
+<ul><li>Level 1: one input triggers one output</li><li>Level 2: add a variable for the number you tune</li><li>Level 3: add a helper function</li><li>Level 4: run the behavior three times reliably</li></ul>
+<p>Extra setup idea: Choose any matching setup from the Challenge Setups sheet.</p>
+<h2 id="section-9">Teacher Check</h2>
+<p>Show your teacher:</p>
+<ul><li>the LEGO build you chose</li><li>the input test</li><li>the output test</li><li>the combined physical behavior</li><li>one line you changed on purpose</li></ul>
+<h2 id="section-10">Before You Put The Kit Away</h2>
+<p>Save your program. Stop the program before moving wires or changing the build. Show the teacher your working behavior, point to one changed line, and explain what it controls. Keep your place for next time.</p><nav class="pager" aria-label="Previous and next"><a href="17_Smart_Bike_Slope_Lab.html">Previous: Project 17: Smart Bike Slope Lab</a><a href="19_Smart_Bike_Speed_Modes.html">Next: Project 19: Smart Bike Speed Modes</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

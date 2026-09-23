@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 20: Smart Bike Trip Computer · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html" aria-current="page">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1: Measure One Motor Turn</a></li><li><a href="#section-3">Step 2: Store Your Calibration</a></li><li><a href="#section-4">Step 3: Calculate Motor Turns</a></li><li><a href="#section-5">Step 4: Convert Turns To Degrees</a></li><li><a href="#section-6">Step 5: Put The Calculation In A Function</a></li><li><a href="#section-7">Step 6: Reject Invalid Requests</a></li><li><a href="#section-8">Step 7: Add A Ride That Uses The Calculation</a></li><li><a href="#section-9">Step 8: Add Two Legs To A Trip</a></li><li><a href="#section-10">Step 9: Check The Estimate Against The Floor</a></li><li><a href="#section-11">Teacher Check</a></li></ul></details><h1 id="section-1">Project 20: Smart Bike Trip Computer</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set, the Smart Bike (Bike and Biker), motors <strong>C and E</strong>, support wheels, the SPIKE App Python editor, a ruler or tape measure, and removable floor markers. Finish Project 19 first. Use a clear, level floor.</p>
+<p>Make a function that accepts centimetres, calculates motor degrees, and reports an estimated trip distance. A calculation predicts travel; it does not measure the floor distance. You will measure the real result separately.</p>
+<p>Stop before editing. Gray lines show existing code. Keep imports and the final start call unless a step says to change them.</p>
+<h2 id="section-2">Step 1: Measure One Motor Turn</h2>
+<p>Create a new Python project named <code>Bike Trip Computer</code>. Type this starter:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import motor_pair</span>
+<span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">bike_motor = port.C</span>
+<span class="new">rider_motor = port.E</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="new">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, 360, 0, velocity=150)</span>
+<span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p><code>bike_motor</code> names the bike motor on C; <code>rider_motor</code> names the rider motor on E. Define these port variables after the imports, before any functions. Use the names in commands so the code tells you which parts it controls.</p>
+<p>Mark where a fixed point on the bike starts. Run the program, then measure how far that same point moved forward. Reset the bike to the mark and repeat twice. Tell your teacher the three measurements in centimetres.</p>
+<p>One motor turn is not necessarily one wheel turn. The build&#x27;s gearing and wheels matter, so use your measured travel rather than borrowing another robot&#x27;s wheel circumference.</p>
+<h2 id="section-3">Step 2: Store Your Calibration</h2>
+<p>Add these assignments after the imports. The numbers below are an example: replace all three with your own measurements before running again.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">trial_1 = 20.0</span>
+<span class="new">trial_2 = 21.0</span>
+<span class="new">trial_3 = 19.0</span>
+<span class="new">cm_per_turn = (trial_1 + trial_2 + trial_3) / 3</span></code></pre>
+<p>Temporarily replace <code>main()</code> to check the calculation without movement:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="reference">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">    print(&quot;centimetres per motor turn&quot;)</span>
+<span class="new">    print(cm_per_turn)</span></code></pre>
+<p class="callout">Run the program. The example measurements average 20.0; yours may differ. Parentheses make Python add the three distances before dividing by three. Your calibration must be greater than zero.</p>
+<h2 id="section-4">Step 3: Calculate Motor Turns</h2>
+<p>Add the new target beside your calibration, above <code>main()</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">cm_per_turn = (trial_1 + trial_2 + trial_3) / 3</span>
+<span class="new">requested_cm = 50</span></code></pre>
+<p>Replace the two print lines inside <code>main()</code> with:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">    turns = requested_cm / cm_per_turn</span>
+<span class="new">    print(&quot;motor turns needed&quot;)</span>
+<span class="new">    print(turns)</span></code></pre>
+<p class="callout">Run the program. The bike stays stopped. With the example calibration, 50 / 20 gives 2.5 motor turns. Explain why a shorter distance per turn needs more turns to reach the same target.</p>
+<h2 id="section-5">Step 4: Convert Turns To Degrees</h2>
+<p>Keep the turns calculation. Replace its two print lines:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    turns = requested_cm / cm_per_turn</span>
+<span class="new">    degrees = int(turns * 360)</span>
+<span class="new">    print(&quot;motor degrees needed&quot;)</span>
+<span class="new">    print(degrees)</span></code></pre>
+<p class="callout">Run the program. The example now gives 900 degrees. The motor command takes an integer degree amount. <code>int()</code> drops the fractional part of this positive calculation; it does not round to the nearest integer.</p>
+<h2 id="section-6">Step 5: Put The Calculation In A Function</h2>
+<p>Add this ordinary function above <code>main()</code>. It calculates a number and does not move the bike:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def degrees_for_cm(distance_cm):</span>
+<span class="new">    turns = distance_cm / cm_per_turn</span>
+<span class="new">    return int(turns * 360)</span></code></pre>
+<p>Replace <code>main()</code> with this version:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="reference">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">    degrees = degrees_for_cm(requested_cm)</span>
+<span class="new">    print(degrees)</span></code></pre>
+<p class="callout">Run the program. The same answer should print. <code>distance_cm</code> receives the argument; <code>return</code> sends the calculated number back. This function does not need <code>await</code> because it only does arithmetic.</p>
+<h2 id="section-7">Step 6: Reject Invalid Requests</h2>
+<p>Replace <code>degrees_for_cm()</code> with this version. The early returns happen before the division:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def degrees_for_cm(distance_cm):</span>
+<span class="new">    if cm_per_turn &lt;= 0:</span>
+<span class="new">        return 0</span>
+<span class="new">    if distance_cm &lt;= 0 or distance_cm &gt; 100:</span>
+<span class="new">        return 0</span>
+<span class="reference">    turns = distance_cm / cm_per_turn</span>
+<span class="reference">    return int(turns * 360)</span></code></pre>
+<p class="callout">Run the program with <code>requested_cm</code> set to 0, then 101. Both should print 0. <code>or</code> means either invalid distance is enough. Try 50 again and keep that value. The 100 cm maximum is our classroom test limit, not a universal motor limit.</p>
+<p class="callout">Fix it: If your real calibration is zero or negative, measure again. Do not invent a positive number just to pass the check.</p>
+<h2 id="section-8">Step 7: Add A Ride That Uses The Calculation</h2>
+<p>Add this async function after <code>degrees_for_cm()</code> and before <code>main()</code>:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">async def ride_cm(distance_cm):</span>
+<span class="new">    degrees = degrees_for_cm(distance_cm)</span>
+<span class="new">    if degrees &lt;= 0:</span>
+<span class="new">        print(&quot;no ride: check distance and calibration&quot;)</span>
+<span class="new">        return 0</span>
+<span class="new">    await motor_pair.move_for_degrees(</span>
+<span class="new">        motor_pair.PAIR_1, degrees, 0, velocity=150)</span>
+<span class="new">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">    return degrees / 360 * cm_per_turn</span></code></pre>
+<p>Replace <code>main()</code>:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="reference">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">    estimated_cm = await ride_cm(requested_cm)</span>
+<span class="new">    print(&quot;estimated centimetres&quot;)</span>
+<span class="new">    print(estimated_cm)</span></code></pre>
+<p class="callout">Before you run: Have your teacher check the calibration and clear at least the requested travel distance. Start at the mark with <code>requested_cm = 50</code>.</p>
+<p class="callout">Run the program. Measure the actual travel. The returned value is estimated from commanded degrees and your calibration, including the effect of dropping a fractional degree. It is not a sensor measurement or proof that a stalled bike reached its target.</p>
+<h2 id="section-9">Step 8: Add Two Legs To A Trip</h2>
+<p>Replace only <code>main()</code>. Keep both helper functions:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    motor_pair.pair(motor_pair.PAIR_1, bike_motor, rider_motor)</span>
+<span class="reference">    motor_pair.stop(motor_pair.PAIR_1)</span>
+<span class="new">    total_cm = 0</span>
+<span class="new">    leg_cm = await ride_cm(30)</span>
+<span class="new">    total_cm = total_cm + leg_cm</span>
+<span class="new">    await runloop.sleep_ms(1000)</span>
+<span class="new">    leg_cm = await ride_cm(20)</span>
+<span class="new">    total_cm = total_cm + leg_cm</span>
+<span class="new">    print(&quot;estimated trip centimetres&quot;)</span>
+<span class="new">    print(total_cm)</span></code></pre>
+<p>The old <code>requested_cm</code> assignment can stay, but this version uses the two call arguments instead. Point to 30 and 20 before running.</p>
+<p class="callout">Run the program on a clear 50 cm route. It should ride, pause, ride again and report a total near 50. <code>total_cm</code> is an accumulator: it starts at zero and adds each returned estimate. Restarting the program resets the trip.</p>
+<h2 id="section-10">Step 9: Check The Estimate Against The Floor</h2>
+<p>Measure the complete two-leg trip. Compare actual travel with the printed estimate. Run three trials from the same starting mark.</p>
+<p>Change only the <code>velocity=150</code> in <code>ride_cm()</code> to <code>velocity=100</code>, then repeat. The calculated degrees stay the same. Discuss whether floor grip, stopping, or speed changed the real result. Restore 150 before saving.</p>
+<p>Change the second call to <code>ride_cm(0)</code> and run once. It should report the invalid request, skip that leg, and add zero. Put the second call back to 20 afterwards.</p>
+<h2 id="section-11">Teacher Check</h2>
+<p>Show your teacher:</p>
+<ul><li>three measurements used in your own <code>cm_per_turn</code> calibration</li><li>how centimetres become turns and then integer degrees</li><li>an invalid request producing no movement</li><li>the two returned estimates being added to the trip total</li><li>a comparison of estimated distance with a real ruler measurement</li></ul>
+<p>Save your program. Continue to Project 17: Smart Bike Slope Lab. Keep this calibration only while using the same build and wheels on a similar surface.</p><nav class="pager" aria-label="Previous and next"><a href="19_Smart_Bike_Speed_Modes.html">Previous: Project 19: Smart Bike Speed Modes</a><a href="21_Smart_Bike_Security_Alarm.html">Next: Project 21: Smart Bike Security Alarm</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

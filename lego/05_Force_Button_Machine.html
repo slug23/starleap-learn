@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 05: Force Button Machine · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html" aria-current="page">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Goal</a></li><li><a href="#section-3">Build</a></li><li><a href="#section-4">What You Will Learn</a></li><li><a href="#section-5">Step 1: Test The Press</a></li><li><a href="#section-6">Step 2: Start The Motor</a></li><li><a href="#section-7">Step 3: Stop On Release</a></li><li><a href="#section-8">Physical Challenge</a></li><li><a href="#section-9">Teacher Check</a></li><li><a href="#section-10">Before You Put The Kit Away</a></li></ul></details><h1 id="section-1">Project 05: Force Button Machine</h1>
+<p><strong>You need:</strong> a LEGO SPIKE Prime set and the SPIKE App Python editor.</p>
+<h2 id="section-2">Goal</h2>
+<p>Use a force sensor to start and stop a motor.</p>
+<h2 id="section-3">Build</h2>
+<p>Connect:</p>
+<ul><li>motor to Port A</li><li>force sensor to Port B</li></ul>
+<p>Attach the motor to any small machine: spinner, fan, pointer, arm, gate, or wheel.</p>
+<p><strong>Using the code:</strong> gray lines are already in your program; dark lines are the edit. Keep the shown indentation. Replace a displayed <code>main()</code> definition as a whole, keeping imports and the final start call.</p>
+<h2 id="section-4">What You Will Learn</h2>
+<ul><li>A sensor function can return <code>True</code> or <code>False</code>.</li><li><code>runloop.until()</code> waits until a function returns <code>True</code>.</li><li>Press and release can be two different events.</li></ul>
+<h2 id="section-5">Step 1: Test The Press</h2>
+<p>Open a new Python project named <code>Force Button</code>.</p>
+<p>Start with this short code:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import runloop</span>
+<span class="new">import force_sensor</span>
+<span class="new"></span>
+<span class="new">force_port = port.B</span>
+<span class="new"></span>
+<span class="new">def is_pressed():</span>
+<span class="new">    return force_sensor.pressed(force_port)</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    await runloop.until(is_pressed)</span>
+<span class="new">    print(&quot;pressed&quot;)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p class="callout">Run the program, then press the force sensor.</p>
+<p class="callout">Observe: The console prints <code>pressed</code>.</p>
+<h2 id="section-6">Step 2: Start The Motor</h2>
+<p>Add this import:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import motor</span></code></pre>
+<p>Add this label:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">force_port = port.B</span>
+<span class="new">motor_port = port.A</span></code></pre>
+<p>Add this line after the wait:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    await runloop.until(is_pressed)</span>
+<span class="new">    await motor.run_for_time(motor_port, 500, 300)</span>
+<span class="reference">    print(&quot;pressed&quot;)</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: Pressing the force sensor runs the motor for half a second, then stops it. Run the program again for another press.</p>
+<h2 id="section-7">Step 3: Stop On Release</h2>
+<p>Add this function above <code>main()</code>, with its <code>def</code> line at the left edge:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def is_released():</span>
+<span class="new">    return not force_sensor.pressed(force_port)</span></code></pre>
+<p>Replace the timed motor line with these lines. Keep the wait for <code>is_pressed</code> above them:</p>
+<div class="code-label">EDIT VIEW · Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">async def main():</span>
+<span class="reference">    await runloop.until(is_pressed)</span>
+<span class="new">    motor.run(motor_port, 300)</span>
+<span class="new">    await runloop.until(is_released)</span>
+<span class="new">    motor.stop(motor_port)</span>
+<span class="reference">    print(&quot;pressed&quot;)</span></code></pre>
+<p class="callout">Run the program.</p>
+<p class="callout">Observe: Press and hold to run. Release to stop. This version handles one press; run the program again for the next trial.</p>
+<h2 id="section-8">Physical Challenge</h2>
+<p>Make a press-controlled machine:</p>
+<ul><li>Level 1: press to start, release to stop</li><li>Level 2: reverse the motor direction</li><li>Level 3: change the speed so it is useful but safe</li><li>Level 4: add a hub image while the motor is running</li></ul>
+<h2 id="section-9">Teacher Check</h2>
+<p>Show your teacher:</p>
+<ul><li>the press function</li><li>the release function</li><li>the motor starting and stopping from the sensor</li></ul>
+<h2 id="section-10">Before You Put The Kit Away</h2>
+<p>Save your program. Stop the program before moving wires or changing the build. Show the teacher your working behavior, point to one changed line, and explain what it controls. Keep your place for next time.</p><nav class="pager" aria-label="Previous and next"><a href="04_LEGO_Bin_Rectangle.html">Previous: Project 04: LEGO Bin Rectangle</a><a href="06_Bouncing_Rhino_Arena.html">Next: Project 06: Bouncing Rhino Arena</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>

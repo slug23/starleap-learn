@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Debugging Field Guide · LEGO Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>LEGO Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Projects</h2><a href="00_Project_Path.html">Self-Paced Project Path</a><a href="01_Hub_Signal_Board.html">Project 01: Hub Signal Board</a><a href="02_One_Motor_Mini_Machine.html">Project 02: One Motor Mini Machine</a><a href="03_Hopper_Driver.html">Project 03: Hopper Driver</a><a href="04_LEGO_Bin_Rectangle.html">Project 04: LEGO Bin Rectangle</a><a href="05_Force_Button_Machine.html">Project 05: Force Button Machine</a><a href="06_Bouncing_Rhino_Arena.html">Project 06: Bouncing Rhino Arena</a><a href="07_Parking_Beeper.html">Project 07: Parking Beeper</a><a href="08_Driving_Base_2_Parking_Zone.html">Project 08: Driving Base 2 Parking Zone</a><a href="09_Parking_Approach_Alarm.html">Project 09: Parking Approach Alarm</a><a href="10_Claw_Relay.html">Project 10: Claw Relay</a><a href="11_Kiki_Color_Station.html">Project 11: Kiki Color Station</a><a href="12_Tabletop_Score_Shooter.html">Project 12: Tabletop Score Shooter</a><a href="13_Coach_Dance_Reps.html">Project 13: Coach Dance Reps</a><a href="14_Safe_Deposit_Box_Lock.html">Project 14: Safe Deposit Box Lock</a><a href="15_Package_Sorter.html">Project 15: Package Sorter</a><a href="16_Driving_Base_Mission_Lab.html">Project 16: Driving Base Mission Lab</a><a href="17_Smart_Bike_Slope_Lab.html">Project 17: Smart Bike Slope Lab</a><a href="18_Choice_Build_Remix.html">Project 18: Choice Build Remix</a><a href="19_Smart_Bike_Speed_Modes.html">Project 19: Smart Bike Speed Modes</a><a href="20_Smart_Bike_Trip_Computer.html">Project 20: Smart Bike Trip Computer</a><a href="21_Smart_Bike_Security_Alarm.html">Project 21: Smart Bike Security Alarm</a><a href="22_Smart_Bike_Route_Data_Recorder.html">Project 22: Smart Bike Route Data Recorder</a><h2>Reference sheets</h2><a href="00_Quick_Start_And_Debug.html">Quick Start And Debug Sheet</a><a href="Build_Menu_From_LEGO.html">LEGO Build Menu For Python Projects</a><a href="Challenge_Setups_And_Props.html">Challenge Setups And Props</a><a href="Debugging_Field_Guide.html" aria-current="page">Debugging Field Guide</a><a href="Project_Checkpoint_Card.html">Project Checkpoint Card</a></nav><p class="stamp">Build 2026.09.22-090630-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / SPIKE PRIME PYTHON / 2026–27</p><p class="stamp">Build 2026.09.22-090630-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Debug Routine</a></li><li><a href="#section-3">Common Bugs</a></li><li><a href="#section-4">Usual Program Shape</a></li><li><a href="#section-5">One-Motor Test</a></li><li><a href="#section-6">Force Sensor Test</a></li><li><a href="#section-7">Distance Sensor Test</a></li><li><a href="#section-8">Print Labels</a></li></ul></details><h1 id="section-1">Debugging Field Guide</h1>
+<p>Use this whenever a robot or program does not do what you expected.</p>
+<h2 id="section-2">Debug Routine</h2>
+<ol><li>Say what you expected.</li><li>Say what actually happened.</li><li>Point to the last line you changed.</li><li>Read the first useful error line.</li><li>Check the port labels against the wires.</li><li>Run the smallest piece that should work.</li><li>Make one fix and run again.</li></ol>
+<h2 id="section-3">Common Bugs</h2>
+<div class="table-scroll" tabindex="0"><table><thead><tr><th>Symptom</th><th>Check First</th></tr></thead><tbody><tr><td>Nothing runs</td><td>hub connection, battery, play button</td></tr><tr><td>Motor does not move</td><td>wrong port, loose cable, jammed build</td></tr><tr><td>Wrong motor moves</td><td>port labels are swapped</td></tr><tr><td>Program stops immediately</td><td>missing <code>await</code> or code finished</td></tr><tr><td>Syntax error</td><td>missing colon, capitalization, quotes, parentheses</td></tr><tr><td>Indentation error</td><td>code inside <code>main()</code>, <code>if</code>, <code>for</code>, or <code>while</code> must be indented</td></tr><tr><td>Sensor never reacts</td><td>wrong port or sensor reading never becomes true</td></tr></tbody></table></div>
+<h2 id="section-4">Usual Program Shape</h2>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import runloop</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    pass</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p>Replace <code>pass</code> with your code.</p>
+<h2 id="section-5">One-Motor Test</h2>
+<p>Check the cable first, then set <code>test_motor</code> at the top to the port being tested. Test one freely moving motor at a time.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import runloop</span>
+<span class="new">import motor</span>
+<span class="new"></span>
+<span class="new">test_motor = port.A</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    await motor.run_for_degrees(test_motor, 180, 300)</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p>Stop before changing the cable. If the motor is connected elsewhere, change only the <code>test_motor</code> assignment and run again.</p>
+<h2 id="section-6">Force Sensor Test</h2>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import runloop</span>
+<span class="new">import force_sensor</span>
+<span class="new"></span>
+<span class="new">force_port = port.D</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    print(force_sensor.pressed(force_port))</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p>Change the <code>force_port</code> assignment at the top if your sensor is plugged in somewhere else.</p>
+<h2 id="section-7">Distance Sensor Test</h2>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">from hub import port</span>
+<span class="new">import runloop</span>
+<span class="new">import distance_sensor</span>
+<span class="new"></span>
+<span class="new">distance_port = port.B</span>
+<span class="new"></span>
+<span class="new">async def main():</span>
+<span class="new">    print(distance_sensor.distance(distance_port))</span>
+<span class="new"></span>
+<span class="new">runloop.run(main())</span></code></pre>
+<p>The distance is in millimeters. <code>-1</code> means the sensor does not see anything in range.</p>
+<h2 id="section-8">Print Labels</h2>
+<p>Add labels before steps so you know where the program is.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">print(&quot;step 1: raise arm&quot;)</span>
+<span class="new">await raise_arm()</span>
+<span class="new"></span>
+<span class="new">print(&quot;step 2: shoot&quot;)</span>
+<span class="new">await shoot()</span></code></pre>
+<p>If the program stops after <code>step 1</code>, look inside the code for step 1.</p><nav class="pager" aria-label="Previous and next"><a href="Challenge_Setups_And_Props.html">Previous: Challenge Setups And Props</a><a href="Project_Checkpoint_Card.html">Next: Project Checkpoint Card</a></nav>
+<footer>LEGO SPIKE Prime set required. Open the SPIKE App to write and run your code. Lesson pages work offline; external LEGO build links need internet.</footer></main></body></html>
