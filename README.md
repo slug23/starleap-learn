@@ -7,7 +7,7 @@ course's publish script, from the private source repo:
 
 | Folder         | Published by                                  |
 |----------------|-----------------------------------------------|
-| `electronics/` | `starleap-electronics/tools/publish.sh`       |
+| `electronics/` | `starleap-electronics/deploy/publish.sh`      |
 | `lego/`        | `starleap-skilltree/deploy/publish.sh lego`   |
 | `python/`      | `starleap-skilltree/deploy/publish.sh python` |
 
