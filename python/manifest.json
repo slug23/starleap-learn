@@ -1,0 +1,78 @@
+{
+  "course": "turtle-python",
+  "build": "2026.09.17-001210-0400",
+  "pages": [
+    {
+      "file": "turtle-variables-step-by-step.html",
+      "title": "1. Turtle Variables: One Change Controls Many Lines",
+      "number": 1,
+      "group": "Lessons",
+      "source": "src/turtle-variables-step-by-step.md",
+      "sha256": "40f34efc067431994ddd85b4c20db71625635ef20f2f538c5f537651e5ed4f2b"
+    },
+    {
+      "file": "turtle-for-loops-step-by-step.html",
+      "title": "2. Turtle Loops: Repeat A Chunk",
+      "number": 2,
+      "group": "Lessons",
+      "source": "src/turtle-for-loops-step-by-step.md",
+      "sha256": "c4cd12c5f32ccf7292c807368248e839dd493e1dfe320d964375e82666368e31"
+    },
+    {
+      "file": "turtle-regular-polygon-step-by-step.html",
+      "title": "3. Regular Polygon Builder: Variables Plus Loops",
+      "number": 3,
+      "group": "Lessons",
+      "source": "src/turtle-regular-polygon-step-by-step.md",
+      "sha256": "f853f8c7d8faee6133a7d941ffa6bf7841c5c4579cf9cadd2a666a831fbb2a05"
+    },
+    {
+      "file": "turtle-functions-step-by-step.html",
+      "title": "4. Turtle Functions: Name A Chunk",
+      "number": 4,
+      "group": "Lessons",
+      "source": "src/turtle-functions-step-by-step.md",
+      "sha256": "f78afa7b7b720c5c0374309eeef8f9ad5bfe3bd4364d29810ad9f077e37079f1"
+    },
+    {
+      "file": "turtle-circles-arcs-step-by-step.html",
+      "title": "5. Turtle Circles And Arcs: Curves That Repeat",
+      "number": 5,
+      "group": "Lessons",
+      "source": "src/turtle-circles-arcs-step-by-step.md",
+      "sha256": "627b0d05721693cc5e78f6226cec59f1c9169a69373dd307bb91ec5e4b6693f0"
+    },
+    {
+      "file": "turtle-scene-builder-step-by-step.html",
+      "title": "6. Turtle Scene Builder: Many Functions Make One Picture",
+      "number": 6,
+      "group": "Projects",
+      "source": "src/turtle-scene-builder-step-by-step.md",
+      "sha256": "5cb0268f71717265e125ee0ec8be5e59ad6b339c6694e91808f4fc0bb9dca1e4"
+    },
+    {
+      "file": "turtle-random-flower-field-step-by-step.html",
+      "title": "7. Random Flower Field: Let Python Choose",
+      "number": 7,
+      "group": "Projects",
+      "source": "src/turtle-random-flower-field-step-by-step.md",
+      "sha256": "b2dc2b390469dc1c14cdda93111bbb4b40cea47bb2b3cf4fed7bc257cd76ddd8"
+    },
+    {
+      "file": "turtle-layered-flower-design-step-by-step.html",
+      "title": "8. Layered Flower Design: Small Flower, Big Flower",
+      "number": 8,
+      "group": "Projects",
+      "source": "src/turtle-layered-flower-design-step-by-step.md",
+      "sha256": "3d087fb3a150265e7704d866760ddf16483fc3218ac874b0a88d7c3e8f405210"
+    },
+    {
+      "file": "turtle-keyboard-control-step-by-step.html",
+      "title": "9. Keyboard-Controlled Turtle: Programs That Wait",
+      "number": 9,
+      "group": "Projects",
+      "source": "src/turtle-keyboard-control-step-by-step.md",
+      "sha256": "d1da4949193fb3d2da62f021b1f853c0890518de7b14155cfea77a9ff5921c43"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9. Keyboard-Controlled Turtle: Programs That Wait · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><h2>Projects</h2><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html" aria-current="page">9. Keyboard-Controlled Turtle: Programs That Wait</a></nav><p class="stamp">Build 2026.09.17-001210-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.17-001210-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Start With A Turtle File</a></li><li><a href="#section-3">Step 1 - One Movement Function</a></li><li><a href="#section-4">Step 2 - Connect A Key</a></li><li><a href="#section-5">Step 3 - Add Turning</a></li><li><a href="#section-6">Step 4 - Add The Right Arrow</a></li><li><a href="#section-7">Step 5 - Add Pen Controls</a></li><li><a href="#section-8">Step 6 - Change Color With A Key</a></li><li><a href="#section-9">Final Project - Turtle Drawing Pad</a></li><li><a href="#section-10">Drawing Pad Challenge - Random Color Key</a></li><li><a href="#section-11">Teacher Check</a></li></ul></details><h1 id="section-1">9. Keyboard-Controlled Turtle: Programs That Wait</h1>
+<p>Most programs in these handouts run from top to bottom and then finish. Today you will write a program that waits for keys.</p>
+<p>Keyboard programs use events. An event is something that happens while the program is running, like pressing a key.</p>
+<h2 id="section-2">Start With A Turtle File</h2>
+<p>Save a new file named <code>keyboard_turtle.py</code>.</p>
+<p>Start with this template.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.speed(0)</span>
+<span class="new">t.pensize(3)</span>
+<span class="new"></span>
+<span class="new"># Your keyboard code goes here.</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. A blank turtle window is fine. Close the turtle window before you change the code again.</p>
+<h2 id="section-3">Step 1 - One Movement Function</h2>
+<p>Replace the middle comment with this function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.speed(0)</span>
+<span class="reference">t.pensize(3)</span>
+<span class="reference"></span>
+<span class="new">def move_forward():</span>
+<span class="new">    t.forward(30)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Nothing new should happen yet.</p>
+<p>You defined a function, but you did not call it. In a keyboard program, the key press will call the function later.</p>
+<h2 id="section-4">Step 2 - Connect A Key</h2>
+<p>Add these lines under the function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def move_forward():</span>
+<span class="reference">    t.forward(30)</span>
+<span class="reference"></span>
+<span class="new">screen.listen()</span>
+<span class="new">screen.onkey(move_forward, &#x27;Up&#x27;)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Click the turtle window, then press the Up arrow key.</p>
+<p class="callout">Important: use <code>move_forward</code>, not <code>move_forward()</code>, inside <code>screen.onkey(...)</code>. You are handing the function to the screen so it can call the function later.</p>
+<h2 id="section-5">Step 3 - Add Turning</h2>
+<p>Add a left turn function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def move_forward():</span>
+<span class="reference">    t.forward(30)</span>
+<span class="reference"></span>
+<span class="new">def turn_left():</span>
+<span class="new">    t.left(30)</span>
+<span class="reference"></span>
+<span class="reference">screen.listen()</span>
+<span class="reference">screen.onkey(move_forward, &#x27;Up&#x27;)</span></code></pre>
+<p>Connect the Left arrow key.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.listen()</span>
+<span class="reference">screen.onkey(move_forward, &#x27;Up&#x27;)</span>
+<span class="new">screen.onkey(turn_left, &#x27;Left&#x27;)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Click the turtle window, then try Up and Left.</p>
+<h2 id="section-6">Step 4 - Add The Right Arrow</h2>
+<p>Add a right turn function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def turn_left():</span>
+<span class="reference">    t.left(30)</span>
+<span class="reference"></span>
+<span class="new">def turn_right():</span>
+<span class="new">    t.right(30)</span>
+<span class="reference"></span>
+<span class="reference">screen.listen()</span>
+<span class="reference">screen.onkey(move_forward, &#x27;Up&#x27;)</span>
+<span class="reference">screen.onkey(turn_left, &#x27;Left&#x27;)</span></code></pre>
+<p>Connect the Right arrow key.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.onkey(move_forward, &#x27;Up&#x27;)</span>
+<span class="reference">screen.onkey(turn_left, &#x27;Left&#x27;)</span>
+<span class="new">screen.onkey(turn_right, &#x27;Right&#x27;)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Click the turtle window, then steer with the arrow keys.</p>
+<h2 id="section-7">Step 5 - Add Pen Controls</h2>
+<p>Add two functions that lift and lower the pen.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def turn_right():</span>
+<span class="reference">    t.right(30)</span>
+<span class="reference"></span>
+<span class="new">def lift_pen():</span>
+<span class="new">    t.penup()</span>
+<span class="new"></span>
+<span class="new">def drop_pen():</span>
+<span class="new">    t.pendown()</span>
+<span class="reference"></span>
+<span class="reference">screen.listen()</span></code></pre>
+<p>Connect them to letter keys.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.onkey(turn_left, &#x27;Left&#x27;)</span>
+<span class="reference">screen.onkey(turn_right, &#x27;Right&#x27;)</span>
+<span class="new">screen.onkey(lift_pen, &#x27;u&#x27;)</span>
+<span class="new">screen.onkey(drop_pen, &#x27;d&#x27;)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Use <code>u</code> to move without drawing and <code>d</code> to draw again.</p>
+<h2 id="section-8">Step 6 - Change Color With A Key</h2>
+<p>Add a color function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def drop_pen():</span>
+<span class="reference">    t.pendown()</span>
+<span class="reference"></span>
+<span class="new">def use_purple():</span>
+<span class="new">    t.color(&#x27;purple&#x27;)</span>
+<span class="reference"></span>
+<span class="reference">screen.listen()</span></code></pre>
+<p>Connect it to a key.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.onkey(lift_pen, &#x27;u&#x27;)</span>
+<span class="reference">screen.onkey(drop_pen, &#x27;d&#x27;)</span>
+<span class="new">screen.onkey(use_purple, &#x27;p&#x27;)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Press <code>p</code>, then draw.</p>
+<h2 id="section-9">Final Project - Turtle Drawing Pad</h2>
+<p>Use this full program as a keyboard-controlled drawing pad.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.speed(0)</span>
+<span class="new">t.pensize(3)</span>
+<span class="new"></span>
+<span class="new">def move_forward():</span>
+<span class="new">    t.forward(30)</span>
+<span class="new"></span>
+<span class="new">def move_backward():</span>
+<span class="new">    t.backward(30)</span>
+<span class="new"></span>
+<span class="new">def turn_left():</span>
+<span class="new">    t.left(30)</span>
+<span class="new"></span>
+<span class="new">def turn_right():</span>
+<span class="new">    t.right(30)</span>
+<span class="new"></span>
+<span class="new">def lift_pen():</span>
+<span class="new">    t.penup()</span>
+<span class="new"></span>
+<span class="new">def drop_pen():</span>
+<span class="new">    t.pendown()</span>
+<span class="new"></span>
+<span class="new">def use_purple():</span>
+<span class="new">    t.color(&#x27;purple&#x27;)</span>
+<span class="new"></span>
+<span class="new">def use_teal():</span>
+<span class="new">    t.color(&#x27;teal&#x27;)</span>
+<span class="new"></span>
+<span class="new">screen.listen()</span>
+<span class="new">screen.onkey(move_forward, &#x27;Up&#x27;)</span>
+<span class="new">screen.onkey(move_backward, &#x27;Down&#x27;)</span>
+<span class="new">screen.onkey(turn_left, &#x27;Left&#x27;)</span>
+<span class="new">screen.onkey(turn_right, &#x27;Right&#x27;)</span>
+<span class="new">screen.onkey(lift_pen, &#x27;u&#x27;)</span>
+<span class="new">screen.onkey(drop_pen, &#x27;d&#x27;)</span>
+<span class="new">screen.onkey(use_purple, &#x27;p&#x27;)</span>
+<span class="new">screen.onkey(use_teal, &#x27;t&#x27;)</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Click the turtle window before using the keyboard.</p>
+<p>Make a drawing using the arrow keys. Use <code>u</code> to lift the pen, <code>d</code> to draw again, <code>p</code> for purple, and <code>t</code> for teal.</p>
+<h2 id="section-10">Drawing Pad Challenge - Random Color Key</h2>
+<p>Make the <code>r</code> key change the turtle to a random color.</p>
+<p>You may need to look back at the random flower lesson and the keyboard code on the previous page.</p>
+<p>When you are finished, your drawing pad should still work with the arrow keys, <code>u</code>, <code>d</code>, <code>p</code>, and <code>t</code>.</p>
+<p class="callout">Run the program. Press <code>r</code> several times while you draw. Each press should be able to choose a different color.</p>
+<h2 id="section-11">Teacher Check</h2>
+<p>Show your keyboard drawing. Then point to:</p>
+<ul><li>one movement function</li><li>one color function</li><li>the random color function, if you completed the challenge</li><li>the <code>screen.listen()</code> line</li><li>one <code>screen.onkey(...)</code> line</li><li>the function name inside <code>screen.onkey(...)</code> that does not have parentheses</li></ul>
+<p>Say this out loud: &quot;This program waits for events. A key press calls the function connected to that key.&quot;</p><nav class="pager" aria-label="Previous and next"><a href="turtle-layered-flower-design-step-by-step.html">Previous: 8. Layered Flower Design: Small Flower, Big Flower</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

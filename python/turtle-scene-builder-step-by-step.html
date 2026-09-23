@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6. Turtle Scene Builder: Many Functions Make One Picture · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><h2>Projects</h2><a href="turtle-scene-builder-step-by-step.html" aria-current="page">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a></nav><p class="stamp">Build 2026.09.17-001210-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.17-001210-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Start With A Turtle File</a></li><li><a href="#section-3">Step 1 - Jump Without Drawing</a></li><li><a href="#section-4">Step 2 - Draw A Filled Square</a></li><li><a href="#section-5">Step 3 - Add A Roof</a></li><li><a href="#section-6">Step 4 - Make A House Function</a></li><li><a href="#section-7">Step 5 - Plan The Rest Of Your Scene</a></li><li><a href="#section-8">Step 6 - Add Your First New Function</a></li><li><a href="#section-9">Step 7 - Add More Scene Functions</a></li><li><a href="#section-10">Final Project - Build Your Scene</a></li><li><a href="#section-11">Teacher Check</a></li></ul></details><h1 id="section-1">6. Turtle Scene Builder: Many Functions Make One Picture</h1>
+<p>You have drawn polygons, flowers, and curve designs. Today you will combine several named chunks into one complete scene.</p>
+<p>A scene program is easier to read when each drawing job has its own function. The main program can then call those functions in the order the picture should appear.</p>
+<h2 id="section-2">Start With A Turtle File</h2>
+<p>Save a new file named <code>turtle_scene.py</code>.</p>
+<p>Start with this template.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.speed(0)</span>
+<span class="new"></span>
+<span class="new"># Your scene code goes here.</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. A blank turtle window is fine. Close the turtle window before you change the code again.</p>
+<h2 id="section-3">Step 1 - Jump Without Drawing</h2>
+<p>Replace the middle comment with this test line.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.speed(0)</span>
+<span class="reference"></span>
+<span class="new">t.teleport(-80, -220)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. The turtle should jump to a new spot without drawing a travel line.</p>
+<p><code>t.teleport(x, y)</code> moves the turtle to an exact spot. It is useful when your scene has pieces in different places.</p>
+<h2 id="section-4">Step 2 - Draw A Filled Square</h2>
+<p>Replace the <code>t.teleport(...)</code> test line with this function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.speed(0)</span>
+<span class="reference"></span>
+<span class="new">def draw_square(length, ink):</span>
+<span class="new">    t.color(ink)</span>
+<span class="new">    t.begin_fill()</span>
+<span class="new">    for i in range(4):</span>
+<span class="new">        t.forward(length)</span>
+<span class="new">        t.left(90)</span>
+<span class="new">    t.end_fill()</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p>Then add a call at the bottom.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_square(length, ink):</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">t.teleport(-80, -220)</span>
+<span class="new">draw_square(160, &#x27;tan&#x27;)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p><code>t.begin_fill()</code> starts saving the outline of the shape. <code>t.end_fill()</code> fills the shape with the turtle&#x27;s current color.</p>
+<h2 id="section-5">Step 3 - Add A Roof</h2>
+<p>Add this triangle function above your calls.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_square(length, ink):</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">def draw_triangle(length, ink):</span>
+<span class="new">    t.color(ink)</span>
+<span class="new">    t.begin_fill()</span>
+<span class="new">    for i in range(3):</span>
+<span class="new">        t.forward(length)</span>
+<span class="new">        t.left(120)</span>
+<span class="new">    t.end_fill()</span>
+<span class="reference"></span>
+<span class="reference">t.teleport(-80, -220)</span>
+<span class="reference">...</span></code></pre>
+<p>Then call it after the square.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.teleport(-80, -220)</span>
+<span class="reference">draw_square(160, &#x27;tan&#x27;)</span>
+<span class="reference"></span>
+<span class="new">t.teleport(-100, -60)</span>
+<span class="new">draw_triangle(200, &#x27;brown&#x27;)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>The order of the calls matters. Python draws the square first, then the roof.</p>
+<h2 id="section-6">Step 4 - Make A House Function</h2>
+<p>The square and roof belong together. Put them inside one function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_triangle(length, ink):</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">def draw_house(x_position, y_position):</span>
+<span class="new">    roof_x_offset = 0</span>
+<span class="new">    roof_y_offset = 0</span>
+<span class="new">    t.teleport(x_position, y_position)</span>
+<span class="new">    draw_square(160, &#x27;tan&#x27;)</span>
+<span class="new">    t.teleport(x_position + roof_x_offset, y_position + roof_y_offset)</span>
+<span class="new">    draw_triangle(200, &#x27;brown&#x27;)</span>
+<span class="new"></span>
+<span class="new">draw_house(-80, -220)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>The roof starts in the same place as the square. That is okay for now.</p>
+<p>Change only these two variables, then run again:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">roof_x_offset = 0</span>
+<span class="new">roof_y_offset = 0</span></code></pre>
+<p>Keep changing those two numbers until the roof sits where you like it. A positive x offset moves the roof right. A negative x offset moves it left. A positive y offset moves it up.</p>
+<p>The <code>draw_house(...)</code> function calls other functions. A function is allowed to use smaller helper functions inside its chunk.</p>
+<h2 id="section-7">Step 5 - Plan The Rest Of Your Scene</h2>
+<p>Your house is the example. Now choose what else belongs in your scene.</p>
+<p>Pick at least two new drawing jobs. Each one should become its own function.</p>
+<p>Possible function ideas:</p>
+<ul><li><code>draw_sun(x_position, y_position, radius)</code></li><li><code>draw_flower(x_position, y_position, ink)</code></li><li><code>draw_cloud(x_position, y_position)</code></li><li><code>draw_tree(x_position, y_position)</code></li><li><code>draw_star(x_position, y_position, size)</code></li><li><code>draw_path(x_position, y_position)</code></li></ul>
+<p>Before you code, choose two ideas and decide what arguments each function needs.</p>
+<h2 id="section-8">Step 6 - Add Your First New Function</h2>
+<p>Use this pattern to add your own function above <code>draw_house(-80, -220)</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_house(x_position, y_position):</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">def draw_idea_name(x_position, y_position):</span>
+<span class="new">    t.teleport(x_position, y_position)</span>
+<span class="new">    # Draw your shape here.</span>
+<span class="reference"></span>
+<span class="reference">draw_house(-80, -220)</span></code></pre>
+<p>Rename the function so its name says what it draws. Then replace the comment with turtle drawing code.</p>
+<p>Call your new function after the house.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">draw_house(-80, -220)</span>
+<span class="new">draw_idea_name(190, 220)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>If your scene does not change, check both places: the function definition and the function call.</p>
+<h2 id="section-9">Step 7 - Add More Scene Functions</h2>
+<p>Add at least one more function of your own. You may use circles, polygons, arcs, colors, loops, or other functions you already wrote.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_idea_name(x_position, y_position):</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">def draw_another_idea(x_position, y_position, size):</span>
+<span class="new">    t.teleport(x_position, y_position)</span>
+<span class="new">    # Draw another part of your scene here.</span>
+<span class="reference">...</span></code></pre>
+<p>Call each scene function near the bottom of your program.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">draw_house(-80, -220)</span>
+<span class="reference">draw_idea_name(190, 220)</span>
+<span class="new">draw_another_idea(-220, -230, 40)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<h2 id="section-10">Final Project - Build Your Scene</h2>
+<p>Use this program as a scene starter. It gives you the house. You create the rest.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.speed(0)</span>
+<span class="new">def draw_square(length, ink):</span>
+<span class="new">    t.color(ink)</span>
+<span class="new">    t.begin_fill()</span>
+<span class="new">    for i in range(4):</span>
+<span class="new">        t.forward(length)</span>
+<span class="new">        t.left(90)</span>
+<span class="new">    t.end_fill()</span>
+<span class="new">def draw_triangle(length, ink):</span>
+<span class="new">    t.color(ink)</span>
+<span class="new">    t.begin_fill()</span>
+<span class="new">    for i in range(3):</span>
+<span class="new">        t.forward(length)</span>
+<span class="new">        t.left(120)</span>
+<span class="new">    t.end_fill()</span>
+<span class="new">def draw_house(x_position, y_position):</span>
+<span class="new">    roof_x_offset = 0</span>
+<span class="new">    roof_y_offset = 0</span>
+<span class="new">    t.teleport(x_position, y_position)</span>
+<span class="new">    draw_square(160, &#x27;tan&#x27;)</span>
+<span class="new">    t.teleport(x_position + roof_x_offset, y_position + roof_y_offset)</span>
+<span class="new">    draw_triangle(200, &#x27;brown&#x27;)</span>
+<span class="new"></span>
+<span class="new"># Add your own scene functions here.</span>
+<span class="new"></span>
+<span class="new">def draw_idea_name(x_position, y_position):</span>
+<span class="new">    t.teleport(x_position, y_position)</span>
+<span class="new">    # Draw your first idea here.</span>
+<span class="new"></span>
+<span class="new">draw_house(-80, -220)</span>
+<span class="new"></span>
+<span class="new"># Call your own scene functions here.</span>
+<span class="new">draw_idea_name(190, 220)</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Make the scene yours. Add more functions, call them in different places, and change one argument at a time so you can see what each change controls.</p>
+<h2 id="section-11">Teacher Check</h2>
+<p>Show your scene. Then point to:</p>
+<ul><li>one helper function</li><li>one function that calls another function</li><li>one <code>t.teleport(x_position, y_position)</code> call</li><li>two scene functions you created yourself</li><li>one argument value you changed on purpose</li></ul>
+<p>Say this out loud: &quot;A scene is easier to build when each drawing job has a clear function name.&quot;</p><nav class="pager" aria-label="Previous and next"><a href="turtle-circles-arcs-step-by-step.html">Previous: 5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-random-flower-field-step-by-step.html">Next: 7. Random Flower Field: Let Python Choose</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

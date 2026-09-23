@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5. Turtle Circles And Arcs: Curves That Repeat · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html" aria-current="page">5. Turtle Circles And Arcs: Curves That Repeat</a><h2>Projects</h2><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a></nav><p class="stamp">Build 2026.09.17-001210-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.17-001210-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Start With A Turtle File</a></li><li><a href="#section-3">Step 1 - Draw One Circle</a></li><li><a href="#section-4">Step 2 - Give The Radius A Name</a></li><li><a href="#section-5">Step 3 - Draw Part Of A Circle</a></li><li><a href="#section-6">Step 4 - Repeat An Arc</a></li><li><a href="#section-7">Step 5 - Make One Petal</a></li><li><a href="#section-8">Step 6 - Name The Petal Chunk</a></li><li><a href="#section-9">Step 7 - Repeat The Petal Into A Flower</a></li><li><a href="#section-10">Step 8 - Make The Flower Flexible</a></li><li><a href="#section-11">Step 9 - Move Before You Draw</a></li><li><a href="#section-12">Final Project - Flower And Spirograph Page</a></li><li><a href="#section-13">Teacher Check</a></li></ul></details><h1 id="section-1">5. Turtle Circles And Arcs: Curves That Repeat</h1>
+<p>You can already draw regular polygons with variables, loops, and functions. Today you will use the turtle&#x27;s curve tool to draw circles, arcs, flowers, and spirograph-style designs.</p>
+<p>An arc is part of a circle. In turtle, <code>t.circle(radius)</code> draws a full circle. <code>t.circle(radius, extent)</code> draws part of a circle.</p>
+<h2 id="section-2">Start With A Turtle File</h2>
+<p>Save a new file named <code>turtle_curves.py</code>.</p>
+<p>Start with this template.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.speed(5)</span>
+<span class="new">t.pensize(3)</span>
+<span class="new"></span>
+<span class="new"># Your curve code goes here.</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. A blank turtle window is fine. Close the turtle window before you change the code again.</p>
+<h2 id="section-3">Step 1 - Draw One Circle</h2>
+<p>Replace the middle comment with this code.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.speed(5)</span>
+<span class="reference">t.pensize(3)</span>
+<span class="reference"></span>
+<span class="new">t.circle(80)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>The number inside <code>t.circle(80)</code> is the radius. A bigger radius makes a bigger circle. The turtle starts on the edge of the circle and curves around until it returns to its starting spot.</p>
+<h2 id="section-4">Step 2 - Give The Radius A Name</h2>
+<p>Change the middle code to use a variable.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.pensize(3)</span>
+<span class="reference"></span>
+<span class="new">radius = 80</span>
+<span class="new">t.circle(radius)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Then change only <code>radius</code> and run again.</p>
+<p>Try these radius values one at a time.</p>
+<ul><li><code>40</code></li><li><code>100</code></li><li><code>150</code></li></ul>
+<h2 id="section-5">Step 3 - Draw Part Of A Circle</h2>
+<p>Add a second value to <code>t.circle(...)</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.pensize(3)</span>
+<span class="reference"></span>
+<span class="new">radius = 100</span>
+<span class="new">extent = 180</span>
+<span class="new">t.circle(radius, extent)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p><code>extent</code> tells the turtle how many degrees of the circle to draw. <code>360</code> is a full circle, <code>180</code> is a half circle, and <code>90</code> is a quarter circle.</p>
+<p>Change only <code>extent</code> and run after each change.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">extent = 45</span>
+<span class="new">extent = 90</span>
+<span class="new">extent = 270</span>
+<span class="new">extent = 360</span></code></pre>
+<h2 id="section-6">Step 4 - Repeat An Arc</h2>
+<p>Use a loop to draw the same arc again and again.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">radius = 100</span>
+<span class="new">extent = 90</span>
+<span class="reference"></span>
+<span class="new">for i in range(4):</span>
+<span class="new">    t.circle(radius, extent)</span>
+<span class="new">    t.left(90)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>The loop draws one arc, turns the turtle, and then repeats. The white space before the two turtle lines shows that both lines belong to the loop.</p>
+<h2 id="section-7">Step 5 - Make One Petal</h2>
+<p>A petal can be made from two matching arcs.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.pensize(3)</span>
+<span class="reference"></span>
+<span class="new">radius = 90</span>
+<span class="new">arc_angle = 60</span>
+<span class="new"></span>
+<span class="new">for i in range(2):</span>
+<span class="new">    t.circle(radius, arc_angle)</span>
+<span class="new">    t.left(180 - arc_angle)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p><code>arc_angle</code> controls how wide the petal opens. The turn <code>180 - arc_angle</code> points the turtle back for the second side of the petal.</p>
+<p>Change only <code>arc_angle</code> and run after each change.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">arc_angle = 40</span>
+<span class="new">arc_angle = 80</span>
+<span class="new">arc_angle = 120</span></code></pre>
+<h2 id="section-8">Step 6 - Name The Petal Chunk</h2>
+<p>Turn the petal code into a function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.pensize(3)</span>
+<span class="reference"></span>
+<span class="new">def draw_petal(radius, arc_angle):</span>
+<span class="new">    for i in range(2):</span>
+<span class="new">        t.circle(radius, arc_angle)</span>
+<span class="new">        t.left(180 - arc_angle)</span>
+<span class="new"></span>
+<span class="new">draw_petal(90, 60)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>The argument names tell the reader what each value does. <code>draw_petal(90, 60)</code> means radius <code>90</code> and arc angle <code>60</code>.</p>
+<h2 id="section-9">Step 7 - Repeat The Petal Into A Flower</h2>
+<p>Call the petal function inside another loop.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_petal(radius, arc_angle):</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">petals = 12</span>
+<span class="new">turn = 360 / petals</span>
+<span class="new"></span>
+<span class="new">for i in range(petals):</span>
+<span class="new">    draw_petal(90, 60)</span>
+<span class="new">    t.left(turn)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>The loop draws one petal, turns a little, and repeats until the petals go all the way around the center.</p>
+<h2 id="section-10">Step 8 - Make The Flower Flexible</h2>
+<p>Wrap the whole flower idea in a function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_petal(radius, arc_angle):</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">def draw_flower(petals, radius, arc_angle):</span>
+<span class="new">    turn = 360 / petals</span>
+<span class="new">    for i in range(petals):</span>
+<span class="new">        draw_petal(radius, arc_angle)</span>
+<span class="new">        t.left(turn)</span>
+<span class="new"></span>
+<span class="new">draw_flower(12, 90, 60)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Now one function can make many different flowers. The call hands in the number of petals, the radius, and the arc angle.</p>
+<p>Change only the call line each time.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">draw_flower(6, 100, 70)</span>
+<span class="new">draw_flower(18, 80, 45)</span>
+<span class="new">draw_flower(24, 65, 80)</span></code></pre>
+<h2 id="section-11">Step 9 - Move Before You Draw</h2>
+<p>Use <code>t.goto(x, y)</code> to place a flower somewhere on the page before drawing it.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_flower(petals, radius, arc_angle):</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">t.penup()</span>
+<span class="new">t.goto(-180, 120)</span>
+<span class="new">t.pendown()</span>
+<span class="new">t.color(&#x27;purple&#x27;)</span>
+<span class="new">draw_flower(12, 70, 60)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Change only the two numbers in <code>t.goto(-180, 120)</code>, then run again. The flower starts in a different place.</p>
+<h2 id="section-12">Final Project - Flower And Spirograph Page</h2>
+<p>Use this full program to fill the page with different curve designs.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.speed(5)</span>
+<span class="new">t.pensize(3)</span>
+<span class="new"></span>
+<span class="new">def draw_petal(radius, arc_angle):</span>
+<span class="new">    for i in range(2):</span>
+<span class="new">        t.circle(radius, arc_angle)</span>
+<span class="new">        t.left(180 - arc_angle)</span>
+<span class="new"></span>
+<span class="new">def draw_flower(petals, radius, arc_angle):</span>
+<span class="new">    turn = 360 / petals</span>
+<span class="new">    for i in range(petals):</span>
+<span class="new">        draw_petal(radius, arc_angle)</span>
+<span class="new">        t.left(turn)</span>
+<span class="new"></span>
+<span class="new">def draw_at(x_position, y_position, ink, petals, radius, arc_angle):</span>
+<span class="new">    t.penup()</span>
+<span class="new">    t.goto(x_position, y_position)</span>
+<span class="new">    t.setheading(0)</span>
+<span class="new">    t.pendown()</span>
+<span class="new">    t.color(ink)</span>
+<span class="new">    draw_flower(petals, radius, arc_angle)</span>
+<span class="new"></span>
+<span class="new">draw_at(-210, 150, &#x27;purple&#x27;, 8, 80, 60)</span>
+<span class="new">draw_at(20, 150, &#x27;teal&#x27;, 14, 65, 75)</span>
+<span class="new">draw_at(-210, -100, &#x27;orange&#x27;, 18, 55, 45)</span>
+<span class="new">draw_at(40, -100, &#x27;blue&#x27;, 24, 45, 80)</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Make the page yours by changing one argument value at a time. Good experiments include <code>petals</code>, <code>radius</code>, <code>arc_angle</code>, <code>ink</code>, and the <code>x_position</code> or <code>y_position</code>.</p>
+<h2 id="section-13">Teacher Check</h2>
+<p>Show your curve design page. Then point to:</p>
+<ul><li>one call to <code>t.circle(radius, arc_angle)</code></li><li>the <code>extent</code> or <code>arc_angle</code> value that controls how much curve is drawn</li><li>the loop that repeats petals</li><li>the <code>draw_flower(petals, radius, arc_angle)</code> definition</li><li>one <code>draw_at(...)</code> call that places a design on the page</li></ul>
+<p>Say this out loud: &quot;A circle can draw a full curve or part of a curve. A loop can repeat arcs into a design. Function arguments let one drawing chunk make many different designs.&quot;</p><nav class="pager" aria-label="Previous and next"><a href="turtle-functions-step-by-step.html">Previous: 4. Turtle Functions: Name A Chunk</a><a href="turtle-scene-builder-step-by-step.html">Next: 6. Turtle Scene Builder: Many Functions Make One Picture</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

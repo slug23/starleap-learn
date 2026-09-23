@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. Turtle Variables: One Change Controls Many Lines · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html" aria-current="page">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><h2>Projects</h2><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a></nav><p class="stamp">Build 2026.09.17-001210-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.17-001210-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Start With Your Turtle Template</a></li><li><a href="#section-3">Step 1 - Add A Distance Variable</a></li><li><a href="#section-4">Step 2 - One Edit, Two Effects</a></li><li><a href="#section-5">Step 3 - Two Variables Make A Rectangle</a></li><li><a href="#section-6">Step 4 - Why Variables Are Worth It</a></li><li><a href="#section-7">Step 5 - Variables Can Hold Style Too</a></li><li><a href="#section-8">Step 6 - Make It Yours</a></li><li><a href="#section-9">Teacher Check</a></li></ul></details><h1 id="section-1">1. Turtle Variables: One Change Controls Many Lines</h1>
+<p>You already know how to start a turtle program and give the turtle orders. Today the new move is a variable: a name that stands for a value. A variable is like a sticky note. Write the name on the note, stick it to a value, and then use the name wherever you need that value.</p>
+<p>Surprise: you have already been using variables. <code>screen</code> is the name for the turtle window. <code>t</code> is the name for the turtle that moves. Today you will make more variables on purpose.</p>
+<p>Today you will use variables to control distance, shape size, color, and line thickness.</p>
+<h2 id="section-2">Start With Your Turtle Template</h2>
+<p>Save a new file named <code>turtle_variables.py</code>.</p>
+<p>Type this whole program once.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new"></span>
+<span class="new"># Your turtle code goes here.</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. A blank turtle window is fine. Close the turtle window before you change the code again.</p>
+<h2 id="section-3">Step 1 - Add A Distance Variable</h2>
+<p>Find the middle of your program: after <code>t = turtle.Turtle()</code> and before <code>screen.mainloop()</code>. Replace the middle comment with the black lines.</p>
+<p>In this code box, gray lines are already in your program. Use them to find the right spot. Add or change the black lines.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">import turtle</span>
+<span class="reference"></span>
+<span class="reference">screen = turtle.Screen()</span>
+<span class="reference">screen.setup(600, 800, 0, 0)</span>
+<span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">length = 80</span>
+<span class="new"></span>
+<span class="new">t.forward(length)</span>
+<span class="new">t.left(90)</span>
+<span class="new">t.forward(length)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Notice that the turtle used <code>length</code> both times it moved forward. Both forward lines fetched the same value.</p>
+<h2 id="section-4">Step 2 - One Edit, Two Effects</h2>
+<p>Change only the value of <code>length</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">length = 140</span>
+<span class="reference"></span>
+<span class="reference">t.forward(length)</span>
+<span class="reference">t.left(90)</span>
+<span class="reference">t.forward(length)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program again.</p>
+<p>Watch both sides change even though you only edited the value once. That is why variables are useful: one change can control many lines.</p>
+<h2 id="section-5">Step 3 - Two Variables Make A Rectangle</h2>
+<p>Replace the middle turtle code with this version.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">width = 150</span>
+<span class="new">height = 70</span>
+<span class="new"></span>
+<span class="new">t.forward(width)</span>
+<span class="new">t.left(90)</span>
+<span class="new">t.forward(height)</span>
+<span class="new">t.left(90)</span>
+<span class="new">t.forward(width)</span>
+<span class="new">t.left(90)</span>
+<span class="new">t.forward(height)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Notice which sides use <code>width</code> and which sides use <code>height</code>.</p>
+<p>Now look for another repeated value. The turn angle <code>90</code> appears more than once. That number could become a variable too.</p>
+<p>Change only the two variable values.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">width = 90</span>
+<span class="new">height = 140</span>
+<span class="reference"></span>
+<span class="reference">t.forward(width)</span>
+<span class="reference">t.left(90)</span>
+<span class="reference">t.forward(height)</span>
+<span class="reference">t.left(90)</span>
+<span class="reference">t.forward(width)</span>
+<span class="reference">t.left(90)</span>
+<span class="reference">t.forward(height)</span></code></pre>
+<p class="callout">Run the program again. Watch the rectangle change from wide to tall without changing the turtle command lines.</p>
+<h2 id="section-6">Step 4 - Why Variables Are Worth It</h2>
+<p>Now draw a square the long way. Replace the middle code with this.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">side = 90</span>
+<span class="new">angle = 90</span>
+<span class="new"></span>
+<span class="new">t.forward(side)</span>
+<span class="new">t.left(angle)</span>
+<span class="new">t.forward(side)</span>
+<span class="new">t.left(angle)</span>
+<span class="new">t.forward(side)</span>
+<span class="new">t.left(angle)</span>
+<span class="new">t.forward(side)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Try <code>side = 50</code>, then <code>side = 130</code>. Run the program after each change.</p>
+<p>This square still has a lot of repeated lines. Notice the repeated chunk: forward, turn, forward, turn. Next class, Python will repeat that chunk for you.</p>
+<p>Also notice that <code>angle</code> now controls every turn. For a square, the turn angle is 90 degrees. Later, different angle values will help make different shapes.</p>
+<h2 id="section-7">Step 5 - Variables Can Hold Style Too</h2>
+<p>Numbers are not the only values. Text values go in quotes.</p>
+<p>Replace the middle code with this.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">side = 100</span>
+<span class="new">angle = 90</span>
+<span class="new">ink = &#x27;purple&#x27;</span>
+<span class="new">thickness = 5</span>
+<span class="new"></span>
+<span class="new">t.color(ink)</span>
+<span class="new">t.pensize(thickness)</span>
+<span class="new"></span>
+<span class="new">t.forward(side)</span>
+<span class="new">t.left(angle)</span>
+<span class="new">t.forward(side)</span>
+<span class="new">t.left(angle)</span>
+<span class="new">t.forward(side)</span>
+<span class="new">t.left(angle)</span>
+<span class="new">t.forward(side)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Check each variable by changing only one value, then running the program. <code>side</code> controls the size, <code>ink</code> controls the color, and <code>thickness</code> controls the line thickness.</p>
+<p class="callout">Important: Use quotes when you write the text value, like <code>&#x27;purple&#x27;</code>. Do not put quotes around the variable name when you use it later.</p>
+<h2 id="section-8">Step 6 - Make It Yours</h2>
+<p>Choose your own values on purpose. These are examples; yours can be different.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">side = 120</span>
+<span class="new">angle = 90</span>
+<span class="new">ink = &#x27;green&#x27;</span>
+<span class="new">thickness = 8</span>
+<span class="reference"></span>
+<span class="reference">t.color(ink)</span>
+<span class="reference">t.pensize(thickness)</span></code></pre>
+<p class="callout">Run the program after each edit, not after all three. Programmers test one small change at a time.</p>
+<h2 id="section-9">Teacher Check</h2>
+<p>Show your finished square. Then point to the line that controls each of these:</p>
+<ul><li>the size of the square</li><li>the turn angle</li><li>the color</li><li>the line thickness</li></ul>
+<p>Say this out loud: &quot;A variable is a name that stands for a value. When I change the value once, every line that uses the variable uses the new value.&quot;</p><nav class="pager" aria-label="Previous and next"><a href="turtle-for-loops-step-by-step.html">Next: 2. Turtle Loops: Repeat A Chunk</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

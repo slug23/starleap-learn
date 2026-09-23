@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3. Regular Polygon Builder: Variables Plus Loops · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html" aria-current="page">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><h2>Projects</h2><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a></nav><p class="stamp">Build 2026.09.17-001210-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.17-001210-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - A Square With Named Values</a></li><li><a href="#section-3">Step 2 - Find The Turn Angle</a></li><li><a href="#section-4">Step 3 - Let Python Calculate The Turn</a></li><li><a href="#section-5">Step 4 - Any Given Number Of Sides</a></li><li><a href="#section-6">Step 5 - Final Program</a></li><li><a href="#section-7">Step 6 - Make A Polygon You Can Explain</a></li><li><a href="#section-8">Teacher Check</a></li></ul></details><h1 id="section-1">3. Regular Polygon Builder: Variables Plus Loops</h1>
+<p>A regular polygon is a closed shape where every side has the same length and every turn has the same angle. Squares, equilateral triangles, pentagons, hexagons, and octagons are all regular polygons.</p>
+<p>Today you will combine variables and a loop so one program can draw a regular polygon with any given number of sides. For now, &quot;given&quot; means you set the number in a variable at the top of the program.</p>
+<h2 id="section-2">Step 1 - A Square With Named Values</h2>
+<p>Save a new file named <code>polygon_builder.py</code>.</p>
+<p>Start from your turtle template and put the black lines in the middle.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">import turtle</span>
+<span class="reference"></span>
+<span class="reference">screen = turtle.Screen()</span>
+<span class="reference">screen.setup(600, 800, 0, 0)</span>
+<span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">sides = 4</span>
+<span class="new">length = 100</span>
+<span class="new">angle = 90</span>
+<span class="new"></span>
+<span class="new">for i in range(sides):</span>
+<span class="new">    t.forward(length)</span>
+<span class="new">    t.left(angle)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Notice the three jobs. <code>sides</code> tells the loop how many times to repeat, <code>length</code> controls each side, and <code>angle</code> controls the turn after each side.</p>
+<h2 id="section-3">Step 2 - Find The Turn Angle</h2>
+<p>Keep the same program shape. First change <code>sides</code> and <code>length</code>. Then put your first test number on the <code>angle = ____</code> line, run the program, and notice whether the shape closes correctly.</p>
+<p>Triangle:</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">sides = 3</span>
+<span class="new">length = 110</span>
+<span class="new">angle = ____</span>
+<span class="reference"></span>
+<span class="reference">for i in range(sides):</span>
+<span class="reference">    ...</span></code></pre>
+<p>Now change only <code>angle</code> and run again. Keep trying until the triangle closes.</p>
+<p>Hexagon:</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">sides = 6</span>
+<span class="new">length = 70</span>
+<span class="new">angle = ____</span>
+<span class="reference"></span>
+<span class="reference">for i in range(sides):</span>
+<span class="reference">    ...</span></code></pre>
+<p>Now change only <code>angle</code> and run again. Keep trying until the hexagon closes.</p>
+<p>Hint: if the turtle does not turn enough, the path will stay too open. If the turtle turns too much, the path will fold inward. The turtle closes the shape when all the turns add up to 360 degrees.</p>
+<h2 id="section-4">Step 3 - Let Python Calculate The Turn</h2>
+<p>If a closed polygon needs a total turn of 360 degrees, then each turn is:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">angle = 360 / sides</span>
+<span class="new">print(angle)</span></code></pre>
+<p>Replace the top variables with this.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">sides = 5</span>
+<span class="new">length = 85</span>
+<span class="new">angle = 360 / sides</span>
+<span class="new">print(angle)</span>
+<span class="reference"></span>
+<span class="reference">for i in range(sides):</span>
+<span class="reference">    t.forward(length)</span>
+<span class="reference">    t.left(angle)</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>The printed value is proof that Python calculated the turn angle. Five sides makes a pentagon. The angle is 72 degrees because <code>360 / 5</code> is 72.</p>
+<h2 id="section-5">Step 4 - Any Given Number Of Sides</h2>
+<p>Now your program can draw many polygons by changing one main variable.</p>
+<p>Try these values. Choose a smaller length when the number of sides gets bigger.</p>
+<ul><li>7 sides, length 75</li><li>8 sides, length 65</li><li>10 sides, length 55</li><li>your own number of sides, with a length that keeps the drawing on screen</li></ul>
+<h2 id="section-6">Step 5 - Final Program</h2>
+<p>Here is the whole program in one place. Type it carefully, then make it yours by changing only the variables near the top.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.speed(0)</span>
+<span class="new"></span>
+<span class="new">sides = 7</span>
+<span class="new">length = 70</span>
+<span class="new">angle = 360 / sides</span>
+<span class="new">print(angle)</span>
+<span class="new">ink = &#x27;teal&#x27;</span>
+<span class="new">thickness = 4</span>
+<span class="new"></span>
+<span class="new">t.color(ink)</span>
+<span class="new">t.pensize(thickness)</span>
+<span class="new"></span>
+<span class="new">for i in range(sides):</span>
+<span class="new">    t.forward(length)</span>
+<span class="new">    t.left(angle)</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program after each small change.</p>
+<p>Change only <code>sides</code> and run the program. Then change only <code>length</code> and run it again. Then change only <code>ink</code> or <code>thickness</code>. One small change per run keeps the program easy to understand.</p>
+<h2 id="section-7">Step 6 - Make A Polygon You Can Explain</h2>
+<p>Pick the number of sides, side length, color, and thickness on purpose. Make sure the whole shape fits on the screen.</p>
+<h2 id="section-8">Teacher Check</h2>
+<p>Show your final polygon. Then point to:</p>
+<ul><li>the <code>sides</code> variable</li><li>the <code>angle = 360 / sides</code> line</li><li>the <code>for i in range(sides):</code> line</li><li>the two indented lines owned by the loop</li></ul>
+<p>Say this out loud: &quot;The loop draws one side and one turn each pass. The variable <code>sides</code> controls how many passes happen. The angle formula makes all the turns add up to 360 degrees.&quot;</p><nav class="pager" aria-label="Previous and next"><a href="turtle-for-loops-step-by-step.html">Previous: 2. Turtle Loops: Repeat A Chunk</a><a href="turtle-functions-step-by-step.html">Next: 4. Turtle Functions: Name A Chunk</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

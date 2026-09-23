@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2. Turtle Loops: Repeat A Chunk · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html" aria-current="page">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><h2>Projects</h2><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a></nav><p class="stamp">Build 2026.09.17-001210-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.17-001210-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - A Tiny Loop Before Turtle</a></li><li><a href="#section-3">The Left Edge Matters</a></li><li><a href="#section-4">Step 2 - Same Words, Different Ownership</a></li><li><a href="#section-5">Step 3 - Step Out On Purpose</a></li><li><a href="#section-6">Step 4 - The Old Turtle Square</a></li><li><a href="#section-7">Step 5 - The Loop Square</a></li><li><a href="#section-8">Step 6 - A Whitespace Bug Worth Meeting</a></li><li><a href="#section-9">Step 7 - Change Two Numbers, Get New Shapes</a></li><li><a href="#section-10">Teacher Check</a></li></ul></details><h1 id="section-1">2. Turtle Loops: Repeat A Chunk</h1>
+<p>In the last lesson, variables let one value control many lines. Today you will use a <code>for</code> loop to make Python repeat a chunk of code for you.</p>
+<p>The pattern starts like this:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">for i in range(4):</span>
+<span class="new">    print(&#x27;again&#x27;)</span></code></pre>
+<p>The colon and the whitespace at the beginning of the next line both matter.</p>
+<h2 id="section-2">Step 1 - A Tiny Loop Before Turtle</h2>
+<p>Save a new file named <code>loop_warmup.py</code>.</p>
+<p>Type this program.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">print(&#x27;start&#x27;)</span>
+<span class="new"></span>
+<span class="new">for i in range(3):</span>
+<span class="new">    print(&#x27;again&#x27;)</span>
+<span class="new"></span>
+<span class="new">print(&#x27;done&#x27;)</span></code></pre>
+<p class="callout">Before you run the program, say what should print first, what should repeat, and what should print last. Then run it and check whether the output matches your prediction.</p>
+<h2 id="section-3">The Left Edge Matters</h2>
+<p>The white space at the beginning of a line is Python&#x27;s ownership map.</p>
+<p>A line that starts farther to the right is part of a chunk owned / managed by the closest line above it that is tabbed over less. In this lesson, the less-indented owner line is the <code>for</code> line ending with a colon.</p>
+<p>Usually your editor makes four spaces when you press Tab. Four spaces is the usual Python indent.</p>
+<ul><li>Indented under the <code>for</code> line means inside the loop.</li><li>Back at the left edge means outside the loop.</li><li>Spaces inside math are mostly for human eyes.</li><li>Spaces at the beginning of a line are part of the code.</li></ul>
+<h2 id="section-4">Step 2 - Same Words, Different Ownership</h2>
+<p>Program A:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">for i in range(3):</span>
+<span class="new">    print(&#x27;hip&#x27;)</span>
+<span class="new"></span>
+<span class="new">print(&#x27;hooray&#x27;)</span></code></pre>
+<p class="callout">Before you run Program A, say what will print once and what will print three times.</p>
+<p>Program B:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">for i in range(3):</span>
+<span class="new">    print(&#x27;hip&#x27;)</span>
+<span class="new">    print(&#x27;hooray&#x27;)</span></code></pre>
+<p class="callout">Before you run Program B, notice that <code>print(&#x27;hooray&#x27;)</code> moved to the right. Now say what will change.</p>
+<p>Run both versions. The only difference is whether the loop owns the <code>print(&#x27;hooray&#x27;)</code> line.</p>
+<h2 id="section-5">Step 3 - Step Out On Purpose</h2>
+<p>Your editor will probably keep indenting after a colon. That is helpful, but it is not in charge. You are.</p>
+<p>Do this drill once:</p>
+<ul><li>Type the <code>for</code> line and press Enter.</li><li>Type one body line while indented.</li><li>Press Enter again. Notice that you are still indented.</li><li>Press Backspace or Shift+Tab to step back to the left edge.</li><li>Type the line that should run once after the loop.</li></ul>
+<p>Use this exact program for one round of the drill.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">for i in range(4):</span>
+<span class="new">    print(&#x27;inside&#x27;)</span>
+<span class="new"></span>
+<span class="new">print(&#x27;outside&#x27;)</span></code></pre>
+<p class="callout">Run the program. <code>inside</code> should print four times. <code>outside</code> should print once.</p>
+<h2 id="section-6">Step 4 - The Old Turtle Square</h2>
+<p>Save a new file named <code>loop_square.py</code>.</p>
+<p>Start from your turtle template.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new"></span>
+<span class="new"># Your turtle code goes here.</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p>Replace the middle comment with the old long-way square.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">import turtle</span>
+<span class="reference"></span>
+<span class="reference">screen = turtle.Screen()</span>
+<span class="reference">screen.setup(600, 800, 0, 0)</span>
+<span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">t.forward(100)</span>
+<span class="new">t.left(90)</span>
+<span class="new">t.forward(100)</span>
+<span class="new">t.left(90)</span>
+<span class="new">t.forward(100)</span>
+<span class="new">t.left(90)</span>
+<span class="new">t.forward(100)</span>
+<span class="new">t.left(90)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. It works, but notice the repeated chunk: forward, turn, forward, turn.</p>
+<h2 id="section-7">Step 5 - The Loop Square</h2>
+<p>Replace the long-way square with this shorter version.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">for i in range(4):</span>
+<span class="new">    t.forward(100)</span>
+<span class="new">    t.left(90)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Check that the loop version draws the same square. The two indented lines are the loop&#x27;s chunk.</p>
+<h2 id="section-8">Step 6 - A Whitespace Bug Worth Meeting</h2>
+<p>Change the middle code to this on purpose.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">for i in range(4):</span>
+<span class="new">    t.forward(100)</span>
+<span class="new">t.left(90)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p>Predict before you run it: What repeats? What runs only once?</p>
+<p class="callout">Run the program.</p>
+<p>Fix it by moving <code>t.left(90)</code> back into the loop. It should be indented under the <code>for</code> line.</p>
+<h2 id="section-9">Step 7 - Change Two Numbers, Get New Shapes</h2>
+<p>Try a triangle by changing the loop count and the turn.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">for i in range(3):</span>
+<span class="new">    t.forward(100)</span>
+<span class="new">    t.left(120)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p>Try a hexagon.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t = turtle.Turtle()</span>
+<span class="reference"></span>
+<span class="new">for i in range(6):</span>
+<span class="new">    t.forward(70)</span>
+<span class="new">    t.left(60)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p>The triangle uses 3 repeats and a 120-degree turn. The hexagon uses 6 repeats and a 60-degree turn.</p>
+<h2 id="section-10">Teacher Check</h2>
+<p>Show a square drawn by a loop. Point at the <code>for</code> line, then point at the loop body.</p>
+<p>Say this out loud: &quot;The indented lines belong to the loop. The loop runs that chunk once for each pass in <code>range</code>.&quot;</p><nav class="pager" aria-label="Previous and next"><a href="turtle-variables-step-by-step.html">Previous: 1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-regular-polygon-step-by-step.html">Next: 3. Regular Polygon Builder: Variables Plus Loops</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Turtle Functions: Name A Chunk · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html" aria-current="page">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><h2>Projects</h2><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a></nav><p class="stamp">Build 2026.09.17-001210-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.17-001210-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Start With A Turtle File</a></li><li><a href="#section-3">Step 1 - Define And Call <code>draw_square()</code></a></li><li><a href="#section-4">Step 2 - Prove The Call Matters</a></li><li><a href="#section-5">Step 3 - Add <code>draw_triangle()</code></a></li><li><a href="#section-6">Step 4 - Add One More Shape</a></li><li><a href="#section-7">Step 5 - Notice The Pattern</a></li><li><a href="#section-8">Step 6 - Arguments Are Values You Hand In</a></li><li><a href="#section-9">Step 7 - Rename The Arguments</a></li><li><a href="#section-10">Step 8 - Call One Function Many Ways</a></li><li><a href="#section-11">Step 9 - Move With <code>t.goto(x, y)</code></a></li><li><a href="#section-12">Final Project - Fill A Page With Polygons</a></li><li><a href="#section-13">Teacher Check</a></li></ul></details><h1 id="section-1">4. Turtle Functions: Name A Chunk</h1>
+<p>You already know variables can store values and loops can repeat a chunk. Today you will give a chunk of code a name.</p>
+<p>A function is a named chunk of code. <code>def</code> defines it. Calling the function runs it.</p>
+<p>Today you will start with shape-specific functions like <code>draw_square()</code> and <code>draw_triangle()</code>. Then you will make one flexible function that can draw many different regular polygons.</p>
+<h2 id="section-2">Start With A Turtle File</h2>
+<p>Save a new file named <code>turtle_functions.py</code>.</p>
+<p>Start with this template.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.speed(0)</span>
+<span class="new"></span>
+<span class="new"># Your function code goes here.</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. A blank turtle window is fine. Close the turtle window before you change the code again.</p>
+<h2 id="section-3">Step 1 - Define And Call <code>draw_square()</code></h2>
+<p>Replace the middle comment with this code.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.speed(0)</span>
+<span class="reference"></span>
+<span class="new">def draw_square():</span>
+<span class="new">    for i in range(4):</span>
+<span class="new">        t.forward(80)</span>
+<span class="new">        t.left(90)</span>
+<span class="new"></span>
+<span class="new">draw_square()</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>The <code>def draw_square():</code> line defines the function. The indented lines belong to it. The <code>draw_square()</code> line calls it.</p>
+<p>If nothing happened on your screen, check the call line. <code>def draw_square():</code> teaches Python the chunk, but <code>draw_square()</code> actually runs it.</p>
+<h2 id="section-4">Step 2 - Prove The Call Matters</h2>
+<p>Change only the call at the bottom, then run the program.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_square():</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">draw_square()</span>
+<span class="new">t.penup()</span>
+<span class="new">t.forward(120)</span>
+<span class="new">t.pendown()</span>
+<span class="new">draw_square()</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<h2 id="section-5">Step 3 - Add <code>draw_triangle()</code></h2>
+<p>Add a second named chunk above your calls. Then call it after moving the turtle forward.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_square():</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">def draw_triangle():</span>
+<span class="new">    for i in range(3):</span>
+<span class="new">        t.forward(90)</span>
+<span class="new">        t.left(120)</span>
+<span class="reference"></span>
+<span class="reference">draw_square()</span>
+<span class="reference"></span>
+<span class="new">t.penup()</span>
+<span class="new">t.forward(130)</span>
+<span class="new">t.pendown()</span>
+<span class="new">draw_triangle()</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Now your program has two function definitions and two function calls.</p>
+<h2 id="section-6">Step 4 - Add One More Shape</h2>
+<p>Add a hexagon function above your calls. Then call it after the triangle.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_triangle():</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">def draw_hexagon():</span>
+<span class="new">    for i in range(6):</span>
+<span class="new">        t.forward(55)</span>
+<span class="new">        t.left(60)</span>
+<span class="reference"></span>
+<span class="reference">draw_triangle()</span>
+<span class="reference"></span>
+<span class="new">t.penup()</span>
+<span class="new">t.forward(130)</span>
+<span class="new">t.pendown()</span>
+<span class="new">draw_hexagon()</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>You now have <code>draw_square()</code>, <code>draw_triangle()</code>, and <code>draw_hexagon()</code>. Each function has a clear name, and each call tells Python which chunk to run.</p>
+<h2 id="section-7">Step 5 - Notice The Pattern</h2>
+<p>These functions are useful, but they repeat the same idea.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def draw_square():</span>
+<span class="new">    for i in range(4):</span>
+<span class="new">        t.forward(80)</span>
+<span class="new">        t.left(90)</span>
+<span class="new"></span>
+<span class="new">def draw_triangle():</span>
+<span class="new">    for i in range(3):</span>
+<span class="new">        t.forward(90)</span>
+<span class="new">        t.left(120)</span>
+<span class="new"></span>
+<span class="new">def draw_hexagon():</span>
+<span class="new">    for i in range(6):</span>
+<span class="new">        t.forward(55)</span>
+<span class="new">        t.left(60)</span></code></pre>
+<p>Each function chooses a number of sides, a side length, and a turn angle. The next version will let one function receive those values.</p>
+<h2 id="section-8">Step 6 - Arguments Are Values You Hand In</h2>
+<p>Python lets a function accept values when you call it. Those values are called arguments.</p>
+<p>This version works, but the argument names are not helpful.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.speed(0)</span>
+<span class="reference"></span>
+<span class="new">def draw_polygon(a, b):</span>
+<span class="new">    angle = 360 / a</span>
+<span class="new">    for i in range(a):</span>
+<span class="new">        t.forward(b)</span>
+<span class="new">        t.left(angle)</span>
+<span class="new"></span>
+<span class="new">draw_polygon(5, 70)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>The computer can use <code>a</code> and <code>b</code>, but readers have to stop and ask, &quot;What does <code>a</code> mean? What does <code>b</code> mean?&quot; Short names are not always better names.</p>
+<h2 id="section-9">Step 7 - Rename The Arguments</h2>
+<p>Replace <code>a</code> and <code>b</code> with names that explain their jobs.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.speed(0)</span>
+<span class="reference"></span>
+<span class="new">def draw_polygon(sides, length):</span>
+<span class="new">    angle = 360 / sides</span>
+<span class="new">    print(angle)</span>
+<span class="new">    for i in range(sides):</span>
+<span class="new">        t.forward(length)</span>
+<span class="new">        t.left(angle)</span>
+<span class="new"></span>
+<span class="new">draw_polygon(5, 70)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Now the code says what each argument means: the first value becomes <code>sides</code>, and the second becomes <code>length</code>.</p>
+<h2 id="section-10">Step 8 - Call One Function Many Ways</h2>
+<p>Change only the call line each time.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_polygon(sides, length):</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">draw_polygon(3, 80)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Then try these calls one at a time.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">draw_polygon(4, 70)</span>
+<span class="new">draw_polygon(5, 60)</span>
+<span class="new">draw_polygon(6, 50)</span>
+<span class="new">draw_polygon(8, 35)</span></code></pre>
+<p>One function can draw many shapes because each call hands in different arguments.</p>
+<h2 id="section-11">Step 9 - Move With <code>t.goto(x, y)</code></h2>
+<p>So far, the turtle has moved forward from wherever it already was. <code>t.goto(x, y)</code> teaches the turtle to jump to an exact spot on the screen.</p>
+<p>The center of the turtle window is <code>(0, 0)</code>. Bigger <code>x</code> values move right. Smaller or negative <code>x</code> values move left. Bigger <code>y</code> values move up. Smaller or negative <code>y</code> values move down.</p>
+<p>Use <code>t.penup()</code> before <code>t.goto(...)</code> and <code>t.pendown()</code> after it when you want the turtle to move without drawing a travel line.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def draw_polygon(sides, length):</span>
+<span class="reference">    ...</span>
+<span class="reference"></span>
+<span class="new">t.penup()</span>
+<span class="new">t.goto(-200, 120)</span>
+<span class="new">t.pendown()</span>
+<span class="new">draw_polygon(5, 60)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>Change only the two numbers in <code>t.goto(-200, 120)</code>, then run again. Notice where the shape starts.</p>
+<h2 id="section-12">Final Project - Fill A Page With Polygons</h2>
+<p>Use this full program to make a page of different regular polygons.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.speed(0)</span>
+<span class="new"></span>
+<span class="new">def draw_polygon(sides, length):</span>
+<span class="new">    angle = 360 / sides</span>
+<span class="new">    print(angle)</span>
+<span class="new">    for i in range(sides):</span>
+<span class="new">        t.forward(length)</span>
+<span class="new">        t.left(angle)</span>
+<span class="new"></span>
+<span class="new">def draw_at(x_position, y_position, sides, length):</span>
+<span class="new">    t.penup()</span>
+<span class="new">    t.goto(x_position, y_position)</span>
+<span class="new">    t.pendown()</span>
+<span class="new">    draw_polygon(sides, length)</span>
+<span class="new"></span>
+<span class="new">draw_at(-230, 150, 3, 75)</span>
+<span class="new">draw_at(-60, 150, 4, 70)</span>
+<span class="new">draw_at(120, 150, 5, 60)</span>
+<span class="new"></span>
+<span class="new">draw_at(-230, -80, 6, 55)</span>
+<span class="new">draw_at(-60, -80, 7, 45)</span>
+<span class="new">draw_at(120, -80, 8, 40)</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program.</p>
+<p>The <code>draw_at(...)</code> function has four argument names. <code>x_position</code> and <code>y_position</code> say where the turtle should go. <code>sides</code> and <code>length</code> say what shape to draw after the turtle gets there.</p>
+<p>Make the page yours by changing the argument values in the calls. Keep the function names and argument names clear enough that someone else can read what your program is doing.</p>
+<h2 id="section-13">Teacher Check</h2>
+<p>Show your page of polygons. Then point to:</p>
+<ul><li>one function definition</li><li>one function call</li><li>the two argument names in <code>draw_polygon(sides, length)</code></li><li>the <code>t.goto(x_position, y_position)</code> line</li><li>two different calls that hand in different argument values</li></ul>
+<p>Say this out loud: &quot;A function is a named chunk of code. Arguments are values I hand to the function when I call it. Meaningful argument names make code easier to read later.&quot;</p><nav class="pager" aria-label="Previous and next"><a href="turtle-regular-polygon-step-by-step.html">Previous: 3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-circles-arcs-step-by-step.html">Next: 5. Turtle Circles And Arcs: Curves That Repeat</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>
