@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Transistor&#8217;s Arithmetic</title>
+<style>
+/* Embedded copy of assets/lesson.css (math-shelf accent: violet) — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--violet);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--violet-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.idea    .label { color: var(--violet); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 26px;
+  text-align: center;
+  margin: .8em 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table, ol.steps > li { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html" class="cur">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Math shelf · Optional — for the curious &middot; build 2026.09.23-1531</p>
+  <h1>The Transistor's Arithmetic</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>The transistor multiplies current: <strong>collector current = β × base current</strong> — until the circuit can't supply any more. Then it's simply a closed switch.</p>
+</div>
+
+<h2>The cast: three legs</h2>
+<figure class="schematic">
+  <svg viewBox="0 0 350 190" role="img" aria-label="NPN transistor symbol: base lead entering a vertical bar from the left, collector leaving up-right, emitter leaving down-right with an arrow">
+    <circle cx="175" cy="95" r="62" fill="none" stroke="var(--ink)" stroke-width="2"/>
+    <line class="w" x1="158" y1="65" x2="158" y2="125"/>
+    <line class="w" x1="80" y1="95" x2="158" y2="95"/>
+    <line class="w" x1="158" y1="78" x2="210" y2="42"/>
+    <line class="w" x1="210" y1="42" x2="210" y2="14"/>
+    <line class="w" x1="158" y1="112" x2="210" y2="148"/>
+    <polygon points="210,148 192,144 201,132" fill="var(--ink)"/>
+    <line class="w" x1="210" y1="148" x2="210" y2="176"/>
+    <text class="lbl" x="72" y="88" text-anchor="end">B · base</text>
+    <text class="lbl" x="222" y="20">C · collector</text>
+    <text class="lbl" x="222" y="172">E · emitter</text>
+  </svg>
+  <figcaption><b>The NPN transistor.</b> The heavy traffic flows collector → emitter; the base is the small control current that permits it. The arrow marks the emitter.</figcaption>
+</figure>
+
+<h2>Two rules run everything</h2>
+<ol class="steps">
+  <li><strong>The base door costs ≈ 0.7 V.</strong> The base-to-emitter junction behaves like a small diode: below ≈ 0.7 V nothing happens; at ≈ 0.7 V it conducts, and that drop stays ≈ 0.7 V no matter the current — a smaller sibling of the LED's 2.0 V.</li>
+  <li><strong>I<sub>C</sub> = β × I<sub>B</sub>.</strong> Every unit of base current permits β units of collector current. β (beta — datasheets write it <span class="val">hFE</span>, and your multimeter's transistor socket measures it) is typically 100 to 300 <em>for the same part number</em>. Plan on the minimum, ≈ 100; anything more is bonus. (That design habit has its own sheet: <a href="math-tolerance.html">Tolerance &amp; Error</a>.)</li>
+</ol>
+
+<h2>Saturation: the switch region</h2>
+<p>Rule 2 has a ceiling. The collector circuit obeys <a href="math-v-equals-ir.html">Ohm's law</a> like everything else — the supply and the load resistor set a maximum current no β can exceed. Push the base hard enough that β × I<sub>B</sub> would <em>overshoot</em> that maximum, and the transistor <strong>saturates</strong>: fully on, dropping only ≈ <span class="val">0.2 V</span> collector-to-emitter. For a switch, saturation is the goal — the rule of thumb is to feed the base about <strong>×10</strong> the minimum, so the switch slams shut even on a weak-β part.</p>
+
+<h2>The design: a transistor switches the LED</h2>
+<figure class="schematic">
+  <svg viewBox="0 0 560 330" role="img" aria-label="Transistor LED switch: 5 volt rail through an LED and 220 ohm resistor into the collector, emitter to ground, and a control signal through a base resistor">
+    <text class="lbl" x="195" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="205" y1="26" x2="390" y2="26"/>
+    <line class="w" x1="390" y1="26" x2="390" y2="48"/>
+    <polygon class="w" points="376,48 404,48 390,72"/>
+    <line class="w" x1="376" y1="72" x2="404" y2="72"/>
+    <path class="w" style="stroke-width:1.75" d="M407,54 L421,42 M421,42 l-10,2 M421,42 l-2,10"/>
+    <line class="w" x1="390" y1="72" x2="390" y2="88"/>
+    <path class="w" d="M390,88 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="417" y="128">220 Ω</text>
+    <line class="w" x1="390" y1="160" x2="390" y2="190"/>
+    <text class="lbl-muted" x="403" y="180">≈ 13 mA</text>
+    <line class="w" x1="372" y1="200" x2="372" y2="240"/>
+    <line class="w" x1="390" y1="190" x2="372" y2="210"/>
+    <line class="w" x1="372" y1="230" x2="390" y2="250"/>
+    <polygon points="390,250 373,247 381,235" fill="var(--ink)"/>
+    <line class="w" x1="390" y1="250" x2="390" y2="272"/>
+    <text class="lbl-muted" x="362" y="196" text-anchor="end">C</text>
+    <text class="lbl-muted" x="362" y="262" text-anchor="end">E</text>
+    <line class="w" x1="160" y1="220" x2="246" y2="220"/>
+    <path class="w" d="M246,220 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="330" y1="220" x2="372" y2="220"/>
+    <text class="lbl" x="288" y="190" text-anchor="middle">R_B 4.7 kΩ</text>
+    <text class="lbl-muted" x="340" y="212" text-anchor="middle">≈ 1 mA</text>
+    <text class="lbl" x="152" y="214" text-anchor="end">control signal</text>
+    <text class="lbl-muted" x="152" y="232" text-anchor="end">5 V on · 0 V off</text>
+    <line class="w" x1="205" y1="272" x2="390" y2="272"/>
+    <text class="lbl" x="195" y="278" text-anchor="end">ground rail</text>
+  </svg>
+  <figcaption><b>The whole trick in one circuit:</b> ≈ 1 mA whispering at the base lets ≈ 13 mA drive the LED. The control signal never touches the heavy current.</figcaption>
+</figure>
+
+<p>Every number in that figure is computable. Watch:</p>
+<ol class="steps">
+  <li><strong>Collector current first.</strong> Fully on, the loop from 5 V drops: 2.0 V (red LED) + 0.2 V (saturated transistor), leaving 2.8 V across the 220 Ω. I<sub>C</sub> = 2.8 ÷ 220 ≈ <span class="val">13 mA</span>. (Barely less than the 14 mA without a transistor — the 0.2 V toll is cheap.)</li>
+  <li><strong>Minimum base current.</strong> 13 mA ÷ β = 13 ÷ 100 = <span class="val">0.13 mA</span>.</li>
+  <li><strong>Overdrive ×10.</strong> Aim for ≈ <span class="val">1.3 mA</span> into the base — saturation with margin.</li>
+  <li><strong>Size the base resistor.</strong> A 5 V control signal, minus the 0.7 V door: 4.3 V lands on R<sub>B</sub>. R<sub>B</sub> = 4.3 ÷ 1.3 mA ≈ <span class="val">3.3 kΩ</span>. From the kit: <strong>4.7 kΩ</strong> gives 0.91 mA (7× the minimum — fine), <strong>1 kΩ</strong> gives 4.3 mA (33× — also fine). Engineering answers are ranges, not points: anything in 1 – 4.7 kΩ switches this LED hard.</li>
+</ol>
+
+<div class="callout safety">
+  <p class="label">The base is a diode</p>
+  <p>Never wire a base straight to 5 V. A 0.7 V door across a 5 V supply with nothing in between is the naked-LED story again — a huge current and a cooked transistor. <strong>The base always gets its own resistor</strong>, for exactly the reason the LED always gets its 220 Ω.</p>
+</div>
+
+<div class="callout note">
+  <p class="label">Where this is headed</p>
+  <p>The Voltage Divider sheet warns that a tap can't <em>power</em> anything — hang a load on it and it sags. But a transistor base barely sips: ≈ 1 mA of information. So a sensor divider whispers its reading to a base, and the collector does the heavy lifting. Photoresistor divider → base → LED: that's the night-light build ahead, and now you've already done its arithmetic.</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>How hot does the switch run? Power is <a href="math-p-equals-iv.html">P = IV</a> across the transistor itself: saturated, 0.2 V × 13 mA ≈ <span class="val">2.6 mW</span> — nothing. But run it <em>half</em>-on (2.5 V across it, ≈ 6 mA) and it burns 15 mW — several times more while doing less. Switches want to be fully on or fully off; the in-between is where the heat lives. That, at a thousand times our scale, is why amplifiers wear heat sinks.</p>
+</div>
+
+<h2>Practice</h2>
+<p>Answers at the bottom. β = 100 unless stated.</p>
+<ol>
+  <li>Swap in the blue LED (3.2 V drop), same 220 Ω. Saturated collector current?</li>
+  <li>Minimum base current for that — and with the ×10 rule, what target?</li>
+  <li>What R<sub>B</sub> hits that target from a 5 V signal, and which kit resistor do you actually use?</li>
+  <li>The meter's transistor socket reads your part's β as 250. Does the design change?</li>
+</ol>
+
+<h2>Answers</h2>
+<p><strong>1.</strong> 5 − 3.2 − 0.2 = 1.6 V across 220 Ω → ≈ 7 mA. <strong>2.</strong> 7 ÷ 100 = 0.07 mA minimum; ×10 → 0.7 mA. <strong>3.</strong> R<sub>B</sub> = 4.3 ÷ 0.7 mA ≈ 6.1 kΩ → use 4.7 kΩ (0.91 mA, ≈ 13× minimum — comfortably saturated). <strong>4.</strong> No. The design was built on the <em>minimum</em> β; a stronger part just saturates harder. Designs that only work on lucky parts aren't designs.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Math shelf · The Transistor's Arithmetic</span>
+  <span>0.7 to open · β to multiply · ×10 to slam shut</span>
+</footer>
+
+</body>
+</html>

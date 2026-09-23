@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 4 · Volts &amp; Ohms</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox
+    { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html" class="cur">4 &middot; Volts &amp; Ohms</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: loop surgery, from memory</a><a class="sub" href="#s4">4 &middot; First measurements</a><a class="sub" href="#s5">5 &middot; Count the drops</a><a class="sub" href="#s6">6 &middot; The lesson-3 mystery, solved</a><a class="sub" href="#s7">7 &middot; Ohms: measuring the squeeze</a><a class="sub" href="#s8">8 &middot; Fill in the blank</a><a class="sub" href="#s9">9 &middot; Words to know</a><a class="sub" href="#s10">10 &middot; Exit ticket</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 4 · 55 min &middot; build 2026.09.23-1531</p>
+  <h1>Volts &amp; Ohms</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">Big idea</p>
+  <p>Every component in a loop takes a share of the supply's voltage — its <strong>voltage drop</strong> — and <strong>the drops always add up to the supply's voltage</strong>. The meter turns that invisible bookkeeping into numbers you can check.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Measure <strong>voltage</strong> — and understand why it's always <em>between two points</em>.</li>
+  <li>Prove that the drops sum to the supply voltage on your own circuit, then break the rule. (You can't. That's the point.)</li>
+  <li>Solve lesson 3's mystery: where did the 5 volts go when red + blue went dim, or dark?</li>
+  <li>Measure <strong>resistance</strong> and crack the resistor color code.</li>
+  <li>Complete your first fill-in-the-blank circuit — schematic with a hole in it, no steps.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Everything so far (board, power supply, LEDs, jumpers, switch)</li>
+  <li>Multimeter — one per pair</li>
+  <li>Resistor assortment — <span class="val">220 Ω</span>, <span class="val">470 Ω</span>, <span class="val">1 kΩ</span>, <span class="val">4.7 kΩ</span>, <span class="val">10 kΩ</span></li>
+  <li>A pencil with a soft, dark lead (for Go further)</li>
+  <li>Lesson 1's conductor-hunt bin, on the side table (for Go further)</li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span> Warm-up: loop surgery, from memory</h2>
+<p><strong>Kits closed.</strong> Draw the plain single-LED loop from memory — supply on the rails, <span class="val">220 Ω</span>, LED, three lettered nodes. Then open the box: lesson 3's circuit is standing there, and your job is surgery, not construction. Reduce it to exactly your drawing — pull every part the drawing doesn't show (the whole second branch, any switch, the blue budget-breaker if it stayed in), closing each gap you create — and say the node letters as you confirm what remains. Five minutes. Leave it standing; it's today's laboratory.</p>
+
+<h2 id="s4"><span class="num">4</span> First measurements</h2>
+<p>New dial position: <strong>DC volts</strong> — the V with straight lines, not the wavy ~. Volts get measured on a <strong>live, powered</strong> circuit: two probes, two points, like this:</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 300" role="img" aria-label="LED loop with a voltmeter measuring across the LED">
+    <line class="w" x1="90" y1="60" x2="90" y2="138"/>
+    <line class="w" x1="66" y1="138" x2="114" y2="138"/>
+    <line class="w" x1="78" y1="158" x2="102" y2="158"/>
+    <line class="w" x1="90" y1="158" x2="90" y2="240"/>
+    <text class="lbl" x="126" y="143">+</text>
+    <text class="lbl" x="126" y="166">−</text>
+    <text class="lbl" x="58" y="134" text-anchor="end">5 V</text>
+    <text class="lbl-muted" x="58" y="152" text-anchor="end">supply</text>
+    <line class="w" x1="90" y1="60" x2="196" y2="60"/>
+    <path class="w" d="M196,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="280" y1="60" x2="400" y2="60"/>
+    <text class="lbl" x="238" y="30" text-anchor="middle">220 Ω</text>
+    <line class="w" x1="400" y1="60" x2="400" y2="124"/>
+    <polygon class="w" points="386,124 414,124 400,150"/>
+    <line class="w" x1="386" y1="150" x2="414" y2="150"/>
+    <line class="w" x1="400" y1="150" x2="400" y2="240"/>
+    <line class="w" x1="90" y1="240" x2="400" y2="240"/>
+    <circle cx="497" cy="137" r="17" fill="#fff" stroke="var(--copper)" stroke-width="2.5"/>
+    <text class="lbl" x="497" y="143" text-anchor="middle" fill="var(--copper-ink)" font-weight="700">V</text>
+    <line x1="484" y1="126" x2="405" y2="108" stroke="#b23a32" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="484" y1="148" x2="405" y2="168" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="403" cy="107" r="4" fill="#b23a32"/>
+    <circle cx="403" cy="169" r="4" fill="var(--ink)"/>
+    <text class="lbl-muted" x="497" y="176" text-anchor="middle">across</text>
+    <g class="nodeb"><circle cx="143" cy="60" r="13"/><text x="143" y="65" text-anchor="middle">A</text></g>
+    <g class="nodeb"><circle cx="345" cy="60" r="13"/><text x="345" y="65" text-anchor="middle">B</text></g>
+    <g class="nodeb"><circle cx="245" cy="240" r="13"/><text x="245" y="245" text-anchor="middle">C</text></g>
+  </svg>
+  <figcaption>Measuring <b>across</b> the LED: red probe on node <b>B</b> (the side nearer +), black on node <b>C</b>. Whatever it reads is the LED's <b>voltage drop</b>.</figcaption>
+</figure>
+
+<p>One habit from the very first reading: <strong>red probe on the side nearer the supply's +, black on the side nearer −.</strong> Backwards hurts nothing — the reading just comes out negative; swap the probes and carry on. (Today's tables want the plain, no-minus numbers.)</p>
+
+<div class="callout safety">
+  <p class="label">Meter rules</p>
+  <p><strong>Volts:</strong> circuit powered ON, probes touch two nodes — measuring across is safe and normal. <strong>Ohms &amp; continuity:</strong> power OFF — and for ohms, the part out of the circuit. <strong>The current jacks (mA and 10 A):</strong> off-limits — leave the red probe in the V/Ω jack all year. (Teachers will demo current measurement once; ask us why it kills meters — or read the <strong>Multimeter</strong> card in the extras.)</p>
+</div>
+
+<div class="callout note">
+  <p class="label">Read the unit, not just the number</p>
+  <p>The meter picks its own scale — and announces which one, in small letters at the edge of the display: <span class="val">V</span> or <span class="val">mV</span> (thousandths of a volt) for voltage; <span class="val">Ω</span>, <span class="val">kΩ</span> (thousands), or <span class="val">MΩ</span> (millions) for resistance. A display saying <strong>3.2</strong> means nothing by itself: 3.2 <span class="val">V</span> is an LED drop, 3.2 <span class="val">mV</span> is a thousand times smaller — basically zero. Glance at the unit before you write any number down.</p>
+</div>
+
+<h2 id="s5"><span class="num">5</span> Count the drops</h2>
+<p>Power your warm-up loop and measure — <strong>predict before each reading</strong>, and swap who holds the probes each time so both of you get the practice:</p>
+<table>
+  <tr><th>Measurement (probes across…)</th><th>Predict</th><th>Reading</th></tr>
+  <tr><td>The supply — + rail to − rail</td><td></td><td></td></tr>
+  <tr><td>The resistor (node <span class="node">A</span> to node <span class="node">B</span>)</td><td></td><td></td></tr>
+  <tr><td>The LED (node <span class="node">B</span> to node <span class="node">C</span>)</td><td></td><td></td></tr>
+  <tr><td><strong>Resistor drop + LED drop =</strong></td><td></td><td></td></tr>
+</table>
+<div class="callout tryit">
+  <p class="label">Try to break the rule</p>
+  <p>Power off, swap in a different LED color, and remeasure both drops. Both numbers move — the new LED claims a different share, and the resistor's share shifts to match — but the sum refuses to budge from the supply's own reading. Nothing you can build on this board will break this rule; engineers bet their designs on it every single day, and its fancy name is in the vocab list. Done? Power off and put the <strong>red</strong> LED back — the rest of today counts on it.</p>
+</div>
+
+<h3>Why two probes?</h3>
+<p>Because voltage isn't <em>at</em> a place — it's a <em>difference</em> between two places. Asking "what's the voltage of node B?" is like asking "what's the distance of Chicago?" — distance <em>to where?</em> Every voltage is a <em>between</em>. That's why the measurement is called <strong>across</strong>, and why the meter can't do it with one probe.</p>
+
+<h2 id="s6"><span class="num">6</span> The lesson-3 mystery, solved</h2>
+<p>Back in lesson 3, red + blue in series went dim, or dark, and we said their two drops broke the supply's 5-volt budget. Today you can audit the books. Power off, make sure the red LED is the one in your loop, and grow it — blue LED in <em>after</em> the red (four rows: power → resistor → red LED → blue LED → back).</p>
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>The pair is dim — maybe dark — but the supply still pushes 5 V. Where <em>is</em> that voltage? What will the meter read across the resistor? Across each LED? <span class="writeline"></span></p>
+</div>
+<p>Now measure all three drops. The headline is the resistor: its drop collapsed — compare the ~3 V it claimed in your working loop. A resistor only develops a drop when current flows through it, so for a given resistor its reading is a <strong>current report</strong>: smaller drop across your 220 Ω, less current through it. How far it fell depends on your pair. A dim glow: a few tenths of a volt — a small fraction of the current you had. Dark: a few <span class="val">mV</span> — millivolts, thousandths of a volt — small, but measurable, and the meter can tell small from nothing. Either way the two LEDs claim almost the entire 5 V between them and leave the resistor next to nothing to push with. Nothing is broken; much less is flowing. The meter can also tell a trickle from a break: a resistor reading a flat 0 V, with the whole 5 V showing up across one spot, is the #1 clue that the loop is open there. (That's the "drop check" on your Debugging Loop card.)</p>
+
+<h2 id="s7"><span class="num">7</span> Ohms: measuring the squeeze</h2>
+<p>Back to the beep's dial position from lesson 2 — it wakes up in plain <strong>Ω</strong>, resistance, so this time there is no Select press at all. Rules: power off, part out of the circuit, probes on its two legs (fingers off the metal — you're a resistor too, and you'll pollute the reading). And watch the display's unit: the same digits with <span class="val">Ω</span>, <span class="val">kΩ</span>, or <span class="val">MΩ</span> after them are three wildly different resistors.</p>
+<ol class="steps">
+  <li>Grab a mystery resistor from the assortment. Measure it. Write the number down.</li>
+  <li>Now decode its stripes with the chart below — the gold stripe marks the <em>end</em>, so start reading from the other side. Do the stripes agree with your meter?</li>
+  <li>Measure a jumper wire end to end. Essentially zero ohms — wires are free passage, which is exactly why a whole breadboard row gets to count as one node.</li>
+</ol>
+
+<figure class="schematic">
+  <svg viewBox="0 0 300 92" role="img" aria-label="Resistor with red, red, brown color bands plus a gold tolerance band at the far end, decoding to 220 ohms within 5 percent">
+    <line class="w" x1="10" y1="40" x2="70" y2="40"/>
+    <rect x="70" y="24" width="120" height="32" rx="14" fill="#ead9b0" stroke="var(--ink)" stroke-width="2"/>
+    <rect x="92" y="24" width="12" height="32" fill="#c62828"/>
+    <rect x="122" y="24" width="12" height="32" fill="#c62828"/>
+    <rect x="152" y="24" width="12" height="32" fill="#7b4a12"/>
+    <rect x="171" y="24" width="11" height="32" fill="#d4af37"/>
+    <line class="w" x1="190" y1="40" x2="290" y2="40"/>
+    <text class="lbl-muted" x="176" y="16" text-anchor="middle">±5%</text>
+    <text class="lbl" x="98" y="78" text-anchor="middle">2</text>
+    <text class="lbl" x="128" y="78" text-anchor="middle">2</text>
+    <text class="lbl" x="158" y="78" text-anchor="middle">×10</text>
+    <text class="lbl" x="240" y="78" text-anchor="middle">= 220 Ω</text>
+  </svg>
+  <figcaption>First two stripes are digits, the third says how many zeros to hang on the end. Red-red-brown: 2, 2, one zero → 220 Ω. The lone <b>gold</b> stripe is the <b>tolerance</b> band — the maker's promise to land within 5% of the label — and it marks the end: start reading from the other side.</figcaption>
+</figure>
+
+<table>
+  <tr><th>Color</th><th>Digit</th><th>Color</th><th>Digit</th></tr>
+  <tr><td><span class="sw" style="background:#111"></span> black</td><td>0</td><td><span class="sw" style="background:#2e7d32"></span> green</td><td>5</td></tr>
+  <tr><td><span class="sw" style="background:#7b4a12"></span> brown</td><td>1</td><td><span class="sw" style="background:#1565c0"></span> blue</td><td>6</td></tr>
+  <tr><td><span class="sw" style="background:#c62828"></span> red</td><td>2</td><td><span class="sw" style="background:#6a1b9a"></span> violet</td><td>7</td></tr>
+  <tr><td><span class="sw" style="background:#ef6c00"></span> orange</td><td>3</td><td><span class="sw" style="background:#757575"></span> gray</td><td>8</td></tr>
+  <tr><td><span class="sw" style="background:#f9d13e"></span> yellow</td><td>4</td><td><span class="sw" style="background:#fdfdfd"></span> white</td><td>9</td></tr>
+</table>
+
+<h2 id="s8"><span class="num">8</span> Fill in the blank</h2>
+<p>New this lesson: no steps. Just a schematic with a hole in it and a mission. You've got this.</p>
+
+<h3>Challenge A — choose the resistor</h3>
+<p>First, power off and put the loop back to a single <strong>red</strong> LED — the blue one comes out and the gap closes — and turn the dial back to DC volts (§7 left it on Ω). The schematic is that same loop, but now it says <strong>R = ▢</strong>. Mission: pick a resistor from your assortment so the LED is <strong>clearly dimmer than with 220 Ω, but still definitely lit</strong>. Predict which one will do it, build it, then measure both drops and write them on the schematic's dotted lines. What did the resistor's drop do as its ohms went up?</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 280" role="img" aria-label="Single-LED loop schematic with the resistor value left blank as R equals an empty box, and dotted lines for recording the two measured drops">
+    <line class="w" x1="90" y1="60" x2="90" y2="138"/>
+    <line class="w" x1="66" y1="138" x2="114" y2="138"/>
+    <line class="w" x1="78" y1="158" x2="102" y2="158"/>
+    <line class="w" x1="90" y1="158" x2="90" y2="240"/>
+    <text class="lbl" x="126" y="143">+</text>
+    <text class="lbl" x="126" y="166">−</text>
+    <text class="lbl" x="58" y="134" text-anchor="end">5 V</text>
+    <line class="w" x1="90" y1="60" x2="196" y2="60"/>
+    <path class="w" d="M196,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="280" y1="60" x2="400" y2="60"/>
+    <text class="lbl" x="238" y="30" text-anchor="middle">R = ▢</text>
+    <line class="w" x1="400" y1="60" x2="400" y2="124"/>
+    <polygon class="w" points="386,124 414,124 400,150"/>
+    <line class="w" x1="386" y1="150" x2="414" y2="150"/>
+    <line class="w" x1="400" y1="150" x2="400" y2="240"/>
+    <line class="w" x1="90" y1="240" x2="400" y2="240"/>
+    <line x1="204" y1="98" x2="272" y2="98" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="2 4"/>
+    <text class="lbl-muted" x="280" y="102">V</text>
+    <line x1="432" y1="141" x2="500" y2="141" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="2 4"/>
+    <text class="lbl-muted" x="508" y="145">V</text>
+    <g class="nodeb"><circle cx="143" cy="60" r="13"/><text x="143" y="65" text-anchor="middle">A</text></g>
+    <g class="nodeb"><circle cx="345" cy="60" r="13"/><text x="345" y="65" text-anchor="middle">B</text></g>
+    <g class="nodeb"><circle cx="245" cy="240" r="13"/><text x="245" y="245" text-anchor="middle">C</text></g>
+  </svg>
+  <figcaption>Challenge A's whole briefing: pick <b>R</b>, build it, then write each measured drop on its dotted line.</figcaption>
+</figure>
+<p><strong>After you've measured:</strong> the resistor's drop barely moved — if anything it crept up a hair. It still reads about 3 V whichever resistor you chose, because the LED still takes its ~2 V and the resistor gets whatever is left. Yet the LED is plainly dimmer, so less current is flowing. Both are true: the same 3 V pushing through <em>more ohms</em> moves less current, and the dimmer LED gives up a little of its share. So a resistor's drop reports current only when you also know its ohms — change the resistor and the report changes scale. (The exact exchange rate is Ohm's law, in the math box below.)</p>
+
+<h3>Go further — for the fast and the curious</h3>
+<p>First in line is a stretch build: <strong>the split</strong>. Two identical resistors in series with the LED — predict how the twins will share before you measure.</p>
+<figure class="schematic">
+  <svg viewBox="0 0 500 300" role="img" aria-label="Loop with two 220 ohm resistors in series and an LED, nodes A through D">
+    <line class="w" x1="70" y1="60" x2="70" y2="138"/>
+    <line class="w" x1="46" y1="138" x2="94" y2="138"/>
+    <line class="w" x1="58" y1="158" x2="82" y2="158"/>
+    <line class="w" x1="70" y1="158" x2="70" y2="240"/>
+    <text class="lbl" x="106" y="143">+</text>
+    <text class="lbl" x="106" y="166">−</text>
+    <text class="lbl" x="38" y="134" text-anchor="end">5 V</text>
+    <line class="w" x1="70" y1="60" x2="130" y2="60"/>
+    <path class="w" d="M130,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="214" y1="60" x2="250" y2="60"/>
+    <path class="w" d="M250,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="334" y1="60" x2="420" y2="60"/>
+    <text class="lbl" x="172" y="30" text-anchor="middle">220 Ω</text>
+    <text class="lbl" x="292" y="30" text-anchor="middle">220 Ω</text>
+    <line class="w" x1="420" y1="60" x2="420" y2="124"/>
+    <polygon class="w" points="406,124 434,124 420,150"/>
+    <line class="w" x1="406" y1="150" x2="434" y2="150"/>
+    <line class="w" x1="420" y1="150" x2="420" y2="240"/>
+    <path class="w" d="M437,131 L453,117 M453,117 l-11,2 M453,117 l-3,11" stroke-width="1.8"/>
+    <line class="w" x1="70" y1="240" x2="420" y2="240"/>
+    <g class="nodeb"><circle cx="100" cy="60" r="13"/><text x="100" y="65" text-anchor="middle">A</text></g>
+    <g class="nodeb"><circle cx="232" cy="60" r="13"/><text x="232" y="65" text-anchor="middle">B</text></g>
+    <g class="nodeb"><circle cx="377" cy="60" r="13"/><text x="377" y="65" text-anchor="middle">C</text></g>
+    <g class="nodeb"><circle cx="245" cy="240" r="13"/><text x="245" y="245" text-anchor="middle">D</text></g>
+  </svg>
+  <figcaption>Two identical resistors in series. Before you measure: how will they split the voltage?</figcaption>
+</figure>
+<table>
+  <tr><th>Drop</th><th>Predict</th><th>Measured</th></tr>
+  <tr><td>First 220 Ω (A→B)</td><td></td><td></td></tr>
+  <tr><td>Second 220 Ω (B→C)</td><td></td><td></td></tr>
+  <tr><td>LED (C→D)</td><td></td><td></td></tr>
+  <tr><td><strong>Sum</strong></td><td></td><td></td></tr>
+</table>
+<p>Twin resistors split their share <strong>in half</strong> — as close to it as real parts allow, anyway: ±5% "twins" aren't perfectly identical, so your two readings may sit a few hundredths of a volt apart. File the even split away carefully — next lesson we make it adjustable, and it turns out half of electronics is built on this one trick.</p>
+
+<div class="callout tryit">
+  <p class="label">Stretch</p>
+  <p><strong>1.</strong> In the split, replace the second 220 Ω with a 1 kΩ. Predict: which resistor takes the bigger share now? Measure. <strong>2.</strong> Rebuild the single-LED loop with the LED <em>before</em> the resistor. Does the resistor have to come first to do its job? Predict, then let the drops settle it. <strong>3.</strong> Ohms mode, a probe tip squeezed in each fist: measure yourself. The number is huge — hundreds of thousands of ohms, or millions (watch the display flip to <span class="val">MΩ</span>) — and it's the real answer to lesson 1's "why didn't my finger light the LED": you conduct, but you squeeze the flow down to almost nothing. <strong>4.</strong> Draw a fat, dark pencil stripe on paper and put your probes on it. Slide them closer together — what happens to the reading, and why? You just made a resistor. <strong>5.</strong> Ohm the mystery bin: measure everything from lesson 1's conductor hunt and rank them by ohms — the beep only told you yes/no; now you get the whole spectrum.</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p><strong>Ohm's law</strong> ties today together:</p>
+  <math display="block"><mrow><mtext>current</mtext><mo>=</mo><mfrac><mtext>leftover voltage</mtext><mtext>resistance</mtext></mfrac></mrow></math>
+  <p>One LED, one 220 Ω — the leftover is 5 − 2 = 3 V:</p>
+  <math display="block"><mrow><mfrac><mn>3</mn><mn>220</mn></mfrac><mo>≈</mo><mn>14</mn><mtext>&#160;mA</mtext></mrow></math>
+  <p>The split: the same 3 V now pushes through 440 Ω of resistor, so the current halves to ≈ <span class="val">7 mA</span> — and each resistor's drop is</p>
+  <math display="block"><mrow><mn>7</mn><mtext>&#160;mA</mtext><mo>×</mo><mn>220</mn><mtext>&#160;Ω</mtext><mo>≈</mo><mn>1.5</mn><mtext>&#160;V</mtext></mrow></math>
+  <p>— exactly what your meter said. Deeper (needs a little algebra): in a series pair, each resistor takes this fraction of the available voltage:</p>
+  <math display="block"><mrow><mfrac><msub><mi>R</mi><mtext>me</mtext></msub><mrow><msub><mi>R</mi><mtext>me</mtext></msub><mo>+</mo><msub><mi>R</mi><mtext>other</mtext></msub></mrow></mfrac></mrow></math>
+  <p>— the <em>voltage divider</em> formula, the star of the next lesson.</p>
+</div>
+
+<h2 id="s9"><span class="num">9</span> Words to know</h2>
+<dl class="vocab">
+  <dt>voltage drop</dt><dd>the voltage measured across a component; an LED's is listed on its datasheet as <em>forward voltage</em></dd>
+  <dt>across</dt><dd>how voltage is always measured: two probes, two points</dd>
+  <dt>Kirchhoff's voltage law</dt><dd>the official name for what you proved: around any loop, the drops sum to the supply voltage</dd>
+  <dt>ohm (Ω)</dt><dd>the unit of resistance — how hard a part squeezes the flow</dd>
+  <dt>color code</dt><dd>the stripe system: digit, digit, number-of-zeros — plus the gold <em>tolerance</em> stripe at the far end, the maker's ±5% promise</dd>
+  <dt>DC</dt><dd>direct current — push in one steady direction, like everything we build (batteries, our supply)</dd>
+</dl>
+
+<h2 id="s10"><span class="num">10</span> Exit ticket</h2>
+<p>Draw today's single-LED loop from memory and label it with your three measured numbers: the supply's voltage, the resistor's drop, the LED's drop. Show they add up.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Semester 1 · Lesson 4 of 13</span>
+  <span>Next: <strong>Voltage Dividers &amp; Potentiometers</strong> — the twin-resistor split gets a knob</span>
+</footer>
+
+</body>
+</html>

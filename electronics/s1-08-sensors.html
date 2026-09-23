@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 8 · Sensors</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox
+    { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html" class="cur">8 &middot; Sensors</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: the switch, from memory</a><a class="sub" href="#s4">4 &middot; New component: the LDR</a><a class="sub" href="#s5">5 &middot; Light becomes a voltage</a><a class="sub" href="#s6">6 &middot; The night-light</a><a class="sub" href="#s7">7 &middot; Challenge: the flip</a><a class="sub" href="#s8">8 &middot; Words to know</a><a class="sub" href="#s9">9 &middot; Exit ticket</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 8 · 55 min &middot; build 2026.09.23-1531</p>
+  <h1>Sensors</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The big idea</p>
+  <p>A <strong>sensor</strong> is a component the world can push around. Put one in a voltage divider and the world's push becomes a <strong>voltage</strong> — and a voltage at a transistor's base is a decision waiting to happen. Sense, then decide: nearly every automatic machine ever built runs on these two moves.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Measure a resistor that <strong>light pushes around</strong>, and prove it with the meter.</li>
+  <li>Build the <strong>sensing stage</strong>: a divider that turns light into a voltage the meter can watch move.</li>
+  <li>Connect it to last lesson's switch and build the <strong>night-light</strong> — a circuit that acts on its own, no hands.</li>
+  <li>Measure your circuit's <strong>threshold</strong>: the tap voltage where the LED wakes.</li>
+  <li>Reverse the whole thing: a detector that answers only to a flashlight beam.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Lesson 7's transistor switch, standing in your box — LED, <span class="val">220 Ω</span>, transistor, base resistor on the board with the supply — plus jumpers, assortment, pot, capacitors, multimeter</li>
+  <li><strong>LDR</strong> (photoresistor) — the flat disc with the squiggle face (plus a spare)</li>
+  <li><strong>100 kΩ ×2</strong> — a new size for your resistor assortment</li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span> Warm-up: the switch, from memory</h2>
+<p><strong>Kits closed.</strong> Draw lesson 7's <strong>transistor switch</strong> from memory — LED and <span class="val">220 Ω</span> into the collector, emitter to ground, <span class="val">4.7 kΩ</span> guarding the base, control wire. Then open the box: the switch is standing where you left it. Check it against your drawing, prove both commands — + rail on, ground off — and say why the dangling wire is <em>not</em> a third command. (Box lost it? Rebuild from your drawing — E-B-C, flat face toward you.) <strong>Leave it standing.</strong> Last lesson <em>you</em> were the sensor — your hand decided when the base got its whisper. Today the circuit takes that job away from you.</p>
+
+<h2 id="s4"><span class="num">4</span> New component: the LDR</h2>
+<p>Two names, one part: the <strong>LDR</strong> — light-dependent resistor — also sold as a <strong>photoresistor</strong>. Both names are everywhere; both mean this flat disc. It measures like a resistor because it <em>is</em> one, but its value refuses to hold still: flood the squiggle face with light and the resistance collapses to a few thousand ohms; seal it in darkness and it swells into the hundreds of thousands.</p>
+
+<div class="symbols">
+  <figure class="symbol">
+    <svg viewBox="0 0 200 120" role="img" aria-label="LDR schematic symbol: a resistor inside a circle with two arrows of incoming light">
+      <circle cx="100" cy="64" r="34" fill="none" stroke="var(--ink)" stroke-width="2.4"/>
+      <line class="w" x1="30" y1="64" x2="66" y2="64"/>
+      <path class="w" d="M70,64 l5,-10 l10,20 l10,-20 l10,20 l10,-20 l10,20 l5,-10"/>
+      <line class="w" x1="134" y1="64" x2="170" y2="64"/>
+      <path class="w" d="M38,12 L60,32 M60,32 l-10,-1 M60,32 l-1,-10" style="stroke-width:1.8"/>
+      <path class="w" d="M56,4 L78,24 M78,24 l-10,-1 M78,24 l-1,-10" style="stroke-width:1.8"/>
+    </svg>
+    <figcaption><b>LDR (photoresistor)</b> a resistor with light arrows pointing <em>in</em>: bright = small resistance, dark = huge</figcaption>
+  </figure>
+  <figure class="symbol">
+    <svg viewBox="0 0 200 170" role="img" aria-label="An LDR in real life: a flat tan disc with a dark serpentine track and two legs">
+      <defs>
+        <linearGradient id="ldrLeg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#cdd1d8"/>
+          <stop offset=".5" stop-color="#9aa0a9"/>
+          <stop offset="1" stop-color="#787e88"/>
+        </linearGradient>
+        <radialGradient id="ldrFace" cx=".38" cy=".34" r=".9">
+          <stop offset="0" stop-color="#e8b871"/>
+          <stop offset=".6" stop-color="#d99f52"/>
+          <stop offset="1" stop-color="#b97c33"/>
+        </radialGradient>
+      </defs>
+      <rect x="81.6" y="110" width="4.8" height="47" fill="url(#ldrLeg)"/>
+      <rect x="113.6" y="110" width="4.8" height="47" fill="url(#ldrLeg)"/>
+      <circle cx="100" cy="70" r="48" fill="url(#ldrFace)" stroke="#8a5a22" stroke-width="2"/>
+      <path d="M68,50 H132 A11,11 0 0 1 132,72 H68 A11,11 0 0 0 68,94 H132"
+            fill="none" stroke="#7a3b23" stroke-width="6.5" stroke-linecap="round"/>
+      <text class="lbl-muted" x="100" y="168" text-anchor="middle">either leg, either way</text>
+    </svg>
+    <figcaption><b>In real life</b> a flat disc with a squiggle face and two legs
+    <span class="irl">No stripe, no long leg — it has no direction. The squiggle <em>is</em> the resistor, so light has to be able to land on it: don't bury the face.</span></figcaption>
+  </figure>
+</div>
+
+<div class="callout tryit">
+  <p class="label">Meet it with the meter</p>
+  <p>Meter on <strong>Ω</strong>. Seat the LDR across two free rows and touch a probe tip to each leg — <strong>fingers on the probes' plastic barrels, never on the metal</strong>. Lesson 7's stretch measured why: your body is a ≈ <span class="val">100 kΩ</span> resistor, and pinched tips wire it in parallel with the disc, dragging the dark readings way down. One partner holds the probes, the other cups. Predict each row before you act it out:</p>
+</div>
+
+<table>
+  <tr><th>Light on the disc</th><th>Predict: resistance</th><th>Measured — unit too!</th></tr>
+  <tr><td>Room light, face up</td><td>— (this is your baseline)</td><td></td></tr>
+  <tr><td>Cupped under both hands</td><td></td><td></td></tr>
+  <tr><td>Phone flashlight, point-blank</td><td></td><td></td></tr>
+</table>
+
+<div class="callout note">
+  <p class="label">Read the unit</p>
+  <p>The meter is autoranging: as darkness piles on, the display can glide from <span class="val">kΩ</span> to <span class="val">MΩ</span> without ceremony. The unit is part of the number — <span class="val">0.5 MΩ</span> is five hundred kΩ, not half of one. (The <em>Milli, Kilo, Mega</em> sheet on the math shelf, if you want the whole ladder.)</p>
+</div>
+
+<h2 id="s5"><span class="num">5</span> Light becomes a voltage</h2>
+<p>Here's the problem: the transistor's base doesn't care about ohms. It listens to exactly one thing — <strong>voltage</strong>. So the sensor's trick is useless to the switch until something translates resistance into voltage. You've owned the translator since lesson 5: <strong>the divider</strong>. The bigger resistor takes the bigger share, and the tap reads the bottom resistor's share. Make the bottom resistor the LDR, and the tap's voltage follows the light.</p>
+
+<div class="callout note">
+  <p class="label">The training wheels come off</p>
+  <p>From this lesson on, builds arrive as <strong>drawings alone</strong> — no numbered steps. Nothing else changes: one row = one node, the Debugging Loop still runs, and the schematic still tells the whole truth. Read, wire, verify.</p>
+</div>
+
+<figure class="schematic">
+  <svg viewBox="0 0 500 310" role="img" aria-label="Sensing stage: a 100 kilohm resistor from the 5 volt rail to the tap, an LDR from the tap to ground, with the meter watching the tap">
+    <text class="lbl" x="220" y="18" text-anchor="middle">+5 V rail</text>
+    <line class="w" x1="220" y1="26" x2="220" y2="52"/>
+    <path class="w" d="M220,52 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="248" y="92">100 kΩ</text>
+    <line class="w" x1="220" y1="124" x2="220" y2="162"/>
+    <circle class="jdot" cx="220" cy="150" r="5"/>
+    <line class="w" x1="220" y1="150" x2="330" y2="150"/>
+    <text class="lbl" x="272" y="140" text-anchor="middle">tap</text>
+    <circle cx="348" cy="150" r="17" fill="#fff" stroke="var(--copper)" stroke-width="2.5"/>
+    <text class="lbl" x="348" y="156" text-anchor="middle" fill="var(--copper-ink)" font-weight="700">V</text>
+    <text class="lbl-muted" x="348" y="190" text-anchor="middle">red probe on the tap</text>
+    <circle cx="220" cy="194" r="32" fill="none" stroke="var(--ink)" stroke-width="2.4"/>
+    <path class="w" d="M220,170 l-10,6 l20,12 l-20,12 l20,12 l-10,6"/>
+    <path class="w" d="M148,136 L176,160 M176,160 l-10,-2 M176,160 l-2,-10" style="stroke-width:1.8"/>
+    <path class="w" d="M162,122 L188,144 M188,144 l-10,-2 M188,144 l-2,-10" style="stroke-width:1.8"/>
+    <text class="lbl" x="178" y="240" text-anchor="end">LDR</text>
+    <line class="w" x1="220" y1="226" x2="220" y2="266"/>
+    <line class="w" x1="130" y1="266" x2="330" y2="266"/>
+    <text class="lbl-muted" x="230" y="292" text-anchor="middle">ground rail — black probe parks here</text>
+  </svg>
+  <figcaption>The <b>sensing stage</b>: fixed 100 kΩ on top, sensor on the bottom, tap between them. The tap reads the LDR's share — cover the disc and its share grows.</figcaption>
+</figure>
+
+<p>Build it from the drawing — the divider shape is an old friend; the only news is who's playing R2. Black probe parked in ground, red probe touching a leg or a bare wire stub in the tap row. Commit to each row first: which way does the tap move, and roughly where does it land?</p>
+
+<table>
+  <tr><th>Light on the disc</th><th>Predict: tap voltage</th><th>Measured</th></tr>
+  <tr><td>Room light</td><td></td><td></td></tr>
+  <tr><td>Cupped under both hands</td><td></td><td></td></tr>
+  <tr><td>Phone flashlight, point-blank</td><td></td><td></td></tr>
+</table>
+
+<p>Wave a hand over the disc and watch the number follow it. That wobble is the whole invention: <strong>the room's light is now a voltage</strong>, live, at a node on your board. In lesson 5 a knob moved the tap; now the world does.</p>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>Swap the two components — LDR on top, <span class="val">100 kΩ</span> on the bottom. Now what does cupping your hands do to the tap? <span class="writeline"></span> (Keep your answer; the challenge will pay for it.)</p>
+</div>
+
+<h2 id="s6"><span class="num">6</span> The night-light</h2>
+<p>Both halves already stand on your board: a sensing stage making a voltage, and the warm-up switch waiting for one. Retire the control wire and let the two stages shake hands — the drawing shows where. The base's rule survives the upgrade: it never meets its signal without its own resistor in between.</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 330" role="img" aria-label="Night-light schematic: 100 kilohm and LDR divider across the rails, tap through a 4.7 kilohm resistor to the transistor base, LED and 220 ohm in the collector loop">
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="390" y2="26"/>
+    <line class="w" x1="150" y1="26" x2="150" y2="48"/>
+    <path class="w" d="M150,48 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="112" y="88" text-anchor="end">100 kΩ</text>
+    <line class="w" x1="150" y1="120" x2="150" y2="158"/>
+    <circle class="jdot" cx="150" cy="146" r="5"/>
+    <line class="w" x1="150" y1="146" x2="212" y2="146"/>
+    <text class="lbl-muted" x="182" y="136" text-anchor="middle">tap</text>
+    <line class="w" x1="212" y1="146" x2="212" y2="220"/>
+    <line class="w" x1="212" y1="220" x2="246" y2="220"/>
+    <circle cx="150" cy="188" r="30" fill="none" stroke="var(--ink)" stroke-width="2.4"/>
+    <path class="w" d="M150,164 l-10,6 l20,12 l-20,12 l20,12 l-10,6"/>
+    <path class="w" d="M76,146 L102,168 M102,168 l-10,-2 M102,168 l-2,-10" style="stroke-width:1.8"/>
+    <path class="w" d="M92,132 L116,152 M116,152 l-10,-2 M116,152 l-2,-10" style="stroke-width:1.8"/>
+    <text class="lbl" x="108" y="234" text-anchor="end">LDR</text>
+    <line class="w" x1="150" y1="218" x2="150" y2="272"/>
+    <line class="w" x1="390" y1="26" x2="390" y2="48"/>
+    <polygon class="w" points="376,48 404,48 390,72"/>
+    <line class="w" x1="376" y1="72" x2="404" y2="72"/>
+    <path class="w" style="stroke-width:1.75" d="M407,54 L421,42 M421,42 l-10,2 M421,42 l-2,10"/>
+    <line class="w" x1="390" y1="72" x2="390" y2="88"/>
+    <path class="w" d="M390,88 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="417" y="128">220 Ω</text>
+    <line class="w" x1="390" y1="160" x2="390" y2="190"/>
+    <line class="w" x1="372" y1="200" x2="372" y2="240"/>
+    <line class="w" x1="390" y1="190" x2="372" y2="210"/>
+    <line class="w" x1="372" y1="230" x2="390" y2="250"/>
+    <polygon points="390,250 373,247 381,235" fill="var(--ink)"/>
+    <line class="w" x1="390" y1="250" x2="390" y2="272"/>
+    <text class="lbl" x="362" y="192" text-anchor="end" font-weight="700">C</text>
+    <text class="lbl" x="362" y="266" text-anchor="end" font-weight="700">E</text>
+    <text class="lbl" x="352" y="212" text-anchor="end" font-weight="700">B</text>
+    <line class="w" x1="330" y1="220" x2="372" y2="220"/>
+    <path class="w" d="M246,220 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <text class="lbl" x="288" y="190" text-anchor="middle">4.7 kΩ</text>
+    <line class="w" x1="140" y1="272" x2="390" y2="272"/>
+    <text class="lbl" x="130" y="278" text-anchor="end">ground rail</text>
+  </svg>
+  <figcaption>The whole night-light — wire it from the drawing. Left of the tap: section 5's sensing stage. Right of the 4.7 kΩ: the warm-up switch. Today's build is one retirement (the control wire) and one handshake (the tap).</figcaption>
+</figure>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>Wired and powered, hands still open: what will the LED do the moment you cup both hands over the disc — and <em>why</em>? Commit before you move: <span class="writeline"></span></p>
+</div>
+
+<p>Now do it. Then the debrief: in room light the LDR's share is small, the tap sits low, and the base's door — lesson 7's <span class="val">0.7 V</span> — stays shut. Darkness swells the LDR's resistance, the tap climbs past the threshold, and the LED wakes: no thumb, no control wire, nobody home. It wakes the way dusk falls — a glow first, brighter as the dark deepens; for a night-light, that ramp is a feature. Two <strong>stages</strong>, one handshake at the tap — the divider senses, the switch acts. When yours works, look up and wait: the room lights have an appointment.</p>
+
+<div class="callout tryit">
+  <p class="label">Find your threshold</p>
+  <p>Red probe back on the tap, eyes on the number and the LED both. Predict first: lesson 7 already handed you a voltage that should be close — which one? Then close your hands over the disc <em>slowly</em>, like a long eclipse, and write down the tap reading where light first appears in the LED: <span class="writeline"></span>. That number is your circuit's <strong>threshold</strong> — measured, not recited. And notice one more thing on the way to full dark: past first glow the number all but stops climbing, while the LED keeps brightening. Stash that observation — the purple box knows what pins it.</p>
+</div>
+
+<h2 id="s7"><span class="num">7</span> Challenge: the flip</h2>
+<p>No new parts: make the night-light's opposite — <strong>off in room light, on when a flashlight beam hits the disc</strong>. A beam detector. The schematic is section 6's with the divider wiped blank: two slots, <span class="val">▢</span> over <span class="val">▢</span> — the LDR lives in one, a fixed resistor of your choosing in the other, and everything from the tap rightward stands untouched. Two decisions are yours: <strong>which slot gets the LDR</strong> (your section 5 swap-prediction already points there) and <strong>how big the fixed resistor must be</strong> — your resistance table from section 4 holds that number. Decide, build, measure the tap, iterate. First table with a working beam detector demos it for the room.</p>
+
+<div class="callout tryit">
+  <p class="label">Go further — for the fast and the curious</p>
+  <p><strong>1.</strong> Picky night-light: stack the spare <span class="val">100 kΩ</span> in series with the first, doubling the divider's top. Predict first: does the room now need to be darker, or less dark, before the LED wakes? <strong>2.</strong> Sensitivity knob: in the beam detector, make the bottom resistor the pot — wiper plus one leg, lesson 5's adjustable resistor. One knob now sets how bright "bright" means; find the edge where room light alone trips it. <strong>3.</strong> Patience — back on the night-light: a <span class="val">100 µF</span> capacitor from the tap to ground — stripe to ground, out loud. A hand waved over the disc now does nothing; only darkness that <em>stays</em> wakes the LED, a beat later. Predict what the <span class="val">1000 µF</span> would do before you try it. <strong>4.</strong> Feedback: re-plug the night-light's LED so it stares straight at its own LDR, cup both under your hands, and watch closely: a flicker, a shimmer, or a steady dim truce — different builds settle differently. The circuit is sensing its own output — the word is <strong>feedback</strong>. Explain whatever yours does.</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>The night-light is lesson 5's divider formula with one resistor that won't sit still — R is whatever the LDR reads right now, <em>before the base is connected</em>:</p>
+  <math display="block"><mrow><mtext>tap</mtext><mo>=</mo><mn>5</mn><mtext>&#160;V</mtext><mo>×</mo><mfrac><mi>R</mi><mrow><mi>R</mi><mo>+</mo><mn>100</mn><mtext>&#160;k</mtext></mrow></mfrac></mrow></math>
+  <p>Room light, R ≈ 10 k — under the base's 0.7 V, so the LED stays dark:</p>
+  <math display="block"><mrow><mn>5</mn><mo>×</mo><mfrac><mn>10</mn><mn>110</mn></mfrac><mo>≈</mo><mn>0.45</mn><mtext>&#160;V</mtext></mrow></math>
+  <p>Cupped, R ≈ 250 k, the same arithmetic says <span class="val">3.6 V</span> — but your meter won't: once the base conducts, it pins the tap just above 0.7 V, and the divider's extra push becomes base current instead of tap voltage. That's lesson 5's <em>loading</em>, and it's what the threshold hunt showed you: past first glow, brightness moves while the tap stands still.</p>
+  <p>The LED first stirs when the formula's answer clears ≈ 0.8 V, which works out to R ≈ <span class="val">19 kΩ</span> — about one-fifth of the top resistor, give or take the part-to-part spread in gain and base voltage. That's the design rule hiding in this build: <strong>the fixed resistor decides how dark counts as dark.</strong> The <em>Voltage Divider Formula</em> sheet on the math shelf runs the algebra; <em>The Transistor's Arithmetic</em> finishes the story from the tap to the LED.</p>
+</div>
+
+<h2 id="s8"><span class="num">8</span> Words to know</h2>
+<dl class="vocab">
+  <dt>sensor</dt><dd>a component whose electrical value the physical world changes — light, heat, sound, touch</dd>
+  <dt>LDR · photoresistor</dt><dd>two names for the light-dependent resistor: bright = low resistance, dark = high; no polarity, either way around</dd>
+  <dt>stage</dt><dd>a block of circuit with one job; stages hand voltages to each other at nodes — today, a sensing stage feeding a switching stage</dd>
+  <dt>threshold</dt><dd>the tap voltage where the switch stage wakes: the 0.7 V the base needs, plus a little push — lesson 7's word, now measured</dd>
+  <dt>sensitivity</dt><dd>how much the world must change before a circuit crosses its threshold; set by the fixed resistor — or a pot</dd>
+</dl>
+
+<h2 id="s9"><span class="num">9</span> Exit ticket</h2>
+<p>On your card: <strong>1.</strong> draw the night-light from memory — sensing stage, tap, base resistor, switch stage. <strong>2.</strong> One sentence: why does covering the LDR turn the LED on? Hand it in at the door.</p>
+<p>Then strip the board — parts asleep in the box, and if the patience capacitor came out to play, the bare <span class="val">220 Ω</span> drains it first. Next lesson starts with clean rails and a new part that needs the room.</p>
+
+<footer class="lesson-foot">
+  <span>StarLeap Electronics · Lesson 8</span>
+  <span>Next: The 555 Timer</span>
+</footer>
+
+</body>
+</html>

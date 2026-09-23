@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What&#8217;s a Coulomb?</title>
+<style>
+/* Embedded copy of assets/lesson.css (math-shelf accent: violet) — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--violet);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--violet-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.idea    .label { color: var(--violet); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 26px;
+  text-align: center;
+  margin: .8em 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table, ol.steps > li { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html" class="cur">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Math shelf · Optional — for the curious &middot; build 2026.09.23-1531</p>
+  <h1>What's a Coulomb?</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>The electrical units aren't a pile of arbitrary words — they're a <strong>tower</strong>, each one defined from the ones below it. Start with charge, and everything else is a rate or a ratio.</p>
+</div>
+
+<h2>Charge — the coulomb (C)</h2>
+<p>The bottom of the tower: the <strong>coulomb</strong> measures an <em>amount</em> of electricity, the way a liter measures an amount of water. One coulomb is the combined charge of about <span class="val">6.24 × 10¹⁸</span> electrons — six billion billion of them. (Exponent shorthand is explained on the <a href="math-metric-prefixes.html">Milli, Kilo, Mega</a> sheet.) A single electron's charge is unimaginably small; a coulomb is a bucketful.</p>
+
+<h2>Current — the ampere (A) = coulombs per second</h2>
+<p><strong>A</strong> is the <strong>ampere</strong> — "amp" for short. One amp is one coulomb of charge flowing past a point <em>every second</em>: current isn't an amount, it's a <strong>rate</strong>, like liters per second through a pipe. Your LED's 14 mA is 0.014 coulombs per second — about <span class="val">8.7 × 10¹⁶</span> electrons marching through every second. Eighty-seven thousand trillion. Per second. Through a wire you made at the wire station.</p>
+
+<h2>Energy — the joule (J)</h2>
+<p>The <strong>joule</strong> measures energy itself — any kind. Lifting an apple one meter takes about 1 J. A fresh AA battery holds roughly 10,000 J. Energy is the thing every circuit exists to move around.</p>
+
+<h2>Voltage — the volt (V) = joules per coulomb</h2>
+<p>Here's the definition lessons have been dancing around: one <strong>volt</strong> means <strong>each coulomb carries one joule of energy</strong>. Your 5 V supply loads 5 joules onto every coulomb it pushes out. A 2 V drop across the LED means every coulomb passing through hands the LED 2 of its joules. "Voltage drop" is literally <em>energy spent per unit of charge</em> — that's why the drops around a loop must add up to the supply: every joule loaded gets spent, nothing vanishes.</p>
+
+<h2>The electron's own units</h2>
+<p>Rescale both of those to a single electron and you get physics' favorite pocket units. One electron's charge — the <strong>elementary charge</strong>, written <span class="val">e</span> — is exactly one 6.24-billion-billionth of a coulomb: <span class="val">e ≈ 1.6 × 10⁻¹⁹ C</span>. And the energy one electron picks up crossing one volt is the <strong>electron-volt</strong> (<span class="val">eV</span>):</p>
+<p class="formula">1 eV = 1 ÷ (6.24 × 10¹⁸) J ≈ 1.6 × 10⁻¹⁹ J</p>
+<p>The same 6.24 × 10¹⁸ converts both rungs of the tower at once: a coulomb is that many electron-charges, and a joule is that many electron-volts. Here's the payoff: since energy-per-electron is charge-of-one-electron × volts, <strong>an LED's drop in volts <em>is</em> the energy of each electron's landing, in eV</strong>. Your red LED's ≈ 2.0 V drop means each electron hands over ≈ 2.0 eV as it lands in a hole — and a photon of red light carries ≈ 1.9 eV: nearly the whole payment becomes light. (Blue runs less cleanly: its ≈ 3.2 V buys a ≈ 2.7 eV blue photon, with the change lost as heat inside the LED — device overhead.) The pocket formula: photon energy in eV ≈ 1240 ÷ wavelength in nm. When you measured LED drops in lesson 4, you were measuring the energy of light, one particle at a time — give or take the overhead — the <em>How Transistors Work</em> page (Under the hood) tells the landing-in-holes story.</p>
+
+<h2>Power — the watt (W) = joules per second</h2>
+<p>The <strong>watt</strong> is the rate energy moves: one joule per second. And now watch the tower assemble itself:</p>
+<p class="formula">amps × volts &nbsp;=&nbsp; C/s × J/C &nbsp;=&nbsp; J/s &nbsp;=&nbsp; watts</p>
+<p>The coulombs cancel. <a href="math-p-equals-iv.html">P = IV</a> isn't a rule somebody decreed — it's what the definitions multiply out to. Charge per second, times energy per charge, is energy per second.</p>
+
+<h2>The rest of the family</h2>
+<table>
+  <tr><th>Unit</th><th>Built as</th><th>Meaning</th></tr>
+  <tr><td><strong>ohm</strong> (Ω)</td><td>volts ÷ amps</td><td>how many volts of push one amp of flow requires — the squeeze, quantified</td></tr>
+  <tr><td><strong>farad</strong> (F)</td><td>coulombs ÷ volts</td><td>how much charge a capacitor stores per volt across it. One farad is enormous — real capacitors live in µF, nF, pF (capacitor lessons ahead)</td></tr>
+  <tr><td><strong>hertz</strong> (Hz)</td><td>cycles ÷ second</td><td>how often something repeats: 60 Hz wall power, GHz phone processors — and the blink rate of a 555 timer, later this course</td></tr>
+</table>
+
+<h2>The people</h2>
+<p>Nearly every electrical unit is a person — scientists honored by lowercase immortality:</p>
+<table>
+  <tr><th>Unit</th><th>Named for</th><th>Claim to fame</th></tr>
+  <tr><td>volt</td><td>Alessandro Volta (Italy, 1745–1827)</td><td>built the first battery — the voltaic pile; Napoleon was so impressed he made him a count</td></tr>
+  <tr><td>ampere</td><td>André-Marie Ampère (France, 1775–1836)</td><td>heard that current moves compass needles, and within weeks founded the science of electromagnetism</td></tr>
+  <tr><td>ohm</td><td>Georg Ohm (Germany, 1789–1854)</td><td>schoolteacher whose V = IR was dismissed at first; decades later it was the law with his name on it</td></tr>
+  <tr><td>coulomb</td><td>Charles-Augustin de Coulomb (France, 1736–1806)</td><td>measured the tiny force between charges with a twisting wire and a very steady hand</td></tr>
+  <tr><td>watt</td><td>James Watt (Scotland, 1736–1819)</td><td>perfected the steam engine — and invented "horsepower" to advertise it; now his unit measures the horse's</td></tr>
+  <tr><td>joule</td><td>James Prescott Joule (England, 1818–1889)</td><td>a brewer who proved heat is energy; the story goes he even measured waterfall temperatures on his honeymoon</td></tr>
+  <tr><td>farad</td><td>Michael Faraday (England, 1791–1867)</td><td>bookbinder's apprentice with no formal math who became perhaps the greatest experimentalist ever — generators and transformers run on his discovery</td></tr>
+  <tr><td>hertz</td><td>Heinrich Hertz (Germany, 1857–1894)</td><td>first to make and detect radio waves — then declared them "of no use whatsoever." Radio arrived a decade later</td></tr>
+</table>
+
+<div class="callout note">
+  <p class="label">The capitalization rule</p>
+  <p>A unit named for a person gets a <strong>capital symbol</strong> but a <strong>lowercase word</strong>: 5 <span class="val">V</span> but "five volts," 14 <span class="val">mA</span> but "milliamps." Spot a capital letter in a unit, and there's usually a scientist behind it.</p>
+</div>
+
+<h2>Practice</h2>
+<p>Answers at the bottom.</p>
+<ol>
+  <li>Your 5 V supply pushes half a coulomb through a circuit. How many joules did it deliver?</li>
+  <li>100 mA flows for 10 seconds. How many coulombs passed?</li>
+  <li>Which of these is a <em>rate</em> and which is an <em>amount</em>: coulomb, amp, joule, watt?</li>
+  <li>A capacitor marked 1,000 µF is charged to 5 V. How many coulombs is it holding? (Farads = coulombs per volt, so coulombs = farads × volts.)</li>
+  <li>Your blue LED drops ≈ 3.2 V. How much energy, in eV, does each electron hand over as it crosses?</li>
+</ol>
+
+<h2>Answers</h2>
+<p><strong>1.</strong> 5 J per coulomb × 0.5 C = 2.5 J. <strong>2.</strong> 0.1 C per second × 10 s = 1 C. <strong>3.</strong> Amounts: coulomb, joule. Rates: amp (coulombs/s), watt (joules/s). <strong>4.</strong> 0.001 F × 5 V = 0.005 C — five thousandths of a coulomb, and that's a physically <em>big</em> capacitor. A whole coulomb is a lot of charge. <strong>5.</strong> 3.2 eV — no conversion needed; volts-per-electron <em>are</em> electron-volts. (Each blue photon carries ≈ 2.7 of those eV; the rest becomes heat in the LED.)</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Math shelf · What's a Coulomb?</span>
+  <span>Every unit is a rate, a ratio — or a person</span>
+</footer>
+
+</body>
+</html>

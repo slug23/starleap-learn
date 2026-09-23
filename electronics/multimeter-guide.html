@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Multimeter</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--copper);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html" class="cur">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Reference card · Every mode of the meter &middot; build 2026.09.23-1531</p>
+  <h1>The Multimeter</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>Every measurement is <strong>two probes touching two points</strong>. The dial decides what question you're asking — and each question has its own rules.</p>
+</div>
+
+<h2>The dial at a glance</h2>
+<table>
+  <tr><th>Dial symbol</th><th>What it measures</th><th>The rule</th></tr>
+  <tr><td><span class="val">V⎓</span> (straight lines)</td><td>DC volts — <strong>our setting</strong></td><td>circuit powered ON; probes across two points</td></tr>
+  <tr><td><span class="val">V~</span> (wavy line)</td><td>AC volts — wall-outlet electricity</td><td>not ours; see below</td></tr>
+  <tr><td><span class="val">Ω</span></td><td>resistance</td><td>power OFF, part out of the circuit</td></tr>
+  <tr><td><span class="val">🔊</span> / <span class="val">)))</span></td><td>continuity — the beep</td><td>power OFF</td></tr>
+  <tr><td><span class="val">mA</span> / <span class="val">A</span></td><td>current</td><td>red lead moves sockets; teacher at the table</td></tr>
+  <tr><td><span class="val">▸|</span> diode &amp; friends</td><td>diodes, capacitors, transistors</td><td>unlocked later in the course</td></tr>
+</table>
+<p>On many meters, several of these share a dial position and a <span class="val">SELECT</span> button cycles the modes. The dial gets you to the neighborhood; <strong>the display's symbols tell you which mode is actually live</strong> — one more reason to read the display, not just the dial.</p>
+
+<h2>Continuity — the beep</h2>
+<p>Dial to the continuity position — the sound symbol. On many meters, resistance, continuity, and diode test <strong>share one dial position</strong>, and a <span class="val">SELECT</span> (or FUNC/MODE) button cycles between them; the mode is live when its symbol shows on the <em>display</em>. Touch the probes to two points: a <strong>beep</strong> means they're one unbroken conductor — the same node. Silence means they're not. This is the mode for testing wires end to end, mapping a breadboard, and settling arguments about what's connected to what.</p>
+
+<div class="callout note">
+  <p class="label">Our class meters — AstroAI DM6000AR</p>
+  <p>Turn the dial to the shared <span class="val">Ω</span> · beep · diode position, then press <span class="val">SELECT</span> once — you're in continuity when the sound symbol appears on the display. The position wakes up in plain resistance, so lesson 4's Ω measurements need no button at all.</p>
+</div>
+<div class="callout safety">
+  <p class="label">Unpowered only</p>
+  <p>Continuity (and ohms) work by pushing the meter's own tiny test current through the probes. Do it on a powered circuit and the supply's 5 V shoves back — the reading is garbage and the meter can be damaged. <strong>Supply off, or the part out of the circuit, every time.</strong></p>
+</div>
+
+<h2>Ohms — resistance</h2>
+<p>Dial on <span class="val">Ω</span>. Power off, the part <em>out</em> of the circuit, one probe on each leg. Measuring a part while it's still plugged in reads wrong — its neighbors offer the test current sneaky detours, and the meter can't tell which path it measured. And keep fingers off the metal: you're a resistor too, wired in parallel with whatever you're pinching.</p>
+
+<h2>Volts — DC, not AC</h2>
+<p>The dial has <strong>two</strong> V positions. <span class="val">V⎓</span> — the V with straight lines — is <strong>DC</strong>: current that flows one steady direction. Everything we build is DC. <span class="val">V~</span> — the wavy V — is <strong>AC</strong>: current that reverses direction on a steady rhythm — 60 complete cycles each second — which is what house wiring carries. Wrong setting = nonsense readings, so check for the straight lines before you measure.</p>
+<p>Volts are the one measurement made on a <strong>live, powered</strong> circuit: probes across two points, red on the side nearer +. (Backwards probes won't hurt anything — the reading just comes out negative.)</p>
+<div class="callout safety">
+  <p class="label">AC stays in the wall</p>
+  <p>The AC setting exists for electricians. Wall outlets and house wiring are <strong>off-limits</strong> with these meters and with everything else in this class: 120 V AC can be fatal. Nothing in our kits ever plugs a probe into a wall.</p>
+</div>
+
+<h2>Read the unit, not just the number</h2>
+<p>The meter picks its own scale and announces the choice in small letters at the edge of the display. The digits are meaningless until you've read them:</p>
+<table>
+  <tr><th>Display says</th><th>It means</th></tr>
+  <tr><td><span class="val">mV</span></td><td>millivolts — <em>thousandths</em> of a volt. <span class="val">3.2 mV</span> is basically zero.</td></tr>
+  <tr><td><span class="val">V</span></td><td>plain volts. <span class="val">3.2 V</span> is a blue LED's whole voltage drop.</td></tr>
+  <tr><td><span class="val">Ω</span></td><td>plain ohms.</td></tr>
+  <tr><td><span class="val">kΩ</span></td><td>kilohms — <em>thousands</em> of ohms. <span class="val">2.2 kΩ</span> = 2,200 Ω.</td></tr>
+  <tr><td><span class="val">MΩ</span></td><td>megohms — <em>millions</em> of ohms. Your hand-to-hand reading lives here.</td></tr>
+</table>
+<p>Same digits, three different components: <span class="val">220 Ω</span>, <span class="val">220 kΩ</span>, and <span class="val">220 MΩ</span> are a thousand and a million times apart. <strong>Glance at the unit before you write any number down.</strong></p>
+
+<h2>Current — the special case</h2>
+<p>Volts are measured <em>across</em> a part; current is measured <em>through</em> it. The meter can't watch current from outside the loop — it has to <strong>become part of the loop</strong>: break the circuit at one point and bridge the gap with the probes, so every bit of the flow passes through the meter.</p>
+<p>On our meters that also means <strong>moving the red lead</strong> to a different socket — out of its home <span class="val">V/Ω</span> jack, into the <span class="val">mA</span> jack. The black lead never moves.</p>
+<div class="callout safety">
+  <p class="label">Why this mode kills meters</p>
+  <p>In current mode the meter is deliberately almost a plain wire, so it won't slow the flow it's measuring. That means: touch it <em>across</em> anything — the supply, a resistor, out of habit from volts mode — and you've built a short circuit straight through the meter. The internal fuse blows instantly, and the meter reads nothing in that mode until it's repaired. This is also why the red lead goes <strong>straight back to the V/Ω jack</strong> the moment you're done: a meter left wired for current is a trap for the next measurement. <strong>In class, the current jacks — mA and 10 A — stay off-limits unless a teacher is at the table.</strong></p>
+</div>
+
+<h2>The modes we'll meet later</h2>
+<p>The dial has more positions: a <strong>diode test</strong> (it can light an LED faintly and report its forward voltage), a <strong>capacitance</strong> setting for measuring capacitors, and on some meters a socket for checking <strong>transistors</strong>. They'll make sense once those parts join the kit — for now, just know the meter is ready when you are.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Multimeter card v1</span>
+  <span>Two probes · two points · read the unit</span>
+</footer>
+
+</body>
+</html>

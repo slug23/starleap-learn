@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 7 · The Transistor Switch</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox
+    { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html" class="cur">7 &middot; The Transistor Switch</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: stored light, from memory</a><a class="sub" href="#s4">4 &middot; New component: the transistor</a><a class="sub" href="#s5">5 &middot; Build the switch</a><a class="sub" href="#s6">6 &middot; Measure the switch itself</a><a class="sub" href="#s7">7 &middot; The multiplier, sampled</a><a class="sub" href="#s8">8 &middot; The knob that decides</a><a class="sub" href="#s9">9 &middot; The capacitor runs the show</a><a class="sub" href="#s10">10 &middot; Challenge: tune the timer</a><a class="sub" href="#s11">11 &middot; Words to know</a><a class="sub" href="#s12">12 &middot; Exit ticket</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 7 · 55 min &middot; build 2026.09.23-1531</p>
+  <h1>The Transistor Switch</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The big idea</p>
+  <p>The transistor lets a <strong>small current control a big one</strong>. Every automatic thing electricity does — sensing, deciding, computing — starts with the transistor family. Ours is the classic; your laptop packs billions of its cousins.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Build a switch with <strong>no moving parts</strong> — and flip it with a wire that carries almost nothing.</li>
+  <li>Measure the switch itself: ≈ <span class="val">0.2 V</span> when on, ≈ <span class="val">5 V</span> when off.</li>
+  <li>See <strong>gain vary part to part</strong> — and why the circuit is designed for the weakest.</li>
+  <li>Discover what a knob does to a transistor — and what a charged capacitor does.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Board with supply on the rails — cleared last lesson — plus jumpers, LEDs, <span class="val">220 Ω</span>, assortment, pot, capacitors, multimeter</li>
+  <li><strong>NPN transistor</strong> — the little half-round can with a flat face and three legs (plus a spare)</li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span> Warm-up: stored light, from memory</h2>
+<p>Lesson 6, no peeking: charge a <span class="val">1000 µF</span> capacitor through a <span class="val">220 Ω</span>, meter-prove ≈ <span class="val">5 V</span>, disconnect the supply path, and light an LED from the stored charge. Stripe to ground — say it out loud. Done when you've seen the fade.</p>
+
+<h2 id="s4"><span class="num">4</span> New component: the transistor</h2>
+<p>Three legs, and each has a name and a job. The big current flows in at the <strong>collector</strong> and out at the <strong>emitter</strong> — but <em>only</em> when a small current is flowing into the <strong>base</strong>. Think of a faucet lever once: the effort at the handle is not the water. From here on, the real words: base current <em>permits</em> collector current — up to the transistor's <strong>gain</strong> times bigger. The collector's own circuit decides how much of that permission actually gets used.</p>
+
+<div class="symbols">
+  <figure class="symbol">
+    <svg viewBox="0 0 200 120">
+      <circle cx="100" cy="60" r="42" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <line class="w" x1="88" y1="40" x2="88" y2="80"/>
+      <line class="w" x1="40" y1="60" x2="88" y2="60"/>
+      <line class="w" x1="88" y1="49" x2="124" y2="24"/>
+      <line class="w" x1="124" y1="24" x2="124" y2="8"/>
+      <line class="w" x1="88" y1="71" x2="124" y2="96"/>
+      <polygon points="124,96 111,93 118,84" fill="var(--ink)"/>
+      <line class="w" x1="124" y1="96" x2="124" y2="112"/>
+      <text class="lbl" x="34" y="52" text-anchor="end">B</text>
+      <text class="lbl" x="134" y="16">C</text>
+      <text class="lbl" x="134" y="110">E</text>
+    </svg>
+    <figcaption><b>NPN transistor</b> arrow marks the emitter; big current flows C → E, permitted by B</figcaption>
+  </figure>
+  <figure class="symbol">
+    <svg viewBox="0 0 200 170">
+      <defs>
+        <radialGradient id="toShell" cx=".42" cy=".38" r=".85">
+          <stop offset="0" stop-color="#52525d"/>
+          <stop offset=".55" stop-color="#3c3c46"/>
+          <stop offset="1" stop-color="#26262e"/>
+        </radialGradient>
+        <linearGradient id="toLeg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#cdd1d8"/>
+          <stop offset=".5" stop-color="#9aa0a9"/>
+          <stop offset="1" stop-color="#787e88"/>
+        </linearGradient>
+      </defs>
+      <rect x="81.6" y="92" width="4.8" height="53" fill="url(#toLeg)"/>
+      <rect x="97.6" y="92" width="4.8" height="53" fill="url(#toLeg)"/>
+      <rect x="113.6" y="92" width="4.8" height="53" fill="url(#toLeg)"/>
+      <path d="M64,92 L64,48 a36,34 0 0 1 72,0 L136,92 Z" fill="url(#toShell)" stroke="#191920" stroke-width="1.5"/>
+      <path d="M71,46 a29,27 0 0 1 58,0" stroke="#1d1d24" stroke-width="7" opacity=".5" fill="none" stroke-linecap="round"/>
+      <line x1="67.8" y1="52" x2="67.8" y2="88" stroke="#1d1d24" stroke-width="5" opacity=".38"/>
+      <line x1="132.2" y1="52" x2="132.2" y2="88" stroke="#1d1d24" stroke-width="5" opacity=".38"/>
+      <rect x="64" y="85" width="72" height="7" fill="#2a2a32"/>
+      <line x1="64" y1="85" x2="136" y2="85" stroke="#1b1b22" stroke-width="1.6"/>
+      <text x="100" y="63" text-anchor="middle" font-size="14" font-weight="700" fill="#e8eaee"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace">2N3904</text>
+      <text x="100" y="78" text-anchor="middle" font-size="9" fill="#e8eaee" opacity=".65"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace">K33</text>
+      <text class="lbl" x="84"  y="162" text-anchor="middle">E</text>
+      <text class="lbl" x="100" y="162" text-anchor="middle">B</text>
+      <text class="lbl" x="116" y="162" text-anchor="middle">C</text>
+    </svg>
+    <figcaption><b>In real life</b> flat face toward you, legs down: <strong>E · B · C</strong>, left to right
+    <span class="irl">Backwards won't hurt it — but the switch turns feeble and strange. Flat face is the compass.</span></figcaption>
+  </figure>
+</div>
+
+<div class="callout safety">
+  <p class="label">The base is a diode</p>
+  <p>Inside, the base-to-emitter path behaves like a small LED: it starts conducting near ≈ <span class="val">0.7 V</span> and holds close to that as the current climbs. So the naked-LED rule applies here too: <strong>the base never connects straight to 5 V — it always gets its own resistor.</strong> A bare base across the supply is a huge current and a cooked transistor.</p>
+</div>
+
+<h2 id="s5"><span class="num">5</span> Build the switch</h2>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 330" role="img" aria-label="Transistor switch: 5 volt rail through an LED and 220 ohm resistor into the collector, emitter to ground, and a loose control wire through a 4.7 kilohm base resistor">
+    <text class="lbl" x="195" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="205" y1="26" x2="390" y2="26"/>
+    <line class="w" x1="390" y1="26" x2="390" y2="48"/>
+    <polygon class="w" points="376,48 404,48 390,72"/>
+    <line class="w" x1="376" y1="72" x2="404" y2="72"/>
+    <path class="w" style="stroke-width:1.75" d="M407,54 L421,42 M421,42 l-10,2 M421,42 l-2,10"/>
+    <line class="w" x1="390" y1="72" x2="390" y2="88"/>
+    <path class="w" d="M390,88 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="417" y="128">220 Ω</text>
+    <line class="w" x1="390" y1="160" x2="390" y2="190"/>
+    <line class="w" x1="372" y1="200" x2="372" y2="240"/>
+    <line class="w" x1="390" y1="190" x2="372" y2="210"/>
+    <line class="w" x1="372" y1="230" x2="390" y2="250"/>
+    <polygon points="390,250 373,247 381,235" fill="var(--ink)"/>
+    <line class="w" x1="390" y1="250" x2="390" y2="272"/>
+    <text class="lbl" x="362" y="192" text-anchor="end" font-weight="700">C</text>
+    <text class="lbl" x="362" y="266" text-anchor="end" font-weight="700">E</text>
+    <text class="lbl" x="352" y="212" text-anchor="end" font-weight="700">B</text>
+    <line class="w" x1="160" y1="220" x2="246" y2="220"/>
+    <path class="w" d="M246,220 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="330" y1="220" x2="372" y2="220"/>
+    <text class="lbl" x="288" y="190" text-anchor="middle">4.7 kΩ</text>
+    <text class="lbl" x="158" y="208" text-anchor="end">control wire</text>
+    <text class="lbl-muted" x="158" y="240" text-anchor="end">free end in hand</text>
+    <line class="w" x1="205" y1="272" x2="390" y2="272"/>
+    <text class="lbl" x="195" y="278" text-anchor="end">ground rail</text>
+  </svg>
+  <figcaption>The collector loop is a normal LED circuit — until it meets the transistor. All three legs are named right on the symbol: <b>B</b>, <b>C</b>, <b>E</b>. The control wire's free end stays in your hand.</figcaption>
+</figure>
+
+<div class="callout note">
+  <p class="label">Symbol vs. part: match by name, not by shape</p>
+  <p>The drawing and the part will never look alike — schematics always point the collector toward + and the emitter toward ground, because the whole page reads downhill, while the package reads E-B-C in a flat row. Don't make the build imitate the picture. Find each wire's <em>letter</em> in the schematic and take it to that leg's row on the board.</p>
+</div>
+
+<ol class="steps">
+  <li>Flat face toward you, legs down: <strong>E · B · C</strong> into three neighboring rows. Say the legs out loud as you plug them.</li>
+  <li>Collector loop: + rail → <span class="val">220 Ω</span> → LED (long leg toward +) → collector row. Emitter row → ground rail.</li>
+  <li>Base: <span class="val">4.7 kΩ</span> from the base row to an empty row; a jumper from that row is your <strong>control wire</strong> — free end in your hand.</li>
+  <li>Power on. <strong>Predict all three, then test:</strong> control wire touched to the <strong>+ rail</strong>? Touched to the <strong>ground rail</strong>? Dangling in the air?</li>
+</ol>
+<p>On, off — and the dangling wire? Probably off too. But look closely at what "dangling" means: nothing is <em>holding</em> the base off. Touching + is a command; touching ground is a command; dangling is <strong>no command at all</strong>, and an uncommanded input is at the mercy of static, damp air, and luck. It behaved today; never design a circuit that needs it to. The rule, from here through the whole digital semester: <strong>an input you mean to be off gets wired to ground</strong> — told, not left to hope.</p>
+<p>Still: you just operated a switch with no moving parts — flipped by a wire carrying a small fraction of the current it commands. Where lesson 2's slide switch needed a thumb, this one needs only a whisper of current — and <em>anything</em> that can make a whisper can now be a thumb.</p>
+
+<h2 id="s6"><span class="num">6</span> Measure the switch itself</h2>
+<p>Black probe parked at ground. Red probe on the transistor's own legs — predict each before you measure:</p>
+<table>
+  <tr><th>Measurement</th><th>Control at +5 V (LED on)</th><th>Control at ground (LED off)</th></tr>
+  <tr><td>Collector leg to ground — across the "switch"</td><td></td><td></td></tr>
+  <tr><td>Base leg to ground (the transistor side of the 4.7 kΩ)</td><td></td><td></td></tr>
+</table>
+<div class="callout note">
+  <p class="label">What the numbers say</p>
+  <p><strong>On:</strong> the collector reads ≈ <span class="val">0.2 V</span> — the transistor is almost a closed switch, almost a plain wire to ground. <strong>Off:</strong> it reads ≈ <span class="val">5 V</span> — an open switch, and the whole supply piles up across the open gap, exactly like the dark circuit in lesson 4. The base, when on, sits at ≈ <span class="val">0.7 V</span>: the base's own voltage drop — same idea as an LED's, smaller.</p>
+</div>
+
+<h2 id="s7"><span class="num">7</span> The multiplier, sampled</h2>
+<p>How much bigger is the permitted current? The meter can ask: the dial position marked <span class="val">hFE</span> and the little socket with lettered holes. Watch the front table: teachers will power off, borrow two transistors from the room, and socket them — same part number, same bin, and the numbers land anywhere from about 100 to 300. That's the <strong>gain</strong> — engineers write it <strong>β</strong>, "beta" — and each reading is one sample, taken at the meter's own tiny test current, not a constant of nature.</p>
+<div class="callout note">
+  <p class="label">Design for the weakest</p>
+  <p>If β is a lottery, how does anyone design with it? Plan on the <em>smallest</em> number the bin might hold. Our switch feeds the base several times the minimum whisper a weak part would need — so every transistor in the bin slams fully on, and a strong β is a bonus, never a requirement. (Want your own part's number? Stretch #1.)</p>
+</div>
+
+<h2 id="s8"><span class="num">8</span> The knob that decides</h2>
+<p>In lesson 5, the pot dimmed the LED smoothly, end to end. Feed the pot's tap to the <em>base</em> instead and something different happens:</p>
+<figure class="schematic">
+  <svg viewBox="0 0 560 330" role="img" aria-label="Potentiometer across the rails with its wiper feeding the base resistor of the transistor LED switch">
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="390" y2="26"/>
+    <line class="w" x1="150" y1="26" x2="150" y2="60"/>
+    <path class="w" d="M150,60 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <path class="w" d="M150,132 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <line class="w" x1="150" y1="204" x2="150" y2="272"/>
+    <text class="lbl" x="112" y="140" text-anchor="end">pot</text>
+    <line class="w" x1="212" y1="132" x2="168" y2="132"/>
+    <polygon points="164,132 176,126 176,138" fill="var(--ink)"/>
+    <text class="lbl-muted" x="222" y="120">wiper</text>
+    <line class="w" x1="212" y1="132" x2="212" y2="220"/>
+    <line class="w" x1="212" y1="220" x2="246" y2="220"/>
+    <line class="w" x1="390" y1="26" x2="390" y2="48"/>
+    <polygon class="w" points="376,48 404,48 390,72"/>
+    <line class="w" x1="376" y1="72" x2="404" y2="72"/>
+    <path class="w" style="stroke-width:1.75" d="M407,54 L421,42 M421,42 l-10,2 M421,42 l-2,10"/>
+    <line class="w" x1="390" y1="72" x2="390" y2="88"/>
+    <path class="w" d="M390,88 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="417" y="128">220 Ω</text>
+    <line class="w" x1="390" y1="160" x2="390" y2="190"/>
+    <line class="w" x1="372" y1="200" x2="372" y2="240"/>
+    <line class="w" x1="390" y1="190" x2="372" y2="210"/>
+    <line class="w" x1="372" y1="230" x2="390" y2="250"/>
+    <polygon points="390,250 373,247 381,235" fill="var(--ink)"/>
+    <line class="w" x1="390" y1="250" x2="390" y2="272"/>
+    <text class="lbl" x="362" y="192" text-anchor="end" font-weight="700">C</text>
+    <text class="lbl" x="362" y="266" text-anchor="end" font-weight="700">E</text>
+    <text class="lbl" x="352" y="212" text-anchor="end" font-weight="700">B</text>
+    <line class="w" x1="330" y1="220" x2="372" y2="220"/>
+    <path class="w" d="M246,220 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <text class="lbl" x="288" y="190" text-anchor="middle">4.7 kΩ</text>
+    <line class="w" x1="140" y1="272" x2="390" y2="272"/>
+    <text class="lbl" x="130" y="278" text-anchor="end">ground rail</text>
+  </svg>
+  <figcaption>Lesson 5's divider, feeding the base: the wiper's voltage — through the 4.7 kΩ — is now the control signal.</figcaption>
+</figure>
+
+<ol class="steps">
+  <li>Pot across the rails, outer legs to + and ground — the lesson 5 divider.</li>
+  <li>Wiper → <span class="val">4.7 kΩ</span> → base, replacing the control wire. Collector loop unchanged.</li>
+  <li><strong>Predict:</strong> turning the knob end to end — a smooth dim, like the dimmer? Sweep slowly and watch.</li>
+</ol>
+<p>Most of the turn does <em>nothing</em> — dark, dark, dark — then the whole performance arrives in one narrow slice: a faint glow, a quick climb, full brightness. After that, more turning changes nothing again. Below the base's ≈ 0.7 V door, no whisper gets in. Inside the slice the transistor really is dimming — where the slice sits depends on your pot and your part. Past it, saturation: fully on, permission to spare. Where lesson 5's dimmer spread its change across the whole knob, this circuit crushes it into a sliver: <em>almost</em> off-or-on. A circuit that squeezes a smooth quantity toward yes-or-no is making a <strong>threshold</strong> decision, and that word is next lesson's whole story.</p>
+
+<h2 id="s9"><span class="num">9</span> The capacitor runs the show</h2>
+<p>Lesson 6's capacitor could light an LED for about a second. Watch what the transistor does for it:</p>
+<figure class="schematic">
+  <svg viewBox="0 0 560 330" role="img" aria-label="A charged 1000 microfarad capacitor feeding the base resistor of the transistor LED switch; a charge wire from the 5 volt rail touches the capacitor and is then removed">
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="390" y2="26"/>
+    <path class="flow" d="M150,36 L150,86"/>
+    <path class="w" d="M150,86 l-6,5 l12,10 l-12,10 l12,10 l-12,10 l12,10 l-6,5"/>
+    <text class="lbl" x="164" y="122">220 Ω</text>
+    <path class="flow" d="M150,146 L150,200"/>
+    <polygon points="150,210 144,198 156,198" fill="var(--copper)"/>
+    <text class="lbl-muted" x="138" y="104" text-anchor="end">touch to charge,</text>
+    <text class="lbl-muted" x="138" y="122" text-anchor="end">then pull away</text>
+    <line class="w" x1="150" y1="220" x2="246" y2="220"/>
+    <circle cx="150" cy="220" r="4.5" fill="var(--ink)"/>
+    <line class="w" x1="150" y1="220" x2="150" y2="232"/>
+    <line class="w" x1="126" y1="232" x2="174" y2="232"/>
+    <path class="w" d="M126,244 a44,44 0 0 0 48,0"/>
+    <line class="w" x1="150" y1="251" x2="150" y2="272"/>
+    <text class="lbl" x="116" y="226" text-anchor="end">+</text>
+    <text class="lbl" x="184" y="250">1000 µF</text>
+    <line class="w" x1="390" y1="26" x2="390" y2="48"/>
+    <polygon class="w" points="376,48 404,48 390,72"/>
+    <line class="w" x1="376" y1="72" x2="404" y2="72"/>
+    <path class="w" style="stroke-width:1.75" d="M407,54 L421,42 M421,42 l-10,2 M421,42 l-2,10"/>
+    <line class="w" x1="390" y1="72" x2="390" y2="88"/>
+    <path class="w" d="M390,88 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="417" y="128">220 Ω</text>
+    <line class="w" x1="390" y1="160" x2="390" y2="190"/>
+    <line class="w" x1="372" y1="200" x2="372" y2="240"/>
+    <line class="w" x1="390" y1="190" x2="372" y2="210"/>
+    <line class="w" x1="372" y1="230" x2="390" y2="250"/>
+    <polygon points="390,250 373,247 381,235" fill="var(--ink)"/>
+    <line class="w" x1="390" y1="250" x2="390" y2="272"/>
+    <text class="lbl" x="362" y="192" text-anchor="end" font-weight="700">C</text>
+    <text class="lbl" x="362" y="266" text-anchor="end" font-weight="700">E</text>
+    <text class="lbl" x="352" y="212" text-anchor="end" font-weight="700">B</text>
+    <line class="w" x1="330" y1="220" x2="372" y2="220"/>
+    <path class="w" d="M246,220 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <text class="lbl" x="288" y="190" text-anchor="middle">4.7 kΩ</text>
+    <line class="w" x1="140" y1="272" x2="390" y2="272"/>
+    <text class="lbl" x="130" y="278" text-anchor="end">ground rail</text>
+  </svg>
+  <figcaption>The stored charge pays only the base's whisper; the LED's bright current comes from the supply, through the collector.</figcaption>
+</figure>
+
+<ol class="steps">
+  <li>Take the pot back out. In its place: <span class="val">1000 µF</span> capacitor, + leg to the base resistor's input row, striped leg to ground. Stripe check, out loud.</li>
+  <li>Charge wire: a <span class="val">220 Ω</span> from the + rail to an empty row, and a jumper from that row — its free end is your charge wire. Touch it to the capacitor's + row for a full second, then <strong>pull it away</strong>. (Big caps fill through a resistor — the same habit as every fill in lesson 6; a bare rail wire is a spark habit.) Predict first: what will the LED do, and for how long?</li>
+</ol>
+<p>The LED holds on — for on the order of ten seconds — then dies. Same capacitor, same stored energy as lesson 6's one-second fade. The difference: the LED's light is paid for by the <em>supply</em> now, through the collector; the capacitor's store goes only to the base's whisper. <strong>A small store, trickled out slowly, commanding a big bright current: that is amplification</strong>, and you just watched it.</p>
+
+<h2 id="s10"><span class="num">10</span> Challenge: tune the timer</h2>
+<p>The timer schematic one more time — but now it reads <strong>C = <span class="val">▢</span>, base resistor = <span class="val">▢</span></strong>. Pick them so the LED stays on <strong>as close to five seconds as you can get</strong> after the charge wire lifts. Predict which direction each lever pushes before you swap anything. Closest table wins.</p>
+
+<div class="callout tryit">
+  <p class="label">Go further — for the fast and the curious</p>
+  <p><strong>1.</strong> Sample your own β: <strong>power off</strong>, pull your transistor, seat it in the meter's NPN socket holes <span class="val">E</span>-<span class="val">B</span>-<span class="val">C</span>, read the number, compare across the table. Then reseat it — flat face toward you, E-B-C, said out loud. <strong>2.</strong> Swap the red LED for blue in the collector loop. Predict the collector-to-ground reading when on, and the brightness, before you look. <strong>3.</strong> Replace the 4.7 kΩ base resistor with 1 kΩ, then 10 kΩ — what changes, in the pot build and in the timer? <strong>4.</strong> Bold move: make <em>yourself</em> the base resistor — control wire in one hand, a jumper from the + rail pinched in the other. Your ≈ 100 kΩ body is a legal base resistor; the glow may be faint. (A Darlington pair — two transistors stacked so their gains multiply — makes this trick effortless; ask us about it.)</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>Your switch by the numbers. Fully on, the loop drops 2.0 V (LED) + 0.2 V (transistor), leaving 2.8 V across the 220 Ω:</p>
+  <math display="block"><mrow><mi>I</mi><mo>=</mo><mfrac><mrow><mn>2.8</mn><mtext>&#160;V</mtext></mrow><mrow><mn>220</mn><mtext>&#160;Ω</mtext></mrow></mfrac><mo>≈</mo><mn>13</mn><mtext>&#160;mA</mtext></mrow></math>
+  <p>The <em>minimum</em> permission, at a weak β of 100:</p>
+  <math display="block"><mrow><mfrac><mrow><mn>13</mn><mtext>&#160;mA</mtext></mrow><mi>β</mi></mfrac><mo>=</mo><mfrac><mrow><mn>13</mn><mtext>&#160;mA</mtext></mrow><mn>100</mn></mfrac><mo>=</mo><mn>0.13</mn><mtext>&#160;mA</mtext></mrow></math>
+  <p>What the 4.7 kΩ actually delivers:</p>
+  <math display="block"><mrow><mfrac><mrow><mn>5</mn><mo>−</mo><mn>0.7</mn></mrow><mn>4700</mn></mfrac><mo>≈</mo><mn>0.9</mn><mtext>&#160;mA</mtext></mrow></math>
+  <p>— about seven times that minimum, on purpose. The surplus is why the whole bin works: the switch saturates whether your β is 100 or 300. The <em>Transistor's Arithmetic</em> sheet on the math shelf runs the whole design, including how the 4.7 kΩ was chosen.</p>
+</div>
+
+<h2 id="s11"><span class="num">11</span> Words to know</h2>
+<dl class="vocab">
+  <dt>transistor</dt><dd>three legs; a small base current permits a big collector-to-emitter current</dd>
+  <dt>base · collector · emitter</dt><dd>the control leg · where the big current enters · where it leaves (the arrow)</dd>
+  <dt>NPN</dt><dd>our transistor's family — control current flows <em>into</em> the base</dd>
+  <dt>gain (β)</dt><dd>the permission multiplier: one unit of base current permits up to β units of collector current (the meter's <span class="val">hFE</span> socket reads one sample of it)</dd>
+  <dt>saturation</dt><dd>fully on — the base permits more than the collector loop can draw, and the transistor drops only ≈ 0.2 V, as close to a closed switch as it gets</dd>
+  <dt>threshold</dt><dd>the input level where a circuit stops dimming and starts deciding</dd>
+</dl>
+
+<h2 id="s12"><span class="num">12</span> Exit ticket</h2>
+<p>On your card: <strong>1.</strong> draw the transistor switch from memory — symbol, all three legs labeled, base resistor in place. <strong>2.</strong> One sentence: what does the base current actually do? Hand it in at the door.</p>
+<p>Then lesson 6's teardown ritual: bare <span class="val">220 Ω</span> across the 1000 µF until the meter calls it empty. Retire the drained caps and the pot to the box — but <strong>leave the switch standing</strong>: LED, <span class="val">220 Ω</span>, transistor, base resistor, control wire free. Next lesson hires it exactly as it stands.</p>
+
+<footer class="lesson-foot">
+  <span>StarLeap Electronics · Lesson 7</span>
+  <span>Next: Sensors</span>
+</footer>
+
+</body>
+</html>

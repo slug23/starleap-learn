@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Bridge Rectifiers Work</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--copper);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 560px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+
+/* ---- deep-shelf accent: blue ---- */
+.kicker { color: var(--blue); }
+h2 { border-color: var(--blue); }
+.callout.idea { border-color: var(--blue); background: var(--blue-soft); }
+.callout.idea .label { color: var(--blue); }
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html" class="cur">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Under the hood · Optional — the deep story &middot; build 2026.09.23-1531</p>
+  <h1>How Bridge Rectifiers Work</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>A diode passes current <strong>one way</strong>. Arrange four of them right, and whichever way the input swings, the output current takes the <strong>same path</strong> through the load. That arrangement is the bridge.</p>
+</div>
+
+<h2>The problem it solves</h2>
+<p>Wall electricity alternates — the current reverses direction 60 times a second (the <em>How AC Works</em> page tells that story). But almost everything electronic wants <strong>DC</strong>: one steady direction. Somewhere between the outlet and the circuit, the slosh has to be tamed. That job is called <strong>rectification</strong>, and diodes — one-way valves built from a PN junction — are the tool.</p>
+
+<h2>One diode: the half-wave attempt</h2>
+<figure class="schematic">
+  <svg viewBox="0 0 590 200" role="img" aria-label="An AC sine wave, and after one diode only its positive humps remain, with flat gaps where the negative halves were blocked">
+    <line class="w" x1="60" y1="120" x2="540" y2="120" style="stroke-width:1.5"/>
+    <path d="M60,120.0 L65,110.9 L70,101.9 L75,93.2 L80,85.0 L85,77.4 L90,70.5 L95,64.5 L100,59.4 L105,55.3 L110,52.4 L115,50.6 L120,50.0 L125,50.6 L130,52.4 L135,55.3 L140,59.4 L145,64.5 L150,70.5 L155,77.4 L160,85.0 L165,93.2 L170,101.9 L175,110.9 L180,120.0 L185,129.1 L190,138.1 L195,146.8 L200,155.0 L205,162.6 L210,169.5 L215,175.5 L220,180.6 L225,184.7 L230,187.6 L235,189.4 L240,190.0 L245,189.4 L250,187.6 L255,184.7 L260,180.6 L265,175.5 L270,169.5 L275,162.6 L280,155.0 L285,146.8 L290,138.1 L295,129.1 L300,120.0 L305,110.9 L310,101.9 L315,93.2 L320,85.0 L325,77.4 L330,70.5 L335,64.5 L340,59.4 L345,55.3 L350,52.4 L355,50.6 L360,50.0 L365,50.6 L370,52.4 L375,55.3 L380,59.4 L385,64.5 L390,70.5 L395,77.4 L400,85.0 L405,93.2 L410,101.9 L415,110.9 L420,120.0 L425,129.1 L430,138.1 L435,146.8 L440,155.0 L445,162.6 L450,169.5 L455,175.5 L460,180.6 L465,184.7 L470,187.6 L475,189.4 L480,190.0 L485,189.4 L490,187.6 L495,184.7 L500,180.6 L505,175.5 L510,169.5 L515,162.6 L520,155.0 L525,146.8 L530,138.1 L535,129.1 L540,120.0" stroke="var(--muted)" stroke-width="1.8" fill="none" stroke-dasharray="4 5"/>
+    <path d="M60,120.0 L65,110.9 L70,101.9 L75,93.2 L80,85.0 L85,77.4 L90,70.5 L95,64.5 L100,59.4 L105,55.3 L110,52.4 L115,50.6 L120,50.0 L125,50.6 L130,52.4 L135,55.3 L140,59.4 L145,64.5 L150,70.5 L155,77.4 L160,85.0 L165,93.2 L170,101.9 L175,110.9 L180,120.0 L185,120.0 L190,120.0 L195,120.0 L200,120.0 L205,120.0 L210,120.0 L215,120.0 L220,120.0 L225,120.0 L230,120.0 L235,120.0 L240,120.0 L245,120.0 L250,120.0 L255,120.0 L260,120.0 L265,120.0 L270,120.0 L275,120.0 L280,120.0 L285,120.0 L290,120.0 L295,120.0 L300,120.0 L305,110.9 L310,101.9 L315,93.2 L320,85.0 L325,77.4 L330,70.5 L335,64.5 L340,59.4 L345,55.3 L350,52.4 L355,50.6 L360,50.0 L365,50.6 L370,52.4 L375,55.3 L380,59.4 L385,64.5 L390,70.5 L395,77.4 L400,85.0 L405,93.2 L410,101.9 L415,110.9 L420,120.0 L425,120.0 L430,120.0 L435,120.0 L440,120.0 L445,120.0 L450,120.0 L455,120.0 L460,120.0 L465,120.0 L470,120.0 L475,120.0 L480,120.0 L485,120.0 L490,120.0 L495,120.0 L500,120.0 L505,120.0 L510,120.0 L515,120.0 L520,120.0 L525,120.0 L530,120.0 L535,120.0 L540,120.0" stroke="var(--blue)" stroke-width="2.8" fill="none"/>
+    <text class="lbl-muted" x="540" y="34" text-anchor="end">what one diode passes</text>
+    <text class="lbl-muted" x="65" y="194">dashed: the AC that arrived</text>
+  </svg>
+  <figcaption><b>Half-wave rectification:</b> one diode passes the positive humps and blocks the negative ones. It works — but half the power is thrown away, and the output spends half its time at zero.</figcaption>
+</figure>
+
+<h2>Four diodes: the bridge</h2>
+<p>The bridge fixes the waste with routing. Four diodes form a diamond; the AC comes in at two opposite corners, the load hangs between the other two. Each half of the cycle, exactly one diagonal pair of diodes conducts — and both pairs deliver current to the load <strong>in the same direction</strong>:</p>
+<figure class="schematic">
+  <svg viewBox="0 0 440 620" role="img" aria-label="A bridge of four diodes drawn twice: when one AC wire is positive, current flows through one diagonal pair of diodes to the load; when the other AC wire is positive, the other pair conducts — and the load receives current in the same direction both times" style="max-width:440px">
+    <text class="lbl" x="30" y="20" font-weight="700">When AC wire 1 is the + one</text>
+    <line class="w" x1="60" y1="156" x2="170" y2="66"/>
+    <line class="w" x1="170" y1="66" x2="280" y2="156"/>
+    <line class="w" x1="60" y1="156" x2="170" y2="246"/>
+    <line class="w" x1="170" y1="246" x2="280" y2="156"/>
+    <line class="w" x1="170" y1="66" x2="170" y2="34"/>
+    <line class="w" x1="170" y1="246" x2="170" y2="278"/>
+    <line class="w" x1="280" y1="156" x2="310" y2="156"/>
+    <path class="w" d="M310,156 l7,-11 l13,22 l13,-22 l13,22 l13,-22 l13,22 l7,-11"/>
+    <line class="w" x1="389" y1="156" x2="412" y2="156"/>
+    <line class="w" x1="412" y1="156" x2="412" y2="288"/>
+    <line class="w" x1="412" y1="288" x2="28" y2="288"/>
+    <line class="w" x1="28" y1="288" x2="28" y2="156"/>
+    <line class="w" x1="28" y1="156" x2="60" y2="156"/>
+    <text class="lbl-muted" x="349" y="134" text-anchor="middle">the load</text>
+    <text class="lbl-muted" x="160" y="48" text-anchor="end">AC wire 1</text>
+    <text class="lbl-muted" x="160" y="268" text-anchor="end">AC wire 2</text>
+    <line x1="170" y1="66" x2="280" y2="156" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="60" y1="156" x2="170" y2="246" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="280" y1="156" x2="310" y2="156" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="28" y1="156" x2="60" y2="156" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="170" y1="34" x2="170" y2="66" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="389" y1="156" x2="412" y2="156" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="412" y1="156" x2="412" y2="288" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="412" y1="288" x2="28" y2="288" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="28" y1="288" x2="28" y2="156" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="170" y1="556" x2="170" y2="588" stroke="var(--copper)" stroke-width="4" opacity=".45" transform="translate(0,0)" visibility="hidden"/>
+    <polygon points="300,152 288,147 288,157" fill="var(--copper)" transform="rotate(0)"/>
+    <polygon points="220,284 232,279 232,289" fill="var(--copper)"/>
+    <g transform="translate(225,111) rotate(39.3)"><polygon points="-11,-9 -11,9 7,0" fill="var(--ink)"/><line class="w" x1="7" y1="-9" x2="7" y2="9"/></g>
+    <g transform="translate(225,201) rotate(-39.3)"><polygon points="-11,-9 -11,9 7,0" fill="var(--muted)"/><line class="w" x1="7" y1="-9" x2="7" y2="9" style="stroke:var(--muted)"/></g>
+    <g transform="translate(115,111) rotate(-39.3)"><polygon points="-11,-9 -11,9 7,0" fill="var(--muted)"/><line class="w" x1="7" y1="-9" x2="7" y2="9" style="stroke:var(--muted)"/></g>
+    <g transform="translate(115,201) rotate(39.3)"><polygon points="-11,-9 -11,9 7,0" fill="var(--ink)"/><line class="w" x1="7" y1="-9" x2="7" y2="9"/></g>
+    <text class="lbl" x="30" y="330" font-weight="700">When AC wire 2 is the + one</text>
+    <line class="w" x1="60" y1="466" x2="170" y2="376"/>
+    <line class="w" x1="170" y1="376" x2="280" y2="466"/>
+    <line class="w" x1="60" y1="466" x2="170" y2="556"/>
+    <line class="w" x1="170" y1="556" x2="280" y2="466"/>
+    <line class="w" x1="170" y1="376" x2="170" y2="344"/>
+    <line class="w" x1="170" y1="556" x2="170" y2="588"/>
+    <line class="w" x1="280" y1="466" x2="310" y2="466"/>
+    <path class="w" d="M310,466 l7,-11 l13,22 l13,-22 l13,22 l13,-22 l13,22 l7,-11"/>
+    <line class="w" x1="389" y1="466" x2="412" y2="466"/>
+    <line class="w" x1="412" y1="466" x2="412" y2="598"/>
+    <line class="w" x1="412" y1="598" x2="28" y2="598"/>
+    <line class="w" x1="28" y1="598" x2="28" y2="466"/>
+    <line class="w" x1="28" y1="466" x2="60" y2="466"/>
+    <text class="lbl-muted" x="349" y="444" text-anchor="middle">the load</text>
+    <text class="lbl-muted" x="160" y="358" text-anchor="end">AC wire 1</text>
+    <text class="lbl-muted" x="160" y="578" text-anchor="end">AC wire 2</text>
+    <line x1="170" y1="556" x2="280" y2="466" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="60" y1="466" x2="170" y2="376" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="280" y1="466" x2="310" y2="466" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="28" y1="466" x2="60" y2="466" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="170" y1="556" x2="170" y2="588" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="389" y1="466" x2="412" y2="466" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="412" y1="466" x2="412" y2="598" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="412" y1="598" x2="28" y2="598" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <line x1="28" y1="598" x2="28" y2="466" stroke="var(--copper)" stroke-width="4" opacity=".45"/>
+    <polygon points="300,462 288,457 288,467" fill="var(--copper)" transform="rotate(0)"/>
+    <polygon points="220,594 232,589 232,599" fill="var(--copper)"/>
+    <g transform="translate(225,421) rotate(39.3)"><polygon points="-11,-9 -11,9 7,0" fill="var(--muted)"/><line class="w" x1="7" y1="-9" x2="7" y2="9" style="stroke:var(--muted)"/></g>
+    <g transform="translate(225,511) rotate(-39.3)"><polygon points="-11,-9 -11,9 7,0" fill="var(--ink)"/><line class="w" x1="7" y1="-9" x2="7" y2="9"/></g>
+    <g transform="translate(115,421) rotate(-39.3)"><polygon points="-11,-9 -11,9 7,0" fill="var(--ink)"/><line class="w" x1="7" y1="-9" x2="7" y2="9"/></g>
+    <g transform="translate(115,511) rotate(39.3)"><polygon points="-11,-9 -11,9 7,0" fill="var(--muted)"/><line class="w" x1="7" y1="-9" x2="7" y2="9" style="stroke:var(--muted)"/></g>
+  </svg>
+  <figcaption><b>The same diamond, both halves of the cycle.</b> Whichever AC wire is +, exactly one diagonal pair of diodes (dark) conducts and the other pair (gray) blocks — and the load's current runs the <em>same way</em> every time. Follow the highlighted path with your finger, twice.</figcaption>
+</figure>
+<p>Nothing decides, nothing switches, nothing moves. Each diode simply does the only thing a diode can do — conduct forward, block backward — and the geometry does the rest. It's routing as physics.</p>
+
+<h2>What comes out</h2>
+<figure class="schematic">
+  <svg viewBox="0 0 590 230" role="img" aria-label="The bridge's output: the negative halves of the sine folded upward into a chain of bumps, and with a reservoir capacitor the output becomes nearly flat with a slight ripple">
+    <line class="w" x1="60" y1="150" x2="540" y2="150" style="stroke-width:1.5"/>
+    <path d="M60,150.0 L65,138.3 L70,126.7 L75,115.6 L80,105.0 L85,95.2 L90,86.4 L95,78.6 L100,72.1 L105,66.9 L110,63.1 L115,60.8 L120,60.0 L125,60.8 L130,63.1 L135,66.9 L140,72.1 L145,78.6 L150,86.4 L155,95.2 L160,105.0 L165,115.6 L170,126.7 L175,138.3 L180,150.0 L185,138.3 L190,126.7 L195,115.6 L200,105.0 L205,95.2 L210,86.4 L215,78.6 L220,72.1 L225,66.9 L230,63.1 L235,60.8 L240,60.0 L245,60.8 L250,63.1 L255,66.9 L260,72.1 L265,78.6 L270,86.4 L275,95.2 L280,105.0 L285,115.6 L290,126.7 L295,138.3 L300,150.0 L305,138.3 L310,126.7 L315,115.6 L320,105.0 L325,95.2 L330,86.4 L335,78.6 L340,72.1 L345,66.9 L350,63.1 L355,60.8 L360,60.0 L365,60.8 L370,63.1 L375,66.9 L380,72.1 L385,78.6 L390,86.4 L395,95.2 L400,105.0 L405,115.6 L410,126.7 L415,138.3 L420,150.0 L425,138.3 L430,126.7 L435,115.6 L440,105.0 L445,95.2 L450,86.4 L455,78.6 L460,72.1 L465,66.9 L470,63.1 L475,60.8 L480,60.0 L485,60.8 L490,63.1 L495,66.9 L500,72.1 L505,78.6 L510,86.4 L515,95.2 L520,105.0 L525,115.6 L530,126.7 L535,138.3 L540,150.0" stroke="var(--blue)" stroke-width="2.4" fill="none"/>
+    <path d="M60,72.6 L64,72.6 L68,72.6 L72,72.6 L76,72.6 L80,72.6 L84,72.6 L88,72.6 L92,72.6 L96,72.6 L100,72.1 L104,67.8 L108,64.4 L112,62.0 L116,60.5 L120,60.0 L124,60.5 L128,62.0 L132,64.4 L136,67.8 L140,72.1 L144,72.6 L148,72.6 L152,72.6 L156,72.6 L160,72.6 L164,72.6 L168,72.6 L172,72.6 L176,72.6 L180,72.6 L184,72.6 L188,72.6 L192,72.6 L196,72.6 L200,72.6 L204,72.6 L208,72.6 L212,72.6 L216,72.6 L220,72.1 L224,67.8 L228,64.4 L232,62.0 L236,60.5 L240,60.0 L244,60.5 L248,62.0 L252,64.4 L256,67.8 L260,72.1 L264,72.6 L268,72.6 L272,72.6 L276,72.6 L280,72.6 L284,72.6 L288,72.6 L292,72.6 L296,72.6 L300,72.6 L304,72.6 L308,72.6 L312,72.6 L316,72.6 L320,72.6 L324,72.6 L328,72.6 L332,72.6 L336,72.6 L340,72.1 L344,67.8 L348,64.4 L352,62.0 L356,60.5 L360,60.0 L364,60.5 L368,62.0 L372,64.4 L376,67.8 L380,72.1 L384,72.6 L388,72.6 L392,72.6 L396,72.6 L400,72.6 L404,72.6 L408,72.6 L412,72.6 L416,72.6 L420,72.6 L424,72.6 L428,72.6 L432,72.6 L436,72.6 L440,72.6 L444,72.6 L448,72.6 L452,72.6 L456,72.6 L460,72.1 L464,67.8 L468,64.4 L472,62.0 L476,60.5 L480,60.0 L484,60.5 L488,62.0 L492,64.4 L496,67.8 L500,72.1 L504,72.6 L508,72.6 L512,72.6 L516,72.6 L520,72.6 L524,72.6 L528,72.6 L532,72.6 L536,72.6 L540,72.6" stroke="var(--green)" stroke-width="2.6" fill="none"/>
+    <text class="lbl-muted" x="540" y="42" text-anchor="end">green: with the reservoir capacitor</text>
+    <text class="lbl-muted" x="540" y="216" text-anchor="end">blue: bumps straight off the bridge</text>
+  </svg>
+  <figcaption><b>Full-wave bumps, then smoothing.</b> The bridge folds every negative half upward — 60 Hz in, <em>120</em> bumps per second out. A big capacitor rides the peaks and feeds the load through the dips, leaving only a shallow <b>ripple</b>.</figcaption>
+</figure>
+<p>Notice the frequency doubling: because both halves of the wave now point up, the bumps arrive at twice the line frequency. And the leftover wobble has a name — <strong>ripple</strong> — which shrinks as the capacitor grows (the <em>How Capacitors Work</em> page explains the reservoir job).</p>
+
+<h2>The price of admission</h2>
+<p>Current always crosses <strong>two</strong> diodes on its way through the bridge — one in, one out — and each charges its junction's toll of ≈ 0.7 V (the <em>How Transistors Work</em> page explains where that number lives). So a bridge quietly eats about <span class="val">1.4 V</span>. On a 120 V line that's nothing; in low-voltage electronics it's real money, which is why designers sometimes swap in <strong>Schottky diodes</strong> — a different junction with a cheaper ≈ 0.3 V door.</p>
+
+<h2>Where you'll meet it</h2>
+<ul>
+  <li><strong>Every charger and wall adapter</strong> — the bridge is stage two of the classic chain: transformer, bridge, reservoir capacitor, regulator.</li>
+  <li><strong>Every car</strong> — the alternator makes AC; a six-diode bridge (the three-phase cousin) turns it into the DC the battery needs.</li>
+  <li><strong>As a part</strong> — bridges come pre-packaged: one little block with four legs, marked <span class="val">~ ~ + −</span>. Two legs for the AC, two for the DC, no assembly required.</li>
+</ul>
+
+<div class="callout note">
+  <p class="label">The fine print</p>
+  <p>Three honesty notes. The 0.7 V "toll" is the engineer's rounding of a steep continuous curve, not a cliff. Ripple never reaches exactly zero — smoothing is a fight you win by degrees, never outright. And modern compact chargers rearrange the classic chain: they rectify the wall's AC <em>first</em>, then chop it tens of thousands of times a second through a transformer the size of a thumbnail — the same three moves, resequenced to shrink the iron.</p>
+</div>
+
+<h2>Words that now mean something</h2>
+<dl class="vocab">
+  <dt>rectifier</dt><dd>any circuit that turns AC into one-direction current</dd>
+  <dt>half-wave / full-wave</dt><dd>keeping only the positive humps vs. folding the negative ones up too</dd>
+  <dt>bridge</dt><dd>the four-diode diamond: full-wave rectification with no wasted half</dd>
+  <dt>ripple</dt><dd>the shallow wobble left on the DC after smoothing</dd>
+  <dt>reservoir capacitor</dt><dd>the big capacitor that rides the peaks and feeds the dips</dd>
+  <dt>Schottky diode</dt><dd>a lower-toll diode (≈ 0.3 V) for when 1.4 V is too expensive</dd>
+</dl>
+
+<footer class="lesson-foot">
+  <span>Electronics · How Bridge Rectifiers Work v1</span>
+  <span>Routing as physics</span>
+</footer>
+
+</body>
+</html>

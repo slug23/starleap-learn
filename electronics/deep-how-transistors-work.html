@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Transistors Work</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--copper);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 560px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+
+/* ---- deep-shelf accent: blue ---- */
+.kicker { color: var(--blue); }
+h2 { border-color: var(--blue); }
+.callout.idea { border-color: var(--blue); background: var(--blue-soft); }
+.callout.idea .label { color: var(--blue); }
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html" class="cur">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Under the hood · Optional — the deep story &middot; build 2026.09.23-1531</p>
+  <h1>How Transistors Work</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>A switch with no moving parts needs a material that can <strong>change its mind about conducting</strong>. That material is the <strong>semiconductor</strong> — and the transistor is a sandwich made of it.</p>
+</div>
+
+<h2>Conductors, insulators — and the fence-sitter</h2>
+<p>Sort the world's materials by whether they conduct and you get two bins: metals conduct (their outer electrons roam loose), plastics don't (every electron is held tight). <strong>Silicon</strong> — refined from quartz sand, through heroic purification — sits stubbornly in between. Each silicon atom shares its four outer electrons with four neighbors, locking everything into a tidy crystal where, at room temperature, almost nothing is free to move. Pure silicon is nearly an insulator, and nearly useless.</p>
+<p>Its superpower is how <em>easily it can be persuaded</em>.</p>
+
+<h2>Doping: seasoning the crystal</h2>
+<p>Swap roughly one silicon atom in a million for a different element — the exact pinch varies wildly by recipe, but always on purpose and with absurd precision — and everything changes. This is called <strong>doping</strong>:</p>
+<figure class="schematic">
+  <svg viewBox="0 0 590 260" role="img" aria-label="Two silicon lattices: one doped with a phosphorus atom donating a loose electron (N-type), one doped with boron leaving a hole (P-type)">
+    <rect x="15" y="35" width="270" height="200" rx="12" fill="var(--blue-soft)"/>
+    <rect x="305" y="35" width="270" height="200" rx="12" fill="var(--red-soft)"/>
+    <text class="lbl" x="30" y="24" font-weight="700">N-type · phosphorus snuck in</text>
+    <text class="lbl" x="330" y="24" font-weight="700">P-type · boron snuck in</text>
+    <line x1="65" y1="110" x2="135" y2="110" stroke="var(--line)" stroke-width="3"/>
+      <line x1="65" y1="110" x2="65" y2="185" stroke="var(--line)" stroke-width="3"/>
+      <line x1="135" y1="110" x2="205" y2="110" stroke="var(--line)" stroke-width="3"/>
+      <line x1="135" y1="110" x2="135" y2="185" stroke="var(--line)" stroke-width="3"/>
+      <line x1="205" y1="110" x2="205" y2="185" stroke="var(--line)" stroke-width="3"/>
+      <line x1="65" y1="185" x2="135" y2="185" stroke="var(--line)" stroke-width="3"/>
+      <line x1="135" y1="185" x2="205" y2="185" stroke="var(--line)" stroke-width="3"/>
+      <circle cx="65" cy="110" r="17" fill="#fff" stroke="var(--muted)" stroke-width="2"/><text class="lbl-muted" x="65" y="115" text-anchor="middle">Si</text>
+      <circle cx="135" cy="110" r="17" fill="var(--copper-soft)" stroke="var(--copper)" stroke-width="2.5"/><text class="lbl" x="135" y="115" text-anchor="middle" font-weight="700">P</text>
+      <circle cx="205" cy="110" r="17" fill="#fff" stroke="var(--muted)" stroke-width="2"/><text class="lbl-muted" x="205" y="115" text-anchor="middle">Si</text>
+      <circle cx="65" cy="185" r="17" fill="#fff" stroke="var(--muted)" stroke-width="2"/><text class="lbl-muted" x="65" y="190" text-anchor="middle">Si</text>
+      <circle cx="135" cy="185" r="17" fill="#fff" stroke="var(--muted)" stroke-width="2"/><text class="lbl-muted" x="135" y="190" text-anchor="middle">Si</text>
+      <circle cx="205" cy="185" r="17" fill="#fff" stroke="var(--muted)" stroke-width="2"/><text class="lbl-muted" x="205" y="190" text-anchor="middle">Si</text>
+      <circle cx="170" cy="76" r="7" fill="#22598f"/><text x="170" y="81" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">−</text><path d="M182,70 q16,-8 30,-2" stroke="#22598f" stroke-width="1.8" fill="none" stroke-dasharray="4 4"/><text class="lbl-muted" x="152" y="60" text-anchor="end">one electron loose</text>
+    <line x1="355" y1="110" x2="425" y2="110" stroke="var(--line)" stroke-width="3"/>
+      <line x1="355" y1="110" x2="355" y2="185" stroke="var(--line)" stroke-width="3"/>
+      <line x1="425" y1="110" x2="495" y2="110" stroke="var(--line)" stroke-width="3"/>
+      <line x1="425" y1="110" x2="425" y2="185" stroke="var(--line)" stroke-width="3"/>
+      <line x1="495" y1="110" x2="495" y2="185" stroke="var(--line)" stroke-width="3"/>
+      <line x1="355" y1="185" x2="425" y2="185" stroke="var(--line)" stroke-width="3"/>
+      <line x1="425" y1="185" x2="495" y2="185" stroke="var(--line)" stroke-width="3"/>
+      <circle cx="355" cy="110" r="17" fill="#fff" stroke="var(--muted)" stroke-width="2"/><text class="lbl-muted" x="355" y="115" text-anchor="middle">Si</text>
+      <circle cx="425" cy="110" r="17" fill="var(--copper-soft)" stroke="var(--copper)" stroke-width="2.5"/><text class="lbl" x="425" y="115" text-anchor="middle" font-weight="700">B</text>
+      <circle cx="495" cy="110" r="17" fill="#fff" stroke="var(--muted)" stroke-width="2"/><text class="lbl-muted" x="495" y="115" text-anchor="middle">Si</text>
+      <circle cx="355" cy="185" r="17" fill="#fff" stroke="var(--muted)" stroke-width="2"/><text class="lbl-muted" x="355" y="190" text-anchor="middle">Si</text>
+      <circle cx="425" cy="185" r="17" fill="#fff" stroke="var(--muted)" stroke-width="2"/><text class="lbl-muted" x="425" y="190" text-anchor="middle">Si</text>
+      <circle cx="495" cy="185" r="17" fill="#fff" stroke="var(--muted)" stroke-width="2"/><text class="lbl-muted" x="495" y="190" text-anchor="middle">Si</text>
+      <circle cx="425" cy="148" r="9" fill="var(--card)" stroke="#b23a32" stroke-width="2" stroke-dasharray="3 3"/><text x="425" y="153" text-anchor="middle" font-size="11" fill="#b23a32" font-weight="700">+</text><text class="lbl-muted" x="440" y="226" text-anchor="middle">one seat empty — a hole</text>
+  </svg>
+  <figcaption><b>Doping:</b> one intruder atom in millions. Phosphorus brings one electron too many — it roams free. Boron brings one too few — the missing bond is a mobile empty seat, a <b>hole</b>.</figcaption>
+</figure>
+<ul>
+  <li><strong>Phosphorus</strong> has <em>five</em> outer electrons. Four fit the crystal's bonds; the fifth has no seat and roams free. Silicon seasoned this way is <strong>N-type</strong> — N for the roaming <em>negative</em> charges.</li>
+  <li><strong>Boron</strong> has <em>three</em>. One bond comes up an electron short, leaving a <strong>hole</strong> — and a neighboring electron can hop into it, which moves the hole the other way. Picture a packed row of chairs with one empty seat: people shift over one by one, and the empty seat travels. A hole moves like a <em>positive</em> charge, so this is <strong>P-type</strong>.</li>
+</ul>
+<div class="callout note">
+  <p class="label">Neither type is charged</p>
+  <p>Common trap: N-type silicon isn't negatively charged — each phosphorus atom brought an extra proton along with its extra electron, so the crystal stays neutral. N and P describe which kind of carrier is <em>free to move</em>, not the crystal's overall charge.</p>
+</div>
+
+<h2>The junction — where P meets N</h2>
+<p>Now make a single crystal whose one side is doped P and the other N — one unbroken lattice, not two blocks glued together. At the border inside it:</p>
+<figure class="schematic">
+  <svg viewBox="0 0 590 200" role="img" aria-label="A P region and an N region in one crystal, with a thin depletion zone at the border containing no mobile carriers, only fixed charged dopant atoms">
+    <rect x="30" y="45" width="245" height="110" rx="10" fill="var(--red-soft)"/>
+    <rect x="315" y="45" width="245" height="110" rx="10" fill="var(--blue-soft)"/>
+    <rect x="262" y="45" width="66" height="110" fill="var(--card)" stroke="var(--line)" stroke-width="1.5"/>
+    <text class="lbl" x="60" y="34" font-weight="700">P side · holes</text>
+    <text class="lbl" x="460" y="34" font-weight="700" text-anchor="middle">N side · electrons</text>
+    <g fill="none" stroke="#b23a32" stroke-width="2" stroke-dasharray="3 3">
+      <circle cx="70" cy="80" r="8"/><circle cx="130" cy="105" r="8"/><circle cx="85" cy="130" r="8"/><circle cx="185" cy="80" r="8"/><circle cx="220" cy="125" r="8"/>
+    </g>
+    <g fill="#b23a32" font-size="11" font-weight="700" text-anchor="middle" font-family="ui-monospace,Menlo,monospace">
+      <text x="70" y="84">+</text><text x="130" y="109">+</text><text x="85" y="134">+</text><text x="185" y="84">+</text><text x="220" y="129">+</text>
+    </g>
+    <g fill="#22598f">
+      <circle cx="360" cy="82" r="7"/><circle cx="420" cy="112" r="7"/><circle cx="380" cy="135" r="7"/><circle cx="480" cy="85" r="7"/><circle cx="515" cy="128" r="7"/>
+    </g>
+    <g fill="#fff" font-size="10" font-weight="700" text-anchor="middle" font-family="ui-monospace,Menlo,monospace">
+      <text x="360" y="86">−</text><text x="420" y="116">−</text><text x="380" y="139">−</text><text x="480" y="89">−</text><text x="515" y="132">−</text>
+    </g>
+    <g fill="none" stroke="#6d7280" stroke-width="1.8">
+      <rect x="270" y="70" width="13" height="13" rx="2"/><rect x="273" y="112" width="13" height="13" rx="2"/>
+      <rect x="305" y="70" width="13" height="13" rx="2"/><rect x="302" y="112" width="13" height="13" rx="2"/>
+    </g>
+    <g fill="#6d7280" font-size="11" font-weight="700" text-anchor="middle" font-family="ui-monospace,Menlo,monospace">
+      <text x="276.5" y="80">−</text><text x="279.5" y="122">−</text>
+      <text x="311.5" y="80">+</text><text x="308.5" y="122">+</text>
+    </g>
+    <text class="lbl-muted" x="295" y="180" text-anchor="middle">the depletion zone — no mobile carriers, only stranded charges</text>
+  </svg>
+  <figcaption><b>Where P meets N:</b> border electrons fall into border holes, leaving a thin strip with no <em>mobile</em> carriers — only the stranded charged dopants (the little squares), whose field guards the border. The crystal builds its own barrier.</figcaption>
+</figure>
+<p>Right at the border, the roaming electrons fall into the nearby holes, and both vanish as carriers. What's left is a thin strip — the <strong>depletion zone</strong> — with nothing mobile in it: an insulating moat the crystal built by itself. And the falling-in doesn't spread forever: every intruder atom at the border is now electrically charged (the phosphorus that lost its spare electron sits at +, the boron that filled its seat sits at −), and the pushback from those stranded charges halts the process. That built-in pushback is a real voltage — in silicon, about <span class="val">0.7 V</span> worth. It's the <strong>barrier</strong> every crossing has to pay for, and whether current can cross depends entirely on which way you push:</p>
+<figure class="schematic">
+  <svg viewBox="0 0 590 210" role="img" aria-label="Forward bias shrinks the depletion zone and current grows steeply around 0.7 volts; reverse bias widens it and only a tiny leakage flows">
+    <rect x="20" y="50" width="108" height="90" rx="8" fill="var(--red-soft)"/>
+    <rect x="142" y="50" width="108" height="90" rx="8" fill="var(--blue-soft)"/>
+    <rect x="128" y="50" width="14" height="90" fill="var(--card)" stroke="var(--line)" stroke-width="1.2"/>
+    <text class="lbl" x="74" y="105" text-anchor="middle" font-weight="700">P</text>
+    <text class="lbl" x="196" y="105" text-anchor="middle" font-weight="700">N</text>
+    <text class="lbl" x="30" y="38">+ on P — forward</text>
+    <path d="M40,165 L230,165" stroke="var(--green)" stroke-width="3" fill="none"/>
+    <polygon points="242,165 226,158 226,172" fill="var(--green)"/>
+    <text class="lbl-muted" x="135" y="188" text-anchor="middle">zone shrinks — current grows steeply</text>
+    <rect x="330" y="50" width="86" height="90" rx="8" fill="var(--red-soft)"/>
+    <rect x="484" y="50" width="86" height="90" rx="8" fill="var(--blue-soft)"/>
+    <rect x="416" y="50" width="68" height="90" fill="var(--card)" stroke="var(--line)" stroke-width="1.2"/>
+    <text class="lbl" x="373" y="105" text-anchor="middle" font-weight="700">P</text>
+    <text class="lbl" x="527" y="105" text-anchor="middle" font-weight="700">N</text>
+    <text class="lbl" x="340" y="38">− on P — reverse</text>
+    <line x1="360" y1="165" x2="540" y2="165" stroke="var(--red)" stroke-width="3" stroke-dasharray="5 6"/>
+    <text class="lbl" x="450" y="170" text-anchor="middle" font-size="17" font-weight="700" fill="var(--red)">✕</text>
+    <text class="lbl-muted" x="450" y="188" text-anchor="middle">zone widens — only a trickle leaks</text>
+  </svg>
+  <figcaption><b>The one-way valve, explained.</b> Push the right way and carriers crowd the border until the depletion zone collapses and the barrier gives way; push the wrong way and they retreat, widening it. This whole structure has a name you know: the <b>diode</b>.</figcaption>
+</figure>
+<div class="callout note">
+  <p class="label">Where the simple model ends</p>
+  <p>Two honesty notes, because engineers round where physicists wince. The door is <em>not a cliff</em>: forward current grows continuously and steeply — roughly doubling with every small extra push — and "0.7 V" is the engineer's rounding for <em>where it gets big enough to matter</em>; the true number drifts with current and temperature. And "no flow" backwards really means <em>almost</em> none: a tiny leakage always seeps through, and pushed hard enough backwards, any junction breaks down. Every tidy rule in this course is a useful approximation with fine print like this — the fine print is where the physics lives.</p>
+</div>
+
+<p>Three things you've already met are hiding in that picture:</p>
+<ul>
+  <li><strong>The 0.7 V door.</strong> Silicon's built-in barrier takes about 0.7 volts of push to overcome — <em>that</em> is where the base-emitter door's price comes from. It was never arbitrary.</li>
+  <li><strong>Why the LED lights.</strong> An LED is a junction built from fancier material with a taller barrier (≈ 2 V for red) — and when each electron lands in a hole across the junction, the energy of the fall is released as a <strong>flash of light</strong>. LED light literally <em>is</em> electrons landing in holes. (Not every landing shines — in plain silicon the energy of the fall is lost as heat, which is why ordinary diodes and transistors don't glow; LED materials are chosen so the falls make light.) And a blue LED's bigger drop — ≈ 3.2 V on any meter — is bigger chiefly because blue light carries more energy per flash (plus some overhead blue-LED materials charge on top).</li>
+  <li><strong>The one-way rule.</strong> An LED only works one way around. Now you know why: a junction conducts one way and widens its own depletion zone the other.</li>
+</ul>
+
+<h2>The transistor: two junctions, one thin trick</h2>
+<p>First, a name. The kit's transistor is a <strong>bipolar junction transistor</strong> — a <strong>BJT</strong> — the founding member of the transistor family, and the one this page opens up. (Its field-effect cousins run your phone; they get their moment below.)</p>
+<p><strong>NPN</strong> means exactly what it spells: a sandwich of N, then P, then N. That makes <em>two</em> junctions back to back — which should mean nothing ever flows from collector to emitter, and with the base untouched, nothing does. The trick that makes it a transistor: <strong>the middle P layer is astonishingly thin</strong>.</p>
+<figure class="schematic">
+  <svg viewBox="0 0 590 250" role="img" aria-label="NPN sandwich: wide N emitter, very thin P base, wide N collector; electrons diffuse from the emitter across the thin base and are swept into the collector, with a small fraction leaving through the base wire">
+    <rect x="55" y="40" width="185" height="110" rx="8" fill="var(--blue-soft)"/>
+    <rect x="248" y="40" width="34" height="110" fill="var(--red-soft)"/>
+    <rect x="290" y="40" width="185" height="110" rx="8" fill="var(--blue-soft)"/>
+    <text class="lbl" x="147" y="30" text-anchor="middle" font-weight="700">N · emitter</text>
+    <text class="lbl" x="265" y="30" text-anchor="middle" font-weight="700">P</text>
+    <text class="lbl" x="382" y="30" text-anchor="middle" font-weight="700">N · collector</text>
+    <g fill="#22598f">
+      <circle cx="110" cy="75" r="7"/><circle cx="150" cy="100" r="7"/><circle cx="115" cy="125" r="7"/><circle cx="185" cy="80" r="7"/><circle cx="195" cy="120" r="7"/>
+    </g>
+    <path d="M210,78 L330,78"  stroke="#22598f" stroke-width="2.5" fill="none"/>
+    <polygon points="342,78 326,71 326,85" fill="#22598f"/>
+    <path d="M210,100 L330,100" stroke="#22598f" stroke-width="2.5" fill="none"/>
+    <polygon points="342,100 326,93 326,107" fill="#22598f"/>
+    <path d="M210,122 L250,122 Q262,122 263,138 L263,150" stroke="#b23a32" stroke-width="2.5" fill="none"/>
+    <polygon points="263,162 256,148 270,148" fill="#b23a32"/>
+    <text class="lbl-muted" x="420" y="72">most wander across</text>
+    <text class="lbl-muted" x="420" y="88">and are swept in</text>
+    <line class="w" x1="263" y1="162" x2="263" y2="192"/>
+    <text class="lbl" x="277" y="188">base wire — the ≈ 1-in-100 trickle</text>
+    <text class="lbl-muted" x="295" y="228" text-anchor="middle">the base is a doorway so thin the crowd gets swept past it</text>
+  </svg>
+  <figcaption><b>Why a whisper controls a shout:</b> opening the base-emitter door releases a flood of electrons into the base — which is so thin that ≈ 99 of every 100 wander out the far side, where the collector junction's field sweeps them in. The 1 that falls into a hole leaves by the base wire. <b>That ratio sets β.</b></figcaption>
+</figure>
+<p>Open the base-emitter door (0.7 V, as always) and the emitter — deliberately doped extra-heavily, so the flood is almost entirely its electrons — pours them into the base. But the crossing isn't a sprint — nothing aims the electrons. They <em>wander</em> (physicists say <strong>diffuse</strong>: a random shuffle through the crowd), and the base is a hallway so short, with so few holes in it, that about 99 of every 100 stumble out the far side before ever finding a hole — where the collector junction's field sweeps every arrival across. The unlucky 1-in-100 falls into a hole; that, plus a small backwash of holes slipping the opposite way, is the base current.</p>
+<p>Read that as currents: collector current ≈ 100 × base current. <strong>β is not electronics magic — it's how the sandwich is built:</strong> base thickness and doping balance set it, and even temperature and the current of the moment nudge it. That's why β varies so much part to part and reading to reading — it rides on nanometer-scale manufacturing luck. And the multiplication only rules while the collector circuit can supply it: feed the base more than the load allows and the transistor <strong>saturates</strong> — fully on, a plain closed switch dropping ≈ 0.2 V. (The <em>Transistor's Arithmetic</em> sheet draws that exact boundary; <em>Tolerance &amp; Error</em> explains living with the spread.)</p>
+
+<div class="callout note">
+  <p class="label">One device, two arrow directions</p>
+  <p>These pictures follow the <em>electrons</em>, which pour emitter → collector. But "current" on every schematic ever drawn points collector → emitter. Both are right: electrons carry negative charge, so conventional current points opposite to their travel. The convention is a guess Benjamin Franklin made a century before anyone discovered the electron — for wires it came out backwards, and the world kept it anyway. The transistor symbol's emitter arrow points the conventional way.</p>
+</div>
+
+<h2>So what's a PNP?</h2>
+<figure class="schematic">
+  <svg viewBox="0 0 590 130" role="img" aria-label="NPN and PNP layer orders side by side">
+    <rect x="45" y="35" width="70" height="55" rx="6" fill="var(--blue-soft)"/>
+    <rect x="115" y="35" width="26" height="55" fill="var(--red-soft)"/>
+    <rect x="141" y="35" width="70" height="55" rx="6" fill="var(--blue-soft)"/>
+    <text class="lbl" x="80" y="68" text-anchor="middle" font-weight="700">N</text>
+    <text class="lbl" x="128" y="68" text-anchor="middle" font-weight="700">P</text>
+    <text class="lbl" x="176" y="68" text-anchor="middle" font-weight="700">N</text>
+    <text class="lbl" x="128" y="116" text-anchor="middle">NPN — ours</text>
+    <rect x="375" y="35" width="70" height="55" rx="6" fill="var(--red-soft)"/>
+    <rect x="445" y="35" width="26" height="55" fill="var(--blue-soft)"/>
+    <rect x="471" y="35" width="70" height="55" rx="6" fill="var(--red-soft)"/>
+    <text class="lbl" x="410" y="68" text-anchor="middle" font-weight="700">P</text>
+    <text class="lbl" x="458" y="68" text-anchor="middle" font-weight="700">N</text>
+    <text class="lbl" x="506" y="68" text-anchor="middle" font-weight="700">P</text>
+    <text class="lbl" x="458" y="116" text-anchor="middle">PNP — the mirror twin</text>
+  </svg>
+  <figcaption><b>The name is the recipe.</b> NPN and PNP just spell the sandwich, outside-in. A PNP runs on holes instead of electrons: every current and voltage flips direction, base current flows <em>out</em> — same trick, mirrored.</figcaption>
+</figure>
+<p>Flip every layer and you flip every rule: the PNP's flood is made of <em>holes</em>, its currents run the opposite way, and its base current flows out instead of in. Circuits love using NPN and PNP together as mirror-image teammates. This course sticks to NPN — but when you meet a PNP in the wild, you already know its whole story: same sandwich, opposite seasoning.</p>
+
+<h2>Why "semiconductor" runs the world</h2>
+<p>One honest twist before the scale-up: your phone's billions of transistors are mostly <strong>not</strong> BJTs. Chips run on the BJT's cousin, the <strong>MOSFET</strong> — a field-effect transistor that switches with voltage alone: an electric field reaching across a whisker-thin insulator pinches a channel of doped silicon open or shut, with almost no control current at all. Same silicon, same doping, same junctions — a different trick built from the same ingredients, and far thriftier with power, which is why it won the chip. Shrink it to nanometers, pack tens of billions side by side switching billions of times a second, and you have what the news calls "semiconductors." The BJT you built with is the family's founding member — and still everywhere a circuit needs one strong, simple switch.</p>
+<div class="callout note">
+  <p class="label">Where it came from</p>
+  <p>The first transistor was built in December 1947 at Bell Labs by <strong>John Bardeen and Walter Brattain</strong>, in a group led by <strong>William Shockley</strong> — who answered weeks later by inventing the sturdier junction design: the very NPN sandwich on this page. All three shared the 1956 Nobel Prize, and computers stopped needing rooms full of hot glass vacuum tubes. Bardeen later won a <em>second</em> physics Nobel — still the only person ever to do it.</p>
+</div>
+
+<h2>Words that now mean something</h2>
+<dl class="vocab">
+  <dt>semiconductor</dt><dd>a material between conductor and insulator, whose conduction can be engineered — silicon is ours</dd>
+  <dt>doping</dt><dd>seasoning the crystal with trace intruder atoms to set its carriers</dd>
+  <dt>N-type / P-type</dt><dd>doped so the mobile carriers are electrons (N) or holes (P)</dd>
+  <dt>hole</dt><dd>a traveling empty seat that behaves like a positive charge</dd>
+  <dt>junction</dt><dd>a P-to-N border — the working heart of diodes, LEDs, and the BJT</dd>
+  <dt>BJT / MOSFET</dt><dd>the two great transistor families: junction transistors switched by a small current (the kit's), and field-effect transistors switched by voltage alone (your phone's)</dd>
+  <dt>depletion zone</dt><dd>the carrier-free strip a junction builds at its own border</dd>
+  <dt>barrier</dt><dd>the built-in voltage of that border — ≈ 0.7 V in silicon, ≈ 2 V in a red LED's material</dd>
+  <dt>NPN / PNP</dt><dd>the sandwich order, spelled outside-in</dd>
+</dl>
+
+<footer class="lesson-foot">
+  <span>Electronics · How Transistors Work v1</span>
+  <span>β is not magic — it's how the sandwich is built</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 5 · Dividers &amp; Pots</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox
+    { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html" class="cur">5 &middot; Dividers &amp; Pots</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: measure from memory</a><a class="sub" href="#s4">4 &middot; The divider</a><a class="sub" href="#s5">5 &middot; The potentiometer: a divider with a knob</a><a class="sub" href="#s6">6 &middot; Build: the dimmer</a><a class="sub" href="#s7">7 &middot; Words to know</a><a class="sub" href="#s8">8 &middot; Exit ticket</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 5 · 55 min &middot; build 2026.09.23-1531</p>
+  <h1>Dividers &amp; Pots</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">Big idea</p>
+  <p>Put two resistors in series across the supply and the voltage at the point between them is a predictable fraction of the whole — a <strong>voltage divider</strong>. Half of electronics is exactly this: making the right voltage appear at a node.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Build voltage dividers and predict their <strong>tap</strong> voltage before the meter confirms it.</li>
+  <li>Learn what "the voltage <em>at</em> a node" means — and the ground-probe convention that makes it legal to say.</li>
+  <li>Meet the <strong>potentiometer</strong>: a divider with a knob, sweeping 0 to 5 V.</li>
+  <li>Build a working LED dimmer.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Everything so far (board with supply on the rails, jumpers, LEDs, meter)</li>
+  <li>Resistor assortment — <span class="val">220 Ω</span>, <span class="val">470 Ω</span>, <span class="val">1 kΩ</span>, <span class="val">4.7 kΩ</span>, <span class="val">10 kΩ</span></li>
+  <li>Potentiometer — <span class="val">10 kΩ</span>, three legs, one knob</li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span> Warm-up: measure from memory</h2>
+<p><strong>Kits closed.</strong> Draw the plain single-LED loop from memory — supply, <span class="val">220 Ω</span>, LED, three lettered nodes. Then open the box and pare the standing circuit down to your drawing: Challenge A left <em>your chosen</em> resistor in the loop, so the <span class="val">220 Ω</span> goes back in, and any split leftovers go home to the box. Then, without instructions, <strong>measure both voltage drops and show they sum to the supply's voltage</strong>. Five minutes: draw, pare, measure, done. That skill is today's foundation.</p>
+
+<h2 id="s4"><span class="num">4</span> The divider</h2>
+<p>Take the LED out of the picture entirely. Two resistors in series, straight across the supply:</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 500 320" role="img" aria-label="Voltage divider schematic: two series resistors across the 5 volt supply with the tap point between them">
+    <line class="w" x1="90" y1="60" x2="90" y2="138"/>
+    <line class="w" x1="66" y1="138" x2="114" y2="138"/>
+    <line class="w" x1="78" y1="158" x2="102" y2="158"/>
+    <line class="w" x1="90" y1="158" x2="90" y2="260"/>
+    <text class="lbl" x="126" y="143">+</text>
+    <text class="lbl" x="126" y="166">−</text>
+    <text class="lbl" x="58" y="134" text-anchor="end">5 V</text>
+    <line class="w" x1="90" y1="60" x2="400" y2="60"/>
+    <line class="w" x1="400" y1="60" x2="400" y2="80"/>
+    <path class="w" d="M400,80 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="372" y="120" text-anchor="end">R1</text>
+    <line class="w" x1="400" y1="152" x2="400" y2="184"/>
+    <circle class="jdot" cx="400" cy="168" r="5"/>
+    <line class="w" x1="400" y1="168" x2="452" y2="168"/>
+    <circle class="w" cx="459" cy="168" r="5"/>
+    <text class="lbl" x="470" y="150" text-anchor="middle">tap</text>
+    <text class="lbl-muted" x="459" y="196" text-anchor="middle">red probe</text>
+    <path class="w" d="M400,184 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="372" y="224" text-anchor="end">R2</text>
+    <line class="w" x1="400" y1="256" x2="400" y2="260"/>
+    <line class="w" x1="90" y1="260" x2="400" y2="260"/>
+    <text class="lbl-muted" x="245" y="288" text-anchor="middle">ground (−) — black probe parks here</text>
+  </svg>
+  <figcaption>The <b>tap</b> is the node between the resistors. Its voltage, measured to ground, is R2's share of the 5 volts.</figcaption>
+</figure>
+
+<div class="callout note">
+  <p class="label">New convention — voltage at a node</p>
+  <p>Until now you always measured <em>across</em> a component, two probes on its two sides. From today there's a shortcut: <strong>park the black probe in the ground rail and leave it there.</strong> Then "the voltage <em>at</em> a node" means what the red probe reads there — every "at" is secretly an "across, measured to ground." Same physics, one wandering probe. And "ground" itself is just the negative rail: the node we <em>choose</em> to call 0 V and measure from. (The name is a leftover from circuits that literally connect to the earth; ours only borrows the word.)</p>
+</div>
+
+<p>Build it: R1's top leg in a row jumpered from the + rail, R1's bottom leg and R2's top leg sharing the <strong>tap row</strong>, R2's bottom leg jumpered to ground. Then predict before each measurement:</p>
+
+<table>
+  <tr><th>R1 (top)</th><th>R2 (bottom)</th><th>Predict tap voltage</th><th>Measured</th></tr>
+  <tr><td><span class="val">1 kΩ</span></td><td><span class="val">1 kΩ</span></td><td></td><td></td></tr>
+  <tr><td><span class="val">220 Ω</span></td><td><span class="val">1 kΩ</span></td><td></td><td></td></tr>
+  <tr><td><span class="val">1 kΩ</span></td><td><span class="val">220 Ω</span></td><td></td><td></td></tr>
+  <tr><td><span class="val">4.7 kΩ</span></td><td><span class="val">4.7 kΩ</span></td><td></td><td></td></tr>
+</table>
+
+<p>The pattern: <strong>the bigger resistor takes the bigger share</strong>, and the tap reads R2's share — within the gold stripe's few percent. Equal resistors split the supply in half — your own first table row just proved it; now it's a tool. And compare rows one and four: 1 k over 1 k and 4.7 k over 4.7 k read the same 2.5 V. <strong>Only the ratio sets the tap voltage</strong> — remember that when a 10 kΩ knob shows up in a minute.</p>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>Swap R1 and R2 without changing anything else. What happens to the tap voltage, and why? <span class="writeline"></span></p>
+</div>
+
+<h2 id="s5"><span class="num">5</span> The potentiometer: a divider with a knob</h2>
+
+<div class="symbols">
+  <figure class="symbol">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Potentiometer schematic symbol">
+      <line class="w" x1="10" y1="52" x2="40" y2="52"/>
+      <path class="w" d="M40,52 l5,-10 l10,20 l10,-20 l10,20 l10,-20 l10,20 l5,-10"/>
+      <line class="w" x1="100" y1="52" x2="140" y2="52"/>
+      <line class="w" x1="75" y1="10" x2="75" y2="34"/>
+      <polygon points="75,42 69,32 81,32" fill="var(--ink)"/>
+    </svg>
+    <figcaption><b>Potentiometer</b> A fixed resistor with a sliding <strong>wiper</strong> (the arrow) that taps any point along it. Three legs: the outer two are the resistor's ends; the middle is the wiper. Turning the knob slides the tap.</figcaption>
+  </figure>
+</div>
+
+<p>It's your divider from section 4, made continuous: the wiper splits the pot's <span class="val">10 kΩ</span> into a top part and a bottom part, and the knob trades resistance between them. Build the proof:</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 460 250" role="img" aria-label="Potentiometer wired across the supply with a voltmeter on the wiper">
+    <line class="w" x1="220" y1="30" x2="220" y2="66"/>
+    <text class="lbl" x="220" y="20" text-anchor="middle">+5 V rail</text>
+    <path class="w" d="M220,66 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <line class="w" x1="220" y1="138" x2="220" y2="180"/>
+    <text class="lbl-muted" x="220" y="200" text-anchor="middle">ground rail</text>
+    <line class="w" x1="298" y1="102" x2="240" y2="102"/>
+    <polygon points="232,102 244,96 244,108" fill="var(--ink)"/>
+    <line class="w" x1="298" y1="102" x2="330" y2="102"/>
+    <circle cx="348" cy="102" r="17" fill="#fff" stroke="var(--copper)" stroke-width="2.5"/>
+    <text class="lbl" x="348" y="108" text-anchor="middle" fill="var(--copper-ink)" font-weight="700">V</text>
+    <text class="lbl-muted" x="348" y="140" text-anchor="middle">red probe on the wiper</text>
+  </svg>
+  <figcaption>Outer legs to + and ground; the meter watches the wiper. Turn the knob slowly, end to end.</figcaption>
+</figure>
+
+<ol class="steps">
+  <li>Seat the pot across three rows. Jumper one outer leg's row to the <strong>+ rail</strong>, the other outer leg's row to <strong>ground</strong>.</li>
+  <li>Park the black probe in ground; red probe on the <strong>wiper's</strong> row.</li>
+  <li>Turn the knob end to end, slowly, watching the meter.</li>
+</ol>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>Before you turn: what will the meter read at one end? The other end? Exactly half-way? <span class="writeline"></span></p>
+</div>
+
+<h2 id="s6"><span class="num">6</span> Build: the dimmer</h2>
+<p>Now make the knob <em>do</em> something. Here the pot works as a plain adjustable resistor — wiper plus <strong>one</strong> outer leg — in series with the LED and its 220 Ω bodyguard:</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 500 300" role="img" aria-label="Dimmer schematic: current enters one outer leg of the potentiometer and leaves through the wiper, then passes a 220 ohm resistor and the LED; the pot's other outer leg is drawn unused">
+    <line class="w" x1="90" y1="60" x2="90" y2="138"/>
+    <line class="w" x1="66" y1="138" x2="114" y2="138"/>
+    <line class="w" x1="78" y1="158" x2="102" y2="158"/>
+    <line class="w" x1="90" y1="158" x2="90" y2="240"/>
+    <text class="lbl" x="126" y="143">+</text>
+    <text class="lbl" x="126" y="166">−</text>
+    <text class="lbl" x="58" y="134" text-anchor="end">5 V</text>
+    <line class="w" x1="90" y1="60" x2="170" y2="60"/>
+    <path class="w" d="M170,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="254" y1="60" x2="286" y2="60"/>
+    <text class="lbl-muted" x="294" y="64">unused leg</text>
+    <line class="w" x1="212" y1="18" x2="212" y2="36"/>
+    <polygon points="212,46 206,36 218,36" fill="var(--ink)"/>
+    <text class="lbl-muted" x="200" y="32" text-anchor="end">wiper</text>
+    <text class="lbl" x="212" y="108" text-anchor="middle">pot (0–10 kΩ)</text>
+    <line class="w" x1="212" y1="18" x2="400" y2="18"/>
+    <line class="w" x1="400" y1="18" x2="400" y2="80"/>
+    <path class="w" d="M400,80 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="428" y="120">220 Ω</text>
+    <line class="w" x1="400" y1="152" x2="400" y2="170"/>
+    <polygon class="w" points="386,170 414,170 400,196"/>
+    <line class="w" x1="386" y1="196" x2="414" y2="196"/>
+    <line class="w" x1="400" y1="196" x2="400" y2="240"/>
+    <path class="w" d="M417,177 L433,163 M433,163 l-11,2 M433,163 l-3,11" stroke-width="1.8"/>
+    <path class="w" d="M433,187 L449,173 M449,173 l-11,2 M449,173 l-3,11" stroke-width="1.8"/>
+    <line class="w" x1="90" y1="240" x2="400" y2="240"/>
+  </svg>
+  <figcaption>Current runs in one outer leg and out the <b>wiper</b> — the knob sets how much track it must cross: an adjustable resistor from ≈0 to 10 kΩ. The third leg sits unused. The 220 Ω stays: when the pot is at zero, the LED still has its bodyguard.</figcaption>
+</figure>
+
+<p>No steps — you've built series loops before. Wire it, then turn the knob: fewer ohms in the loop means more current means brighter (lesson 4's rule, now with a handle on it). <strong>Which direction brightens? Predict, then turn.</strong></p>
+
+<div class="callout note">
+  <p class="label">Two legs vs. three</p>
+  <p>Use all three legs and the pot is a <strong>divider</strong> (splits voltage at the wiper). Use the wiper plus one end and it's an <strong>adjustable resistor</strong> (varies current in a loop). Same part, two jobs — and the schematic tells you which by where the wires go: three connected legs = divider; wire through the wiper and one end = adjustable resistor.</p>
+</div>
+
+<h3>Go further — for the fast and the curious</h3>
+<div class="callout tryit">
+  <p class="label">Stretch</p>
+  <p><strong>1.</strong> Build the 3.3: your supply's other switch position outputs <span class="val">3.3 V</span> — a voltage half the world's chips run on. Choose R1 = <span class="val">▢</span> and R2 = <span class="val">▢</span> from your assortment so a tap of your own reads as close to <span class="val">3.3 V</span> as you can get. House rule: before every attempt, write the direction first — "too low → grow R2 (or shrink R1)" — then swap, then measure. Guess-and-shuffle doesn't count. (And a warning: your 3.3 V node is a reading, not a power supply — stretch #3 shows why.) <strong>2.</strong> Get the tap to <span class="val">1.0 V</span> — harder than 3.3. <strong>3.</strong> Try to power the LED (with its 220 Ω) <em>from the wiper</em> of the pot-as-divider. The dimming is strange and weak — measure the wiper while it happens and compare against the unloaded sweep. Something about connecting the LED changes the divider itself; the purple box has the word for it. <strong>4.</strong> Measure the wiper voltage at five knob positions (off, quarter, half, three-quarter, full) and sketch the curve.</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>The divider has a formula:</p>
+  <math display="block"><mrow><mtext>tap voltage</mtext><mo>=</mo><mn>5</mn><mtext>&#160;V</mtext><mo>×</mo><mfrac><msub><mi>R</mi><mn>2</mn></msub><mrow><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><msub><mi>R</mi><mn>2</mn></msub></mrow></mfrac></mrow></math>
+  <p>Check it against your table — 220 on top, 1 k on the bottom:</p>
+  <math display="block"><mrow><mn>5</mn><mo>×</mo><mfrac><mn>1000</mn><mn>1220</mn></mfrac><mo>≈</mo><mn>4.1</mn><mtext>&#160;V</mtext></mrow></math>
+  <p>Swap them and the bottom's share shrinks:</p>
+  <math display="block"><mrow><mn>5</mn><mo>×</mo><mfrac><mn>220</mn><mn>1220</mn></mfrac><mo>≈</mo><mn>0.9</mn><mtext>&#160;V</mtext></mrow></math>
+  <p>The 3.3 stretch inverts it: you want the fraction to come out 0.66, so R2 ≈ 2 × R1 — try <span class="val">4.7 kΩ</span> over <span class="val">10 kΩ</span>. Deeper: stretch #3 fails because the LED draws current <em>from</em> the tap, changing the effective R2 — the datasheet word is <em>loading</em>, and it's why real circuits buffer their dividers.</p>
+</div>
+
+<h2 id="s7"><span class="num">7</span> Words to know</h2>
+<dl class="vocab">
+  <dt>voltage divider</dt><dd>two resistors in series across the supply; the node between them carries a fraction of the supply voltage</dd>
+  <dt>tap</dt><dd>that middle node — where the divided voltage is taken from</dd>
+  <dt>voltage at a node</dt><dd>the voltage between that node and ground (black probe parked in the ground rail)</dd>
+  <dt>ground</dt><dd>the node we choose to call 0 V and measure from — for us, the supply's negative rail; not the actual earth</dd>
+  <dt>potentiometer</dt><dd>a resistor with a wiper that taps any point along it — a continuously adjustable divider</dd>
+  <dt>wiper</dt><dd>the pot's sliding contact: the middle leg, moved by the knob</dd>
+  <dt>adjustable resistor</dt><dd>a pot used with only two legs (wiper + one end) to vary current instead of splitting voltage</dd>
+</dl>
+
+<h2 id="s8"><span class="num">8</span> Exit ticket</h2>
+<p>From memory: draw the divider schematic, label the tap and ground — and write down which resistor you'd make bigger to <em>raise</em> the tap voltage.</p>
+
+<p><strong>Cleanup:</strong> power off and take the dimmer apart — pot and resistors home to the box, board down to the supply and its bare rails. Lesson 6 opens with a fresh build, and its new part arrives with rules of its own.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Semester 1 · Lesson 5 of 13</span>
+  <span>Next: <strong>Capacitors</strong> — a component that stores charge, and circuits that keep time</span>
+</footer>
+
+</body>
+</html>

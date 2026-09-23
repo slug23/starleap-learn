@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 3 · Series &amp; Parallel</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox
+    { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html" class="cur">3 &middot; Series &amp; Parallel</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: Build A from memory</a><a class="sub" href="#s4">4 &middot; Build B — two LEDs in series (one path)</a><a class="sub" href="#s5">5 &middot; New schematic skill: the junction dot</a><a class="sub" href="#s6">6 &middot; Build C — two LEDs in parallel (branches)</a><a class="sub" href="#s7">7 &middot; Design challenge — you are the engineer</a><a class="sub" href="#s8">8 &middot; If the clock allows: break the budget</a><a class="sub" href="#s9">9 &middot; Words to know</a><a class="sub" href="#s10">10 &middot; Exit ticket</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 3 · 55 min &middot; build 2026.09.23-1531</p>
+  <h1>Series &amp; Parallel</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">Big idea</p>
+  <p><strong>Series is one path. Parallel is more than one path from + to −.</strong> Series components sit on the only way home, so a single current passes through every one of them. Parallel branches each give the current another way home.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Build two LEDs in <strong>series</strong> — and meet the <strong>voltage drop</strong>.</li>
+  <li>Read <strong>junction dots</strong> — the schematic's way of saying "joined here."</li>
+  <li>Build <strong>parallel branches</strong>, each with its own resistor.</li>
+  <li>Design a two-switch circuit — <strong>on paper first</strong>, then build exactly what you drew.</li>
+  <li>If the clock allows: watch red + blue <strong>break the budget</strong>.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Build A standing in your box from lesson 2 — board, supply on the rails, <span class="val">220 Ω</span>, LED, switch — plus jumpers and the multimeter</li>
+  <li>A second LED — same color as your first</li>
+  <li>A third LED — <strong>blue</strong> — the biggest voltage drop we stock, saved for §8's budget break</li>
+  <li>A second <span class="val">220 Ω</span> — in Build C, every branch gets its own</li>
+  <li>A <strong>second slide switch</strong> — the design challenge gives each LED its own</li>
+</ul>
+
+<div class="callout safety">
+  <p class="label">Safety — same two rules</p>
+  <p><strong>No shorts</strong> (+ rail to − rail with nothing in between = a finger-burning wire and a knocked-out supply) and <strong>no LED without its resistor</strong> — a naked LED can pop like a firecracker. You'll be rearranging circuits all class today, so after <em>every</em> change, trace each path from the + rail to the − rail and check it still goes through the resistor before you reconnect power.</p>
+</div>
+
+<h2 id="s3"><span class="num">3</span> Warm-up: Build A from memory</h2>
+<p><strong>Kits closed.</strong> On scrap paper, draw lesson 2's switched loop from memory — supply on the rails, <span class="val">220 Ω</span>, LED, switch, node letters. <em>Then</em> open the box and check Build A against your drawing: fix anything the week shook loose, and prove both switch positions. (Box came up empty? Build it from your drawing, saying each node's letter as you plug it in.) Done when it clicks both ways. Leave it standing: today's circuits grow out of this one.</p>
+
+<h2 id="s4"><span class="num">4</span> Build B — two LEDs in series (one path)</h2>
+
+<figure class="schematic">
+  <svg viewBox="0 0 500 340" role="img" aria-label="Schematic: power source, resistor, and two LEDs in series with nodes A, B, C, D">
+    <line class="w" x1="90" y1="60" x2="90" y2="158"/>
+    <line class="w" x1="66" y1="158" x2="114" y2="158"/>
+    <line class="w" x1="78" y1="178" x2="102" y2="178"/>
+    <line class="w" x1="90" y1="178" x2="90" y2="280"/>
+    <text class="lbl" x="126" y="163">+</text>
+    <text class="lbl" x="126" y="186">−</text>
+    <text class="lbl" x="58" y="154" text-anchor="end">5 V</text>
+    <line class="w" x1="90" y1="60" x2="196" y2="60"/>
+    <path class="w" d="M196,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="280" y1="60" x2="400" y2="60"/>
+    <text class="lbl" x="238" y="30" text-anchor="middle">220 Ω</text>
+    <line class="w" x1="400" y1="60" x2="400" y2="100"/>
+    <polygon class="w" points="386,100 414,100 400,126"/>
+    <line class="w" x1="386" y1="126" x2="414" y2="126"/>
+    <line class="w" x1="400" y1="126" x2="400" y2="166"/>
+    <path class="w" d="M417,105 L431,93 M431,93 l-10,2 M431,93 l-2,10" stroke-width="1.8"/>
+    <text class="lbl" x="444" y="118">LED 1</text>
+    <polygon class="w" points="386,166 414,166 400,192"/>
+    <line class="w" x1="386" y1="192" x2="414" y2="192"/>
+    <line class="w" x1="400" y1="192" x2="400" y2="280"/>
+    <path class="w" d="M417,171 L431,159 M431,159 l-10,2 M431,159 l-2,10" stroke-width="1.8"/>
+    <text class="lbl" x="444" y="184">LED 2</text>
+    <line class="w" x1="90" y1="280" x2="400" y2="280"/>
+    <g class="nodeb"><circle cx="143" cy="60" r="13"/><text x="143" y="65" text-anchor="middle">A</text></g>
+    <g class="nodeb"><circle cx="345" cy="60" r="13"/><text x="345" y="65" text-anchor="middle">B</text></g>
+    <g class="nodeb"><circle cx="400" cy="146" r="13"/><text x="400" y="151" text-anchor="middle">C</text></g>
+    <g class="nodeb"><circle cx="245" cy="280" r="13"/><text x="245" y="285" text-anchor="middle">D</text></g>
+  </svg>
+  <figcaption>Series: the same current flows through LED 1, then LED 2 — one lane, no exits.</figcaption>
+</figure>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>Compared to one LED, will two same-color LEDs in series be brighter, dimmer, or the same? <span class="writeline"></span></p>
+</div>
+
+<p><strong>Power off.</strong> Take the switch back out and let LED 2 take over its two rows — <strong>long</strong> leg on the LED 1 side. A switch is a controlled break in the loop; you just filled the break with a component, and that's the whole series move. Check it by nodes (note node <span class="node">C</span> is now <em>between the LEDs</em>): + rail → resistor <span class="node">A</span>, resistor → LED 1 long leg <span class="node">B</span>, LED 1 short leg → LED 2 <strong>long</strong> leg <span class="node">C</span>, LED 2 short leg → jumper to the − rail <span class="node">D</span>. Finger on the + rail: every way home passes <em>both</em> LEDs — no skipping either. That's <strong>series</strong>.</p>
+
+<p><strong>Why dimmer?</strong> Every component claims a share of the supply's 5 volts — its <strong>voltage drop</strong>. Think of a drop as a <em>toll</em>: an LED charges its toll (about 2 V for red) just to switch on. In series, the drops add up — less voltage is left over, so less current flows, and both LEDs share that same smaller current.</p>
+
+<h2 id="s5"><span class="num">5</span> New schematic skill: the junction dot</h2>
+<p>One quick reading skill before the next build: circuits are about to branch, and schematics need a way to say whether crossing lines are actually <em>joined</em>:</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 380 170" role="img" aria-label="Junction dot rule: a dot at a crossing means connected; no dot means the wires just cross">
+    <line class="w" x1="95" y1="20" x2="95" y2="120"/>
+    <line class="w" x1="25" y1="70" x2="165" y2="70"/>
+    <circle class="jdot" cx="95" cy="70" r="5"/>
+    <text class="lbl" x="95" y="152" text-anchor="middle">dot = joined</text>
+    <line class="w" x1="285" y1="20" x2="285" y2="120"/>
+    <line class="w" x1="215" y1="70" x2="355" y2="70"/>
+    <text class="lbl" x="285" y="152" text-anchor="middle">no dot = just crossing</text>
+  </svg>
+  <figcaption>A junction dot is a node with more than two things meeting at it.</figcaption>
+</figure>
+
+<div class="callout note">
+  <p class="label">On the board</p>
+  <p>A junction dot means <strong>one node holding three or more legs</strong>. A row has five holes — room to spare — and when legs can't reach, a <strong>jumper</strong> merges two rows into one bigger node.</p>
+</div>
+
+<h2 id="s6"><span class="num">6</span> Build C — two LEDs in parallel (branches)</h2>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 340" role="img" aria-label="Schematic: power source feeding two parallel branches, each with its own 220 ohm resistor and LED, joined at nodes A and C with junction dots">
+    <line class="w" x1="90" y1="60" x2="90" y2="138"/>
+    <line class="w" x1="66" y1="138" x2="114" y2="138"/>
+    <line class="w" x1="78" y1="158" x2="102" y2="158"/>
+    <line class="w" x1="90" y1="158" x2="90" y2="280"/>
+    <text class="lbl" x="126" y="143">+</text>
+    <text class="lbl" x="126" y="166">−</text>
+    <text class="lbl" x="58" y="134" text-anchor="end">5 V</text>
+    <line class="w" x1="90" y1="60" x2="460" y2="60"/>
+    <line class="w" x1="90" y1="280" x2="460" y2="280"/>
+    <line class="w" x1="360" y1="60" x2="360" y2="80"/>
+    <path class="w" d="M360,80 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="338" y="120" text-anchor="end">220 Ω</text>
+    <line class="w" x1="360" y1="152" x2="360" y2="184"/>
+    <polygon class="w" points="346,184 374,184 360,210"/>
+    <line class="w" x1="346" y1="210" x2="374" y2="210"/>
+    <path class="w" d="M377,191 L391,179 M391,179 l-10,2 M391,179 l-2,10" stroke-width="1.8"/>
+    <text class="lbl" x="335" y="204" text-anchor="end">LED 1</text>
+    <line class="w" x1="360" y1="210" x2="360" y2="280"/>
+    <line class="w" x1="460" y1="60" x2="460" y2="80"/>
+    <path class="w" d="M460,80 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="500" y="120" text-anchor="start">220 Ω</text>
+    <line class="w" x1="460" y1="152" x2="460" y2="184"/>
+    <polygon class="w" points="446,184 474,184 460,210"/>
+    <line class="w" x1="446" y1="210" x2="474" y2="210"/>
+    <path class="w" d="M477,191 L491,179 M491,179 l-10,2 M491,179 l-2,10" stroke-width="1.8"/>
+    <text class="lbl" x="500" y="204" text-anchor="start">LED 2</text>
+    <line class="w" x1="460" y1="210" x2="460" y2="280"/>
+    <circle class="jdot" cx="360" cy="60" r="5"/>
+    <circle class="jdot" cx="360" cy="280" r="5"/>
+    <g class="nodeb"><circle cx="200" cy="60" r="13"/><text x="200" y="65" text-anchor="middle">A</text></g>
+    <g class="nodeb"><circle cx="200" cy="280" r="13"/><text x="200" y="285" text-anchor="middle">C</text></g>
+    <g class="nodeb"><circle cx="360" cy="168" r="13"/><text x="360" y="173" text-anchor="middle">B</text></g>
+    <g class="nodeb"><circle cx="460" cy="168" r="13"/><text x="460" y="173" text-anchor="middle">D</text></g>
+  </svg>
+  <figcaption>Parallel: two complete branches sharing node <b>A</b> and node <b>C</b> — but each with its own resistor and its own middle node (<b>B</b>, <b>D</b>). The junction dots mark where a third leg joins.</figcaption>
+</figure>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>Brighter, dimmer, or the same as one LED? And: if you pull LED 2 out, does LED 1 stay lit? <span class="writeline"></span> </p>
+</div>
+
+<p><strong>Power off — small surgery, not a rebuild:</strong> pull LED 2 out, then rejoin LED 1's short leg and the − rail jumper into one node (move the leg or the jumper, whichever is closer). What's left is the plain single-LED loop — supply, <span class="val">220 Ω</span>, LED, home (the switch sits this one out). That loop is <strong>branch 1</strong>. Now the other move: give the circuit a <strong>second loop</strong> — branch 2 beside branch 1, a complete path with <strong>its own resistor</strong>:</p>
+<ol class="steps">
+  <li><span class="node">A</span>&nbsp; Branch 2's <span class="val">220 Ω</span>: one leg in the <strong>+ rail</strong> — the warm-up's jumper already made the rail part of node A.</li>
+  <li><span class="node">D</span>&nbsp; The resistor's other leg in a fresh row, joined by LED 2's <strong>long</strong> leg — branch 2's own middle node.</li>
+  <li><span class="node">C</span>&nbsp; LED 2's short leg in another fresh row, jumpered back to the <strong>− rail</strong> — rejoining node C. Two lit branches!</li>
+  <li>Pull LED 2 out. LED 1 doesn't care — it doesn't even change brightness. Replug it and pull LED 1 instead. Same story in reverse.</li>
+</ol>
+
+<p><strong>Why the same brightness?</strong> Each branch is its own complete loop — resistor, LED, and home — sharing only nodes <span class="node">A</span> and <span class="node">C</span> with its neighbor (the middle nodes <span class="node">B</span> and <span class="node">D</span> belong to one branch each). Finger test: starting at +, you can get home skipping LED 1 entirely — or skipping LED 2. More than one way home: <strong>parallel</strong>. The branches genuinely don't interact — as long as the supply holds its 5 V steady, and ours does; that independence is parallel's superpower, and it's why your house's lights don't dim every time something else switches on. The supply, though, feels it: it feeds both branches at once — about twice the current leaves it, and its battery drains faster.</p>
+
+<div class="callout note">
+  <p class="label">Think about it — holiday lights</p>
+  <p>Grandma's old string of lights died all at once when <em>one</em> bulb burned out — a series giveaway. Most modern strings survive a dead bulb, but not all the same way: some run parallel branches, and some are secretly still series, with a tiny bypass built into each bulb that heals the loop around a failure. Engineering keeps more than one fix on the shelf.</p>
+</div>
+
+<h2 id="s7"><span class="num">7</span> Design challenge — you are the engineer</h2>
+<p>Now you're the engineer. <strong>Design this circuit on paper before touching a single part:</strong></p>
+<div class="callout idea">
+  <p class="label">The spec</p>
+  <p>One power source, two resistors, two LEDs, two switches — <strong>each switch turns its own LED on and off</strong>, without affecting the other.</p>
+</div>
+<p>Hints: start from Build C. Where does a switch have to go to break <em>one way home and not the other</em>? Use junction dots where three legs join. When your schematic is drawn, label the nodes, count the rows you'll need — then build exactly what you drew. Final check before power: the finger test — trace <em>every</em> way home from the + rail to the − rail; each one must pass through a resistor. A path that skips both means a popped LED.</p>
+<p>Staring at blank dots? Copy Build C's schematic into the box first, then figure out where the two switches go in it. Starting from a working drawing and modifying it is real engineering, not cheating.</p>
+<div class="drawbox" role="img" aria-label="Empty dotted grid for drawing your schematic"></div>
+
+<h2 id="s8"><span class="num">8</span> If the clock allows: break the budget</h2>
+<p>Build B's rule — every component claims its toll, and in series the tolls add — has a breaking point, and your kit can reach it. The <strong>blue</strong> LED charges the biggest toll we stock: about <span class="val">3.2 V</span>.</p>
+
+<div class="callout tryit">
+  <p class="label">Try it — red + blue</p>
+  <p><strong>Power off.</strong> Pick one branch of whatever's standing — Build C, or your two-switch build — and give its LED a partner: cut that branch anywhere along its way home and fill the cut with the blue LED, long leg toward + (the same series move as Build B). Predict first: red's ≈ 2 V toll plus blue's ≈ 3.2 V — do they fit under the supply's 5 volts? Power up and watch that branch's budget run out. Then look at the other branch: not even a flicker. Its way home doesn't run through the traffic jam.</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>Voltage drops just add. Red LED ≈ <span class="val">2.0 V</span>, blue ≈ <span class="val">3.2 V</span>. Red + red = 4.0 V — under the supply's 5 V, so current flows and both light. Red + blue ≈ 5.2 V — over budget: the pair never properly turns on, and at most a trace of current sneaks through — dark, or the faintest glimmer. The leftover voltage is what drives current through the resistor. One red LED leaves 3 of the 5 volts:</p>
+  <math display="block"><mrow><mfrac><mrow><mn>5</mn><mo>−</mo><mn>2</mn></mrow><mn>220</mn></mfrac><mo>≈</mo><mn>14</mn><mtext>&#160;mA</mtext></mrow></math>
+  <p>Two reds leave only 1 volt:</p>
+  <math display="block"><mrow><mfrac><mrow><mn>5</mn><mo>−</mo><mn>4</mn></mrow><mn>220</mn></mfrac><mo>≈</mo><mn>4.5</mn><mtext>&#160;mA</mtext></mrow></math>
+  <p>— which is exactly <em>why</em> they're dimmer.</p>
+</div>
+
+<h3>Go further — for the fast and the curious</h3>
+<div class="callout tryit">
+  <p class="label">Stretch</p>
+  <p><strong>1.</strong> Add a third complete branch to Build C — its own resistor and LED (the kit has spare 220 Ωs) — predicting brightness and battery drain first. <strong>2.</strong> One LED, but <em>two switches in series</em>: when does it light? Now rebuild with the two switches in <em>parallel</em>: when does it light now? Congratulations — you just invented AND and OR, the atoms every computer is built from. Much more on that next semester.</p>
+</div>
+
+<h2 id="s9"><span class="num">9</span> Words to know</h2>
+<dl class="vocab">
+  <dt>series</dt><dd>components on the only path home — one current through all of them, one break stops them all</dd>
+  <dt>parallel</dt><dd>branches giving current more than one way home between the same two nodes</dd>
+  <dt>branch</dt><dd>one of the parallel paths</dd>
+  <dt>junction</dt><dd>a node where three or more things join (drawn as a dot)</dd>
+  <dt>voltage drop</dt><dd>the share of the supply's voltage a component claims; in series, drops add up</dd>
+</dl>
+
+<h2 id="s10"><span class="num">10</span> Exit ticket</h2>
+<p>On scrap paper, from memory: draw <strong>two LEDs in series</strong> and <strong>two LEDs in parallel</strong> — power source, resistors, and junction dots included (remember: in the parallel drawing, every branch owns a resistor). Circle the schematic where pulling one LED out kills the other. Hand it in at the door.</p>
+
+<p><strong>Cleanup:</strong> power off and leave your final circuit standing — the two-switch build or Build C, blue budget-breaker included if you got to §8. It rides in the box to lesson 4, which opens with surgery on it, not a rebuild — and the meter finally gets to open the books.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Semester 1 · Lesson 3 of 13</span>
+  <span>Next: <strong>Volts &amp; Ohms</strong> — the meter learns to see voltage, and every voltage drop gets counted</span>
+</footer>
+
+</body>
+</html>

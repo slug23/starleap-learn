@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kirchhoff&#8217;s Laws</title>
+<style>
+/* Embedded copy of assets/lesson.css (math-shelf accent: violet) — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--violet);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--violet-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.idea    .label { color: var(--violet); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 26px;
+  text-align: center;
+  margin: .8em 0;
+}
+/* A statement that has to read as one line: never wrap it — size it off the
+   column width instead, so it shrinks a little when the column is narrow. */
+.formula.fit-line { white-space: nowrap; container-type: inline-size; }
+.formula.fit-line > span { font-size: min(26px, 3cqi); }
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table, ol.steps > li { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html" class="cur">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Math shelf · Optional — for the curious &middot; build 2026.09.23-1531</p>
+  <h1>Kirchhoff's Laws</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>Two conservation laws run every circuit ever built: <strong>energy</strong> (the voltage law) and <strong>charge</strong> (the current law). You've already measured both. Gustav Kirchhoff wrote them down in 1845 — as a 21-year-old student.</p>
+</div>
+
+<h2>KVL — Kirchhoff's voltage law</h2>
+<p>The version you proved in lesson 4: <em>around any loop, the drops sum to the supply voltage.</em> The formal dress is one notch sharper — give every voltage a sign (a <strong>rise</strong> through the supply is +, a <strong>drop</strong> across a part is −) and walk any closed loop:</p>
+<p class="formula fit-line"><span>around any closed loop: the signed voltages sum to 0</span></p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 300" role="img" aria-label="The classic LED loop walked as a KVL bookkeeping exercise: plus five volt rise through the supply, minus three volts across the resistor, minus two volts across the LED, summing to zero">
+    <line class="w" x1="90" y1="60" x2="90" y2="138"/>
+    <line class="w" x1="66" y1="138" x2="114" y2="138"/>
+    <line class="w" x1="78" y1="158" x2="102" y2="158"/>
+    <line class="w" x1="90" y1="158" x2="90" y2="240"/>
+    <text class="lbl" x="58" y="134" text-anchor="end">5 V</text>
+    <line class="w" x1="90" y1="60" x2="196" y2="60"/>
+    <path class="w" d="M196,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="280" y1="60" x2="470" y2="60"/>
+    <text class="lbl" x="238" y="26" text-anchor="middle">220 Ω</text>
+    <line class="w" x1="470" y1="60" x2="470" y2="124"/>
+    <polygon class="w" points="456,124 484,124 470,150"/>
+    <line class="w" x1="456" y1="150" x2="484" y2="150"/>
+    <line class="w" x1="470" y1="150" x2="470" y2="240"/>
+    <line class="w" x1="90" y1="240" x2="470" y2="240"/>
+    <text class="lbl" x="128" y="105" style="fill:#2e7d46;font-weight:700">+5 V</text>
+    <text class="lbl-muted" x="128" y="122">rise</text>
+    <text class="lbl" x="238" y="98" text-anchor="middle" style="fill:#b23a32;font-weight:700">−3.0 V</text>
+    <text class="lbl-muted" x="238" y="115" text-anchor="middle">drop</text>
+    <text class="lbl" x="425" y="132" text-anchor="end" style="fill:#b23a32;font-weight:700">−2.0 V</text>
+    <text class="lbl-muted" x="425" y="149" text-anchor="end">drop</text>
+    <path style="stroke:var(--violet);stroke-width:1.75;fill:none;stroke-dasharray:5 6" d="M280,205 a55,55 0 1 1 0,-56"/>
+    <polygon points="280,197 271,213 289,211" fill="var(--violet)"/>
+    <text class="lbl-muted" x="280" y="182" text-anchor="middle">walk the loop</text>
+    <text class="lbl" x="280" y="272" text-anchor="middle">+5 − 3.0 − 2.0 = 0 ✓</text>
+  </svg>
+  <figcaption><b>The bookkeeping:</b> pick a direction, walk the whole loop, sign every voltage. If the sum isn't zero, you mis-measured — or discovered perpetual motion.</figcaption>
+</figure>
+
+<p>Why must it be zero? Voltage is energy per coulomb (the <a href="math-whats-a-coulomb.html">What's a Coulomb?</a> sheet): a coulomb arriving back where it started must have spent exactly what the supply gave it. A loop that summed high would mint free energy; one that summed low would leak it into nowhere. Conservation of energy, wearing circuit clothes.</p>
+<p>And the law says <em>any</em> closed loop — including a loop through two parallel branches that never touches the supply. Walk it and the sum forces a famous fact: <strong>parts in parallel share one identical voltage.</strong> Hold that thought for practice problem 4.</p>
+
+<h2>KCL — Kirchhoff's current law</h2>
+<p>The version you've used since the junction dot: <em>current into a node equals current out.</em> Formal dress:</p>
+<p class="formula">at any node: current in = current out</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 180" role="img" aria-label="A junction node: ten milliamps flowing in splits into six and four milliamps flowing out">
+    <line class="w" x1="60" y1="90" x2="250" y2="90"/>
+    <circle cx="250" cy="90" r="5" fill="var(--ink)"/>
+    <line class="w" x1="250" y1="90" x2="440" y2="40"/>
+    <line class="w" x1="250" y1="90" x2="440" y2="140"/>
+    <polygon points="180,90 162,83 162,97" fill="var(--ink)"/>
+    <polygon points="368,59 350,60 355,73" fill="var(--ink)"/>
+    <polygon points="368,121 355,107 350,120" fill="var(--ink)"/>
+    <text class="lbl" x="120" y="74">10 mA in</text>
+    <text class="lbl" x="380" y="34">6 mA out</text>
+    <text class="lbl" x="380" y="166">4 mA out</text>
+    <text class="lbl-muted" x="250" y="120" text-anchor="middle">10 = 6 + 4 ✓</text>
+  </svg>
+  <figcaption><b>Charge doesn't pool and doesn't vanish.</b> Whatever arrives at a node this second leaves it this second — through some combination of the other wires.</figcaption>
+</figure>
+
+<p>This one is conservation of <em>charge</em>: coulombs aren't created or destroyed at a junction, and they can't pile up on a wire — so the per-second flow in must equal the per-second flow out. It's why branch currents add (the whole <a href="math-series-parallel.html">parallel resistance</a> law is KCL in disguise), and why a 0 V resistor reading condemns an entire single loop: no current here means no current <em>anywhere</em> on the one path.</p>
+
+<h2>The complete toolkit</h2>
+<p>Here's the formalization worth savoring: <strong>KVL + KCL + <a href="math-v-equals-ir.html">Ohm's law</a> is the whole game.</strong> Every circuit-analysis trick this shelf has taught is those three laws pre-solved for a common case:</p>
+<table>
+  <tr><th>The shortcut</th><th>What it secretly is</th></tr>
+  <tr><td>drops sum to the supply</td><td>KVL, one loop</td></tr>
+  <tr><td>series resistances add</td><td>KVL + Ohm, same current</td></tr>
+  <tr><td>parallel: reciprocals add</td><td>KCL + Ohm, same voltage</td></tr>
+  <tr><td>the divider formula</td><td>KVL + KCL + Ohm, solved once for two resistors</td></tr>
+</table>
+<p>Worked, to prove the divider claim: the 1 kΩ / 1 kΩ divider. KCL at the tap (nothing loading it): the current in R1 continues into R2 — one current, I. KVL around the loop: 5 − I·1000 − I·1000 = 0, so I = 2.5 mA. The tap sits above ground by R2's drop: 2.5 mA × 1 kΩ = <span class="val">2.5 V</span>. Same answer the divider formula hands you — because the formula <em>is</em> this derivation, done once and bottled.</p>
+
+<div class="callout note">
+  <p class="label">The person</p>
+  <p><strong>Gustav Kirchhoff</strong> (Germany, 1824–1887) published these laws in 1845 while still a student. He wasn't done: with Robert Bunsen he founded spectroscopy and explained the dark lines in sunlight — telling humanity, for the first time, what the sun is made of. The same mind behind "your drops must sum to five" also read the chemistry of the stars.</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>Write KCL for every node and KVL for every loop of a big circuit and you get a system of simultaneous linear equations — one unknown per current and node voltage. That's not just theory: circuit-simulation software (engineers use a family called SPICE) analyzes a design by building exactly that equation system and solving it, thousands of times over. Every chip in your laptop was rehearsed as Kirchhoff bookkeeping before it was ever manufactured.</p>
+</div>
+
+<h2>Practice</h2>
+<p>Answers at the bottom. Problems 3 and 4 are buildable — predict, then measure.</p>
+<ol>
+  <li>Walk the blue-LED loop: 5 V supply, 220 Ω, blue LED (3.2 V). What must the resistor drop, by KVL alone?</li>
+  <li>A node has 12 mA flowing in and two wires out; one carries 7 mA. The other?</li>
+  <li>The dark red+blue series circuit from lesson 4: the resistor reads 0 V and the red LED reads 1.7 V. Without touching the meter again — what is the blue LED reading?</li>
+  <li>New build: red and blue LEDs in <em>parallel</em> (same two nodes), one 220 Ω feeding the pair. The meter reads ≈ 2.0 V across both LEDs. Use KVL's parallel fact to explain what the blue LED is doing — before you build it and look.</li>
+</ol>
+
+<h2>Answers</h2>
+<p><strong>1.</strong> 5 − 3.2 = 1.8 V — no Ohm's law needed. <strong>2.</strong> 12 − 7 = 5 mA. <strong>3.</strong> 5 − 0 − 1.7 = <strong>3.3 V</strong> — KVL works on dark circuits too; the whole supply still lands somewhere. <strong>4.</strong> Parallel parts share one voltage, and the red LED conducts at ≈ 2.0 V, clamping the shared node there. Blue needs ≈ 3.2 V to open, never gets it, stays dark: red hogs the branch. (Series red+blue: both dark. Parallel: red only. Both are Kirchhoff bookkeeping.)</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Math shelf · Kirchhoff's Laws</span>
+  <span>Energy sums to zero · charge doesn't pool</span>
+</footer>
+
+</body>
+</html>

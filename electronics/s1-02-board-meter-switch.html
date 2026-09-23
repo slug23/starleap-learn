@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 2 · The Board, the Meter &amp; the Switch</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox
+    { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html" class="cur">2 &middot; The Board, the Meter &amp; the Switch</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Meet the breadboard</a><a class="sub" href="#s4">4 &middot; Warm-up: move in</a><a class="sub" href="#s5">5 &middot; New tool: the multimeter</a><a class="sub" href="#s6">6 &middot; Expedition: beep-map your board</a><a class="sub" href="#s7">7 &middot; Proven</a><a class="sub" href="#s8">8 &middot; New component: the switch</a><a class="sub" href="#s9">9 &middot; Build A — add a switch to the loop</a><a class="sub" href="#s10">10 &middot; Words to know</a><a class="sub" href="#s11">11 &middot; Exit ticket</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 2 · 55 min &middot; build 2026.09.23-1531</p>
+  <h1>The Board, the Meter &amp; the Switch</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">Big idea</p>
+  <p>The board makes nodes <strong>permanent</strong>, the meter makes them <strong>provable</strong> — and the switch gives you the loop's first <strong>control</strong>: a break you command.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Move into the <strong>breadboard</strong>: one row = one node, held by a hidden metal strip.</li>
+  <li>Put power on the <strong>rails</strong> — and mount the supply where it belongs.</li>
+  <li>Use a <strong>multimeter's continuity beep</strong> to prove the rows and map the board's last secrets.</li>
+  <li>Add a <strong>switch</strong> — and prove it works anywhere in the loop.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Everything from last lesson (power supply — its lesson-1 finger leads retire today — LED, <span class="val">220 Ω</span>)</li>
+  <li><strong>Breadboard</strong> — your circuit's new home</li>
+  <li>Jumper wires, a small bundle</li>
+  <li>Multimeter — one per pair, shared</li>
+  <li>Slide switch</li>
+</ul>
+
+<div class="callout safety">
+  <p class="label">Safety — same two rules</p>
+  <p><strong>No shorts</strong> (red to black with nothing in between = a finger-burning wire and a knocked-out supply) and <strong>no LED without its resistor</strong> — a naked LED can pop like a firecracker. You'll be rearranging circuits all class today, so after <em>every</em> change, trace each path from the + rail to the − rail and check it still goes through the resistor before you reconnect power.</p>
+</div>
+
+<h2 id="s3"><span class="num">3</span> Meet the breadboard</h2>
+<p>Last lesson your fingers held every node together — and fingers cramp. In your kit today is the cure: the <strong>breadboard</strong>. <strong>Every row of five holes is joined by a hidden spring-metal strip:</strong> push a lead into any hole and the strip grips it, and everything in the same row is electrically connected. One row, one node. The whole board is just rows — plus a trench down the middle that rows never cross, and two striped side columns — the <strong>rails</strong>, full-length nodes that carry power the whole length of the board. Your supply plugs onto the board's end and feeds them: red stripe = <strong>+5&nbsp;V</strong>, blue stripe = <strong>−</strong>, also called <strong>ground</strong>.</p>
+<figure class="schematic">
+  <svg viewBox="0 0 640 330" role="img" aria-label="Breadboard anatomy: banks of five-hole rows separated by a center trench, one row highlighted as a single node, striped side rails carrying power from the supply">
+    <rect class="softcard" x="20" y="15" width="400" height="300" rx="12"/>
+    <line x1="40" y1="40" x2="40" y2="295" stroke="#b23a32" stroke-width="3"/>
+    <line x1="96" y1="40" x2="96" y2="295" stroke="#22598f" stroke-width="3"/>
+    <text x="40" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#b23a32" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">+</text>
+    <text x="96" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#22598f" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">−</text>
+    <g fill="#c9c0ad">
+      <circle cx="58" cy="50" r="4"/><circle cx="58" cy="83" r="4"/><circle cx="58" cy="116" r="4"/><circle cx="58" cy="149" r="4"/><circle cx="58" cy="182" r="4"/><circle cx="58" cy="215" r="4"/><circle cx="58" cy="248" r="4"/><circle cx="58" cy="281" r="4"/>
+      <circle cx="78" cy="50" r="4"/><circle cx="78" cy="83" r="4"/><circle cx="78" cy="116" r="4"/><circle cx="78" cy="149" r="4"/><circle cx="78" cy="182" r="4"/><circle cx="78" cy="215" r="4"/><circle cx="78" cy="248" r="4"/><circle cx="78" cy="281" r="4"/>
+    </g>
+    <rect x="50" y="40" width="18" height="252" rx="6" fill="none" stroke="var(--muted)" stroke-width="1.8" stroke-dasharray="4 4"/>
+    <g class="lbl-muted" text-anchor="middle">
+      <text x="122" y="54">1</text><text x="122" y="87">2</text><text x="122" y="120">3</text><text x="122" y="153">4</text><text x="122" y="186">5</text><text x="122" y="219">6</text><text x="122" y="252">7</text><text x="122" y="285">8</text>
+    </g>
+    <g fill="#c9c0ad">
+      <circle cx="140" cy="50" r="4"/><circle cx="162" cy="50" r="4"/><circle cx="184" cy="50" r="4"/><circle cx="206" cy="50" r="4"/><circle cx="228" cy="50" r="4"/>
+      <circle cx="140" cy="83" r="4"/><circle cx="162" cy="83" r="4"/><circle cx="184" cy="83" r="4"/><circle cx="206" cy="83" r="4"/><circle cx="228" cy="83" r="4"/>
+      <circle cx="140" cy="149" r="4"/><circle cx="162" cy="149" r="4"/><circle cx="184" cy="149" r="4"/><circle cx="206" cy="149" r="4"/><circle cx="228" cy="149" r="4"/>
+      <circle cx="140" cy="182" r="4"/><circle cx="162" cy="182" r="4"/><circle cx="184" cy="182" r="4"/><circle cx="206" cy="182" r="4"/><circle cx="228" cy="182" r="4"/>
+      <circle cx="140" cy="215" r="4"/><circle cx="162" cy="215" r="4"/><circle cx="184" cy="215" r="4"/><circle cx="206" cy="215" r="4"/><circle cx="228" cy="215" r="4"/>
+      <circle cx="140" cy="248" r="4"/><circle cx="162" cy="248" r="4"/><circle cx="184" cy="248" r="4"/><circle cx="206" cy="248" r="4"/><circle cx="228" cy="248" r="4"/>
+      <circle cx="140" cy="281" r="4"/><circle cx="162" cy="281" r="4"/><circle cx="184" cy="281" r="4"/><circle cx="206" cy="281" r="4"/><circle cx="228" cy="281" r="4"/>
+    </g>
+    <g fill="var(--copper-soft)" stroke="var(--copper)" stroke-width="1.2">
+      <circle cx="140" cy="116" r="5"/><circle cx="162" cy="116" r="5"/><circle cx="184" cy="116" r="5"/><circle cx="206" cy="116" r="5"/><circle cx="228" cy="116" r="5"/>
+    </g>
+    <rect x="128" y="101" width="112" height="30" rx="8" fill="none" stroke="var(--copper)" stroke-width="2.5"/>
+    <line x1="140" y1="116" x2="228" y2="116" stroke="var(--copper)" stroke-width="2" stroke-dasharray="3 4"/>
+    <rect x="240" y="25" width="30" height="280" fill="var(--line)" opacity="0.35"/>
+    <text class="lbl-muted" x="255" y="200" transform="rotate(-90 255 200)" text-anchor="middle">the trench</text>
+    <g fill="#c9c0ad">
+      <circle cx="282" cy="50" r="4"/><circle cx="304" cy="50" r="4"/><circle cx="326" cy="50" r="4"/><circle cx="348" cy="50" r="4"/><circle cx="370" cy="50" r="4"/>
+      <circle cx="282" cy="83" r="4"/><circle cx="304" cy="83" r="4"/><circle cx="326" cy="83" r="4"/><circle cx="348" cy="83" r="4"/><circle cx="370" cy="83" r="4"/>
+      <circle cx="282" cy="116" r="4"/><circle cx="304" cy="116" r="4"/><circle cx="326" cy="116" r="4"/><circle cx="348" cy="116" r="4"/><circle cx="370" cy="116" r="4"/>
+      <circle cx="282" cy="149" r="4"/><circle cx="304" cy="149" r="4"/><circle cx="326" cy="149" r="4"/><circle cx="348" cy="149" r="4"/><circle cx="370" cy="149" r="4"/>
+      <circle cx="282" cy="182" r="4"/><circle cx="304" cy="182" r="4"/><circle cx="326" cy="182" r="4"/><circle cx="348" cy="182" r="4"/><circle cx="370" cy="182" r="4"/>
+      <circle cx="282" cy="215" r="4"/><circle cx="304" cy="215" r="4"/><circle cx="326" cy="215" r="4"/><circle cx="348" cy="215" r="4"/><circle cx="370" cy="215" r="4"/>
+      <circle cx="282" cy="248" r="4"/><circle cx="304" cy="248" r="4"/><circle cx="326" cy="248" r="4"/><circle cx="348" cy="248" r="4"/><circle cx="370" cy="248" r="4"/>
+      <circle cx="282" cy="281" r="4"/><circle cx="304" cy="281" r="4"/><circle cx="326" cy="281" r="4"/><circle cx="348" cy="281" r="4"/><circle cx="370" cy="281" r="4"/>
+    </g>
+    <rect x="270" y="101" width="112" height="30" rx="8" fill="none" stroke="var(--muted)" stroke-width="1.8" stroke-dasharray="5 4"/>
+    <line class="flow" x1="240" y1="116" x2="432" y2="70"/>
+    <text class="lbl" x="438" y="60" font-weight="700" fill="var(--copper-ink)">one 5-hole row</text>
+    <text class="lbl" x="438" y="78">= one hidden strip</text>
+    <text class="lbl" x="438" y="96">= ONE node</text>
+    <line class="flow" x1="382" y1="122" x2="432" y2="150"/>
+    <text class="lbl" x="438" y="148">same row, across</text>
+    <text class="lbl" x="438" y="166">the trench =</text>
+    <text class="lbl" x="438" y="184">a DIFFERENT node</text>
+    <line class="flow" x1="68" y1="290" x2="432" y2="240"/>
+    <text class="lbl" x="438" y="230">rails: full-length nodes.</text>
+    <text class="lbl" x="438" y="248">red stripe = +5 V,</text>
+    <text class="lbl" x="438" y="266">blue = − ("ground")</text>
+  </svg>
+  <figcaption>Every row conceals a spring-metal strip that grips whatever you plug in. Rows never cross the trench. The striped columns are the rails: red = +5 V, blue = − — the <b>ground</b> rail, the common return every loop comes back to.</figcaption>
+</figure>
+<div class="callout note">
+  <p class="label">The #1 mistake</p>
+  <p>A component's two legs must land in <strong>different rows</strong>. Both legs in one row = both ends on the same node — the strip <em>short-circuits</em> the component, as if it weren't there. A bypassed resistor is how LEDs pop (safety rule 2).</p>
+</div>
+
+<h2 id="s4"><span class="num">4</span> Warm-up: move in</h2>
+<p><strong>Retrieval first — 90 seconds, no peeking:</strong> sketch last lesson's schematic from memory on scrap paper. Three parts, three lettered nodes, the LED's arrow pointing the right way. <em>Then</em> check it against the drawing below.</p>
+<p>First, retire lesson 1's finger leads: pull them off the supply's pins — their job is done. The supply itself now rides the end of the board, feeding the rails: + to the red stripe, − to the blue. Build last lesson's circuit — same schematic, same three nodes, <strong>one row per node</strong> — with jumpers carrying power from the rails. Say each node's letter out loud as you plug it in:</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 500 300" role="img" aria-label="Warm-up schematic: power source, resistor, and LED in one loop with nodes A, B, C">
+    <line class="w" x1="90" y1="60" x2="90" y2="138"/>
+    <line class="w" x1="66" y1="138" x2="114" y2="138"/>
+    <line class="w" x1="78" y1="158" x2="102" y2="158"/>
+    <line class="w" x1="90" y1="158" x2="90" y2="240"/>
+    <text class="lbl" x="126" y="143">+</text>
+    <text class="lbl" x="126" y="166">−</text>
+    <text class="lbl" x="58" y="134" text-anchor="end">5 V</text>
+    <line class="w" x1="90" y1="60" x2="196" y2="60"/>
+    <path class="w" d="M196,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="280" y1="60" x2="400" y2="60"/>
+    <text class="lbl" x="238" y="30" text-anchor="middle">220 Ω</text>
+    <line class="w" x1="400" y1="60" x2="400" y2="124"/>
+    <polygon class="w" points="386,124 414,124 400,150"/>
+    <line class="w" x1="386" y1="150" x2="414" y2="150"/>
+    <line class="w" x1="400" y1="150" x2="400" y2="240"/>
+    <path class="w" d="M417,131 L433,117 M433,117 l-11,2 M433,117 l-3,11" stroke-width="1.8"/>
+    <text class="lbl" x="452" y="180">LED</text>
+    <line class="w" x1="90" y1="240" x2="400" y2="240"/>
+    <g class="nodeb"><circle cx="143" cy="60" r="13"/><text x="143" y="65" text-anchor="middle">A</text></g>
+    <g class="nodeb"><circle cx="345" cy="60" r="13"/><text x="345" y="65" text-anchor="middle">B</text></g>
+    <g class="nodeb"><circle cx="245" cy="240" r="13"/><text x="245" y="245" text-anchor="middle">C</text></g>
+  </svg>
+  <figcaption>Lesson 1's circuit — today it moves into the board.</figcaption>
+</figure>
+
+<ol class="steps">
+  <li><span class="node">A</span>&nbsp; <strong>Row 10:</strong> a jumper from the <strong>+ rail</strong> into one hole, either resistor leg in another. The hidden strip now does the gripping.</li>
+  <li><span class="node">B</span>&nbsp; <strong>Row 15:</strong> the resistor's other leg and the LED's <strong>long leg</strong>.</li>
+  <li><span class="node">C</span>&nbsp; <strong>Row 20:</strong> the LED's <strong>short leg</strong>, and a jumper from row 20 back to the <strong>− rail</strong>. Light — and this time, no hands.</li>
+</ol>
+
+<div class="callout note">
+  <p class="label">Dead circuit? You know the drill</p>
+  <p>Debugging Loop card, top to bottom → check your build against the schematic → ask a neighbor → <em>then</em> a teacher, findings first. This applies to every build today.</p>
+</div>
+
+<h2 id="s5"><span class="num">5</span> New tool: the multimeter</h2>
+<p>You've taken our word about the rows and the rails — but in this room, nobody takes anyone's word about wiring. The interrogation tool is a <strong>multimeter</strong>: it measures the invisible. Today you'll use its simplest mode: <strong>continuity</strong> — the beep. On our meters it shares a dial position with Ω: turn the dial to the position with the <span class="val">Ω</span> and sound symbols, then press <strong>Select</strong> once — you're there when the sound symbol shows on the display. Touch the two probe tips to two points, and:</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 460 185" role="img" aria-label="Multimeter with two probes touching two holes; a beep means the holes are the same node">
+    <rect class="softcard" x="175" y="15" width="110" height="82" rx="10"/>
+    <rect x="187" y="27" width="86" height="24" rx="4" fill="var(--line)" opacity="0.6"/>
+    <text class="lbl" x="230" y="44" text-anchor="middle">bEEP</text>
+    <polygon points="205,66 213,66 222,58 222,84 213,76 205,76" fill="var(--ink)"/>
+    <path class="w" d="M228,63 a9,9 0 0 1 0,16 M234,58 a15,15 0 0 1 0,26" stroke-width="1.8"/>
+    <path class="w" d="M186,97 C150,120 128,128 106,142" stroke="#b23a32"/>
+    <line x1="106" y1="142" x2="88" y2="153" stroke="#b23a32" stroke-width="4.5" stroke-linecap="round"/>
+    <path class="w" d="M274,97 C310,120 332,128 354,142"/>
+    <line x1="354" y1="142" x2="372" y2="153" stroke="var(--ink)" stroke-width="4.5" stroke-linecap="round"/>
+    <circle cx="82" cy="160" r="5.5" fill="#c9c0ad"/>
+    <circle cx="378" cy="160" r="5.5" fill="#c9c0ad"/>
+    <line x1="90" y1="160" x2="370" y2="160" stroke="var(--muted)" stroke-width="2" stroke-dasharray="3 5"/>
+    <text class="lbl-muted" x="230" y="178" text-anchor="middle">secretly connected … or not?</text>
+  </svg>
+  <figcaption><b>Beep = the two tips are touching the same node.</b> Silence = different nodes. The meter answers arguments.</figcaption>
+</figure>
+
+<div class="callout safety">
+  <p class="label">Meter rule #1</p>
+  <p>Continuity mode is for <strong>unpowered</strong> circuits only. Switch the supply off — or slide it off the board — before beep-testing; a powered circuit confuses the meter and can damage it.</p>
+</div>
+
+<h2 id="s6"><span class="num">6</span> Expedition: beep-map your board</h2>
+<p>Supply off. For each pair of points below, <strong>predict first</strong>, then touch the probes and listen:</p>
+
+<div class="callout note">
+  <p class="label">The probes won't fit the holes</p>
+  <p>Meter tips are fatter than breadboard holes — don't force one in, or the spring clip underneath never grips right again. Plug a <strong>short wire</strong> (or a spare component leg) into the row and touch the probe tip to that instead: everything in a row is one node, so probing the wire <em>is</em> probing the row. The <strong>Making Wires</strong> card at the wire station shows how to cut and strip your own.</p>
+</div>
+<table>
+  <tr><th>Probe these two points</th><th>Predict: beep?</th><th>Result</th></tr>
+  <tr><td>Two holes in the <strong>same 5-hole row</strong></td><td></td><td></td></tr>
+  <tr><td>Two holes in the same column, <strong>different rows</strong></td><td></td><td></td></tr>
+  <tr><td>Same row number, <strong>across the trench in the middle</strong></td><td></td><td></td></tr>
+  <tr><td><strong>Top and bottom hole of one striped edge column</strong></td><td></td><td></td></tr>
+  <tr><td>The <strong>red-striped column and the blue-striped column</strong></td><td></td><td></td></tr>
+  <tr><td>The two ends of <strong>one jumper wire</strong> from your new bundle</td><td></td><td></td></tr>
+</table>
+
+<div class="callout tryit">
+  <p class="label">The wire hospital</p>
+  <p>That last row matters: a wire can be broken <em>inside</em> its insulation — looks fine, conducts nothing. Beep-test every jumper in your new bundle end to end. Somewhere at your table there's a dead one. Find it, and hand it in for a healthy replacement. From now on, <strong>when a circuit fails, your wires are innocent — you tested them.</strong> The copper is proven; only a loose seating can still betray it, and that's Loop step 4, not a bad wire.</p>
+</div>
+
+<div class="callout note">
+  <p class="label">If a rail goes quiet halfway</p>
+  <p>Some breadboards <strong>split their rails in the middle</strong> — top half and bottom half are two separate nodes. (It's a feature, for circuits with two supplies; today it's a trap.) If your top-to-bottom rail test stays silent: bridge the middle of the rail with a jumper, beep again, and you've rejoined it into one node. Leave the bridge in — future-you will forget.</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>The beep is secretly a <strong>resistance</strong> measurement. The meter pushes a tiny test current through the probes and beeps if it flows almost freely — resistance near <span class="val">0 Ω</span>. A wire is ≈ 0 Ω, so it beeps. Your body, hand-to-hand, is roughly <span class="val">100,000 Ω</span> — no beep, and also why your finger couldn't light the LED in lesson 1. Air is billions of ohms: the ultimate insulator.</p>
+</div>
+
+<h2 id="s7"><span class="num">7</span> Proven</h2>
+<p>Compare your expedition table to the diagram in section 3 — every claim checked out. (And if your board hides a <em>split</em> rail, you may have just caught it.) Rows are little nodes, rails are giant ones, the trench keeps the banks apart. That's the entire board: trust, replaced by proof.</p>
+<div class="callout note">
+  <p class="label">The convention</p>
+  <p>From today on: <strong>the supply rides the end of the board, + feeding the red-striped rail, − the blue.</strong> Every circuit for the rest of the course starts this way — and anyone can look at anyone's board and instantly know where power lives.</p>
+</div>
+<div class="callout tryit">
+  <p class="label">The payoff</p>
+  <p>Plug a jumper into the + rail at the <em>far end</em> of the board, as far from the supply as you can get. Supply off, beep-test its free end against node <span class="node">A</span>'s row. Same node. The rail delivers power anywhere on the board, no matter how big a circuit grows.</p>
+</div>
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>If a board's rails are <em>split</em> in the middle, what happens to a circuit powered from the top half but built in the bottom half? <span class="writeline"></span></p>
+</div>
+
+<h2 id="s8"><span class="num">8</span> New component: the switch</h2>
+<div class="symbols">
+  <figure class="symbol">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Switch schematic symbol">
+      <line class="w" x1="10" y1="40" x2="48" y2="40"/>
+      <circle class="w" cx="53" cy="40" r="4"/>
+      <line class="w" x1="57" y1="37" x2="93" y2="16"/>
+      <circle class="w" cx="97" cy="40" r="4"/>
+      <line class="w" x1="101" y1="40" x2="140" y2="40"/>
+    </svg>
+    <figcaption><b>Switch</b> Makes or breaks the circuit: open = no current path anywhere in the loop; closed = complete loop. The kit's slide switch has three legs that plug straight into rows — use the middle (common) leg plus either end.</figcaption>
+  </figure>
+</div>
+
+<h2 id="s9"><span class="num">9</span> Build A — add a switch to the loop</h2>
+
+<figure class="schematic">
+  <svg viewBox="0 0 500 300" role="img" aria-label="Schematic: power source, resistor, LED, and switch in one loop with nodes A, B, C, D">
+    <line class="w" x1="90" y1="60" x2="90" y2="138"/>
+    <line class="w" x1="66" y1="138" x2="114" y2="138"/>
+    <line class="w" x1="78" y1="158" x2="102" y2="158"/>
+    <line class="w" x1="90" y1="158" x2="90" y2="240"/>
+    <text class="lbl" x="126" y="143">+</text>
+    <text class="lbl" x="126" y="166">−</text>
+    <text class="lbl" x="58" y="134" text-anchor="end">5 V</text>
+    <line class="w" x1="90" y1="60" x2="196" y2="60"/>
+    <path class="w" d="M196,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="280" y1="60" x2="400" y2="60"/>
+    <text class="lbl" x="238" y="30" text-anchor="middle">220 Ω</text>
+    <line class="w" x1="400" y1="60" x2="400" y2="124"/>
+    <polygon class="w" points="386,124 414,124 400,150"/>
+    <line class="w" x1="386" y1="150" x2="414" y2="150"/>
+    <line class="w" x1="400" y1="150" x2="400" y2="240"/>
+    <path class="w" d="M417,131 L433,117 M433,117 l-11,2 M433,117 l-3,11" stroke-width="1.8"/>
+    <text class="lbl" x="452" y="180">LED</text>
+    <line class="w" x1="90" y1="240" x2="204" y2="240"/>
+    <circle class="w" cx="208" cy="240" r="4"/>
+    <line class="w" x1="212" y1="237" x2="252" y2="214"/>
+    <circle class="w" cx="256" cy="240" r="4"/>
+    <line class="w" x1="260" y1="240" x2="400" y2="240"/>
+    <text class="lbl-muted" x="232" y="276" text-anchor="middle">switch</text>
+    <g class="nodeb"><circle cx="143" cy="60" r="13"/><text x="143" y="65" text-anchor="middle">A</text></g>
+    <g class="nodeb"><circle cx="345" cy="60" r="13"/><text x="345" y="65" text-anchor="middle">B</text></g>
+    <g class="nodeb"><circle cx="330" cy="240" r="13"/><text x="330" y="245" text-anchor="middle">C</text></g>
+    <g class="nodeb"><circle cx="147" cy="240" r="13"/><text x="147" y="245" text-anchor="middle">D</text></g>
+  </svg>
+  <figcaption>The switch is <em>inserted</em> into the loop: old node C became two nodes, C and D. That's the series move.</figcaption>
+</figure>
+
+<p>Start from your warm-up circuit. Seat the switch across three fresh rows (say 24-25-26 — its legs are close together, one row each). Then rewire the loop's tail end:</p>
+<ol class="steps">
+  <li><span class="node">C</span>&nbsp; Pull the ground-rail jumper out of the LED's row, and run a <strong>jumper</strong> from that row to the switch's <em>middle</em> leg's row. (A jumper merges two rows into one node — node C just got bigger.)</li>
+  <li><span class="node">D</span>&nbsp; A jumper from an <em>end</em> leg's row back to the <strong>− rail</strong>.</li>
+  <li>Slide the switch. You control the drawbridge.</li>
+</ol>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>The switch is "after" the LED in the loop. Would it still work between the power supply and the resistor instead? At the top of the loop? <span class="writeline"></span></p>
+</div>
+<h3>Go further — for the fast and the curious</h3>
+<div class="callout tryit">
+  <p class="label">Stretch</p>
+  <p><strong>1.</strong> Move the switch somewhere else in the loop — before the resistor, at the very top. Last lesson you proved a break <em>anywhere</em> stops <em>everything</em>; a switch is just a break you control. <strong>2.</strong> Map the switch like you mapped the board: supply off, beep across each pair of its three legs, flip it, beep again. Which legs connect in which position? You just read the switch's secret wiring.</p>
+</div>
+
+<h2 id="s10"><span class="num">10</span> Words to know</h2>
+<dl class="vocab">
+  <dt>breadboard</dt><dd>a board of pre-wired nodes — rows and rails — for building circuits without solder</dd>
+  <dt>row</dt><dd>five holes joined by a hidden spring-metal strip — one node</dd>
+  <dt>ground</dt><dd>the − rail (blue stripe; GND on the supply) — the common return every loop comes back to</dd>
+  <dt>rail</dt><dd>the long +/− columns down the sides — one giant node, usually for power</dd>
+  <dt>trench</dt><dd>the center gap (a.k.a. the ravine); rows never cross it</dd>
+  <dt>jumper wire</dt><dd>a short wire that joins two rows — how you connect far-apart nodes on the board</dd>
+  <dt>multimeter</dt><dd>the tool that measures the invisible: connection today; voltage and resistance in lesson 4</dd>
+  <dt>continuity</dt><dd>the beep mode — "are these two points one node?"</dd>
+  <dt>probe</dt><dd>the meter's pointed test leads — red and black</dd>
+  <dt>switch</dt><dd>a break in the loop that you control</dd>
+  <dt>open / closed</dt><dd>an open circuit is a broken loop (off); a closed circuit is a complete loop (on)</dd>
+</dl>
+
+<h2 id="s11"><span class="num">11</span> Exit ticket</h2>
+<p>On scrap paper: <strong>(1)</strong> sketch one 5-hole row and its hidden metal strip; <strong>(2)</strong> from memory, draw <strong>Build A</strong> — the full switched loop, nodes lettered — and mark the two nodes — C and D — that were <em>one</em> node before the switch moved in. Hand it in at the door.</p>
+
+<p><strong>Cleanup:</strong> if the switch experiments left Build A rearranged, restore it exactly as the schematic shows. Then power off and close the box <em>with the circuit still standing</em> — lesson 3 starts by checking it, then grows it.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Semester 1 · Lesson 2 of 13</span>
+  <span>Next: <strong>Series &amp; Parallel</strong> — one way home, or more than one?</span>
+</footer>
+
+</body>
+</html>

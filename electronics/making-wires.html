@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Making Wires</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--copper);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, ol.steps > li, figure.schematic { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html" class="cur">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Skill card · Lives at the wire station &middot; build 2026.09.23-1531</p>
+  <h1>Making Wires</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>A wire is the one component you <strong>manufacture yourself</strong>. Made well, it disappears into the circuit. Made badly, it <em>becomes</em> the bug.</p>
+</div>
+
+<h2>Why make your own?</h2>
+<p>The precut bin gets you started, but real builds want wires cut to size. A board wired with right-length wires lies flat and reads like its schematic; a board wired with too-long jumpers is spaghetti, and every bug gets a loop to hide under. Besides — a wire you made and tested is a wire you <em>know</em>.</p>
+<p>At the station: spools of <span class="val">22 AWG</span> solid-core wire, and wire strippers (the cutting blade is part of the same tool). Tools go back in the box — the next engineer needs them.</p>
+
+<h2>Know your wire</h2>
+<p>Our wire is <strong>22 AWG solid core</strong>: one solid strand of copper inside a plastic insulation jacket. AWG is the American Wire Gauge — the number goes <em>up</em> as wire gets <em>thinner</em> — and 22 is the thickness a breadboard's spring clips are built to grip.</p>
+
+<div class="callout note">
+  <p class="label">Solid vs. stranded</p>
+  <p>Some wire (your meter leads, for instance) is <strong>stranded</strong> — dozens of hair-thin strands. It bends forever without breaking, but it frays and won't push into a breadboard hole. <strong>Solid</strong> wire holds its shape and plugs in cleanly — that's why it's the breadboard wire. Its one weakness: bend it back and forth at the same spot enough times and it snaps.</p>
+</div>
+
+<h2>Measure with the board</h2>
+<p>No ruler needed: breadboard hole centers sit exactly <span class="val">0.1 in</span> apart, so <strong>the board is the ruler</strong>. To size a wire, count the holes it must span, then add about <span class="val">0.3 in</span> per end for stripping.</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 195" role="img" aria-label="A breadboard row of holes used as a ruler: hole centers are 0.1 inch apart, and a stripped wire end spans three gaps, which is 0.3 inch">
+    <rect x="250" y="31" width="70" height="18" rx="6" fill="#3f5875"/>
+    <line x1="320" y1="40" x2="440" y2="40" stroke="#b4550f" stroke-width="5" stroke-linecap="round"/>
+    <text class="lbl-muted" x="380" y="20" text-anchor="middle">bare end = 3 gaps</text>
+    <rect class="softcard" x="40" y="58" width="480" height="70" rx="8"/>
+    <rect x="76"  y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <rect x="116" y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <rect x="156" y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <rect x="196" y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <rect x="236" y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <rect x="276" y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <rect x="316" y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <rect x="356" y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <rect x="396" y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <rect x="436" y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <rect x="476" y="89" width="8" height="8" rx="1.5" fill="var(--ink)"/>
+    <line x1="80"  y1="140" x2="80"  y2="158" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="120" y1="140" x2="120" y2="158" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="80"  y1="149" x2="120" y2="149" stroke="var(--muted)" stroke-width="1.5"/>
+    <text class="lbl" x="100" y="180" text-anchor="middle">0.1 in</text>
+    <line x1="320" y1="140" x2="320" y2="158" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="440" y1="140" x2="440" y2="158" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="320" y1="149" x2="440" y2="149" stroke="var(--muted)" stroke-width="1.5"/>
+    <text class="lbl" x="380" y="180" text-anchor="middle">3 gaps = 0.3 in</text>
+  </svg>
+  <figcaption><b>Count the gaps between holes, not the holes.</b> Four holes span three gaps = <span class="val">0.3 in</span> — exactly one strip length.</figcaption>
+</figure>
+
+<h2>Cut</h2>
+<ol class="steps">
+  <li>Unspool a little more than you need and measure against the board: the holes to span, plus <span class="val">0.3 in</span> per end.</li>
+  <li>Cut square across with the stripper's cutting blade (the flat blade near the pivot — not a stripping notch).</li>
+</ol>
+
+<div class="callout safety">
+  <p class="label">Cut ends fly</p>
+  <p>A snipped wire end launches off the blade fast enough to reach an eye. Point the wire <strong>down at the table</strong> or cup your free hand over the cut — and never cut with the end aimed at a face, yours or a neighbor's.</p>
+</div>
+
+<h2>Strip</h2>
+<ol class="steps">
+  <li>Find the stripper notch labeled <span class="val">22</span> — each notch is sized for exactly one gauge.</li>
+  <li>Lay the wire in the notch with about <span class="val">0.3 in</span> sticking past the blade. That's <strong>three holes' worth</strong> on the board — measure until your eye learns it.</li>
+  <li>Squeeze, then pull straight along the wire. The insulation slides off in one clean sleeve and the copper comes out bright and unscratched.</li>
+</ol>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 150" role="img" aria-label="A finished wire: solid copper core exposed 0.3 inch at each end of an insulated middle">
+    <line x1="60" y1="75" x2="150" y2="75" stroke="#b4550f" stroke-width="5" stroke-linecap="round"/>
+    <rect x="150" y="66" width="260" height="18" rx="6" fill="#3f5875"/>
+    <text x="280" y="79" text-anchor="middle" fill="#fff" font-size="13"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">insulation</text>
+    <line x1="410" y1="75" x2="500" y2="75" stroke="#b4550f" stroke-width="5" stroke-linecap="round"/>
+    <text class="lbl-muted" x="105" y="38" text-anchor="middle">solid copper core</text>
+    <line x1="105" y1="46" x2="105" y2="66" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="410" y1="98" x2="410" y2="116" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="500" y1="98" x2="500" y2="116" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="410" y1="107" x2="500" y2="107" stroke="var(--muted)" stroke-width="1.5"/>
+    <text class="lbl" x="455" y="138" text-anchor="middle">≈ 0.3 in</text>
+  </svg>
+  <figcaption><b>The finished wire:</b> ≈ <span class="val">0.3 in</span> of bare copper at each end, clean insulation between.</figcaption>
+</figure>
+
+<p>Why <span class="val">0.3 in</span>? Strip less and the copper can't reach deep enough for the spring clip to bite — the clip grips plastic and connects only <em>sometimes</em>, the worst kind of bug. Strip more and bare metal stands above the deck, ready to touch a neighbor and join two nodes you never meant to join.</p>
+
+<div class="callout note">
+  <p class="label">Wrong notch, ruined wire</p>
+  <p>Too big a notch and the insulation just spins — nothing strips. Too small and the blade <strong>nicks the copper</strong>. A nicked solid wire snaps at the nick — sometimes later, sometimes <em>inside</em> the insulation, where it looks perfect and conducts nothing. That's where broken-inside wires come from; the beep test catches them.</p>
+</div>
+
+<h2>The three checks</h2>
+<p>Every wire — fresh off the spool or out of the precut bin — passes three checks before it touches a board:</p>
+<ol class="steps">
+  <li><strong>Look.</strong> Copper bright and unnicked, insulation ends clean, strip about three holes long.</li>
+  <li><strong>Tug.</strong> Pinch each bare end and pull firmly. A nicked end snaps off in your fingers now instead of inside your circuit later.</li>
+  <li><strong>Beep.</strong> Meter on continuity, a probe tip pinched to each bare end. Beep = one unbroken conductor. (A lone wire has no power in it — always safe to test.)</li>
+</ol>
+
+<div class="callout tryit">
+  <p class="label">The precut bin</p>
+  <p>The bin's wires are handmade, so give them the same three checks. If one fails, <strong>don't put it back</strong> — a bad wire returned to the bin is a bug planted in someone else's circuit. Re-cut and re-strip it into a shorter good wire, or scrap it.</p>
+</div>
+
+<h2>When the probe won't fit</h2>
+<p>Multimeter probe tips are fatter than breadboard holes. Don't force one in — you'll stretch the spring clip underneath so it never grips a leg properly again. Instead, plug a <strong>short wire</strong> into the row and touch the probe tip to its bare end: everything in a row is one node, so probing the wire <em>is</em> probing the row. A spare component leg works too.</p>
+<p>Make a couple of short probe wires and keep them in your kit — you'll reach for them every time the meter comes out.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Making Wires v1</span>
+  <span>Look · Tug · Beep</span>
+</footer>
+
+</body>
+</html>

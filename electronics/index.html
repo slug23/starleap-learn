@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StarLeap Electronics</title>
+<style>
+:root{--paper:#f6f1e7;--card:#fffdf8;--ink:#232a38;--muted:#6d7280;--line:#ddd4c2;--copper:#b4550f;--copper-ink:#8a3d07;--copper-soft:#f7e8d4}
+*{box-sizing:border-box}html{color-scheme:light}
+body{margin:0 auto;max-width:760px;padding:48px 28px 80px;background:var(--paper);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+.kicker{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin:0 0 10px}
+h1{margin:0 0 8px;font-size:clamp(34px,6vw,46px);line-height:1.05}
+.tagline{margin:0 0 30px;font-size:19px;color:var(--muted)}
+ul.toc{list-style:none;padding:0;margin:0}
+ul.toc li{display:flex;gap:16px;align-items:center;padding:13px 6px;border-bottom:1px solid var(--line)}
+ul.toc .wk{flex:none;width:36px;height:36px;border-radius:9px;background:var(--copper);color:#fff;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center}
+ul.toc .what a{color:var(--copper-ink);font-weight:700;font-size:18px;text-decoration:none;border-bottom:2px solid var(--copper-soft)}
+ul.toc .what a:hover{border-bottom-color:var(--copper)}
+ul.toc .wk.math{background:#6d4fa1}
+ul.toc .wk.deep{background:#22598f}
+ul.toc .wk.lab{background:#2e7d46}
+ul.toc .what .desc{display:block;color:var(--muted);font-size:15px;margin-top:1px}
+h2 small{font-size:14px;color:var(--muted);font-weight:400}
+h2{margin:2em 0 .3em;font-size:22px;border-bottom:2px solid var(--copper);padding-bottom:5px}
+footer{margin-top:60px;border-top:1.5px solid var(--line);padding-top:12px;font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html" class="cur">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+<p class="kicker">StarLeap &middot; STEM 2026 &middot; build 2026.09.23-1531</p>
+<h1>Electronics</h1>
+<p class="tagline">What we've covered so far. New lessons appear here as we reach them &mdash; refresh this page to pick up updates.</p>
+<h2>Lessons</h2>
+<ul class="toc">
+  <li><span class="wk">1</span><span class="what"><a href="s1-01-the-loop.html">The Loop</a><span class="desc"></span></span></li>
+  <li><span class="wk">2</span><span class="what"><a href="s1-02-board-meter-switch.html">The Board, the Meter &amp; the Switch</a><span class="desc"></span></span></li>
+  <li><span class="wk">3</span><span class="what"><a href="s1-03-series-and-parallel.html">Series &amp; Parallel</a><span class="desc"></span></span></li>
+  <li><span class="wk">4</span><span class="what"><a href="s1-04-volts-and-ohms.html">Volts &amp; Ohms</a><span class="desc"></span></span></li>
+  <li><span class="wk">5</span><span class="what"><a href="s1-05-dividers-and-pots.html">Dividers &amp; Pots</a><span class="desc"></span></span></li>
+  <li><span class="wk">6</span><span class="what"><a href="s1-06-capacitors.html">Capacitors</a><span class="desc"></span></span></li>
+  <li><span class="wk">7</span><span class="what"><a href="s1-07-transistor-switch.html">The Transistor Switch</a><span class="desc"></span></span></li>
+  <li><span class="wk">8</span><span class="what"><a href="s1-08-sensors.html">Sensors</a><span class="desc"></span></span></li>
+  <li><span class="wk">9</span><span class="what"><a href="s1-09-the-555-timer.html">The 555 Timer</a><span class="desc"></span></span></li>
+</ul>
+<h2>Extras &amp; handouts</h2><ul class="toc">  <li><span class="wk">&#10070;</span><span class="what"><a href="component-field-guide.html">Component Field Guide</a><span class="desc"></span></span></li>
+  <li><span class="wk">&#10070;</span><span class="what"><a href="debugging-loop.html">The Debugging Loop</a><span class="desc"></span></span></li>
+  <li><span class="wk">&#10070;</span><span class="what"><a href="making-wires.html">Making Wires</a><span class="desc"></span></span></li>
+  <li><span class="wk">&#10070;</span><span class="what"><a href="multimeter-guide.html">The Multimeter</a><span class="desc"></span></span></li></ul>
+<h2>Under the hood <small>optional &mdash; how it all really works</small></h2><ul class="toc">  <li><span class="wk deep">&#9881;</span><span class="what"><a href="deep-how-ac-works.html">How AC Works</a><span class="desc"></span></span></li>
+  <li><span class="wk deep">&#9881;</span><span class="what"><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><span class="desc"></span></span></li>
+  <li><span class="wk deep">&#9881;</span><span class="what"><a href="deep-how-capacitors-work.html">How Capacitors Work</a><span class="desc"></span></span></li>
+  <li><span class="wk deep">&#9881;</span><span class="what"><a href="deep-how-transistors-work.html">How Transistors Work</a><span class="desc"></span></span></li></ul>
+
+<h2>The math shelf <small>optional &mdash; for the curious</small></h2><ul class="toc">  <li><span class="wk math">&#8721;</span><span class="what"><a href="math-divider-formula.html">The Voltage Divider Formula</a><span class="desc"></span></span></li>
+  <li><span class="wk math">&#8721;</span><span class="what"><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><span class="desc"></span></span></li>
+  <li><span class="wk math">&#8721;</span><span class="what"><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><span class="desc"></span></span></li>
+  <li><span class="wk math">&#8721;</span><span class="what"><a href="math-p-equals-iv.html">P = IV</a><span class="desc"></span></span></li>
+  <li><span class="wk math">&#8721;</span><span class="what"><a href="math-rc-time-constant.html">τ = RC</a><span class="desc"></span></span></li>
+  <li><span class="wk math">&#8721;</span><span class="what"><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><span class="desc"></span></span></li>
+  <li><span class="wk math">&#8721;</span><span class="what"><a href="math-tolerance.html">Tolerance &amp; Error</a><span class="desc"></span></span></li>
+  <li><span class="wk math">&#8721;</span><span class="what"><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><span class="desc"></span></span></li>
+  <li><span class="wk math">&#8721;</span><span class="what"><a href="math-v-equals-ir.html">V = IR</a><span class="desc"></span></span></li>
+  <li><span class="wk math">&#8721;</span><span class="what"><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a><span class="desc"></span></span></li></ul>
+<footer>StarLeap Electronics &middot; build 2026.09.23-1531 &middot; schematics first &middot; build every class &middot; predict, then test</footer>
+</body>
+</html>

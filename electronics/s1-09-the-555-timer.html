@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 9 · The 555 Timer</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox
+    { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html" class="cur">9 &middot; The 555 Timer</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: the night-light, on paper</a><a class="sub" href="#s4">4 &middot; New component: the chip</a><a class="sub" href="#s5">5 &middot; Build A: trigger and threshold, by hand</a><a class="sub" href="#s6">6 &middot; Build B: hand it the stopwatch</a><a class="sub" href="#s7">7 &middot; Watch it breathe</a><a class="sub" href="#s8">8 &middot; Challenge: the two-second metronome</a><a class="sub" href="#s9">9 &middot; The cliffhanger</a><a class="sub" href="#s10">10 &middot; Words to know</a><a class="sub" href="#s11">11 &middot; Exit ticket</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 9 · 55 min &middot; build 2026.09.23-1531</p>
+  <h1>The 555 Timer</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The big idea</p>
+  <p>A chip is a <strong>sealed circuit</strong>, not a new kind of part — inside the 555 are a couple dozen of lesson 7's transistors, arranged to watch a capacitor and flip a switch at two thresholds. The <strong>pinout</strong> is the map to what's inside. Learn to read one, and every chip ever made opens.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Meet your first chip — and the <strong>notch-and-count rule</strong> that unlocks every chip after it.</li>
+  <li>Power a 555 and work its <strong>trigger</strong> and <strong>threshold</strong> by hand — and put on the record what happens when you let go.</li>
+  <li>Hand it lesson 6's fill circuit and watch it <strong>blink</strong> — a circuit that flips itself, forever.</li>
+  <li>Watch the capacitor breathe between the chip's two marks, live on the meter.</li>
+  <li>Race the blink faster and faster — until something in the room gives up.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Board with supply on the rails — cleared last lesson; the chip needs the room — plus jumpers, LEDs, <span class="val">220 Ω</span>, assortment, pot, capacitors, transistor, LDR, multimeter</li>
+  <li><strong>555 timer</strong> — the little black brick with eight legs (plus a spare)</li>
+  <li>No other new parts — today's news is arrangement, not hardware</li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span> Warm-up: the night-light, on paper</h2>
+<p>Lesson 8, no peeking, no board: <strong>draw the night-light from memory</strong> — sensing stage, tap, base resistor, switch stage. Then mark two things on your drawing: the <strong>node the circuit watches</strong>, and the <strong>voltage where it flips</strong>. Two minutes, trade with a neighbor, check each other's topology. Keep that word <em>threshold</em> warm — today you meet a part that watches <em>two</em> of them at once.</p>
+
+<h2 id="s4"><span class="num">4</span> New component: the chip</h2>
+<p>The black brick in your kit is an <strong>integrated circuit</strong> — IC for short, <strong>chip</strong> to everyone. Inside is a complete circuit: for the 555, about twenty-five transistors with their resistors, built onto one flake of silicon and sealed in plastic. Nothing in there is a new kind of part. What's new is that you can't touch any of it — the only handles you get are the <strong>pins</strong>, and the only way to know what each pin does is the map. That map is the <strong>pinout</strong>, and it comes from the part's manual — its <strong>datasheet</strong>. Here's ours:</p>
+
+<div class="symbols">
+  <figure class="symbol">
+    <svg viewBox="0 0 200 170" role="img" aria-label="A 555 chip in real life: top view of an eight-pin DIP package with the notch marking the pin-1 end">
+      <defs>
+        <linearGradient id="dipLeg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#cdd1d8"/>
+          <stop offset=".5" stop-color="#9aa0a9"/>
+          <stop offset="1" stop-color="#787e88"/>
+        </linearGradient>
+      </defs>
+      <rect x="46" y="30" width="15" height="9" fill="url(#dipLeg)"/>
+      <rect x="46" y="62" width="15" height="9" fill="url(#dipLeg)"/>
+      <rect x="46" y="94" width="15" height="9" fill="url(#dipLeg)"/>
+      <rect x="46" y="126" width="15" height="9" fill="url(#dipLeg)"/>
+      <rect x="139" y="30" width="15" height="9" fill="url(#dipLeg)"/>
+      <rect x="139" y="62" width="15" height="9" fill="url(#dipLeg)"/>
+      <rect x="139" y="94" width="15" height="9" fill="url(#dipLeg)"/>
+      <rect x="139" y="126" width="15" height="9" fill="url(#dipLeg)"/>
+      <rect x="60" y="14" width="80" height="138" rx="5" fill="#2e2e36" stroke="#191920" stroke-width="1.5"/>
+      <path d="M91,14 a9,9 0 0 0 18,0" fill="#1b1b22"/>
+      <circle cx="72" cy="28" r="4" fill="#4a4a55"/>
+      <text x="100" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#e8eaee"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+            transform="rotate(-90 100 88)">NE555P</text>
+      <text class="lbl" x="38" y="38" text-anchor="end">1</text>
+      <text class="lbl" x="38" y="70" text-anchor="end">2</text>
+      <text class="lbl" x="38" y="102" text-anchor="end">3</text>
+      <text class="lbl" x="38" y="134" text-anchor="end">4</text>
+      <text class="lbl" x="162" y="134">5</text>
+      <text class="lbl" x="162" y="102">6</text>
+      <text class="lbl" x="162" y="70">7</text>
+      <text class="lbl" x="162" y="38">8</text>
+      <text class="lbl-muted" x="100" y="8" text-anchor="middle">notch</text>
+    </svg>
+    <figcaption><b>In real life</b> top view: the notch (or a little dot) marks the pin-1 end
+    <span class="irl">Pin 1 sits left of the notch; count <strong>counterclockwise</strong> — down the left side, back up the right.</span></figcaption>
+  </figure>
+  <figure class="symbol">
+    <svg viewBox="0 0 200 170" role="img" aria-label="A 555 in a schematic: a plain box with numbered pin stubs">
+      <rect class="w" x="60" y="30" width="80" height="110" rx="4"/>
+      <line class="w" x1="60" y1="55" x2="40" y2="55"/>
+      <line class="w" x1="60" y1="85" x2="40" y2="85"/>
+      <line class="w" x1="60" y1="115" x2="40" y2="115"/>
+      <line class="w" x1="140" y1="55" x2="160" y2="55"/>
+      <line class="w" x1="140" y1="115" x2="160" y2="115"/>
+      <line class="w" x1="85" y1="30" x2="85" y2="12"/>
+      <line class="w" x1="115" y1="30" x2="115" y2="12"/>
+      <line class="w" x1="100" y1="140" x2="100" y2="158"/>
+      <text x="100" y="92" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace">555</text>
+      <text class="lbl" x="34" y="59" text-anchor="end">2</text>
+      <text class="lbl" x="34" y="89" text-anchor="end">6</text>
+      <text class="lbl" x="34" y="119" text-anchor="end">7</text>
+      <text class="lbl" x="166" y="59">3</text>
+      <text class="lbl" x="166" y="119">5</text>
+      <text class="lbl" x="78" y="8" text-anchor="end">8</text>
+      <text class="lbl" x="122" y="8">4</text>
+      <text class="lbl" x="106" y="156">1</text>
+    </svg>
+    <figcaption><b>In schematics</b> a plain box with numbered stubs
+    <span class="irl">Pins are drawn wherever the wiring reads clearest — the drawing's pin 2 is the package's pin 2 no matter where it sits on the page. Match by number, never by position.</span></figcaption>
+  </figure>
+</div>
+
+<table>
+  <tr><th>Pin</th><th>Name</th><th>Job</th></tr>
+  <tr><td><span class="val">1</span></td><td>GND</td><td>the chip's ground leg</td></tr>
+  <tr><td><span class="val">2</span></td><td>TRIG — trigger</td><td>watcher #1: below ⅓ of the supply, it flips the switch <strong>on</strong></td></tr>
+  <tr><td><span class="val">3</span></td><td>OUT — output</td><td>the switch's handle: swings between high and low</td></tr>
+  <tr><td><span class="val">4</span></td><td>RESET</td><td>the stop button; held at + the chip runs</td></tr>
+  <tr><td><span class="val">5</span></td><td>CTRL — control</td><td>retunes the two marks; parked today</td></tr>
+  <tr><td><span class="val">6</span></td><td>THRESH — threshold</td><td>watcher #2: above ⅔ of the supply, it flips the switch <strong>off</strong></td></tr>
+  <tr><td><span class="val">7</span></td><td>DISCH — discharge</td><td>a transistor's collector, aimed out through the pin: the chip's own drain</td></tr>
+  <tr><td><span class="val">8</span></td><td>VCC</td><td>power in: our +5 V</td></tr>
+</table>
+
+<p>Seating it: the chip rides the <strong>trench</strong> — one row of legs on each side, so every pin gets its own row. That gap down the middle of your board has been waiting for this part since lesson 2. Legs fresh from the tube splay too wide; roll each side gently against the tabletop until they stand parallel, then seat the chip with even thumb pressure and eyeball it from the side — no leg folded under.</p>
+
+<div class="callout safety">
+  <p class="label">Notch first, power after</p>
+  <p>Plugged in backwards, some chips <strong>cook themselves in seconds</strong> — and you can't tell by looking which ones will. So the ritual, every chip, all year: find the notch, say which row pin 1 lands in, <em>then</em> connect power. If a chip ever feels warm to a fingertip, power off first, questions second.</p>
+</div>
+
+<h2 id="s5"><span class="num">5</span> Build A: trigger and threshold, by hand</h2>
+<p>First flight: power the chip and work the trigger and the threshold by hand — your control-wire trick from lesson 7, doubled. Wire it from the drawing; power pins (8, 4, 1) first is good chip manners.</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 330" role="img" aria-label="555 latch: pins 8 and 4 to the 5 volt rail, pin 1 to ground, LED with 220 ohm on pin 3, pin 2 pulled up through 100 kilohms with a touch wire to ground, pin 6 pulled down through 100 kilohms with a touch wire to the positive rail">
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="470" y2="26"/>
+    <text class="lbl" x="130" y="278" text-anchor="end">ground rail</text>
+    <line class="w" x1="140" y1="272" x2="470" y2="272"/>
+    <rect class="w" x="250" y="90" width="90" height="140" rx="5"/>
+    <text x="295" y="167" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">555</text>
+    <line class="w" x1="270" y1="90" x2="270" y2="26"/>
+    <text class="lbl" x="262" y="62" text-anchor="end">8</text>
+    <line class="w" x1="310" y1="90" x2="310" y2="26"/>
+    <text class="lbl" x="318" y="62">4</text>
+    <line class="w" x1="295" y1="230" x2="295" y2="272"/>
+    <text class="lbl" x="303" y="256">1</text>
+    <line class="w" x1="340" y1="130" x2="440" y2="130"/>
+    <text class="lbl" x="350" y="122">3</text>
+    <line class="w" x1="440" y1="130" x2="440" y2="142"/>
+    <path class="w" d="M440,142 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="422" y="182" text-anchor="end">220 Ω</text>
+    <line class="w" x1="440" y1="214" x2="440" y2="222"/>
+    <polygon class="w" points="426,222 454,222 440,246"/>
+    <line class="w" x1="426" y1="246" x2="454" y2="246"/>
+    <path class="w" style="stroke-width:1.75" d="M457,230 L471,218 M471,218 l-10,2 M471,218 l-2,10"/>
+    <line class="w" x1="440" y1="246" x2="440" y2="272"/>
+    <line class="w" x1="250" y1="130" x2="190" y2="130"/>
+    <text class="lbl" x="242" y="122" text-anchor="end">2</text>
+    <circle class="jdot" cx="190" cy="130" r="5"/>
+    <line class="w" x1="190" y1="26" x2="190" y2="42"/>
+    <path class="w" d="M190,42 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <line class="w" x1="190" y1="114" x2="190" y2="130"/>
+    <text class="lbl" x="152" y="82" text-anchor="end">100 kΩ</text>
+    <line class="w" x1="190" y1="130" x2="118" y2="130"/>
+    <text class="lbl" x="112" y="120" text-anchor="end">ON wire</text>
+    <text class="lbl-muted" x="112" y="142" text-anchor="end">touch to ground</text>
+    <line class="w" x1="250" y1="185" x2="190" y2="185"/>
+    <text class="lbl" x="242" y="177" text-anchor="end">6</text>
+    <circle class="jdot" cx="190" cy="185" r="5"/>
+    <line class="w" x1="190" y1="185" x2="190" y2="196"/>
+    <path class="w" d="M190,196 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <line class="w" x1="190" y1="268" x2="190" y2="272"/>
+    <text class="lbl" x="152" y="236" text-anchor="end">100 kΩ</text>
+    <line class="w" x1="190" y1="185" x2="118" y2="185"/>
+    <text class="lbl" x="112" y="177" text-anchor="end">OFF wire</text>
+    <text class="lbl-muted" x="112" y="199" text-anchor="end">touch to + rail</text>
+    <line class="w" x1="340" y1="200" x2="362" y2="200"/>
+    <text class="lbl-muted" x="370" y="204">7</text>
+    <line class="w" x1="340" y1="228" x2="362" y2="228"/>
+    <text class="lbl-muted" x="370" y="232">5</text>
+  </svg>
+  <figcaption>The 555 as a hand-operated switch. The 100 kΩs hold pins 2 and 6 quietly at + and ground so nothing floats; your touch wires override them. Pins 5 and 7 sit this build out — stubs drawn, nothing attached.</figcaption>
+</figure>
+
+<p>Power on. Predict each row <em>before</em> your hand moves — especially the second one:</p>
+<table>
+  <tr><th>Do this</th><th>Predict</th><th>Saw</th></tr>
+  <tr><td>Touch the ON wire to ground, hold it there</td><td></td><td></td></tr>
+  <tr><td>Let go</td><td></td><td></td></tr>
+  <tr><td>Touch the OFF wire to the + rail, then let go</td><td></td><td></td></tr>
+</table>
+
+<p>Lesson 7's switch obeyed only while you held the whisper — the instant you let go, dark. This one <strong>holds</strong>. Between its two marks the 555 keeps its last answer; a circuit that does that is called a <strong>latch</strong>, and it's your first taste of a circuit <em>remembering</em>. The two marks, on our 5 V board: the trigger trips below <strong>⅓ of 5 V ≈ 1.7 V</strong>, the threshold above <strong>⅔ of 5 V ≈ 3.3 V</strong>. Hold those two numbers; the meter meets them again shortly.</p>
+
+<h2 id="s6"><span class="num">6</span> Build B: hand it the stopwatch</h2>
+<p>In lesson 6 <em>you</em> were the timing machinery: eyes on the meter, thumb on the stopwatch, calling the moment the fill crossed the line. The chip is about to take the whole job. Keep the LED loop and power pins; retire the touch wires and their 100 kΩs. Then wire lesson 6's fill circuit — supply, resistors, capacitor — with two twists the drawing shows: node <span class="node">A</span>, the capacitor's + plate, lands on <strong>the trigger and the threshold at once</strong> (pins 2 and 6 tied together), and the chip's drain, pin 7, taps in <strong>between the two resistors</strong>.</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 340" role="img" aria-label="555 astable blinker: 1 kilohm from the 5 volt rail to pin 7, 10 kilohms from pin 7 down to node A on pins 2 and 6, 100 microfarad capacitor from node A to ground, LED with 220 ohm on pin 3">
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="470" y2="26"/>
+    <text class="lbl" x="130" y="306" text-anchor="end">ground rail</text>
+    <line class="w" x1="140" y1="300" x2="470" y2="300"/>
+    <rect class="w" x="260" y="90" width="90" height="170" rx="5"/>
+    <text x="305" y="182" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">555</text>
+    <line class="w" x1="280" y1="90" x2="280" y2="26"/>
+    <text class="lbl" x="272" y="62" text-anchor="end">8</text>
+    <line class="w" x1="330" y1="90" x2="330" y2="26"/>
+    <text class="lbl" x="338" y="62">4</text>
+    <line class="w" x1="305" y1="260" x2="305" y2="300"/>
+    <text class="lbl" x="313" y="284">1</text>
+    <line class="w" x1="170" y1="26" x2="170" y2="34"/>
+    <path class="w" d="M170,34 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="132" y="74" text-anchor="end">1 kΩ</text>
+    <line class="w" x1="170" y1="106" x2="170" y2="128"/>
+    <circle class="jdot" cx="170" cy="120" r="5"/>
+    <line class="w" x1="170" y1="120" x2="260" y2="120"/>
+    <text class="lbl" x="252" y="112" text-anchor="end">7</text>
+    <path class="w" d="M170,128 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="132" y="168" text-anchor="end">10 kΩ</text>
+    <line class="w" x1="170" y1="200" x2="170" y2="228"/>
+    <circle class="jdot" cx="170" cy="214" r="5"/>
+    <line class="w" x1="170" y1="214" x2="260" y2="214"/>
+    <text class="lbl" x="252" y="206" text-anchor="end">2</text>
+    <line class="w" x1="218" y1="214" x2="218" y2="170"/>
+    <circle class="jdot" cx="218" cy="214" r="5"/>
+    <line class="w" x1="218" y1="170" x2="260" y2="170"/>
+    <text class="lbl" x="252" y="162" text-anchor="end">6</text>
+    <g class="nodeb"><circle cx="196" cy="214" r="13"/><text x="196" y="219" text-anchor="middle">A</text></g>
+    <line class="w" x1="170" y1="228" x2="170" y2="248"/>
+    <line class="w" x1="146" y1="248" x2="194" y2="248"/>
+    <path class="w" d="M146,260 a44,44 0 0 0 48,0"/>
+    <line class="w" x1="170" y1="267" x2="170" y2="300"/>
+    <text class="lbl" x="136" y="244" text-anchor="end">+</text>
+    <text class="lbl" x="204" y="272">100 µF</text>
+    <line class="w" x1="350" y1="130" x2="440" y2="130"/>
+    <text class="lbl" x="360" y="122">3</text>
+    <line class="w" x1="440" y1="130" x2="440" y2="146"/>
+    <path class="w" d="M440,146 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="422" y="186" text-anchor="end">220 Ω</text>
+    <line class="w" x1="440" y1="218" x2="440" y2="234"/>
+    <polygon class="w" points="426,234 454,234 440,258"/>
+    <line class="w" x1="426" y1="258" x2="454" y2="258"/>
+    <path class="w" style="stroke-width:1.75" d="M457,242 L471,230 M471,230 l-10,2 M471,230 l-2,10"/>
+    <line class="w" x1="440" y1="258" x2="440" y2="300"/>
+    <line class="w" x1="350" y1="230" x2="372" y2="230"/>
+    <text class="lbl-muted" x="380" y="234">5</text>
+  </svg>
+  <figcaption>The blinker. Left of the chip is lesson 6's fill circuit; the <span class="node">A</span> badge sits where it always has — the capacitor's + plate. Trigger and threshold both watch it; pin 7 is the drain. Stripe to ground, said out loud, chips or no chips.</figcaption>
+</figure>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>Before power: what will the LED do, and roughly how often? Put a number on it — the challenge will grade your guess: <span class="writeline"></span></p>
+</div>
+
+<p>Power on. It blinks — steadily, forever, hands nowhere near it. You built an <strong>oscillator</strong>: a circuit with no resting state, so it flips between its two states for as long as it's powered. The 555 wired this way is called <strong>astable</strong> — "no stable state" — and that word will follow this chip for the rest of the year.</p>
+
+<h2 id="s7"><span class="num">7</span> Watch it breathe</h2>
+<div class="callout predict">
+  <p class="label">Predict, then swap</p>
+  <p>Trade the <span class="val">100 µF</span> for a <span class="val">1000 µF</span> — lesson 6's big can, ten times the bucket. The blink: faster or slower, and by how much? <span class="writeline"></span> Swap it (stripe check), watch, then — before the meter touches anything — predict the <em>highest</em> and <em>lowest</em> numbers you'll see at node <span class="node">A</span>. Build A handed you both.</p>
+</div>
+
+<p>Now park the black probe in ground and put the red probe on node <span class="node">A</span> — a component leg or a bare wire stub in the row, as always. Watch a few full cycles.</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 260" role="img" aria-label="Chart of the voltage at node A over time: the first fill climbs from zero, then the wave shuttles between about 1.7 and 3.3 volts, spending nearly equal time filling and draining; the LED is lit during each fill">
+    <line class="w" x1="70" y1="38" x2="70" y2="205"/>
+    <line class="w" x1="70" y1="205" x2="525" y2="205"/>
+    <line x1="70" y1="70" x2="520" y2="70" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <line x1="70" y1="135" x2="520" y2="135" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <text class="lbl-muted" x="78" y="62">≈ 3.3 V — the threshold's mark (pin 6)</text>
+    <text class="lbl-muted" x="160" y="156">≈ 1.7 V — the trigger's mark (pin 2)</text>
+    <path d="M70,205 Q120,105 190,70 Q222,128 255,135 Q292,85 330,70 Q362,128 395,135 Q432,85 470,70 Q495,118 520,132"
+          fill="none" stroke="var(--copper)" stroke-width="2.6" stroke-linecap="round"/>
+    <text class="lbl-muted" x="96" y="190">power-up: the first fill starts from empty</text>
+    <text class="lbl-muted" x="356" y="50">the fill (1 kΩ + 10 kΩ)</text>
+    <text class="lbl-muted" x="340" y="178">the drain (10 kΩ → pin 7)</text>
+    <rect x="70" y="222" width="120" height="9" fill="var(--copper)"/>
+    <rect x="255" y="222" width="75" height="9" fill="var(--copper)"/>
+    <rect x="395" y="222" width="75" height="9" fill="var(--copper)"/>
+    <line x1="70" y1="235" x2="520" y2="235" stroke="var(--line)" stroke-width="1.5"/>
+    <text class="lbl" x="62" y="231" text-anchor="end">LED</text>
+    <text class="lbl-muted" x="70" y="30">volts at node A</text>
+    <text class="lbl-muted" x="520" y="252" text-anchor="end">time →</text>
+  </svg>
+  <figcaption>What the meter sees at node <span class="node">A</span>. The first fill climbs all the way from empty; after that the chip cuts every journey short at its marks — nearly equal time filling and draining, and the low mark never lets it back to 0.</figcaption>
+</figure>
+
+<p>Here's the whole machine, and every gear is one you've handled. While the switch is <strong>on</strong>, the drain is shut and the supply fills the capacitor through <span class="val">1 kΩ + 10 kΩ</span> — lesson 6's slow-motion pour. The moment node <span class="node">A</span> crosses ≈ 3.3 V, the threshold (pin 6) flips the switch <strong>off</strong> — and the flip opens the drain, so the capacitor now empties through the <span class="val">10 kΩ</span> into pin 7, which is nothing but an internal transistor's collector, lesson 7's C-E switch aimed at your capacitor. Down past ≈ 1.7 V, the trigger flips everything back, and the pour begins again. A capacitor that fills and drains, two thresholds, a switch: sealed in plastic, yes — but no mystery inside.</p>
+
+<h2 id="s8"><span class="num">8</span> Challenge: the two-second metronome</h2>
+<p>Spec, no recipe: <strong>one blink every two seconds, as close as your table can get.</strong> The schematic stays; the values are yours to choose. Your levers are the ones lesson 6 taught — more ohms is a slower pour, a bigger bucket is a longer fill — and series tricks and borrowing from neighbors are both legal. Predict which way each swap pushes <em>before</em> you make it, then time five blinks against the class clock — you're aiming for ten seconds even — and adjust. Closest table wins.</p>
+
+<h2 id="s9"><span class="num">9</span> The cliffhanger</h2>
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>Back to the standard build, then one last swap: the tiny <span class="val">100 nF</span> disc in place of the capacitor — a bucket a <em>thousand</em> times smaller than the 100 µF. On the record: what does the blink do? <span class="writeline"></span></p>
+</div>
+<p>Swap and power. Look closely at the LED — then don't trust your eyes until you've asked the meter: red probe on pin 3. It reads a steady in-between number, which should bother you: pin 3 is a switch, and switches are high or low, not halfway.</p>
+<p>The truth: the LED is blinking right now — about <strong>seven hundred times a second</strong>. Your eye gives up somewhere around fifty flashes a second and reports the average: a calm half-brightness. The meter does the same thing — too slow to follow, it averages. Everything in this room that could witness the blink has failed. Next lesson a part arrives that can keep up with seven hundred a second — and you won't <em>see</em> what it does with the signal. (Lesson 6's promise about that little disc is still out, by the way: its everyday job on real boards is standing guard beside chips' power pins. Today it just moonlighted as the fastest bucket you own.)</p>
+
+<div class="callout tryit">
+  <p class="label">Go further — for the fast and the curious</p>
+  <p>Put the <span class="val">100 µF</span> back in first. <strong>1.</strong> The lighthouse: an eyeblink of light, then seven seconds of dark. Two moves — make the fill enormously longer than the drain (which resistor grows? which shrinks?), and let the LED light on <em>low</em>: its chain can hang from the + rail down to pin 3 instead of from pin 3 down to ground. <strong>2.</strong> The tempo knob: make the lower resistor the pot (wiper + one leg) in series with the <span class="val">1 kΩ</span>, and sweep from a lazy blink to a fast flutter — about five a second. Why can't the knob reach the speeds the little disc hit? Hold that thought for the light theremin, two lessons from now. <strong>3.</strong> The freeze button: a wire from pin 4, touched to ground, mid-blink. Predict: does it freeze lit or dark? Then, with the 1000 µF in, hold the freeze for a slow half-minute before letting go — and time the <em>first</em> blink against the steady ones. Something's off. Explain it. <strong>4.</strong> The switch's drop: with the slow 1000 µF blink running, measure pin 3 during a long "on." Compare to 5 V — the chip's switch drops far more than lesson 7's 0.2 V. How does that show in the LED?</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>The blink has a formula — R1 is the top resistor, R2 the lower one:</p>
+  <math display="block"><mrow><mi>T</mi><mo>=</mo><mn>0.693</mn><mo>×</mo><mo>(</mo><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><mn>2</mn><mo>·</mo><msub><mi>R</mi><mn>2</mn></msub><mo>)</mo><mo>×</mo><mi>C</mi></mrow></math>
+  <p>Ohms × farads is seconds — lesson 6's trick — so the standard build gives:</p>
+  <math display="block"><mrow><mo>(</mo><mn>1000</mn><mo>+</mo><mn>20000</mn><mo>)</mo><mtext>&#160;Ω</mtext><mo>×</mo><mn>0.0001</mn><mtext>&#160;F</mtext><mo>=</mo><mn>2.1</mn><mtext>&#160;s</mtext></mrow></math>
+  <p>— and 2.1 × 0.693 ≈ <span class="val">1.5 s</span> per blink; the 1000 µF makes it ten times that. Why 0.693? The capacitor only travels the middle stretch, ⅓ to ⅔ of the supply, and that slice of the fill curve costs 0.693 of one RC. Why does R2 count twice? It works both shifts — filling with R1, draining alone. The <em>τ = RC</em> sheet on the math shelf draws the curve this all lives on.</p>
+</div>
+
+<h2 id="s10"><span class="num">10</span> Words to know</h2>
+<dl class="vocab">
+  <dt>integrated circuit</dt><dd>IC — a chip: a complete circuit sealed in a package, with only its pins showing</dd>
+  <dt>DIP</dt><dd>dual in-line package — two rows of legs, made to ride the breadboard's trench</dd>
+  <dt>pinout</dt><dd>the map from pin numbers to jobs; the notch or dot marks pin 1, and you count counterclockwise from above</dd>
+  <dt>trigger · threshold</dt><dd>the 555's two watching pins (2 and 6): the trigger flips the output on below the ⅓ mark; the threshold flips it off above the ⅔ mark</dd>
+  <dt>latch</dt><dd>a circuit that holds its last answer — build A; the seed of all electronic memory</dd>
+  <dt>oscillator</dt><dd>a circuit that flips itself forever — build B</dd>
+  <dt>astable</dt><dd>"no stable state": the 555 wiring that makes it oscillate</dd>
+</dl>
+
+<h2 id="s11"><span class="num">11</span> Exit ticket</h2>
+<p>On your card: <strong>1.</strong> draw the blinker from memory — the 555 as a box, numbered pins where wires land, both resistors, the capacitor, the LED. Pin numbers matter more than where they sit on the box. <strong>2.</strong> One sentence: what does the chip watch, and what does it do when the watched voltage crosses a mark? Hand it in at the door.</p>
+<p>Then the teardown ritual, chips or no chips: bare <span class="val">220 Ω</span> across every capacitor until the meter calls it empty. Parts go back in the box asleep.</p>
+
+<footer class="lesson-foot">
+  <span>StarLeap Electronics · Lesson 9</span>
+  <span>Next: The 555 Timer II — Sound</span>
+</footer>
+
+</body>
+</html>

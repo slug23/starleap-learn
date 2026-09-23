@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Milli, Kilo, Mega</title>
+<style>
+/* Embedded copy of assets/lesson.css (math-shelf accent: violet) — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--violet);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--violet-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.idea    .label { color: var(--violet); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 26px;
+  text-align: center;
+  margin: .8em 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table, ol.steps > li { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html" class="cur">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Math shelf · Optional — for the curious &middot; build 2026.09.23-1531</p>
+  <h1>Milli, Kilo, Mega</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>Electronics spans absurd ranges — millionths of a volt to millions of ohms. Prefixes keep the numbers human: <strong>every step is exactly ×1,000</strong>.</p>
+</div>
+
+<h2>The ladder</h2>
+<figure class="schematic">
+  <svg viewBox="0 0 560 665" role="img" aria-label="Vertical prefix ladder from zetta at the top through exa, peta, tera, giga, mega, kilo, the plain unit, then milli, micro, nano, pico, femto, atto at the bottom; moving up a rung the unit gets bigger and the number divides by one thousand, moving down a rung the number multiplies by one thousand">
+    <rect x="200" y="20"  width="160" height="36" rx="9" fill="var(--card)" stroke="var(--violet)" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <rect x="200" y="65"  width="160" height="36" rx="9" fill="var(--card)" stroke="var(--violet)" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <rect x="200" y="110" width="160" height="36" rx="9" fill="var(--card)" stroke="var(--violet)" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <rect x="200" y="155" width="160" height="36" rx="9" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.5"/>
+    <rect x="200" y="200" width="160" height="36" rx="9" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.5"/>
+    <rect x="200" y="245" width="160" height="36" rx="9" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.5"/>
+    <rect x="200" y="290" width="160" height="36" rx="9" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.5"/>
+    <rect x="200" y="335" width="160" height="36" rx="9" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>
+    <rect x="200" y="380" width="160" height="36" rx="9" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.5"/>
+    <rect x="200" y="425" width="160" height="36" rx="9" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.5"/>
+    <rect x="200" y="470" width="160" height="36" rx="9" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.5"/>
+    <rect x="200" y="515" width="160" height="36" rx="9" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.5"/>
+    <rect x="200" y="560" width="160" height="36" rx="9" fill="var(--card)" stroke="var(--violet)" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <rect x="200" y="605" width="160" height="36" rx="9" fill="var(--card)" stroke="var(--violet)" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text class="lbl-muted" x="280" y="43"  text-anchor="middle" font-weight="700" font-size="15">Z · zetta</text>
+    <text class="lbl-muted" x="280" y="88"  text-anchor="middle" font-weight="700" font-size="15">E · exa</text>
+    <text class="lbl-muted" x="280" y="133" text-anchor="middle" font-weight="700" font-size="15">P · peta</text>
+    <text class="lbl" x="280" y="178" text-anchor="middle" font-weight="700" font-size="16">T · tera</text>
+    <text class="lbl" x="280" y="223" text-anchor="middle" font-weight="700" font-size="16">G · giga</text>
+    <text class="lbl" x="280" y="268" text-anchor="middle" font-weight="700" font-size="16">M · mega</text>
+    <text class="lbl" x="280" y="313" text-anchor="middle" font-weight="700" font-size="16">k · kilo</text>
+    <text class="lbl" x="280" y="358" text-anchor="middle" font-weight="700" font-size="15">unit (V · Ω · A)</text>
+    <text class="lbl" x="280" y="403" text-anchor="middle" font-weight="700" font-size="16">m · milli</text>
+    <text class="lbl" x="280" y="448" text-anchor="middle" font-weight="700" font-size="16">µ · micro</text>
+    <text class="lbl" x="280" y="493" text-anchor="middle" font-weight="700" font-size="16">n · nano</text>
+    <text class="lbl" x="280" y="538" text-anchor="middle" font-weight="700" font-size="16">p · pico</text>
+    <text class="lbl-muted" x="280" y="583" text-anchor="middle" font-weight="700" font-size="15">f · femto</text>
+    <text class="lbl-muted" x="280" y="628" text-anchor="middle" font-weight="700" font-size="15">a · atto</text>
+    <line x1="155" y1="628" x2="155" y2="44" stroke="var(--violet)" stroke-width="2.5"/>
+    <polygon points="155,32 148,46 162,46" fill="var(--violet)"/>
+    <text class="lbl-muted" x="78" y="310" text-anchor="middle">up a rung:</text>
+    <text class="lbl-muted" x="78" y="328" text-anchor="middle">bigger unit,</text>
+    <text class="lbl-muted" x="78" y="346" text-anchor="middle">number ÷ 1,000</text>
+    <line x1="405" y1="34" x2="405" y2="618" stroke="var(--violet)" stroke-width="2.5"/>
+    <polygon points="405,630 398,616 412,616" fill="var(--violet)"/>
+    <text class="lbl-muted" x="484" y="310" text-anchor="middle">down a rung:</text>
+    <text class="lbl-muted" x="484" y="328" text-anchor="middle">smaller unit,</text>
+    <text class="lbl-muted" x="484" y="346" text-anchor="middle">number × 1,000</text>
+  </svg>
+  <figcaption>The whole family. Solid rungs are the ones this course (and your phone's spec sheet) actually uses; the dashed ones are real, just rarer. Same rule on every rung: <b>×1,000</b>. One rung down from kilo: <span class="val">4.7 kΩ = 4,700 Ω</span>.</figcaption>
+</figure>
+
+<div class="callout note">
+  <p class="label">Power shorthand</p>
+  <p>The numbers below get too big for commas, so they wear exponents: <span class="val">10⁹</span> means <em>a 1 with 9 zeros</em> (1,000,000,000). Every three zeros is one rung of the ladder.</p>
+</div>
+
+<table>
+  <tr><th>Prefix</th><th>Say it</th><th>Means</th><th>Where you'll meet it</th></tr>
+  <tr><td><span class="val">Z</span></td><td>zetta</td><td>× 10²¹ — a sextillion</td><td><span class="val">ZB</span> — a whole year of the entire internet's traffic</td></tr>
+  <tr><td><span class="val">E</span></td><td>exa</td><td>× 10¹⁸ — a quintillion</td><td>exaflops — the fastest supercomputers' calculations per second</td></tr>
+  <tr><td><span class="val">P</span></td><td>peta</td><td>× 10¹⁵ — a quadrillion</td><td><span class="val">PB</span> — a data center's storage</td></tr>
+  <tr><td><span class="val">T</span></td><td>tera</td><td>× 10¹² — a trillion</td><td><span class="val">TB</span> — big hard drives</td></tr>
+  <tr><td><span class="val">G</span></td><td>giga</td><td>× 10⁹ — a billion</td><td><span class="val">GB</span>, <span class="val">GHz</span> — your phone's storage, and its processor's clock</td></tr>
+  <tr><td><span class="val">M</span></td><td>mega</td><td>× 10⁶ — a million</td><td><span class="val">MΩ</span> — your hand-to-hand resistance; <span class="val">MB</span> — a photo</td></tr>
+  <tr><td><span class="val">k</span></td><td>kilo</td><td>× 10³ — a thousand</td><td><span class="val">kΩ</span> — the 1 k, 4.7 k, 10 k resistors; <span class="val">km</span> — road signs</td></tr>
+  <tr><td>—</td><td>(plain)</td><td>× 1 — one</td><td><span class="val">V</span>, <span class="val">Ω</span>, <span class="val">A</span></td></tr>
+  <tr><td><span class="val">c</span></td><td>centi</td><td>÷ 100 — a hundredth</td><td><span class="val">cm</span> — rulers everywhere; the odd one out (a half-rung — see below)</td></tr>
+  <tr><td><span class="val">m</span></td><td>milli</td><td>÷ 10³ — a thousandth</td><td><span class="val">mV</span>, <span class="val">mA</span> — LED currents live here; <span class="val">mm</span></td></tr>
+  <tr><td><span class="val">µ</span></td><td>micro (Greek "mu")</td><td>÷ 10⁶ — a millionth</td><td><span class="val">µF</span> — capacitors, coming soon; <span class="val">µm</span> — a bacterium is a few of these</td></tr>
+  <tr><td><span class="val">n</span></td><td>nano</td><td>÷ 10⁹ — a billionth</td><td><span class="val">nF</span> — mid-size capacitors; <span class="val">nm</span> — your phone chip's transistors</td></tr>
+  <tr><td><span class="val">p</span></td><td>pico</td><td>÷ 10¹² — a trillionth</td><td><span class="val">pF</span> — the smallest capacitors are labeled in these</td></tr>
+  <tr><td><span class="val">f</span></td><td>femto</td><td>÷ 10¹⁵ — a quadrillionth</td><td><span class="val">fs</span> — laser pulses quick enough to photograph chemistry happening</td></tr>
+  <tr><td><span class="val">a</span></td><td>atto</td><td>÷ 10¹⁸ — a quintillionth</td><td><span class="val">as</span> — clocking electrons in motion won the 2023 Nobel Prize in physics</td></tr>
+</table>
+
+<div class="callout note">
+  <p class="label">The half-rung</p>
+  <p><strong>Centi</strong> (÷100) isn't on the ladder — it's half a rung, a survivor from metric's early days. Engineering sticks to full ×1,000 steps (your meter will never say "cV"), but centimeters are too woven into daily life to retire. Its cousins <em>deci</em> (÷10) and <em>hecto</em> (×100) survive in a few corners too — deciliters on drink bottles, hectares for land — and nowhere in electronics.</p>
+</div>
+
+<div class="callout note">
+  <p class="label">Case matters — a lot</p>
+  <p>Capital <span class="val">M</span> is mega; lowercase <span class="val">m</span> is milli. They differ by a factor of a <strong>billion</strong>. Worse still: capital <span class="val">P</span> (peta) and lowercase <span class="val">p</span> (pico) differ by a factor of a billion billion billion. Writing one for the other is among the most expensive typos in engineering — always copy the letter exactly as the meter or the label shows it.</p>
+</div>
+
+<h2>Converting: slide the decimal three places</h2>
+<p>Each rung moves the decimal point three places. <strong>Down</strong> the ladder to a smaller unit, the number grows; <strong>up</strong> to a bigger unit, it shrinks:</p>
+<ul>
+  <li><span class="val">4.7 kΩ</span> → three places right → <span class="val">4,700 Ω</span></li>
+  <li><span class="val">0.25 A</span> → three places right → <span class="val">250 mA</span></li>
+  <li><span class="val">3,300,000 Ω</span> → six places left → <span class="val">3.3 MΩ</span></li>
+  <li><span class="val">3.2 mV</span> → three places left → <span class="val">0.0032 V</span> — which is why the lesson called it "basically zero"</li>
+</ul>
+
+<h2>Why the meter switches units on you</h2>
+<p>The display only has about four digits, so the meter (and every engineer) picks the prefix that lands the number between 1 and 999. Nobody writes 4,700 Ω or 0.014 A; they write <span class="val">4.7 kΩ</span> and <span class="val">14 mA</span>. When the meter's reading crosses 1,000, it just hops up the ladder — the resistor didn't change, only its clothes did.</p>
+
+<h2>Practice</h2>
+<p>Answers at the bottom.</p>
+<ol>
+  <li>Write <span class="val">220 Ω</span> in kΩ.</li>
+  <li>Your meter shows <span class="val">1.234 kΩ</span>. How many ohms?</li>
+  <li>Which is larger: <span class="val">470 mV</span> or <span class="val">0.5 V</span>?</li>
+  <li>Hand-to-hand you measure <span class="val">0.85 MΩ</span>. Express it in kΩ and in Ω.</li>
+  <li>A capacitor is labeled <span class="val">100 nF</span>. Write that in µF.</li>
+  <li>A <span class="val">2 TB</span> drive holds how many GB? How many MB?</li>
+</ol>
+
+<h2>Answers</h2>
+<p><strong>1.</strong> 0.22 kΩ (and now you see why nobody writes it that way). <strong>2.</strong> 1,234 Ω. <strong>3.</strong> 0.5 V = 500 mV, so 0.5 V wins. <strong>4.</strong> 850 kΩ = 850,000 Ω. <strong>5.</strong> 0.1 µF — one rung up the ladder. <strong>6.</strong> 2,000 GB = 2,000,000 MB — one rung down, then another ×1,000.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Math shelf · Milli, Kilo, Mega</span>
+  <span>Every step is ×1,000</span>
+</footer>
+
+</body>
+</html>

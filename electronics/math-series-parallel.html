@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Series &amp; Parallel Resistance</title>
+<style>
+/* Embedded copy of assets/lesson.css (math-shelf accent: violet) — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--violet);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--violet-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.idea    .label { color: var(--violet); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 26px;
+  text-align: center;
+  margin: .8em 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table, ol.steps > li { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html" class="cur">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Math shelf · Optional — for the curious &middot; build 2026.09.23-1531</p>
+  <h1>Series &amp; Parallel Resistance</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p><strong>Series adds the squeeze. Parallel adds the paths.</strong> More squeeze = more resistance; more paths = less.</p>
+</div>
+
+<h2>Series: one path, sum the squeeze</h2>
+<p>Resistors in a line carry the same current, one after the other — every one adds its squeeze to the trip:</p>
+<p class="formula">R<sub>total</sub> = R1 + R2 (+ R3 + …)</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 110" role="img" aria-label="Two resistors in series act as one resistor whose value is the sum">
+    <line class="w" x1="15" y1="60" x2="55" y2="60"/>
+    <path class="w" d="M55,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="139" y1="60" x2="169" y2="60"/>
+    <path class="w" d="M169,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="253" y1="60" x2="283" y2="60"/>
+    <text class="lbl" x="97" y="28" text-anchor="middle">R1</text>
+    <text class="lbl" x="211" y="28" text-anchor="middle">R2</text>
+    <text class="lbl" x="312" y="66" text-anchor="middle" font-size="20">=</text>
+    <line class="w" x1="340" y1="60" x2="380" y2="60"/>
+    <path class="w" d="M380,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="464" y1="60" x2="545" y2="60"/>
+    <text class="lbl" x="422" y="28" text-anchor="middle">R1 + R2</text>
+  </svg>
+  <figcaption><b>Series:</b> a longer stretch of squeeze. <span class="val">220 Ω + 1 kΩ = 1,220 Ω</span> — always <em>bigger</em> than the biggest.</figcaption>
+</figure>
+
+<p>Sanity checks: add a plain wire (≈ 0 Ω) in series and nothing changes. Two equal resistors double. And you've already <em>measured</em> this law — it's why the voltage drops in a series loop split in proportion to resistance.</p>
+
+<h2>Parallel: more paths, less resistance</h2>
+<p>Side by side, resistors share the work: the current splits between the branches, so the pair passes <em>more</em> current than either alone — which is exactly what "less resistance" means. The two-resistor formula:</p>
+<p class="formula">R<sub>total</sub> = R1 × R2 ÷ (R1 + R2)</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 180" role="img" aria-label="Two resistors in parallel act as one resistor whose value is smaller than either branch">
+    <line class="w" x1="15" y1="90" x2="52" y2="90"/>
+    <line class="w" x1="52" y1="45" x2="52" y2="135"/>
+    <line class="w" x1="52" y1="45" x2="90" y2="45"/>
+    <path class="w" d="M90,45 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="174" y1="45" x2="212" y2="45"/>
+    <line class="w" x1="52" y1="135" x2="90" y2="135"/>
+    <path class="w" d="M90,135 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="174" y1="135" x2="212" y2="135"/>
+    <line class="w" x1="212" y1="45" x2="212" y2="135"/>
+    <line class="w" x1="212" y1="90" x2="250" y2="90"/>
+    <circle cx="52" cy="90" r="4.5" fill="var(--ink)"/>
+    <circle cx="212" cy="90" r="4.5" fill="var(--ink)"/>
+    <text class="lbl" x="132" y="16" text-anchor="middle">R1</text>
+    <text class="lbl" x="132" y="172" text-anchor="middle">R2</text>
+    <text class="lbl" x="281" y="96" text-anchor="middle" font-size="20">=</text>
+    <line class="w" x1="312" y1="90" x2="352" y2="90"/>
+    <path class="w" d="M352,90 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="436" y1="90" x2="545" y2="90"/>
+    <text class="lbl" x="447" y="58" text-anchor="middle">R1||R2</text>
+  </svg>
+  <figcaption><b>Parallel:</b> two lanes for the same traffic. The result is always <em>smaller than the smallest branch</em>. Engineers write it <span class="val">R1||R2</span>.</figcaption>
+</figure>
+
+<p>Run the worked cases:</p>
+<table>
+  <tr><th>Pair</th><th>R1 × R2 ÷ (R1 + R2)</th><th>Result</th></tr>
+  <tr><td>1 kΩ || 1 kΩ</td><td>1 × 1 ÷ 2</td><td><span class="val">500 Ω</span> — equal pair: exactly half</td></tr>
+  <tr><td>220 Ω || 1 kΩ</td><td>220 × 1000 ÷ 1220</td><td><span class="val">≈ 180 Ω</span> — the small branch dominates</td></tr>
+  <tr><td>4.7 kΩ || 10 kΩ</td><td>4.7 × 10 ÷ 14.7</td><td><span class="val">≈ 3.2 kΩ</span></td></tr>
+</table>
+<p>Sanity checks: parallel with a plain wire is a short — everything takes the free lane, total ≈ 0. Parallel with nothing (air, ∞ Ω) changes nothing. Two equal branches halve; three equal branches make a third.</p>
+
+<div class="callout note">
+  <p class="label">Memory hooks</p>
+  <p><strong>Series: always bigger than the biggest. Parallel: always smaller than the smallest.</strong> If your answer breaks either rule, the arithmetic slipped.</p>
+</div>
+
+<h2>You've already built both</h2>
+<p>Lesson 3's two-LEDs-in-series build and its parallel-branches build are these two pictures with LEDs in the branches. And lesson 1's answer to "why didn't my finger light the LED" is a parallel fact: your ≈ 100 kΩ body in parallel with the circuit takes almost none of the traffic.</p>
+
+<h2>Loading — the divider mystery, solved</h2>
+<p>The <a href="math-divider-formula.html">Voltage Divider Formula</a> sheet ends with a mystery: hang a load across the tap and the voltage sags. Now you can compute it. The load sits <strong>in parallel with R2</strong>, making the effective bottom resistor smaller — a smaller fraction, a lower tap.</p>
+<ol class="steps">
+  <li>Build the 1 kΩ / 1 kΩ divider: tap = <span class="val">2.50 V</span>.</li>
+  <li>Hang a 1 kΩ load across the tap. The bottom is now 1 kΩ || 1 kΩ = <span class="val">500 Ω</span>.</li>
+  <li>Recompute the divider: 5 × 500 ÷ 1500 ≈ <span class="val">1.7 V</span>. The tap sagged by a third — nothing broke; the fraction changed.</li>
+</ol>
+<p>And here's why your multimeter gets away with probing taps all day: its voltage input is roughly <span class="val">10 MΩ</span>. In parallel with a 1 kΩ bottom resistor that's 1 kΩ || 10 MΩ ≈ 999.9 Ω — the meter is a load so light the circuit barely notices. Meters are <em>built</em> to be ignorable.</p>
+
+<h2>N resistors in parallel: sum the reciprocals</h2>
+<p>The product-over-sum formula only handles two. The real law handles any number of branches:</p>
+<p class="formula">1 ÷ R<sub>total</sub> = 1÷R1 + 1÷R2 + … + 1÷R<sub>N</sub></p>
+<p>In words: take each resistance's <strong>reciprocal</strong> — 1 divided by it — add the reciprocals, then take the reciprocal of the sum. Worked, for 220 Ω || 470 Ω || 1 kΩ:</p>
+<ol class="steps">
+  <li><strong>Reciprocal of each:</strong> 1÷220 ≈ <span class="val">0.00455</span> · 1÷470 ≈ <span class="val">0.00213</span> · 1÷1000 = <span class="val">0.00100</span></li>
+  <li><strong>Add them:</strong> 0.00455 + 0.00213 + 0.00100 = <span class="val">0.00768</span></li>
+  <li><strong>Reciprocal of the sum:</strong> 1 ÷ 0.00768 ≈ <span class="val">130 Ω</span> — smaller than the smallest branch ✓</li>
+</ol>
+<p>Shortcut worth memorizing: <strong>N equal resistors make R ÷ N.</strong> Four 1 kΩ in parallel: 250 Ω. (The two-resistor product-over-sum is just this law solved for two branches.)</p>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>Why reciprocals: <span class="val">1/R</span> measures how <em>easily</em> current flows — engineers call it <strong>conductance</strong>, and it is exactly the resistance's reciprocal. Paths side by side add their conductances, so the reciprocals sum. Series is the mirror image: there the resistances themselves add. One law each, and which quantity adds tells you which layout you're in.</p>
+</div>
+
+<h2>Practice</h2>
+<p>Answers at the bottom — and every pure-resistor answer is checkable with the meter (parts out of circuit, ohms mode).</p>
+<ol>
+  <li>220 Ω and 220 Ω in series? In parallel?</li>
+  <li>10 kΩ || 10 kΩ || 10 kΩ — all three in parallel?</li>
+  <li>A 10 kΩ / 10 kΩ divider has a 10 kΩ load hung on its tap. What does the tap read?</li>
+  <li>You need ≈ 110 Ω but the kit's smallest resistor is 220 Ω. How do you make it?</li>
+  <li>What's 1 kΩ in parallel with your ≈ 100 kΩ hand-to-hand body? (Estimate before you compute.)</li>
+</ol>
+
+<h2>Answers</h2>
+<p><strong>1.</strong> Series 440 Ω; parallel 110 Ω. <strong>2.</strong> 3.33 kΩ — three equal branches make a third. <strong>3.</strong> Bottom becomes 10 k || 10 k = 5 kΩ; tap = 5 × 5 ÷ 15 ≈ 1.67 V, down from 2.50 V. <strong>4.</strong> Two 220 Ω in parallel — this is a real engineer's trick, not a workaround. <strong>5.</strong> ≈ 990 Ω — barely below 1 kΩ. Your body is a lane so narrow the traffic doesn't notice it; that's lesson 1's safety fact, computed.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Math shelf · Series &amp; Parallel</span>
+  <span>Bigger than the biggest · smaller than the smallest</span>
+</footer>
+
+</body>
+</html>

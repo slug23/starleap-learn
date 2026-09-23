@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tolerance &amp; Error</title>
+<style>
+/* Embedded copy of assets/lesson.css (math-shelf accent: violet) — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--violet);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--violet-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.idea    .label { color: var(--violet); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 26px;
+  text-align: center;
+  margin: .8em 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table, ol.steps > li { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html" class="cur">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Math shelf · Optional — for the curious &middot; build 2026.09.23-1531</p>
+  <h1>Tolerance &amp; Error</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>Every component is a <strong>promise with a plus-or-minus</strong>, and every measurement has its own wiggle. Engineering isn't expecting exact numbers — it's knowing how far off is <em>fine</em>.</p>
+</div>
+
+<h2>The gold band is a promise</h2>
+<p>The fourth stripe on a resistor states its <strong>tolerance</strong> — how far the true value may sit from the labeled one. Gold means <span class="val">±5%</span> (silver ±10%, brown ±1% on fancier parts). Our kit is gold, so a "220 Ω" resistor is really a promise: <em>somewhere between 209 and 231 Ω</em>.</p>
+<table>
+  <tr><th>Labeled (nominal)</th><th>±5% is…</th><th>The promise</th></tr>
+  <tr><td>220 Ω</td><td>±11 Ω</td><td><span class="val">209 – 231 Ω</span></td></tr>
+  <tr><td>1 kΩ</td><td>±50 Ω</td><td><span class="val">950 – 1,050 Ω</span></td></tr>
+  <tr><td>4.7 kΩ</td><td>±235 Ω</td><td><span class="val">4,465 – 4,935 Ω</span></td></tr>
+  <tr><td>10 kΩ</td><td>±500 Ω</td><td><span class="val">9,500 – 10,500 Ω</span></td></tr>
+</table>
+<p>The labeled value is called the <strong>nominal</strong> value — the name-value. Ohm a handful of "1 kΩ" resistors from the assortment and you'll read something like 987, 1,004, 992: all different, all keeping the promise.</p>
+
+<h2>Percent difference — the honest comparison</h2>
+<p class="formula">% diff = (measured − nominal) ÷ nominal × 100</p>
+<p>Worked: you measure <span class="val">1,032 Ω</span> on a nominal 1 kΩ. (1,032 − 1,000) ÷ 1,000 = 0.032 → <strong>+3.2%</strong>. Inside ±5%: the part is healthy. This one formula turns "is that close?" from a feeling into a number.</p>
+
+<h2>The meter wiggles too</h2>
+<p>The meter's spec sheet gives its own honesty range — hobby meters typically promise about <span class="val">±(0.5% + 2 digits)</span> on DC volts. The "2 digits" means the last displayed digit may be off by two counts: a true 5.00 V may read 4.97 to 5.03. So the final digit of any reading is always a little soft — watching it flutter is normal, not a bug.</p>
+
+<h2>When disagreement <em>is</em> a bug</h2>
+<table>
+  <tr><th>Measured vs. expected</th><th>Verdict</th></tr>
+  <tr><td>within a few %</td><td>normal — tolerance and meter wiggle</td></tr>
+  <tr><td>off by 2×</td><td>not tolerance: wrong resistor grabbed, or a circuit bug</td></tr>
+  <tr><td>off by ~1,000×</td><td>read the display's unit again — <span class="val">kΩ</span> vs <span class="val">Ω</span> (the <a href="math-metric-prefixes.html">Milli, Kilo, Mega</a> sheet)</td></tr>
+</table>
+<p><strong>Tolerance never explains a factor of ten.</strong> Small disagreements are physics; big ones are information — that's the drop check's whole philosophy on the Debugging Loop card.</p>
+
+<h2>Errors travel through formulas</h2>
+<p>Build a divider from two ±5% parts and the prediction inherits their spread. Worst case for a 1 kΩ / 1 kΩ divider: one part at 950, the other at 1,050 puts the tap anywhere from <span class="val">2.38</span> to <span class="val">2.63 V</span> instead of exactly 2.50. In practice both parts usually sit much closer — but this is why a measured 2.46 V against a predicted 2.50 is a <em>success</em>, not a miss.</p>
+<p>Which sets the reporting rule: <strong>don't write more digits than your parts can back up.</strong> Predicting "2.51694 V" from ±5% resistors is fiction past the first three digits; "≈ 2.5 V" is the honest answer.</p>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — why kit values look so odd</p>
+  <p>1.0 — 2.2 — 4.7 — 10: strange numbers, until you see the design. Standard resistor values are spaced by equal <em>ratios</em>, not equal gaps, so the ±-ranges tile the number line with no orphan values. The full E12 series puts twelve steps in each ×10 decade, each step ×1.21 — the twelfth root of 10 — exactly the way a piano splits each octave into twelve equal-ratio semitones. Resistor drawers and keyboards are tuned the same way.</p>
+</div>
+
+<h2>Practice</h2>
+<p>Answers at the bottom — and problems 1–3 are checkable against real parts with the meter.</p>
+<ol>
+  <li>What range does a gold-band 470 Ω promise?</li>
+  <li>You measure 4.55 kΩ on a nominal 4.7 kΩ. Percent difference — and is the part healthy?</li>
+  <li>You measure 2.2 kΩ on what you thought was a 220 Ω. Tolerance?</li>
+  <li>A nominal 10 kΩ measures 10,443 Ω. Percent difference — healthy?</li>
+</ol>
+
+<h2>Answers</h2>
+<p><strong>1.</strong> ±23.5 → 446.5 – 493.5 Ω. <strong>2.</strong> (4,550 − 4,700) ÷ 4,700 ≈ −3.2% — healthy. <strong>3.</strong> No — that's 10×. Either the display said kΩ and you wrote Ω, or the stripes are red-red-<em>red</em> (2.2 kΩ), not red-red-brown. Check both before blaming the part. <strong>4.</strong> +4.4% — inside the gold promise, though barely; a part that close to the edge is still a kept promise.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Math shelf · Tolerance &amp; Error</span>
+  <span>Small gaps are physics · big gaps are information</span>
+</footer>
+
+</body>
+</html>

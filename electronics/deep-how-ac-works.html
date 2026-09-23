@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How AC Works</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--copper);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 560px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+
+/* ---- deep-shelf accent: blue ---- */
+.kicker { color: var(--blue); }
+h2 { border-color: var(--blue); }
+.callout.idea { border-color: var(--blue); background: var(--blue-soft); }
+.callout.idea .label { color: var(--blue); }
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html" class="cur">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Under the hood · Optional — the deep story &middot; build 2026.09.23-1531</p>
+  <h1>How AC Works</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p><strong>DC</strong> flows in one constant direction — every circuit in this course. <strong>AC</strong> reverses direction on a strict rhythm: 60 complete cycles each second at a household outlet. Same electrons, run two different ways.</p>
+</div>
+
+<h2>You have already made AC</h2>
+<p>You can make AC yourself, right now: swap a supply's red and black leads back and forth by hand, and that <em>is</em> alternating current — at about one reversal per second. Wall power is the same idea performed 60 times a second, by generators the size of school buses, forever. The unit for "how often" is the <strong>hertz</strong>; the grid's heartbeat is <span class="val">60 Hz</span>. It's a pitch, not just a rate: the famous low "mains hum" that sneaks into audio gear is exactly this 60 Hz, made audible.</p>
+
+<h2>The wave</h2>
+<figure class="schematic">
+  <svg viewBox="0 0 590 245" role="img" aria-label="A sine wave of wall voltage over time: it swings smoothly between plus and minus 170 volts, crossing zero, with a period of one sixtieth of a second; 120 volts is its RMS average">
+    <line class="w" x1="60" y1="120" x2="540" y2="120" style="stroke-width:1.5"/>
+    <line class="w" x1="60" y1="20" x2="60" y2="220" style="stroke-width:1.5"/>
+    <path d="M60,120.0 L66,106.7 L72,93.7 L78,81.4 L84,70.0 L90,59.9 L96,51.2 L102,44.3 L108,39.2 L114,36.0 L120,35.0 L126,36.0 L132,39.2 L138,44.3 L144,51.2 L150,59.9 L156,70.0 L162,81.4 L168,93.7 L174,106.7 L180,120.0 L186,133.3 L192,146.3 L198,158.6 L204,170.0 L210,180.1 L216,188.8 L222,195.7 L228,200.8 L234,204.0 L240,205.0 L246,204.0 L252,200.8 L258,195.7 L264,188.8 L270,180.1 L276,170.0 L282,158.6 L288,146.3 L294,133.3 L300,120.0 L306,106.7 L312,93.7 L318,81.4 L324,70.0 L330,59.9 L336,51.2 L342,44.3 L348,39.2 L354,36.0 L360,35.0 L366,36.0 L372,39.2 L378,44.3 L384,51.2 L390,59.9 L396,70.0 L402,81.4 L408,93.7 L414,106.7 L420,120.0 L426,133.3 L432,146.3 L438,158.6 L444,170.0 L450,180.1 L456,188.8 L462,195.7 L468,200.8 L474,204.0 L480,205.0 L486,204.0 L492,200.8 L498,195.7 L504,188.8 L510,180.1 L516,170.0 L522,158.6 L528,146.3 L534,133.3 L540,120.0" stroke="var(--blue)" stroke-width="2.6" fill="none"/>
+    <line x1="60" y1="35" x2="540" y2="35" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4 5"/>
+    <line x1="60" y1="205" x2="540" y2="205" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4 5"/>
+    <text class="lbl-muted" x="538" y="30" text-anchor="end">+170 V</text>
+    <text class="lbl-muted" x="538" y="220" text-anchor="end">−170 V</text>
+    <text class="lbl-muted" x="66" y="114">0 V</text>
+    <line x1="60" y1="232" x2="300" y2="232" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="60" y1="226" x2="60" y2="238" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="300" y1="226" x2="300" y2="238" stroke="var(--muted)" stroke-width="1.5"/>
+    <text class="lbl" x="180" y="228" text-anchor="middle">one cycle = 1/60 s</text>
+  </svg>
+  <figcaption><b>Wall voltage, plotted.</b> A smooth swing through zero, sixty full cycles a second. The "120 V" on the label is the wave's honest working average (engineers call it <b>RMS</b>) — the peaks actually reach ≈ ±170 V.</figcaption>
+</figure>
+
+<h2>Why the grid chose AC</h2>
+<p>Because of one device: the <strong>transformer</strong> — two coils of wire sharing an iron core, no moving parts, no connection between them. A <em>changing</em> current in one coil creates a changing magnetic field, and the changing field pushes current in the other coil. (Sound familiar? It's the capacitor's law wearing magnetic clothes: only <em>change</em> gets across.) Wind the second coil with more turns and the voltage steps <strong>up</strong>; fewer turns, <strong>down</strong> — almost for free, but only for AC. Steady DC makes no changing field, and the transformer goes silent.</p>
+<p>That's the whole strategy of the grid: step voltage way up (hundreds of thousands of volts) to cross the countryside — high voltage means low current for the same power, and low current wastes far less in the wires (the <em>P = IV</em> sheet's I²R story) — then step down, and down again, to the 120 V at your outlet.</p>
+<div class="callout note">
+  <p class="label">The war of the currents</p>
+  <p>In the 1880s–90s this was a genuine commercial war: <strong>Edison</strong> sold DC systems; <strong>Westinghouse</strong>, armed with <strong>Tesla's</strong> AC designs, sold transformers and distance. AC lit the 1893 Chicago World's Fair, then harnessed Niagara Falls — and the grid has been AC ever since. (DC is quietly returning for some very-long-distance lines — engineering arguments are rarely over forever.)</p>
+</div>
+
+<h2>From the wall to your bench</h2>
+<p>Your kit runs on DC, so somewhere between the outlet and the BreadVolt's battery, AC must be tamed. Every charger and wall-wart on Earth does it with the same three moves — all parts you know:</p>
+<figure class="schematic">
+  <svg viewBox="0 0 590 190" role="img" aria-label="Four stages from wall AC to bench DC: transformer steps the sine wave down, a bridge of four diodes flips the negative halves up into bumps, a capacitor smooths the bumps, yielding steady five volt DC">
+    <g transform="translate(20,30)">
+      <rect class="softcard" x="0" y="0" width="120" height="70" rx="9"/>
+      <path d="M0,30.0 L6,14.9 L12,8.0 L18,13.0 L24,27.2 L30,42.9 L36,51.6 L42,48.6 L48,35.5 L54,19.4 L60,9.1 L66,10.1 L72,21.9 L78,38.1 L84,49.9 L90,50.9 L96,40.6" transform="translate(10,5)" stroke="var(--blue)" stroke-width="2" fill="none"/>
+      <text class="lbl-muted" x="60" y="90" text-anchor="middle">wall AC</text>
+    </g>
+    <text class="lbl" x="153" y="70">→</text>
+    <g transform="translate(168,30)">
+      <rect class="softcard" x="0" y="0" width="120" height="70" rx="9"/>
+      <path d="M0,30.0 L6,23.8 L12,21.0 L18,23.1 L24,28.9 L30,35.3 L36,38.8 L42,37.6 L48,32.2 L54,25.7 L60,21.4 L66,21.9 L72,26.7 L78,33.3 L84,38.1 L90,38.6 L96,34.3" transform="translate(10,5)" stroke="var(--blue)" stroke-width="2" fill="none"/>
+      <text class="lbl-muted" x="60" y="90" text-anchor="middle">transformer</text>
+      <text class="lbl-muted" x="60" y="106" text-anchor="middle">steps it down</text>
+    </g>
+    <text class="lbl" x="301" y="70">→</text>
+    <g transform="translate(316,30)">
+      <rect class="softcard" x="0" y="0" width="120" height="70" rx="9"/>
+      <path d="M0,42.0 L4,30.4 L8,21.7 L12,18.0 L16,20.3 L20,27.9 L24,39.0 L28,33.2 L32,23.5 L36,18.4 L40,19.2 L44,25.6 L48,36.0 L52,36.0 L56,25.6 L60,19.2 L64,18.4 L68,23.5 L72,33.2 L76,39.0 L80,27.9 L84,20.3 L88,18.0 L92,21.7 L96,30.4 L100,42.0" transform="translate(10,10)" stroke="var(--copper)" stroke-width="2" fill="none"/>
+      <text class="lbl-muted" x="60" y="90" text-anchor="middle">four diodes</text>
+      <text class="lbl-muted" x="60" y="106" text-anchor="middle">flip the bottoms up</text>
+    </g>
+    <text class="lbl" x="449" y="70">→</text>
+    <g transform="translate(464,30)">
+      <rect class="softcard" x="0" y="0" width="105" height="70" rx="9"/>
+      <path d="M0,20 L100,20" transform="translate(3,15)" stroke="var(--green)" stroke-width="2.4" fill="none"/>
+      <text class="lbl-muted" x="52" y="90" text-anchor="middle">capacitor smooths</text>
+      <text class="lbl-muted" x="52" y="106" text-anchor="middle">→ DC</text>
+    </g>
+  </svg>
+  <figcaption><b>AC becomes DC:</b> a transformer shrinks the wave, a <b>bridge rectifier</b> — four diodes, with its own page: <em>How Bridge Rectifiers Work</em> — folds the negative halves upward, and a big capacitor (a bucket, refilled 120 times a second) irons out the bumps. A regulator trims the result to a clean 5 V.</figcaption>
+</figure>
+
+<h2>The safety hardware, as concepts</h2>
+<ul>
+  <li><strong>Fuses and breakers</strong> are the wall's version of a rule you already own: too much current makes heat. A fuse melts on purpose; a breaker trips a switch. Your meter's mA fuse and the panel in the basement are the same idea at different sizes.</li>
+  <li><strong>The ground wire</strong> (the round third pin) is a safe path home. If a live wire ever touches a metal case, the fault current takes the ground wire — huge current, instant breaker trip — instead of waiting for a human hand to complete the loop.</li>
+  <li><strong>A GFCI outlet</strong> (the one with the buttons, near sinks) is Kirchhoff's current law with a badge: it compares the current going out against the current coming back, and if they differ by even a few thousandths of an amp — current escaping through <em>anything</em> that isn't the circuit, including a person — it cuts power in milliseconds. The <em>Kirchhoff's Laws</em> sheet is literally how it thinks.</li>
+</ul>
+
+<h2>Why 120 V deserves respect (and 5 V doesn't need fear)</h2>
+<p>Your body, hand to hand, is very roughly <span class="val">100 kΩ</span> dry. Ohm's law, both ways: at 5 V that's ≈ <span class="val">0.05 mA</span> — far below anything you can feel. At 120 V it's ≈ <span class="val">1–2 mA</span> — already at the threshold of sensation, and wet skin can drop your resistance ten-fold or more, pushing current into genuinely dangerous territory. Worse, 60 Hz AC is unluckily well-suited to disrupting the heart's own electrical rhythm. That's the whole safety stance of this course in one line: <strong>5 V DC is a safe teacher; 120 V AC can be lethal and is never touched here.</strong></p>
+
+<div class="callout safety">
+  <p class="label">Concepts, not procedures</p>
+  <p>Everything on this page is physics anyone may learn. Actually <em>working</em> on mains wiring — outlets, panels, fixtures — is a licensed trade, learned through real apprenticeship under people who do it daily. If that trade calls to you: electricians run on exactly what this course teaches — meters, Ohm's law, Kirchhoff's laws — and a student who arrives at an apprenticeship already fluent in them is years ahead.</p>
+</div>
+
+<h2>Words that now mean something</h2>
+<dl class="vocab">
+  <dt>AC / DC</dt><dd>alternating current (reverses direction at a fixed frequency) / direct current (one constant direction)</dd>
+  <dt>hertz (Hz)</dt><dd>cycles per second; the grid runs at 60 Hz</dd>
+  <dt>sine wave</dt><dd>the smooth swing wall voltage traces — ±170 V peaks, 120 V RMS</dd>
+  <dt>RMS</dt><dd>the honest working average of a wave — what "120 V" actually names</dd>
+  <dt>transformer</dt><dd>two coils sharing a changing magnetic field; steps AC voltage up or down</dd>
+  <dt>rectifier</dt><dd>diodes arranged to turn AC into one-direction bumps — four in a bridge</dd>
+  <dt>breaker / fuse / GFCI</dt><dd>the wall's guardians: over-current trips, and a Kirchhoff comparison that catches escaping current</dd>
+</dl>
+
+<footer class="lesson-foot">
+  <span>Electronics · How AC Works v1</span>
+  <span>Only change gets across</span>
+</footer>
+
+</body>
+</html>

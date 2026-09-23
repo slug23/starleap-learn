@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 1 · The Loop</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox
+    { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html" class="cur">1 &middot; The Loop</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Meet the components</a><a class="sub" href="#s4">4 &middot; How to read a schematic</a><a class="sub" href="#s5">5 &middot; The build: light it up</a><a class="sub" href="#s6">6 &middot; What just happened?</a><a class="sub" href="#s7">7 &middot; Experiments — predict first!</a><a class="sub" href="#s8">8 &middot; Words to know</a><a class="sub" href="#s9">9 &middot; Exit ticket</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 1 · 55 min &middot; build 2026.09.23-1531</p>
+  <h1>The Loop</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">Big idea</p>
+  <p>Electricity only flows around a <strong>complete, unbroken loop</strong> — and a circuit is nothing but components joined at connection points called <strong>nodes</strong>.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Light an LED held together by nothing but finger-pinches — safe to hold at our low 5 volts.</li>
+  <li>Read your first <strong>schematic</strong> — the "recipe drawing" for a circuit.</li>
+  <li>Explain what a circuit is (and why a broken loop does <em>nothing</em>).</li>
+  <li>Discover which everyday objects conduct electricity — and which don't.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Power supply — <span class="val">5 V</span>, with one red (+) and one black (−) wire coming out</li>
+  <li>A partner — the first build takes four hands</li>
+  <li>LED (red) — plus a spare</li>
+  <li>Resistor <span class="val">220 Ω</span> (red-red-brown stripes)</li>
+  <li>Mystery-object test bin (shared with your table)</li>
+  <li>Debugging Loop card — lives in your kit all year</li>
+  <li>Pencil — there are blanks to fill in</li>
+</ul>
+
+<div class="callout safety">
+  <p class="label">Safety — two rules</p>
+  <p><strong>1. Never make a short circuit.</strong> If red touches black with no component in between — through a jumper, a pinch, anything — the supply's full strength dumps through that one path. The wire can get finger-burning hot in seconds and melt its insulation, and the power supply itself can be damaged. Bare metal touches <em>only</em> what you chose.</p>
+  <p><strong>2. Never power an LED without its resistor.</strong> A "naked" LED draws far more current than it can survive. It doesn't just quietly die — it can <strong>pop like a tiny firecracker and throw hot plastic bits across the table</strong>. This really happens. The resistor is the LED's bodyguard: every LED, every circuit, no exceptions. And don't hover face-down over a circuit the first time you power it.</p>
+  <p><strong>One comfort:</strong> at 5 volts, dry skin lets through only a whisper of current — far too little to feel — which is why you can hold today's live circuit in your bare fingers. The real hazard in this kit is indirect: rule 1's short circuit makes <em>wires</em> hot enough to burn.</p>
+  <p><strong>And one hard line:</strong> house wiring is a different world. The <strong>120 volts</strong> in wall outlets, cords, and light sockets can push enough current through a body to be <strong>fatal</strong>. Nothing in this class ever touches household wiring — and neither do you. Everything we build lives on the low-voltage side, full stop.</p>
+</div>
+
+<h2 id="s3"><span class="num">3</span> Meet the components</h2>
+<p>Every component has a <strong>symbol</strong>. Symbols are how circuit builders write things down — like sheet music for electricity.</p>
+
+<div class="symbols">
+  <figure class="symbol">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Battery schematic symbol">
+      <line class="w" x1="10" y1="40" x2="66" y2="40"/>
+      <line class="w" x1="66" y1="16" x2="66" y2="64"/>
+      <line class="w" x1="84" y1="28" x2="84" y2="52"/>
+      <line class="w" x1="84" y1="40" x2="140" y2="40"/>
+      <text class="lbl" x="62" y="12" text-anchor="middle">+</text>
+      <text class="lbl" x="88" y="12" text-anchor="middle">−</text>
+    </svg>
+    <figcaption><b>Power source</b> Supplies the <strong>voltage</strong> — the electrical pressure that drives current around the loop, out of the + terminal and back into −. Ours is a regulated 5 V supply: red wire = +, black = −. In the symbol, the long line marks the + terminal.</figcaption>
+  </figure>
+
+  <figure class="symbol">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Resistor schematic symbol">
+      <line class="w" x1="10" y1="40" x2="40" y2="40"/>
+      <path class="w" d="M40,40 l5,-10 l10,20 l10,-20 l10,20 l10,-20 l10,20 l5,-10"/>
+      <line class="w" x1="100" y1="40" x2="140" y2="40"/>
+    </svg>
+    <figcaption><b>Resistor</b> Adds a fixed <strong>resistance</strong> that limits the current in the loop — here, holding it to a level the LED tolerates (safety rule 2). The color stripes encode its value in ohms. No polarity: either orientation works.</figcaption>
+  </figure>
+
+  <figure class="symbol">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Wire and junction schematic symbol">
+      <line class="w" x1="10" y1="40" x2="140" y2="40"/>
+      <line class="w" x1="75" y1="10" x2="75" y2="40"/>
+      <circle class="jdot" cx="75" cy="40" r="4.5"/>
+    </svg>
+    <figcaption><b>Wire</b> A <strong>conductor</strong> with near-zero resistance. Every solid line in a schematic is a connection, and everything touching one continuous line is a single node. Today's conductors: the supply's wires and your finger pinches. A dot marks a junction.</figcaption>
+  </figure>
+</div>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 300" role="img" aria-label="A real LED next to its schematic symbol: long leg is the anode (+), short leg and the flat spot on the rim are the cathode (−)">
+    <text class="lbl-muted" x="150" y="34" text-anchor="middle">the real part</text>
+    <text class="lbl-muted" x="415" y="34" text-anchor="middle">its symbol</text>
+    <!-- pictorial LED -->
+    <path d="M115,150 L115,95 A35,35 0 0 1 185,95 L185,150 Z" fill="#f6c3bc" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>
+    <rect x="105" y="150" width="90" height="13" rx="2" fill="#f6c3bc" stroke="var(--ink)" stroke-width="2.4"/>
+    <line x1="193" y1="149" x2="193" y2="164" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>
+    <path class="w" d="M196,72 L216,52 M216,52 l-11,2 M216,52 l-2,11" stroke-width="1.8"/>
+    <path class="w" d="M206,90 L226,70 M226,70 l-11,2 M226,70 l-2,11" stroke-width="1.8"/>
+    <line x1="135" y1="163" x2="135" y2="258" stroke="var(--ink)" stroke-width="3"/>
+    <line x1="165" y1="163" x2="165" y2="226" stroke="var(--ink)" stroke-width="3"/>
+    <text class="lbl" x="124" y="238" text-anchor="end" font-weight="700">anode · +</text>
+    <text class="lbl-muted" x="124" y="256" text-anchor="end">long leg</text>
+    <text class="lbl" x="178" y="212" font-weight="700">cathode · −</text>
+    <text class="lbl-muted" x="178" y="230">short leg</text>
+    <text class="lbl-muted" x="200" y="184">flat spot = −</text>
+    <!-- schematic symbol -->
+    <line class="w" x1="330" y1="120" x2="390" y2="120"/>
+    <polygon class="w" points="390,100 390,140 425,120"/>
+    <line class="w" x1="425" y1="100" x2="425" y2="140"/>
+    <line class="w" x1="425" y1="120" x2="490" y2="120"/>
+    <path class="w" d="M419,95 L436,78 M436,78 l-11,2 M436,78 l-2,11" stroke-width="1.8"/>
+    <path class="w" d="M437,108 L454,91 M454,91 l-11,2 M454,91 l-2,11" stroke-width="1.8"/>
+    <text class="lbl" x="358" y="165" text-anchor="middle" font-weight="700">anode · +</text>
+    <text class="lbl" x="480" y="165" text-anchor="middle" font-weight="700">cathode · −</text>
+    <text class="lbl-muted" x="415" y="192" text-anchor="middle">current flows the way</text>
+    <text class="lbl-muted" x="415" y="209" text-anchor="middle">the triangle points</text>
+  </svg>
+  <figcaption><b>LED</b> — a <b>light-emitting diode</b>: it conducts, and emits light, only in the direction the triangle points — from anode (+) to cathode (−). The long leg is the anode, wired toward the supply's +; if the legs are trimmed, the flat spot on the rim marks the cathode. The small arrows represent emitted light.</figcaption>
+</figure>
+
+<h2 id="s4"><span class="num">4</span> How to read a schematic</h2>
+<p>A <strong>schematic</strong> is the recipe for a circuit. Three rules:</p>
+<ol>
+  <li><strong>Symbols are components.</strong> You just met four of them.</li>
+  <li><strong>Lines are connections</strong> — not actual positions. The drawing shows <em>what connects to what</em>, never where parts physically sit.</li>
+  <li><strong>Everything touching the same line is one point</strong>, electrically. That shared point is called a <strong>node</strong>.</li>
+</ol>
+
+<div class="callout idea">
+  <p class="label">The key move</p>
+  <p>A node is anywhere parts are squeezed together so firmly they become one electrical point. Today, a node is a <strong>finger pinch</strong>. Building from a schematic comes down to one job: <strong>give every node in the drawing its own pinch</strong>, then put the right legs into it.</p>
+</div>
+
+<h2 id="s5"><span class="num">5</span> The build: light it up</h2>
+
+<figure class="schematic">
+  <svg viewBox="0 0 500 300" role="img" aria-label="Schematic: 5 volt power source, 220 ohm resistor, and LED in a single loop, with nodes labeled A, B, and C">
+    <!-- battery (left side) -->
+    <line class="w" x1="90" y1="60" x2="90" y2="138"/>
+    <line class="w" x1="66" y1="138" x2="114" y2="138"/>
+    <line class="w" x1="78" y1="158" x2="102" y2="158"/>
+    <line class="w" x1="90" y1="158" x2="90" y2="240"/>
+    <text class="lbl" x="126" y="143">+</text>
+    <text class="lbl" x="126" y="166">−</text>
+    <text class="lbl" x="58" y="134" text-anchor="end">5 V</text>
+    <text class="lbl-muted" x="58" y="152" text-anchor="end">power</text>
+    <!-- top wire with resistor -->
+    <line class="w" x1="90" y1="60" x2="196" y2="60"/>
+    <path class="w" d="M196,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="280" y1="60" x2="400" y2="60"/>
+    <text class="lbl" x="238" y="30" text-anchor="middle">220 Ω</text>
+    <text class="lbl-muted" x="238" y="46" text-anchor="middle">resistor</text>
+    <!-- LED (right side) -->
+    <line class="w" x1="400" y1="60" x2="400" y2="124"/>
+    <polygon class="w" points="386,124 414,124 400,150"/>
+    <line class="w" x1="386" y1="150" x2="414" y2="150"/>
+    <line class="w" x1="400" y1="150" x2="400" y2="240"/>
+    <path class="w" d="M417,131 L433,117 M433,117 l-11,2 M433,117 l-3,11" stroke-width="1.8"/>
+    <path class="w" d="M421,146 L437,132 M437,132 l-11,2 M437,132 l-3,11" stroke-width="1.8"/>
+    <text class="lbl" x="452" y="180">LED</text>
+    <!-- bottom wire -->
+    <line class="w" x1="90" y1="240" x2="400" y2="240"/>
+    <!-- current flow arrow -->
+    <path class="flow" d="M206,172 A45,45 0 1 1 267,189"/>
+    <polygon class="flowhead" points="267,189 278,187 274,180"/>
+    <text class="lbl-muted" x="245" y="155" text-anchor="middle">current</text>
+    <!-- node badges -->
+    <g class="nodeb"><circle cx="143" cy="60" r="13"/><text x="143" y="65" text-anchor="middle">A</text></g>
+    <g class="nodeb"><circle cx="345" cy="60" r="13"/><text x="345" y="65" text-anchor="middle">B</text></g>
+    <g class="nodeb"><circle cx="245" cy="240" r="13"/><text x="245" y="245" text-anchor="middle">C</text></g>
+  </svg>
+  <figcaption><b>Your first schematic.</b> Three components, one loop, three nodes: <b>A</b>, <b>B</b>, <b>C</b>. Each lettered node = one pinch.</figcaption>
+</figure>
+
+<p>Partner up: this build takes four hands. One of you reads the schematic aloud and calls the nodes; both of you pinch. <strong>The rule of the pinch:</strong> your skin can't do the conducting — the metal parts must press directly against each other. Your fingers just provide the squeeze that holds them together.</p>
+<ol class="steps">
+  <li><span class="node">A</span>&nbsp; Pinch the metal tip of the supply's <strong>red (+) wire</strong> against <strong>either leg</strong> of the resistor — metal on metal, squeezed tight.</li>
+  <li><span class="node">B</span>&nbsp; Second pinch, other hand: the resistor's <strong>other leg</strong> against the LED's <strong>long leg</strong>.</li>
+  <li><span class="node">C</span>&nbsp; Your partner takes the moment of truth: the LED's <strong>short leg</strong> against the metal tip of the supply's <strong>black (−) wire</strong>. The instant the metals touch… light!</li>
+  <li>Hold it lit and notice: you are holding a <em>live circuit</em> in your bare hands and feeling nothing. Five volts is far too low to push a meaningful current through skin.</li>
+  <li>The free hand's job: trace the loop on the schematic — out of <strong>+</strong>, through <span class="node">A</span>, the resistor, <span class="node">B</span>, the LED, <span class="node">C</span>, back into <strong>−</strong> — saying what happens at each stop.</li>
+</ol>
+
+<h3>No light? Run the Debugging Loop</h3>
+<p>Dead circuits are normal — engineers spend most of their time exactly here. Your kit includes the <strong>Debugging Loop card</strong>: six steps, in order, starting with <em>stop, look, touch nothing</em>. When something's dead: run the loop, check your build against the schematic, ask a neighbor — <em>then</em> wave a teacher over. And when you do, report what you found ("power's good, the loop traces, but I'm not sure about node B"), not just "it doesn't work."</p>
+<p>Today's usual suspects:</p>
+<table>
+  <tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr>
+  <tr><td>Dark LED</td><td>Skin inside a pinch — the metals aren't touching each other</td><td>Re-pinch: metal pressed on metal</td></tr>
+  <tr><td>Dark LED</td><td>LED is backwards (it's a one-way street)</td><td>Flip it: long leg toward the resistor side</td></tr>
+  <tr><td>Dark LED</td><td>The power supply is off, out of charge, switched to 3.3&nbsp;V, or knocked out by a recent short</td><td>Wave a teacher over to check the supply</td></tr>
+  <tr><td>Dark LED</td><td>A pinch slipped apart while everyone watched the LED</td><td>Re-set it — squeeze firmly, metal on metal</td></tr>
+</table>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>Everything you just built has numbers behind it: the supply provides <span class="val">5 V</span>, the resistor resists with <span class="val">220 Ω</span>, and a rule called <strong>Ohm's law</strong> predicts the flow:</p>
+  <math display="block"><mrow><mtext>current</mtext><mo>=</mo><mfrac><mtext>voltage</mtext><mtext>resistance</mtext></mfrac></mrow></math>
+  <p>— about <span class="val">0.014 A</span> (14 milliamps) through your LED. You will never be required to compute anything in this class. But the math is real, it lives in these purple boxes every lesson, and it's how engineers size every part before touching one.</p>
+</div>
+
+<h2 id="s6"><span class="num">6</span> What just happened?</h2>
+<p>You made light. Now the <em>why</em> — and it fits in one picture. Think of a closed loop of water pipes. A <strong>pump</strong> pushes the water, a <strong>narrow spot</strong> limits how fast it can flow, and a <strong>waterwheel</strong> uses the flow to do something. The water goes around and around — it never gets "used up," and if you cut the pipe <em>anywhere</em>, everything stops at once. Keep that in mind — you'll test the "anywhere" part in Experiment 2.</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 460 232" role="img" aria-label="Water loop analogy: pump, narrow spot, and waterwheel on a closed loop of pipe">
+    <rect class="w" x="60" y="36" width="340" height="150" rx="70"/>
+    <polygon class="flowhead" points="196,180 182,186 196,192"/>
+    <polygon class="flowhead" points="296,180 282,186 296,192"/>
+    <rect class="softcard" x="12" y="86" width="102" height="50" rx="8"/>
+    <text class="lbl" x="63" y="107" text-anchor="middle" font-weight="700">PUMP</text>
+    <text class="lbl-muted" x="63" y="125" text-anchor="middle">= power</text>
+    <rect class="softcard" x="172" y="12" width="116" height="50" rx="8"/>
+    <text class="lbl" x="230" y="33" text-anchor="middle" font-weight="700">NARROW SPOT</text>
+    <text class="lbl-muted" x="230" y="51" text-anchor="middle">= resistor</text>
+    <rect class="softcard" x="348" y="86" width="102" height="50" rx="8"/>
+    <text class="lbl" x="399" y="107" text-anchor="middle" font-weight="700">WHEEL</text>
+    <text class="lbl-muted" x="399" y="125" text-anchor="middle">= LED</text>
+    <text class="lbl-muted" x="230" y="216" text-anchor="middle">the flow goes around and around = current</text>
+  </svg>
+  <figcaption>A circuit is a loop. The power source pushes, the resistor limits, the LED does the fun part.</figcaption>
+</figure>
+
+<p>Three words you'll use all year:</p>
+<ul>
+  <li><strong>Voltage</strong> — the electrical pressure that drives current around the loop; think of it as how hard the source <em>pushes</em>. Measured in volts (V). Ours supplies 5&nbsp;V.</li>
+  <li><strong>Current</strong> — how much electricity is actually <em>flowing</em>. Measured in amps (A).</li>
+  <li><strong>Circuit</strong> — the complete loop the current flows around.</li>
+</ul>
+
+<h2 id="s7"><span class="num">7</span> Experiments — predict first!</h2>
+<p>Rule for the whole year: <strong>say your prediction out loud before you try it.</strong> Being wrong is where the learning is.</p>
+
+<h3>Experiment 1 — Flip the LED</h3>
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>If you turn the LED around (swap which leg connects where), what will happen? <span class="writeline"></span></p>
+</div>
+<div class="callout tryit">
+  <p class="label">Try it</p>
+  <p>Re-pinch the LED the other way around — swap which leg is in which pinch. <em>What happened, and what does that tell you about LEDs?</em> This one-way behavior has a name: the LED is a <strong>diode</strong>.</p>
+</div>
+
+<h3>Experiment 2 — Break the loop</h3>
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>If you break the loop at node <span class="node">C</span> — <em>after</em> the LED — does the LED stay lit, since the electricity already "got there"? <span class="writeline"></span></p>
+</div>
+<div class="callout tryit">
+  <p class="label">Try it</p>
+  <p>Open the loop at <span class="node">A</span>, then <span class="node">B</span>, then <span class="node">C</span>. Anywhere you break it, <em>everything</em> stops instantly. Current doesn't fill up a circuit like water in a cup — no loop, no flow, anywhere.</p>
+</div>
+
+<h3>Experiment 3 — The conductor hunt</h3>
+<p>Turn your circuit into a tester by splitting node <span class="node">C</span> in two: one partner pinches the LED's short leg against one end of the mystery object, while the other pinches the object's far end against the black wire's tip. The object now sits in a <strong>gap</strong> in the loop:</p>
+<figure class="schematic">
+  <svg viewBox="0 0 500 300" role="img" aria-label="The test gap: the loop's bottom wire is broken, with a pinch on each side of a mystery object bridging the gap">
+    <line class="w" x1="90" y1="60" x2="90" y2="138"/>
+    <line class="w" x1="66" y1="138" x2="114" y2="138"/>
+    <line class="w" x1="78" y1="158" x2="102" y2="158"/>
+    <line class="w" x1="90" y1="158" x2="90" y2="240"/>
+    <text class="lbl" x="126" y="143">+</text>
+    <text class="lbl" x="126" y="166">−</text>
+    <text class="lbl" x="58" y="134" text-anchor="end">5 V</text>
+    <line class="w" x1="90" y1="60" x2="196" y2="60"/>
+    <path class="w" d="M196,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="280" y1="60" x2="400" y2="60"/>
+    <text class="lbl" x="238" y="30" text-anchor="middle">220 Ω</text>
+    <line class="w" x1="400" y1="60" x2="400" y2="124"/>
+    <polygon class="w" points="386,124 414,124 400,150"/>
+    <line class="w" x1="386" y1="150" x2="414" y2="150"/>
+    <line class="w" x1="400" y1="150" x2="400" y2="240"/>
+    <path class="w" d="M417,131 L433,117 M433,117 l-11,2 M433,117 l-3,11" stroke-width="1.8"/>
+    <line class="w" x1="90" y1="240" x2="196" y2="240"/>
+    <circle class="w" cx="203" cy="240" r="5"/>
+    <circle class="w" cx="297" cy="240" r="5"/>
+    <line class="w" x1="304" y1="240" x2="400" y2="240"/>
+    <rect x="220" y="214" width="60" height="52" rx="9" fill="none" stroke="var(--muted)" stroke-width="1.8" stroke-dasharray="5 4"/>
+    <text class="lbl" x="250" y="248" text-anchor="middle" font-size="22">?</text>
+    <text class="lbl-muted" x="250" y="290" text-anchor="middle">a pinch on each side of the mystery object</text>
+  </svg>
+  <figcaption>Metal to object to metal, a pinch on each side. LED lights = <b>conductor</b>. Stays dark = <b>insulator</b>.</figcaption>
+</figure>
+<p>Predict each one first, then test:</p>
+<table>
+  <tr><th>Object</th><th>Predict: light?</th><th>Result</th></tr>
+  <tr><td>Coin</td><td></td><td></td></tr>
+  <tr><td>Key</td><td></td><td></td></tr>
+  <tr><td>Paperclip</td><td></td><td></td></tr>
+  <tr><td>Pencil — the <em>graphite</em> (sharpened both ends)</td><td></td><td></td></tr>
+  <tr><td>Pencil — the wooden part</td><td></td><td></td></tr>
+  <tr><td>Eraser</td><td></td><td></td></tr>
+  <tr><td>Aluminum foil</td><td></td><td></td></tr>
+  <tr><td>Plastic spoon</td><td></td><td></td></tr>
+  <tr><td>Your finger</td><td></td><td></td></tr>
+</table>
+<p><em>Surprised by any of them?</em> Your body actually does conduct — just not enough for this LED at 5 V. "How much it resists" matters, and that's exactly where we're headed soon.</p>
+
+<h3>Go further — for the fast and the curious</h3>
+<div class="callout tryit">
+  <p class="label">Stretch</p>
+  <p><strong>1.</strong> Swap the <span class="val">220 Ω</span> resistor for a <span class="val">1 kΩ</span> one (brown-black-red) from the spares bin. Brighter or dimmer? What is the resistor really doing to the loop? <strong>2.</strong> Grab your spare LED and add it to the loop so <em>both</em> light. Anything you notice about the brightness? (You've just wandered into the next lesson's territory.)</p>
+</div>
+
+<h2 id="s8"><span class="num">8</span> Words to know</h2>
+<dl class="vocab">
+  <dt>circuit</dt><dd>a complete loop that current can flow around</dd>
+  <dt>node</dt><dd>a connection point — everything joined there is one electrical point (today: a finger pinch)</dd>
+  <dt>voltage</dt><dd>the power source's push, in volts (V)</dd>
+  <dt>current</dt><dd>the flow of electricity, in amps (A)</dd>
+  <dt>conductor</dt><dd>a material current flows through easily</dd>
+  <dt>insulator</dt><dd>a material that blocks current</dd>
+  <dt>LED</dt><dd>light-emitting diode — makes light, one direction only</dd>
+  <dt>resistor</dt><dd>limits current; protects the LED</dd>
+  <dt>schematic</dt><dd>the symbol drawing that is a circuit's recipe</dd>
+  <dt>short circuit</dt><dd>a loop with nothing to limit the current — the one thing we don't build</dd>
+</dl>
+
+<h2 id="s9"><span class="num">9</span> Exit ticket</h2>
+<p>On a scrap of paper, <strong>draw today's schematic from memory</strong> — power source, resistor, LED, in a loop, symbols only. Label + and −. Hand it in on your way out. (Wobbly lines are fine; correct connections are the point.)</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Semester 1 · Lesson 1 of 13</span>
+  <span>Next: your circuit moves into the <strong>breadboard</strong> — and you get a meter that proves it, and a switch that commands it</span>
+</footer>
+
+</body>
+</html>

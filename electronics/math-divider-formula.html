@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Voltage Divider Formula</title>
+<style>
+/* Embedded copy of assets/lesson.css (math-shelf accent: violet) — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--violet);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--violet-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.idea    .label { color: var(--violet); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 26px;
+  text-align: center;
+  margin: .8em 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table, ol.steps > li { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html" class="cur">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Math shelf · Optional — for the curious &middot; build 2026.09.23-1531</p>
+  <h1>The Voltage Divider Formula</h1>
+</header>
+
+<h2>The setup</h2>
+<figure class="schematic">
+  <svg viewBox="0 0 320 300" role="img" aria-label="Voltage divider: R1 from 5 volts down to the tap, R2 from the tap down to ground">
+    <text class="lbl" x="160" y="24" text-anchor="middle">+5 V</text>
+    <line class="w" x1="160" y1="32" x2="160" y2="58"/>
+    <path class="w" d="M160,58 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="200" y="98">R1</text>
+    <line class="w" x1="160" y1="130" x2="160" y2="162"/>
+    <circle cx="160" cy="146" r="4.5" fill="var(--ink)"/>
+    <line class="w" x1="160" y1="146" x2="236" y2="146"/>
+    <text class="lbl" x="246" y="151">tap</text>
+    <path class="w" d="M160,162 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="200" y="202">R2</text>
+    <line class="w" x1="160" y1="234" x2="160" y2="262"/>
+    <text class="lbl" x="160" y="284" text-anchor="middle">ground (−)</text>
+  </svg>
+  <figcaption>One path from 5 V to ground through <b>R1</b> then <b>R2</b>; the tap sits between them. "Voltage at the tap" = measured tap-to-ground.</figcaption>
+</figure>
+
+<h2>Building the formula</h2>
+<p>Three short moves, each one a fact you've already measured. (The <em>V&nbsp;=&nbsp;IR</em> sheet on this shelf is the tool used in each step: <a href="math-v-equals-ir.html">read it first</a> if you haven't.)</p>
+<ol class="steps">
+  <li><strong>One path, one current.</strong> Everything flowing through R1 must continue through R2 — there's nowhere else to go. The supply pushes 5 V across the pair, so <span class="val">I = 5 ÷ (R1 + R2)</span>.</li>
+  <li><strong>The tap reads R2's share.</strong> The tap-to-ground measurement is exactly the drop across R2: <span class="val">V<sub>tap</sub> = I × R2</span>.</li>
+  <li><strong>Combine.</strong> Substitute step 1's current into step 2:</li>
+</ol>
+
+<div class="callout idea">
+  <p class="label">The divider formula</p>
+  <p class="formula">V<sub>tap</sub> = 5 V × R2 ÷ (R1 + R2)</p>
+  <p>The tap voltage is the supply times <strong>R2's fraction of the total resistance</strong>. (For a supply other than 5 V, swap in its voltage.)</p>
+</div>
+
+<h2>Sanity-check it at the extremes</h2>
+<p>An engineer's habit: before trusting a formula, push it to its limits and see if it behaves.</p>
+<ul>
+  <li><strong>R2 enormous</strong> → the fraction R2/(R1+R2) creeps toward 1 → tap ≈ 5 V. ✓ matches "bigger bottom resistor, higher tap."</li>
+  <li><strong>R2 tiny</strong> → fraction ≈ 0 → tap ≈ 0 V. ✓ the tap is practically wired to ground.</li>
+  <li><strong>R1 = R2</strong> → fraction = ½ → tap = 2.5 V, <em>no matter what the equal value is</em>. ✓ exactly what your 1 k/1 k and 4.7 k/4.7 k builds both read.</li>
+</ul>
+
+<h2>Worked: lesson 5's table, predicted</h2>
+<table>
+  <tr><th>R1 (top)</th><th>R2 (bottom)</th><th>The fraction</th><th>Tap</th></tr>
+  <tr><td>1 kΩ</td><td>1 kΩ</td><td>1 ÷ 2 = 0.50</td><td><span class="val">2.50 V</span></td></tr>
+  <tr><td>220 Ω</td><td>1 kΩ</td><td>1000 ÷ 1220 ≈ 0.82</td><td><span class="val">≈ 4.1 V</span></td></tr>
+  <tr><td>1 kΩ</td><td>220 Ω</td><td>220 ÷ 1220 ≈ 0.18</td><td><span class="val">≈ 0.9 V</span></td></tr>
+  <tr><td>4.7 kΩ</td><td>4.7 kΩ</td><td>0.50</td><td><span class="val">2.50 V</span></td></tr>
+  <tr><td>4.7 kΩ</td><td>10 kΩ</td><td>10 ÷ 14.7 ≈ 0.68</td><td><span class="val">≈ 3.4 V</span> — the "build the 3.3" winner</td></tr>
+</table>
+<p>Notice the second and third rows: swap the resistors and the two shares trade places, so the two taps sum to 5 V — the same split, read from opposite ends.</p>
+
+<h2>The pot is this formula with a knob</h2>
+<p>A potentiometer's wiper splits one resistance into R1-above and R2-below. Turning the knob trades resistance between them while the total stays fixed — so the fraction, and the tap, sweep smoothly from 0 to the full supply. Every volume knob ever made is this equation with a shaft through it.</p>
+
+<h2>What dividers are for</h2>
+<p>Half of electronics is making the right voltage appear at a node, and the divider is the cheapest machine that does it. The same fraction trick wears four different hats:</p>
+<ul>
+  <li><strong>Set a reference.</strong> A chip that needs a steady comparison voltage — "flag me when the input crosses 2.5 V" — gets that 2.5 V from a divider. Your "build the 3.3" challenge was exactly this job.</li>
+  <li><strong>Read a sensor.</strong> Swap one resistor for a part whose resistance changes with the world — a photoresistor (light), a thermistor (temperature) — and the tap becomes a voltage that <em>reports</em> the world: dark room, one reading; bright room, another. This is the heart of the sensor build coming later in the course.</li>
+  <li><strong>Scale a signal down.</strong> A 5 V signal meeting a chip that only tolerates 3.3 V gets stepped through a divider first — the same fraction, applied to a voltage that's changing.</li>
+  <li><strong>Put it on a knob.</strong> The pot: volume controls, dimmers, joystick axes — a divider whose fraction you turn.</li>
+</ul>
+
+<div class="callout note">
+  <p class="label">What dividers are not for: power</p>
+  <p>A divider makes a voltage to be <em>measured or compared</em> — by a meter, a chip input, anything that draws almost nothing. Try to <em>power</em> something from the tap and the load becomes a second path across R2: the fraction shrinks and the tap sags (the loading note below computes it). Delivering real current at a lower voltage is a <strong>regulator's</strong> job — which is what's actually inside your supply making its rock-steady 3.3 V. Your challenge recreated the number; the regulator holds it under load.</p>
+</div>
+
+<h2>Practice</h2>
+<p>Answers at the bottom. Every one of these is buildable — predict, then measure.</p>
+<ol>
+  <li>R1 = 10 kΩ, R2 = 10 kΩ. Tap?</li>
+  <li>R1 = 1 kΩ, R2 = 4.7 kΩ. Tap?</li>
+  <li>You need ≈ 1.0 V at the tap and R1 is 4.7 kΩ. Roughly what R2 — bigger or smaller than R1, and about how much? (Estimate first, then compute.)</li>
+  <li>Design your own "3.3 V from the kit" pair different from 4.7 k/10 k. How close can your kit's values get?</li>
+</ol>
+
+<div class="callout note">
+  <p class="label">Why the LED sagged the tap — a preview</p>
+  <p>Lesson 5's stretch: hang an LED + 220 Ω across the tap and the voltage drops. The load offers the current a <em>second</em> path alongside R2, which behaves like a smaller R2 — a smaller fraction, a lower tap. Two resistances side by side acting like one smaller one is called <strong>parallel resistance</strong> — the <a href="math-series-parallel.html">Series &amp; Parallel</a> sheet works out the law, including this exact sag.</p>
+</div>
+
+<h2>Answers</h2>
+<p><strong>1.</strong> 2.50 V — equal halves, always. <strong>2.</strong> 5 × 4.7 ÷ 5.7 ≈ 4.1 V. <strong>3.</strong> You want a fraction of 1/5, so R2 must be much <em>smaller</em>: R2 ÷ (R2 + 4.7 k) = 0.2 → R2 ≈ 1.2 kΩ (a 1 k gives ≈ 0.88 V — close). <strong>4.</strong> Any pair with R2 ÷ (R1+R2) ≈ 0.66 works: 1 k over 2.2 k gives 5 × 2.2 ÷ 3.2 ≈ 3.44 V; 4.7 k over 10 k ≈ 3.40 V. Real resistors are ±5 %, so "close" is the honest target.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Math shelf · The Voltage Divider Formula</span>
+  <span>The tap reads R2's share</span>
+</footer>
+
+</body>
+</html>

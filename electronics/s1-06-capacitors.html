@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 6 · Capacitors</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox
+    { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html" class="cur">6 &middot; Capacitors</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: divider from memory</a><a class="sub" href="#s4">4 &middot; New component: the capacitor</a><a class="sub" href="#s5">5 &middot; Charge it, then light it</a><a class="sub" href="#s6">6 &middot; Watch it fill</a><a class="sub" href="#s7">7 &middot; The drain race</a><a class="sub" href="#s8">8 &middot; Why the flash always ends</a><a class="sub" href="#s9">9 &middot; Challenge: the five-second fill</a><a class="sub" href="#s10">10 &middot; Words to know</a><a class="sub" href="#s11">11 &middot; Exit ticket</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 6 · 55 min &middot; build 2026.09.23-1531</p>
+  <h1>Capacitors</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The big idea</p>
+  <p>A capacitor <strong>stores charge</strong> — and filling or emptying it through a resistor takes <em>time</em>. Today, time becomes something your circuits control.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Charge a capacitor, disconnect the supply, and <strong>light an LED from stored charge</strong>.</li>
+  <li>Watch a capacitor fill in slow motion on the meter — and <strong>time it with a stopwatch</strong>.</li>
+  <li>Race fills and fades: predict how resistor and capacitor sizes change the clock.</li>
+  <li>Tune a fill to hit a five-second target.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Board with supply on the rails — cleared to bare rails last lesson — plus jumpers, LEDs, <span class="val">220 Ω</span>, resistor assortment, multimeter</li>
+  <li><strong>Two big capacitors</strong> — <span class="val">1000 µF</span>, the cans with a stripe</li>
+  <li><strong>One middle capacitor</strong> — <span class="val">100 µF</span>, a smaller can</li>
+  <li><strong>One tiny capacitor</strong> — <span class="val">100 nF</span> ceramic, the little disc</li>
+  <li>A way to count seconds — a timer if you have one; steady one-Mississippis if you don't (precision isn't the point yet)</li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span> Warm-up: divider from memory</h2>
+<p>No peeking at lesson 5: build a <strong>1 kΩ / 1 kΩ voltage divider</strong> across the rails, say your node letters out loud, predict the tap voltage, then measure it. Black probe parked in the ground rail, as always. Done when your meter agrees with your prediction.</p>
+
+<h2 id="s4"><span class="num">4</span> New component: the capacitor</h2>
+<p>Two metal plates, face to face, separated by an insulator. Charge can't cross the gap — so when the supply pushes, charge <strong>piles up</strong> on the plates instead. Think of it as a bucket for charge: this lesson fills it, empties it, and times both. From here on, the correct words: a capacitor <strong>charges</strong> and <strong>discharges</strong>, and how much it holds is its <strong>capacitance</strong>, measured in farads — ours are marked in <span class="val">µF</span> (microfarads) and <span class="val">nF</span> (nanofarads), because a whole farad is enormous.</p>
+
+<div class="symbols">
+  <figure class="symbol">
+    <svg viewBox="0 0 280 150" style="max-width:250px">
+      <line x1="52" y1="70" x2="52" y2="125" stroke="#8b8b8b" stroke-width="3.5"/>
+      <line x1="68" y1="70" x2="68" y2="125" stroke="#8b8b8b" stroke-width="3.5"/>
+      <ellipse cx="60" cy="52" rx="26" ry="29" fill="#d9a45c" stroke="#b9863f" stroke-width="2"/>
+      <text x="60" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#4a3510"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace">104</text>
+      <line class="w" x1="150" y1="70" x2="190" y2="70"/>
+      <line class="w" x1="190" y1="45" x2="190" y2="95"/>
+      <line class="w" x1="205" y1="45" x2="205" y2="95"/>
+      <line class="w" x1="205" y1="70" x2="250" y2="70"/>
+    </svg>
+    <figcaption><b>Capacitor</b> two plates, a gap no charge can cross
+    <span class="irl">In real life: the tan disc — no polarity, either way round. Its tiny code, 104, is its size: 10 with four zeros, in picofarads (= 100 nF)</span></figcaption>
+  </figure>
+  <figure class="symbol">
+    <svg viewBox="0 0 280 150" style="max-width:250px">
+      <line x1="52" y1="90" x2="52" y2="138" stroke="#8b8b8b" stroke-width="3.5"/>
+      <line x1="78" y1="90" x2="78" y2="126" stroke="#8b8b8b" stroke-width="3.5"/>
+      <rect x="35" y="20" width="60" height="75" rx="6" fill="#3a3f4d"/>
+      <rect x="78" y="24" width="13" height="71" fill="#e8e4da"/>
+      <line x1="80.5" y1="48" x2="88.5" y2="48" stroke="#3a3f4d" stroke-width="3"/>
+      <line x1="80.5" y1="70" x2="88.5" y2="70" stroke="#3a3f4d" stroke-width="3"/>
+      <ellipse cx="65" cy="20" rx="30" ry="6" fill="#9aa1ad"/>
+      <text x="57" y="60" font-size="12" fill="#c6ccd8" text-anchor="middle"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+            transform="rotate(-90 57 60)">1000 µF</text>
+      <line class="w" x1="150" y1="70" x2="188" y2="70"/>
+      <line class="w" x1="188" y1="45" x2="188" y2="95"/>
+      <path class="w" d="M208,47 a40,40 0 0 1 0,46"/>
+      <line class="w" x1="215" y1="70" x2="250" y2="70"/>
+      <text class="lbl" x="172" y="40" text-anchor="end">+</text>
+    </svg>
+    <figcaption><b>Polarized capacitor</b> the curved plate is the − side
+    <span class="irl">In real life: the can. The <strong>stripe</strong> marks the − leg — the shorter one; the long leg is +</span></figcaption>
+  </figure>
+</div>
+
+<div class="callout safety">
+  <p class="label">Polarity — check it before every power-up</p>
+  <p>The can capacitors are <strong>electrolytic</strong>: they have a + and a − side, and they mean it. Wired backwards, an electrolytic slowly cooks itself and can burst its safety vent. House rule for this whole course: <strong>the striped leg always plugs toward ground</strong> — and you check the stripe before connecting power, every single build. The house rule works because ground is always our lowest voltage; the rule beneath it, for circuits beyond this course: <em>striped leg to the lower-voltage side, and never more volts than the rating printed on the can</em>. (The little ceramic disc has no polarity; either way round is fine.)</p>
+</div>
+
+<h2 id="s5"><span class="num">5</span> Charge it, then light it</h2>
+<p>First contact: make light from a part with no battery in it.</p>
+<ol class="steps">
+  <li>Plug a <span class="val">1000 µF</span> capacitor into the board: + leg in one row (call it node <span class="node">A</span>), striped leg in another row jumpered to the <strong>ground rail</strong>. Stripe check.</li>
+  <li>Run a <span class="val">220 Ω</span> resistor from the <strong>+ rail</strong> to node <span class="node">A</span>. Power on. Count two seconds — the capacitor is charging. Meter check: node <span class="node">A</span> reads ≈ <span class="val">5 V</span>.</li>
+  <li><strong>Disconnect the charging path</strong> — pull the resistor's rail end out. The supply is now out of the story. Predict: what does the meter read at node <span class="node">A</span>? Check.</li>
+  <li>Now touch an LED + <span class="val">220 Ω</span> chain from node <span class="node">A</span> to ground (long LED leg toward <span class="node">A</span>). Predict first — then watch.</li>
+</ol>
+<p>A flash, then a fade, then dark. <strong>Where did that light come from?</strong> From the <strong>energy</strong> you parked on the plates. The supply crowded charge onto the capacitor; when you opened a path, that charge flowed back around the loop, and the LED turned the stored energy into light and a little heat. The charge itself wasn't eaten — it moved. The energy is what got spent. That's a capacitor's whole career: store now, spend later.</p>
+
+<h2 id="s6"><span class="num">6</span> Watch it fill</h2>
+<p>Charging through <span class="val">220 Ω</span> was too fast to see. Swap in a big resistor and the fill goes slow motion — slow enough to <em>time</em>:</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 260" role="img" aria-label="Supply charging a capacitor through a 10 kilohm resistor, with the meter watching the capacitor's voltage">
+    <line class="w" x1="90" y1="60" x2="90" y2="118"/>
+    <line class="w" x1="66" y1="118" x2="114" y2="118"/>
+    <line class="w" x1="78" y1="138" x2="102" y2="138"/>
+    <line class="w" x1="90" y1="138" x2="90" y2="210"/>
+    <text class="lbl" x="58" y="114" text-anchor="end">5 V</text>
+    <text class="lbl" x="126" y="123">+</text>
+    <text class="lbl" x="126" y="146">−</text>
+    <line class="w" x1="90" y1="60" x2="180" y2="60"/>
+    <path class="w" d="M180,60 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <text class="lbl" x="222" y="26" text-anchor="middle">10 kΩ</text>
+    <line class="w" x1="264" y1="60" x2="360" y2="60"/>
+    <circle cx="312" cy="60" r="4.5" fill="var(--ink)"/>
+    <line class="w" x1="360" y1="60" x2="360" y2="105"/>
+    <line class="w" x1="336" y1="105" x2="384" y2="105"/>
+    <path class="w" d="M336,131 a44,44 0 0 0 48,0"/>
+    <line class="w" x1="360" y1="138" x2="360" y2="210"/>
+    <text class="lbl" x="398" y="100">1000 µF</text>
+    <text class="lbl" x="316" y="90">+</text>
+    <line class="w" x1="90" y1="210" x2="360" y2="210"/>
+    <circle cx="497" cy="98" r="17" fill="#fff" stroke="var(--copper)" stroke-width="2.5"/>
+    <text class="lbl" x="497" y="104" text-anchor="middle" fill="var(--copper-ink)" font-weight="700">V</text>
+    <path class="flow" d="M484,88 L318,64"/>
+    <circle cx="314" cy="63" r="4" fill="#b23a32"/>
+    <text class="lbl-muted" x="490" y="136" text-anchor="middle">red probe here</text>
+    <text class="lbl-muted" x="490" y="152" text-anchor="middle">black at ground</text>
+    <g class="nodeb"><circle cx="285" cy="60" r="13"/><text x="285" y="65" text-anchor="middle">A</text></g>
+  </svg>
+  <figcaption>The fill, in slow motion: supply → <span class="val">10 kΩ</span> → capacitor. The meter watches node <span class="node">A</span> — the capacitor's + plate.</figcaption>
+</figure>
+
+<ol class="steps">
+  <li>Rebuild the charge circuit with <span class="val">10 kΩ</span> instead of 220. Meter on node <span class="node">A</span>.</li>
+  <li><strong>Drain first:</strong> before every timed run, pull the charging path out, then hold a bare <span class="val">220 Ω</span> — no LED — across the capacitor, node <span class="node">A</span> to ground, until the meter reads under <span class="val">0.1 V</span>. Two seconds does it. Take the drain resistor back out before the run. A fair race starts empty — and an LED chain can't get you there, as §7 is about to prove.</li>
+  <li>Connect the charging path and start counting. <strong>Stop the clock when the meter crosses <span class="val">3.2 V</span></strong> — that's today's finish line, same for every race. Write the time down.</li>
+</ol>
+<p>Watch the numbers as it fills: fast at first, then slower and slower — the fuller it gets, the weaker the push across the resistor, the slower the pour. It <em>creeps</em> toward 5 V and never quite arrives. (Why 3.2 V is the fair finish line is a secret the math box spills.)</p>
+
+<div class="callout predict">
+  <p class="label">Predict, then race</p>
+  <p>Your 10 kΩ / 1000 µF time is the baseline. Predict each of these <em>before</em> you build it — more resistance means a slower pour; a smaller capacitor is a smaller bucket:</p>
+  <table>
+    <tr><th>Fill through…</th><th>Capacitor</th><th>Predict (s)</th><th>Measured (s)</th></tr>
+    <tr><td>10 kΩ (baseline)</td><td>1000 µF</td><td>—</td><td></td></tr>
+    <tr><td>1 kΩ</td><td>1000 µF</td><td></td><td></td></tr>
+    <tr><td>10 kΩ</td><td>100 µF</td><td></td><td></td></tr>
+  </table>
+</div>
+
+<h2 id="s7"><span class="num">7</span> The drain race</h2>
+<p>Fades obey the same clock, run backwards. Charge the <span class="val">1000 µF</span> fully (through 220, quick), disconnect the supply, then discharge into a <strong>red</strong> LED chain and watch the light die (red for everyone — you'll compare notes at the end):</p>
+<ol class="steps">
+  <li>Race 1: red LED + <span class="val">220 Ω</span>. Watch the fade; count its length.</li>
+  <li>Race 2: recharge, then the same red LED + <span class="val">1 kΩ</span>. <strong>Predict first:</strong> brighter or dimmer? Longer or shorter?</li>
+</ol>
+<p>The 1 kΩ drain is <strong>dimmer and slower</strong> — less current is less light <em>and</em> a gentler pour. Now the meter reveal: when the light has completely died, measure the capacitor. Predict first.</p>
+<div class="callout note">
+  <p class="label">The fade dies, the charge doesn't</p>
+  <p>The meter still reads <strong>well over a volt</strong>. Write your number down — the table next to you will have a slightly different one, and both are right: no two LEDs give up at exactly the same point. The capacitor isn't empty; its voltage has just sunk to where the red LED passes too little current for your eyes to catch, so the fade outlived your looking. Dark doesn't mean drained: one more reason the meter, not your eyes, gets the last word.</p>
+</div>
+
+<h2 id="s8"><span class="num">8</span> Why the flash always ends</h2>
+<p>One more build, one sharp idea. Wire supply → <span class="val">220 Ω</span> → LED → capacitor → ground — the capacitor <em>in the loop</em>, stripe to ground. Predict: steady light, or something else?</p>
+<p>A flash, then dark — while the power is still on. Current flowed only while charge was piling onto the plates; once the capacitor filled, the pileup stopped, and so did the current. <strong>A capacitor passes current only while its voltage is changing.</strong> Steady current can't cross the gap — remember this sentence; the digital semester is built on it.</p>
+
+<h2 id="s9"><span class="num">9</span> Challenge: the five-second fill</h2>
+<p>The fill circuit one more time — but now the schematic reads <strong>R = <span class="val">▢</span>, C = <span class="val">▢</span></strong>. Pick them from your kit so the fill from 0 to <span class="val">3.2 V</span> takes <strong>as close to five seconds as you can get</strong>. Series and parallel resistor tricks are legal. Predict from your race table, drain properly, build, time it, adjust. Closest table wins.</p>
+
+<div class="callout tryit">
+  <p class="label">Go further — for the fast and the curious</p>
+  <p><strong>1.</strong> Borrow a neighbor's <span class="val">10 kΩ</span> and refill through <span class="val">10 kΩ + 10 kΩ</span> in series — predict the time first. Twice the squeeze, twice the…? <strong>2.</strong> Plug both 1000 µF capacitors in <em>parallel</em> and rerun the baseline fill. Capacitance <em>adds</em> in parallel — two buckets side by side — the reverse of what resistors did. <strong>3.</strong> The pocket flashlight: charge a 1000 µF, pull it gently from the board, walk it across the room, and light a neighbor's LED. <strong>4.</strong> Try the tiny <span class="val">100 nF</span> disc in the fill circuit. Nothing visible? It's 10,000× smaller — some buckets are thimbles. It'll get its real job beside a chip, soon. <strong>5.</strong> Make <strong>alternating current</strong> with your bare hands: plug two LEDs in <em>anti-parallel</em> (second one reversed) behind one 220 Ω, then swap the supply leads back and forth, steadily. The LEDs take turns — you're generating AC at about 1 Hz. One part is banned from this game: the electrolytics — a supply that keeps reversing is exactly what the cans can't survive. (How capacitors and AC actually get along is on the <em>How AC Works</em> page, Under the hood.)</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>The secret of 3.2 V: multiply resistance by capacitance and you get <em>seconds</em>:</p>
+  <math display="block"><mrow><mi>τ</mi><mo>=</mo><mi>R</mi><mo>×</mo><mi>C</mi><mo>=</mo><mn>10</mn><mtext>&#160;kΩ</mtext><mo>×</mo><mn>1000</mn><mtext>&#160;µF</mtext><mo>=</mo><mn>10</mn><mtext>&#160;s</mtext></mrow></math>
+  <p>— and that product is exactly how long the fill takes to reach 63% of the supply. 63% of 5 V ≈ <span class="val">3.2 V</span>: your stopwatch was measuring <strong>τ</strong> all along. (Baseline landed at 8 or 12 seconds instead of 10? Blame the can, not your clock — electrolytics commonly run ±20% from their printed value.) Check it against your race table, then read the <em>τ = RC</em> sheet on the math shelf for the whole story.</p>
+</div>
+
+<h2 id="s10"><span class="num">10</span> Words to know</h2>
+<dl class="vocab">
+  <dt>capacitor</dt><dd>two plates and a gap — a component that stores charge</dd>
+  <dt>capacitance</dt><dd>how much it holds, measured in farads: <span class="val">µF</span> and <span class="val">nF</span> in our kit</dd>
+  <dt>charge / discharge</dt><dd>filling the plates / spending what's stored</dd>
+  <dt>electrolytic capacitor</dt><dd>the big polarized cans — stripe marks the − leg, and it matters</dd>
+  <dt>ceramic capacitor</dt><dd>the tiny disc — small, fast, no polarity</dd>
+  <dt>polarized</dt><dd>a part with a + and − that must face the right way</dd>
+</dl>
+
+<h2 id="s11"><span class="num">11</span> Exit ticket</h2>
+<p>On your card: <strong>1.</strong> draw the charge circuit and the LED discharge circuit from memory (schematic symbols, stripe side marked). <strong>2.</strong> One sentence: where did the <strong>energy</strong> for the light come from after the supply was disconnected? Hand it in at the door.</p>
+<p>Then the teardown ritual: hold the bare <span class="val">220 Ω</span> across every capacitor until the meter calls it empty. Parts go back in the box asleep.</p>
+
+<footer class="lesson-foot">
+  <span>StarLeap Electronics · Lesson 6</span>
+  <span>Next: The Transistor Switch</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P = IV</title>
+<style>
+/* Embedded copy of assets/lesson.css (math-shelf accent: violet) — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--violet);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--violet-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.idea    .label { color: var(--violet); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 26px;
+  text-align: center;
+  margin: .8em 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  .callout, figure.schematic, table, ol.steps > li { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html" class="cur">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Math shelf · Optional — for the curious &middot; build 2026.09.23-1531</p>
+  <h1>P = IV</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The law</p>
+  <p><strong>P = I × V.</strong> Power equals current times voltage drop — measured in <strong>watts (W)</strong>, the rate energy is being delivered. Every part in a circuit is converting energy at some number of watts, right now.</p>
+</div>
+
+<h2>What power is</h2>
+<p>Energy is the stuff (measured in joules); <strong>power is how fast it moves</strong> (joules per second = watts). A part with current flowing <em>through</em> it and voltage dropping <em>across</em> it is taking energy out of the circuit at P = I × V watts — the LED turns its share into light, the resistor turns its share into heat. (Why the units multiply out so neatly is on the <a href="math-whats-a-coulomb.html">What's a Coulomb?</a> sheet — it's arithmetic, not coincidence.)</p>
+
+<h2>Three ways to hold it</h2>
+<table>
+  <tr><th>You know</th><th>You want</th><th>Use</th></tr>
+  <tr><td>current and voltage</td><td>the power</td><td><span class="val">P = I × V</span></td></tr>
+  <tr><td>power and voltage</td><td>the current</td><td><span class="val">I = P ÷ V</span></td></tr>
+  <tr><td>power and current</td><td>the voltage</td><td><span class="val">V = P ÷ I</span></td></tr>
+</table>
+
+<figure class="schematic">
+  <svg viewBox="0 0 300 180" role="img" aria-label="The power triangle: P on top, I and V side by side below">
+    <path class="w" d="M150,18 L282,162 L18,162 Z"/>
+    <line class="w" x1="84" y1="90" x2="216" y2="90"/>
+    <line class="w" x1="150" y1="90" x2="150" y2="162"/>
+    <text class="lbl" x="150" y="72" text-anchor="middle" font-size="30" font-weight="700">P</text>
+    <text class="lbl" x="115" y="138" text-anchor="middle" font-size="30" font-weight="700">I</text>
+    <text class="lbl" x="185" y="138" text-anchor="middle" font-size="30" font-weight="700">V</text>
+  </svg>
+  <figcaption><b>Same triangle trick as V = IR:</b> cover the one you want. Units shortcut, too: <span class="val">mA × V = mW</span> (milliwatts).</figcaption>
+</figure>
+
+<h2>Worked: the energy books of one LED loop</h2>
+<p>The classic loop — 5 V supply, red LED (2.0 V drop), 220 Ω resistor (3.0 V drop), 14 mA everywhere:</p>
+<table>
+  <tr><th>Part</th><th>P = I × V</th><th>Becomes</th></tr>
+  <tr><td>LED</td><td>14 mA × 2.0 V = <span class="val">28 mW</span></td><td>light (and a little warmth)</td></tr>
+  <tr><td>Resistor</td><td>14 mA × 3.0 V = <span class="val">42 mW</span></td><td>heat, on purpose</td></tr>
+  <tr><td><strong>Supply delivers</strong></td><td>14 mA × 5.0 V = <span class="val">70 mW</span></td><td>28 + 42 ✓ — the books balance</td></tr>
+</table>
+<p>Notice the quiet scandal: <strong>the resistor throws away more power than the LED uses.</strong> That's the price of the simple circuit — the resistor's job is to burn off the extra push as heat, and 42 mW of heat is so little you'll never feel it.</p>
+
+<h2>Why kit resistors have a rating</h2>
+<p>Our resistors are rated <strong>¼ W = 250 mW</strong> — the most heat they can shed before they cook. The classic loop's 42 mW isn't close. But watch what happens as resistance falls across the full 5 V:</p>
+<table>
+  <tr><th>Straight across 5 V</th><th>Current (I = V ÷ R)</th><th>Power (P = I × V)</th><th>Verdict</th></tr>
+  <tr><td>1 kΩ</td><td>5 mA</td><td>25 mW</td><td>cool</td></tr>
+  <tr><td>220 Ω</td><td>≈ 23 mA</td><td>≈ 114 mW</td><td>warm, fine</td></tr>
+  <tr><td>100 Ω</td><td>50 mA</td><td>250 mW</td><td><strong>at the limit</strong> — noticeably hot</td></tr>
+  <tr><td>a bare wire (≈ 0 Ω)</td><td>everything the supply has</td><td>all of it, in the wire</td><td><strong>this is a short — this is why shorts burn</strong></td></tr>
+</table>
+<p>Smaller resistance means more current <em>and</em> the same voltage — power climbs fast. A short circuit is the limit of that story: huge current, all the supply's power converted to heat in a wire that was never meant to shed any.</p>
+
+<h2>For scale</h2>
+<ul>
+  <li>Your LED: <span class="val">0.028 W</span></li>
+  <li>A phone fast-charger: 5 V × 3 A = <span class="val">15 W</span></li>
+  <li>An old incandescent bulb: <span class="val">60 W</span> — over 2,000 of your LEDs</li>
+  <li>A microwave: <span class="val">≈ 1,000 W</span></li>
+</ul>
+
+<div class="callout note">
+  <p class="label">Two shortcuts, for the very curious</p>
+  <p>Substitute Ohm's law (<a href="math-v-equals-ir.html">V = IR</a>) into P = I × V and two more forms fall out: <span class="val">P = I² × R</span> (swap V for IR) and <span class="val">P = V² ÷ R</span> (swap I for V÷R). Handy when you only know two things about a resistor — engineers reach for all three without thinking.</p>
+</div>
+
+<h2>Practice</h2>
+<p>Answers at the bottom. The currents come from V = IR — that sheet first if these feel unfair.</p>
+<ol>
+  <li>The blue-LED loop: 3.2 V drop, 8 mA. What power does the blue LED take?</li>
+  <li>Same loop: the 220 Ω resistor has the other 1.8 V. Its power?</li>
+  <li>A 1 kΩ resistor sits straight across the 5 V rails. Power? Is ¼ W enough?</li>
+  <li>What resistance straight across 5 V would hit the ¼ W limit exactly? (Two steps: I = P ÷ V first, then R = V ÷ I.)</li>
+</ol>
+
+<h2>Answers</h2>
+<p><strong>1.</strong> 8 mA × 3.2 V ≈ 26 mW. <strong>2.</strong> 8 mA × 1.8 V ≈ 14 mW — this loop wastes <em>less</em> than the red one; the blue LED claims more of the 5 V. <strong>3.</strong> I = 5 mA, P = 25 mW — a tenth of the rating; fine. <strong>4.</strong> I = 0.25 ÷ 5 = 50 mA, then R = 5 ÷ 0.05 = <strong>100 Ω</strong> — which is why nothing smaller than 220 Ω belongs across the rails.</p>
+
+<footer class="lesson-foot">
+  <span>Electronics · Math shelf · P = IV</span>
+  <span>Watts = how fast the energy moves</span>
+</footer>
+
+</body>
+</html>

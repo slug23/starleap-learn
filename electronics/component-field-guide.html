@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Component Field Guide</title>
+<style>
+/* Embedded subset of assets/lesson.css + field-guide styles. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16.5px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 20px; }
+.lesson-head h1 { margin: 0 0 8px; font-size: clamp(32px, 6vw, 44px); line-height: 1.05; }
+.tagline { margin: 0; font-size: 18px; color: var(--muted); }
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--copper);
+  padding-bottom: 6px;
+}
+p { margin: .6em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+section.comp {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+.comp .sym {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 10px;
+}
+.comp .sym svg { width: 100%; height: auto; display: block; }
+.comp h3 { margin: 0 0 4px; font-size: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.comp .job { margin: 0 0 8px; color: var(--muted); font-size: 16px; }
+.chip {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1.5px solid var(--line);
+  border-radius: 99px;
+  padding: 2px 10px;
+}
+ul.facts { list-style: none; padding: 0; margin: 0; }
+ul.facts li { margin: 5px 0; font-size: 15.5px; }
+ul.facts b { color: var(--copper-ink); }
+ul.facts li.warn b { color: var(--red); }
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+table { width: 100%; border-collapse: collapse; font-size: 15px;
+        background: var(--card); margin: .8em 0; }
+th, td { border: 1px solid var(--line); padding: 7px 11px;
+         text-align: left; vertical-align: middle; }
+th { background: var(--copper-soft); font-size: 12.5px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.sw { display: inline-block; width: 26px; height: 14px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+.codebox {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 14px 0 6px;
+}
+.codebox figure { margin: 0 0 8px; text-align: center; }
+.codebox figure svg { width: 100%; max-width: 340px; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+footer.lesson-foot {
+  margin-top: 60px; border-top: 1.5px solid var(--line); padding-top: 12px;
+  font-size: 13.5px; color: var(--muted);
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 11.5pt; }
+  section.comp, .codebox, table { break-inside: avoid; }
+  h2 { break-after: avoid; }
+}
+@media (max-width: 600px) {
+  body { padding: 28px 18px 60px; }
+  section.comp { grid-template-columns: 1fr; }
+  .comp .sym { max-width: 220px; }
+  .cols { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-1531</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html" class="cur">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Reference card · Keep me all year &middot; build 2026.09.23-1531</p>
+  <h1>Component Field Guide</h1>
+</header>
+
+<h2>In your kit now</h2>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Power source schematic symbol">
+      <line class="w" x1="10" y1="40" x2="66" y2="40"/>
+      <line class="w" x1="66" y1="16" x2="66" y2="64"/>
+      <line class="w" x1="84" y1="28" x2="84" y2="52"/>
+      <line class="w" x1="84" y1="40" x2="140" y2="40"/>
+      <text class="lbl" x="62" y="12" text-anchor="middle">+</text>
+      <text class="lbl" x="88" y="12" text-anchor="middle">−</text>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>Power source</h3>
+    <p class="job">Supplies the voltage that drives current around the loop, out of the + terminal and back into −.</p>
+    <ul class="facts">
+      <li><b>Symbol:</b> the long line is +, the short line is −.</li>
+      <li><b>In real life:</b> our power supply — red wire = +, black wire = −, supplying <span class="val">5 V</span>. (Inside it: a rechargeable battery.)</li>
+      <li><b>Unit:</b> volts (V).</li>
+      <li class="warn"><b>Watch out:</b> red touching black with nothing in between is a short circuit — safety rule 1.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Wire and junction schematic symbol">
+      <line class="w" x1="10" y1="40" x2="140" y2="40"/>
+      <line class="w" x1="75" y1="10" x2="75" y2="40"/>
+      <circle class="jdot" cx="75" cy="40" r="4.5"/>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>Wire, pinch &amp; jumper</h3>
+    <p class="job">The connections. Any solid line in a schematic; everything a line touches is one node.</p>
+    <ul class="facts">
+      <li><b>Symbol:</b> a plain line. A <strong>dot</strong> where lines meet = joined there; no dot = just crossing.</li>
+      <li><b>In real life:</b> a finger pinch (lesson 1!), a jumper wire, or a breadboard row's hidden metal strip.</li>
+      <li><b>Resistance:</b> ≈ <span class="val">0 Ω</span> — current flows through for free.</li>
+      <li class="warn"><b>Watch out:</b> in a pinch, metal must press metal (skin can't conduct for you) — and a jumper can be broken <em>inside</em> its plastic. Beep-test when in doubt.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Resistor schematic symbol">
+      <line class="w" x1="10" y1="40" x2="40" y2="40"/>
+      <path class="w" d="M40,40 l5,-10 l10,20 l10,-20 l10,20 l10,-20 l10,20 l5,-10"/>
+      <line class="w" x1="100" y1="40" x2="140" y2="40"/>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>Resistor</h3>
+    <p class="job">The current limiter. Adds a known amount of resistance to the loop, which sets how much current flows — and protects components that would otherwise draw more than they can survive.</p>
+    <ul class="facts">
+      <li><b>Direction:</b> either way — no polarity. The most forgiving part in the kit.</li>
+      <li><b>Unit:</b> ohms (Ω). <span class="val">1 kΩ</span> = 1,000 Ω. Bigger number = harder squeeze = less current.</li>
+      <li><b>In real life:</b> a little tan cylinder with colored stripes — the stripes are its value (chart below).</li>
+      <li><b>Bonus fact:</b> the energy it absorbs becomes heat. A resistor asked to absorb too much gets <em>hot</em>.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="codebox">
+  <figure>
+    <svg viewBox="0 0 300 92" role="img" aria-label="Resistor with red, red, brown color bands decoding to 220 ohms">
+      <line class="w" x1="10" y1="40" x2="70" y2="40"/>
+      <rect x="70" y="24" width="120" height="32" rx="14" fill="#ead9b0" stroke="var(--ink)" stroke-width="2"/>
+      <rect x="92" y="24" width="12" height="32" fill="#c62828"/>
+      <rect x="122" y="24" width="12" height="32" fill="#c62828"/>
+      <rect x="152" y="24" width="12" height="32" fill="#7b4a12"/>
+      <line class="w" x1="190" y1="40" x2="290" y2="40"/>
+      <text class="lbl" x="98" y="78" text-anchor="middle">2</text>
+      <text class="lbl" x="128" y="78" text-anchor="middle">2</text>
+      <text class="lbl" x="158" y="78" text-anchor="middle">×10</text>
+      <text class="lbl" x="240" y="78" text-anchor="middle">= 220 Ω</text>
+    </svg>
+  </figure>
+  <p style="margin-top:0"><strong>The resistor color code:</strong> first stripe = a digit, second stripe = a digit, third stripe = how many zeros to hang on the end. Most resistors add a <strong>gold</strong> stripe (±5% tolerance) — gold marks the <em>end</em>, so start reading from the other side.</p>
+  <div class="cols">
+    <table>
+      <tr><th>Color</th><th>Digit</th></tr>
+      <tr><td><span class="sw" style="background:#111"></span> black</td><td>0</td></tr>
+      <tr><td><span class="sw" style="background:#7b4a12"></span> brown</td><td>1</td></tr>
+      <tr><td><span class="sw" style="background:#c62828"></span> red</td><td>2</td></tr>
+      <tr><td><span class="sw" style="background:#ef6c00"></span> orange</td><td>3</td></tr>
+      <tr><td><span class="sw" style="background:#f9d13e"></span> yellow</td><td>4</td></tr>
+      <tr><td><span class="sw" style="background:#2e7d32"></span> green</td><td>5</td></tr>
+      <tr><td><span class="sw" style="background:#1565c0"></span> blue</td><td>6</td></tr>
+      <tr><td><span class="sw" style="background:#6a1b9a"></span> violet</td><td>7</td></tr>
+      <tr><td><span class="sw" style="background:#757575"></span> gray</td><td>8</td></tr>
+      <tr><td><span class="sw" style="background:#fdfdfd"></span> white</td><td>9</td></tr>
+    </table>
+    <table>
+      <tr><th>Kit value</th><th>Stripes</th></tr>
+      <tr><td><span class="val">220 Ω</span></td><td><span class="sw" style="background:#c62828"></span> <span class="sw" style="background:#c62828"></span> <span class="sw" style="background:#7b4a12"></span> red·red·brown</td></tr>
+      <tr><td><span class="val">470 Ω</span></td><td><span class="sw" style="background:#f9d13e"></span> <span class="sw" style="background:#6a1b9a"></span> <span class="sw" style="background:#7b4a12"></span> yellow·violet·brown</td></tr>
+      <tr><td><span class="val">1 kΩ</span></td><td><span class="sw" style="background:#7b4a12"></span> <span class="sw" style="background:#111"></span> <span class="sw" style="background:#c62828"></span> brown·black·red</td></tr>
+      <tr><td><span class="val">4.7 kΩ</span></td><td><span class="sw" style="background:#f9d13e"></span> <span class="sw" style="background:#6a1b9a"></span> <span class="sw" style="background:#c62828"></span> yellow·violet·red</td></tr>
+      <tr><td><span class="val">10 kΩ</span></td><td><span class="sw" style="background:#7b4a12"></span> <span class="sw" style="background:#111"></span> <span class="sw" style="background:#ef6c00"></span> brown·black·orange</td></tr>
+    </table>
+  </div>
+  <p style="margin-bottom:2px" class="job">Not sure? The multimeter's Ω mode settles every argument — part out of the circuit, fingers off the metal.</p>
+</div>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 150 80" role="img" aria-label="LED schematic symbol">
+      <line class="w" x1="10" y1="40" x2="58" y2="40"/>
+      <polygon class="w" points="58,24 58,56 86,40"/>
+      <line class="w" x1="86" y1="24" x2="86" y2="56"/>
+      <line class="w" x1="86" y1="40" x2="140" y2="40"/>
+      <path class="w" d="M80,22 L94,8 M94,8 l-10,2 M94,8 l-2,10" stroke-width="1.8"/>
+      <path class="w" d="M96,32 L110,18 M110,18 l-10,2 M110,18 l-2,10" stroke-width="1.8"/>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>LED <span class="chip">light-emitting diode</span></h3>
+    <p class="job">Turns current into light — but only in one direction. The triangle points the way the current flows.</p>
+    <ul class="facts">
+      <li><b>Direction:</b> one-way street. Long leg = + side (toward the supply's +). Legs trimmed? The flat spot on the dome's rim marks the − side.</li>
+      <li><b>Voltage drop:</b> red/yellow/green ≈ <span class="val">2 V</span> · blue/white ≈ <span class="val">3 V</span> — the datasheet name is <em>forward voltage</em>. In series, drops add.</li>
+      <li><b>Backwards?</b> Nothing happens — it just blocks. Flip it.</li>
+      <li class="warn"><b>Watch out:</b> never power an LED without its resistor bodyguard — a naked LED can pop. Safety rule 2.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Switch schematic symbol">
+      <line class="w" x1="10" y1="40" x2="48" y2="40"/>
+      <circle class="w" cx="53" cy="40" r="4"/>
+      <line class="w" x1="57" y1="37" x2="93" y2="16"/>
+      <circle class="w" cx="97" cy="40" r="4"/>
+      <line class="w" x1="101" y1="40" x2="140" y2="40"/>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>Slide switch</h3>
+    <p class="job">A drawbridge for the loop: open = broken loop, closed = complete loop. It works anywhere in a series path.</p>
+    <ul class="facts">
+      <li><b>Symbol:</b> a lever and a gap — only two terminals, because a schematic cares about one thing: is the loop open or closed? Your real part has three legs; the symbol doesn't draw the one you leave empty.</li>
+      <li><b>Legs:</b> three. The <strong>middle leg is the common one</strong> — it connects to one end leg or the other, depending on the slider. Use the middle plus either end.</li>
+      <li><b>Direction:</b> either way around.</li>
+      <li class="warn"><b>Watch out:</b> wiring the two <em>outer</em> legs skips the middle — that "switch" never conducts in either position. Classic head-scratcher.</li>
+    </ul>
+  </div>
+</section>
+
+<h2>Arriving later this semester</h2>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Potentiometer schematic symbol">
+      <line class="w" x1="10" y1="52" x2="40" y2="52"/>
+      <path class="w" d="M40,52 l5,-10 l10,20 l10,-20 l10,20 l10,-20 l10,20 l5,-10"/>
+      <line class="w" x1="100" y1="52" x2="140" y2="52"/>
+      <line class="w" x1="75" y1="10" x2="75" y2="34"/>
+      <polygon points="75,42 69,32 81,32" fill="var(--ink)"/>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>Potentiometer <span class="chip">lesson 5</span></h3>
+    <p class="job">A resistor with a knob: the arrow is a slider ("wiper") that taps any point along the resistance.</p>
+    <ul class="facts">
+      <li><b>Also called:</b> a <strong>variable resistor</strong> — or just "a pot." Same part, all three names.</li>
+      <li><b>Legs:</b> three. The outer two are the ends of a fixed resistor; the middle is the wiper.</li>
+      <li><b>Value:</b> ours are <span class="val">10 kΩ</span> — measured outer leg to outer leg, and that never changes. The knob doesn't change the pot's size; it changes where the split falls inside it.</li>
+      <li><b>The trick:</b> it's an adjustable voltage divider — turn the knob, move the split.</li>
+      <li><b>In real life:</b> every volume knob you have ever turned.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 300 80" role="img" aria-label="Capacitor schematic symbols, plain and polarized">
+      <line class="w" x1="10" y1="40" x2="60" y2="40"/>
+      <line class="w" x1="60" y1="18" x2="60" y2="62"/>
+      <line class="w" x1="76" y1="18" x2="76" y2="62"/>
+      <line class="w" x1="76" y1="40" x2="120" y2="40"/>
+      <text class="lbl-muted" x="68" y="76" text-anchor="middle">ceramic</text>
+      <line class="w" x1="180" y1="40" x2="228" y2="40"/>
+      <line class="w" x1="228" y1="18" x2="228" y2="62"/>
+      <path class="w" d="M256,18 a34,34 0 0 0 0,44"/>
+      <line class="w" x1="248" y1="40" x2="290" y2="40"/>
+      <text class="lbl" x="214" y="14">+</text>
+      <text class="lbl-muted" x="238" y="76" text-anchor="middle">electrolytic</text>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>Capacitor <span class="chip">lesson 6</span></h3>
+    <p class="job">A bucket for charge — fills up, then empties, and takes time to do either. Time is what we'll use it for.</p>
+    <ul class="facts">
+      <li><b>Unit:</b> farads — but a whole farad is enormous, so ours are marked in microfarads (<span class="val">µF</span>) and nanofarads (<span class="val">nF</span>). <span class="val">1 µF</span> = 1,000 nF.</li>
+      <li><b>Ceramic (small discs):</b> either way around.</li>
+      <li><b>Electrolytic (little cans):</b> polarized! The striped side is −, the long leg is +.</li>
+      <li><b>Reading the value:</b> cans print it outright (<span class="val">1000 µF</span>). Discs use a three-digit code instead: <span class="val">104</span> means 10 with four zeros, in <em>picofarads</em> — 100,000 pF, which is <span class="val">100 nF</span>.</li>
+      <li class="warn"><b>Watch out:</b> an electrolytic wired backwards heats up and can burst its can. Stripe to −, always.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 150 80" role="img" aria-label="NPN transistor schematic symbol">
+      <circle class="w" cx="78" cy="40" r="28"/>
+      <line class="w" x1="10" y1="40" x2="68" y2="40"/>
+      <line class="w" x1="68" y1="26" x2="68" y2="54"/>
+      <line class="w" x1="68" y1="33" x2="92" y2="16"/>
+      <line class="w" x1="92" y1="16" x2="92" y2="6"/>
+      <line class="w" x1="68" y1="47" x2="92" y2="64"/>
+      <polygon points="92,64 81,62 86,54" fill="var(--ink)"/>
+      <line class="w" x1="92" y1="64" x2="92" y2="76"/>
+      <text class="lbl-muted" x="18" y="32">B</text>
+      <text class="lbl-muted" x="102" y="12">C</text>
+      <text class="lbl-muted" x="102" y="74">E</text>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>Transistor <span class="chip">lesson 7 · NPN</span></h3>
+    <p class="job">The electric lever: a trickle of current into the base (B) lets a flood flow from collector (C) to emitter (E).</p>
+    <ul class="facts">
+      <li><b>Legs:</b> three — base, collector, emitter. The symbol's arrow sits on the emitter.</li>
+      <li><b>In real life:</b> a little black half-cylinder with three legs and a flat face.</li>
+      <li class="warn"><b>Check first:</b> which leg is which varies between part numbers — always check the lesson's diagram for <em>your</em> part before wiring.</li>
+      <li class="warn"><b>Watch out:</b> the base behaves like a small LED — it opens at ≈ <span class="val">0.7 V</span> and drops that much no matter what. So the <strong>base never connects straight to 5 V</strong>: it always gets its own resistor, exactly like safety rule 2. A bare base across the supply is a cooked transistor.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Light-dependent resistor schematic symbol">
+      <circle class="w" cx="80" cy="44" r="27"/>
+      <line class="w" x1="10" y1="44" x2="53" y2="44"/>
+      <path class="w" d="M60,44 l4,-8 l8,16 l8,-16 l8,16 l4,-8" stroke-width="2"/>
+      <line class="w" x1="107" y1="44" x2="145" y2="44"/>
+      <path class="w" d="M28,6 L48,24 M48,24 l-9,-1 M48,24 l-1,-9" stroke-width="1.8"/>
+      <path class="w" d="M46,2 L64,18 M64,18 l-9,-1 M64,18 l-1,-9" stroke-width="1.8"/>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>LDR <span class="chip">lesson 8 · light-dependent resistor</span></h3>
+    <p class="job">A resistor that changes its mind: bright light = low resistance, darkness = high resistance.</p>
+    <ul class="facts">
+      <li><b>Also called:</b> a <strong>photoresistor</strong> — same part, both names are everywhere.</li>
+      <li><b>Direction:</b> either way.</li>
+      <li><b>Try it:</b> put your meter on Ω and cover it with your hand — watch the number climb.</li>
+      <li><b>The payoff:</b> team it with a divider and a transistor and you've built a night-light.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 150 90" role="img" aria-label="555 timer chip, top view with pin 1 marked">
+      <rect class="w" x="45" y="14" width="60" height="62" rx="4"/>
+      <path class="w" d="M68,14 a7,7 0 0 0 14,0"/>
+      <line class="w" x1="45" y1="24" x2="34" y2="24"/>
+      <line class="w" x1="45" y1="40" x2="34" y2="40"/>
+      <line class="w" x1="45" y1="56" x2="34" y2="56"/>
+      <line class="w" x1="45" y1="72" x2="34" y2="72"/>
+      <line class="w" x1="105" y1="24" x2="116" y2="24"/>
+      <line class="w" x1="105" y1="40" x2="116" y2="40"/>
+      <line class="w" x1="105" y1="56" x2="116" y2="56"/>
+      <line class="w" x1="105" y1="72" x2="116" y2="72"/>
+      <circle class="jdot" cx="53" cy="26" r="3.5"/>
+      <text class="lbl" x="75" y="52" text-anchor="middle">555</text>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>555 timer <span class="chip">lesson 9 · your first chip</span></h3>
+    <p class="job">A whole circuit sealed in a black box: it makes steady on-off pulses — blinks you can see, and later, tones you can hear.</p>
+    <ul class="facts">
+      <li><b>Legs:</b> eight. The <strong>notch or dot marks pin 1</strong>; count counterclockwise from there (viewed from the top).</li>
+      <li><b>On the board:</b> it straddles the ravine, one row of legs per side.</li>
+      <li class="warn"><b>Watch out:</b> a chip plugged in backwards gets hot fast. Notch first, power after.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="comp">
+  <div class="sym">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Loudspeaker schematic symbol">
+      <line class="w" x1="10" y1="30" x2="52" y2="30"/>
+      <line class="w" x1="10" y1="50" x2="52" y2="50"/>
+      <rect class="w" x="52" y="24" width="16" height="32"/>
+      <path class="w" d="M68,24 L92,10 L92,70 L68,56 Z"/>
+      <path class="w" d="M102,28 a18,18 0 0 1 0,24" stroke-width="1.8"/>
+      <path class="w" d="M113,19 a30,30 0 0 1 0,42" stroke-width="1.8"/>
+    </svg>
+  </div>
+  <div class="info">
+    <h3>Piezo / speaker <span class="chip">lesson 10</span></h3>
+    <p class="job">Turns the 555's pulses into sound — the same on-off signal as the blinker, just fast enough that your ear hears a tone where your eye saw a flash.</p>
+    <ul class="facts">
+      <li><b>Direction:</b> either way around.</li>
+      <li><b>In real life:</b> the piezo is a brass disc about the size of a coin; the speaker is a miniature version of the cone in your headphones.</li>
+      <li class="warn"><b>Watch out:</b> a speaker's coil is nearly a short circuit — a few ohms — so it gets a resistor in series, the LED's bodyguard idea all over again. A piezo sips current and needs no such help.</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="lesson-foot">
+  <span>Electronics · Component Field Guide v1</span>
+  <span>When in doubt: check the symbol, check the direction, check with the meter</span>
+</footer>
+
+</body>
+</html>
