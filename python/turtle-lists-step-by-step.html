@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11. Lists: A Growing Group Of Turtles · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html" aria-current="page">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a></nav><p class="stamp">Build 2026.09.30-131423-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.30-131423-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Look Inside A List</a></li><li><a href="#section-3">Step 2 - Add One Item</a></li><li><a href="#section-4">Step 3 - Visit Each Item</a></li><li><a href="#section-5">Step 4 - Put One Turtle In A List</a></li><li><a href="#section-6">Step 5 - A Function That Adds A Turtle</a></li><li><a href="#section-7">Step 6 - Move Every Turtle Once</a></li><li><a href="#section-8">Step 7 - Keep The Group Moving Together</a></li><li><a href="#section-9">Step 8 - Choose One Random Turn For The Group</a></li><li><a href="#section-10">Step 9 - Choose A Separate Turn For Each Turtle</a></li><li><a href="#section-11">Step 10 - Add A Turtle Where You Click</a></li><li><a href="#section-12">Step 11 - Add With A Key Too</a></li><li><a href="#section-13">Teacher Check</a></li></ul></details><h1 id="section-1">11. Lists: A Growing Group Of Turtles</h1>
+<p>Continue after Lesson 10, Animation. You will first explore a list without graphics. Then you will keep turtles in a list, visit them with a loop, and add new turtles with events.</p>
+<h2 id="section-2">Step 1 - Look Inside A List</h2>
+<p>Save a small new file named <code>list_practice.py</code>. Type this program.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">colors = [&#x27;red&#x27;, &#x27;gold&#x27;, &#x27;teal&#x27;]</span>
+<span class="new">print(colors)</span>
+<span class="new">print(len(colors))</span>
+<span class="new">print(colors[0])</span>
+<span class="new">print(colors[1])</span></code></pre>
+<p class="callout">Predict: What will each line print? Run the program and check.</p>
+<p>The square brackets hold a <strong>list</strong> of items. <code>len(colors)</code> counts its items. An <strong>index</strong> selects one item: index <code>0</code> is first, index <code>1</code> is second. This list has three items, with indexes <code>0</code>, <code>1</code>, and <code>2</code>.</p>
+<h2 id="section-3">Step 2 - Add One Item</h2>
+<p>Add these lines at the bottom of the same file.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">print(colors[1])</span>
+<span class="new">colors.append(&#x27;blue&#x27;)</span>
+<span class="new">print(colors)</span>
+<span class="new">print(len(colors))</span></code></pre>
+<p class="callout">Run the program. The original items are still there, with blue at the end. <code>append</code> changes the existing list. Write it on its own line, without <code>colors =</code> in front.</p>
+<h2 id="section-4">Step 3 - Visit Each Item</h2>
+<p>Add this loop at the very bottom, after the new <code>print(len(colors))</code> line.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">colors.append(&#x27;blue&#x27;)</span>
+<span class="reference">print(colors)</span>
+<span class="reference">print(len(colors))</span>
+<span class="new">for color in colors:</span>
+<span class="new">    print(color)</span>
+<span class="new">print(&#x27;done&#x27;)</span></code></pre>
+<p class="callout">Run the program. The loop prints one color per pass, then prints done once.</p>
+<p><code>range(4)</code> would give the loop numbers. <code>colors</code> gives it the items themselves. <code>color</code> is a variable holding the current item; its name is your choice.</p>
+<h2 id="section-5">Step 4 - Put One Turtle In A List</h2>
+<p>Save a separate new file named <code>turtle_group.py</code>. Keep the practice file for reference. Type this whole starter program.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import random</span>
+<span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">screen.tracer(0)</span>
+<span class="new">turtles = []</span>
+<span class="new"></span>
+<span class="new">new_turtle = turtle.Turtle()</span>
+<span class="new">new_turtle.shape(&#x27;turtle&#x27;)</span>
+<span class="new">new_turtle.penup()</span>
+<span class="new">turtles.append(new_turtle)</span>
+<span class="new">print(len(turtles))</span>
+<span class="new"></span>
+<span class="new">screen.update()</span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. You should see one turtle and the number <code>1</code> in the output.</p>
+<p><code>[]</code> starts an empty list. A list can hold turtle objects as well as colors or numbers. <code>append</code> keeps a reference to this turtle; it does not make a second turtle.</p>
+<h2 id="section-6">Step 5 - A Function That Adds A Turtle</h2>
+<p>Replace the five lines from <code>new_turtle = turtle.Turtle()</code> through <code>print(len(turtles))</code> with this function and its call.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">turtles = []</span>
+<span class="reference"></span>
+<span class="new">def add_turtle(x, y):</span>
+<span class="new">    new_turtle = turtle.Turtle()</span>
+<span class="new">    new_turtle.shape(&#x27;turtle&#x27;)</span>
+<span class="new">    new_turtle.penup()</span>
+<span class="new">    new_turtle.teleport(x, y)</span>
+<span class="new">    turtles.append(new_turtle)</span>
+<span class="new">    print(len(turtles))</span>
+<span class="new"></span>
+<span class="new">add_turtle(0, 0)</span>
+<span class="reference">screen.update()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. It should look the same. Add a second call, <code>add_turtle(100, 0)</code>, just after <code>add_turtle(0, 0)</code>. Run again: two calls create two separate turtles.</p>
+<p><code>turtles</code> is a global list because it is created at the left edge, outside the functions. <code>new_turtle</code> is local to each function call. The list keeps each turtle available after that call ends.</p>
+<p>We do not need a <code>global turtles</code> statement to append to the existing list. We are changing its contents, not assigning a different list to the name. Keep <code>turtles = []</code> outside the function so adding a turtle does not reset your group.</p>
+<h2 id="section-7">Step 6 - Move Every Turtle Once</h2>
+<p>Add this function below <code>add_turtle</code>, before the two calls at the bottom.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    print(len(turtles))</span>
+<span class="reference"></span>
+<span class="new">def tick():</span>
+<span class="new">    for member in turtles:</span>
+<span class="new">        member.left(5)</span>
+<span class="new">        member.forward(3)</span>
+<span class="new">    screen.update()</span>
+<span class="reference"></span>
+<span class="reference">add_turtle(0, 0)</span>
+<span class="reference">...</span></code></pre>
+<p>Replace the bottom <code>screen.update()</code> with <code>tick()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">add_turtle(0, 0)</span>
+<span class="reference">add_turtle(100, 0)</span>
+<span class="new">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Both turtles turn left 5 degrees and move forward 3 steps. They start in different places, but make the same movement. <code>member</code> holds an actual turtle from the list, not its index.</p>
+<p>The turn and move are indented eight spaces: they belong to the loop inside the function. <code>screen.update()</code> is indented four spaces: it belongs to the function, after the loop. We move every turtle before showing the frame.</p>
+<h2 id="section-8">Step 7 - Keep The Group Moving Together</h2>
+<p>Add one timer at the end of <code>tick()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        member.forward(3)</span>
+<span class="reference">    screen.update()</span>
+<span class="new">    screen.ontimer(tick, 100)</span>
+<span class="reference"></span>
+<span class="reference">add_turtle(0, 0)</span>
+<span class="reference">...</span></code></pre>
+<p class="callout">Run the program. Watch the turtles follow matching circular paths, side by side. Each tick gives both turtles the same turn and distance, so they stay synchronized.</p>
+<h2 id="section-9">Step 8 - Choose One Random Turn For The Group</h2>
+<p>Add <code>turn_degrees</code> inside <code>tick()</code>, just before the <code>for</code> line. Indent it four spaces, the same as the <code>for</code> line. Then replace <code>5</code> in <code>member.left(5)</code> with <code>turn_degrees</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def tick():</span>
+<span class="new">    turn_degrees = random.randint(-30, 30)</span>
+<span class="reference">    for member in turtles:</span>
+<span class="new">        member.left(turn_degrees)</span>
+<span class="reference">        member.forward(3)</span>
+<span class="reference">    screen.update()</span>
+<span class="reference">    screen.ontimer(tick, 100)</span></code></pre>
+<p class="callout">Predict: The turn is random now. Will the turtles still move together?</p>
+<p class="callout">Run the program. Both turtles wander, but stay synchronized. Each tick chooses one number before the loop starts. Every turtle uses that same number during that tick. The next tick chooses again.</p>
+<h2 id="section-10">Step 9 - Choose A Separate Turn For Each Turtle</h2>
+<p>Move <code>turn_degrees = random.randint(-30, 30)</code> from above the <code>for</code> line to immediately below it. Indent it eight spaces so it belongs to the loop. Remove the old copy above the loop; there should be only one assignment.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def tick():</span>
+<span class="reference">    for member in turtles:</span>
+<span class="new">        turn_degrees = random.randint(-30, 30)</span>
+<span class="reference">        member.left(turn_degrees)</span>
+<span class="reference">        member.forward(3)</span>
+<span class="reference">    screen.update()</span>
+<span class="reference">    screen.ontimer(tick, 100)</span></code></pre>
+<p class="callout">Predict: You moved one line without changing its calculation. Will the paths still match?</p>
+<p class="callout">Run the program. Watch them wander separately. The random choice is inside the loop, so Python chooses again for each turtle on every tick. They can sometimes choose the same turn by chance, but no longer have to move alike.</p>
+<p><code>member.left(turn_degrees)</code> did not change. What changed was when Python assigns a new number to <code>turn_degrees</code>: once per tick before the loop, or once per turtle inside it.</p>
+<p>After a while, turtles may wander off the visible area. That does not remove them from the list. Restart to bring them back while you experiment.</p>
+<h2 id="section-11">Step 10 - Add A Turtle Where You Click</h2>
+<p>Delete both startup <code>add_turtle(...)</code> calls. Put a screen-click connection in their place.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    screen.ontimer(tick, 100)</span>
+<span class="reference"></span>
+<span class="new">screen.onclick(add_turtle)</span>
+<span class="reference">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. It starts empty. Click in several places. Each click adds a turtle at that position; the timer moves all of them on later ticks.</p>
+<p>A screen click supplies two arguments: its <code>x</code> and <code>y</code> coordinates. That matches <code>add_turtle(x, y)</code>. Pass the function name without parentheses so the screen can call it later.</p>
+<p>An empty list is safe to loop over: there are no members to move yet, but the rest of <code>tick()</code> still runs.</p>
+<h2 id="section-12">Step 11 - Add With A Key Too</h2>
+<p>Add this new function between <code>add_turtle</code> and <code>tick</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    print(len(turtles))</span>
+<span class="reference"></span>
+<span class="new">def add_at_center():</span>
+<span class="new">    add_turtle(0, 0)</span>
+<span class="reference"></span>
+<span class="reference">def tick():</span>
+<span class="reference">    ...</span></code></pre>
+<p>Add the key connection at the bottom.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.onclick(add_turtle)</span>
+<span class="new">screen.listen()</span>
+<span class="new">screen.onkey(add_at_center, &#x27;space&#x27;)</span>
+<span class="reference">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Click to add turtles at chosen positions. Press and release space to add at the center. Several turtles may overlap at first, then separate as they move.</p>
+<p>A key callback receives no coordinates. <code>add_at_center()</code> supplies them by calling <code>add_turtle(0, 0)</code>. Every call still appends to the same global list.</p>
+<h2 id="section-13">Teacher Check</h2>
+<p>Add three turtles, then two more. Explain why the count becomes five instead of starting again at one. Point to list creation, append, and the loop that visits each turtle.</p>
+<p>Explain why a screen click can call <code>add_turtle</code> directly but the space key uses a different function. Save this file: Lesson 12 starts from it.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-animation-step-by-step.html">Previous: 10. Animation: One Frame At A Time</a><a href="turtle-group-controls-step-by-step.html">Next: 12. Group Controls: One Key, Every Turtle</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

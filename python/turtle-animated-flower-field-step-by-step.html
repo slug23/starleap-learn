@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13. Animated Flower Field: Redraw A New Frame · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html" aria-current="page">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a></nav><p class="stamp">Build 2026.09.30-131423-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.30-131423-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Draw One Familiar Flower</a></li><li><a href="#section-3">Step 2 - Turn The Turtle, Not The Ink</a></li><li><a href="#section-4">Step 3 - Draw From The New Heading</a></li><li><a href="#section-5">Step 4 - Save A Starting Angle For One Frame</a></li><li><a href="#section-6">Step 5 - Animate The Flower</a></li><li><a href="#section-7">Step 6 - Keep Several Flower Turtles</a></li><li><a href="#section-8">Step 7 - Choose A Field Once</a></li><li><a href="#section-9">Step 8 - Compare Trails With Frames</a></li><li><a href="#section-10">Make It Yours</a></li><li><a href="#section-11">Teacher Check</a></li></ul></details><h1 id="section-1">13. Animated Flower Field: Redraw A New Frame</h1>
+<p>Continue after Lesson 12, Group Controls. Moving a turtle&#x27;s picture changes where it appears, but turning the turtle does not turn ink it already drew. To animate a flower, we will erase its old drawing and draw it again from a new starting angle.</p>
+<h2 id="section-2">Step 1 - Draw One Familiar Flower</h2>
+<p>Save a new file named <code>animated_flowers.py</code>. Type this starter program. It uses the two-arc petal from the earlier flower lessons.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import random</span>
+<span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">screen.tracer(0)</span>
+<span class="new"></span>
+<span class="new">flower = turtle.Turtle()</span>
+<span class="new">flower.hideturtle()</span>
+<span class="new">flower.color(&#x27;teal&#x27;)</span>
+<span class="new"></span>
+<span class="new">def draw_flower(pen, radius):</span>
+<span class="new">    for i in range(6):</span>
+<span class="new">        pen.circle(radius, 60)</span>
+<span class="new">        pen.left(120)</span>
+<span class="new">        pen.circle(radius, 60)</span>
+<span class="new">        pen.left(180)</span>
+<span class="new"></span>
+<span class="new">draw_flower(flower, 50)</span>
+<span class="new">screen.update()</span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. You should see one flower appear as a complete picture.</p>
+<p><code>pen</code> is a meaningful parameter name: it tells the function which turtle will draw. We pass <code>flower</code>, the turtle itself, just as we previously passed numbers and colors to functions.</p>
+<p>The turns produce six petals around one center. Each petal returns to its starting position. All six together return to the starting heading, ready for another drawing.</p>
+<h2 id="section-3">Step 2 - Turn The Turtle, Not The Ink</h2>
+<p>Add a turn after drawing the flower, before the update.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">draw_flower(flower, 50)</span>
+<span class="new">flower.left(15)</span>
+<span class="reference">screen.update()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. The flower picture has not rotated. The hidden turtle now faces a different direction, but the old ink stays where it was drawn.</p>
+<h2 id="section-4">Step 3 - Draw From The New Heading</h2>
+<p>Add a second drawing call after the turn.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">draw_flower(flower, 50)</span>
+<span class="reference">flower.left(15)</span>
+<span class="new">draw_flower(flower, 50)</span>
+<span class="reference">screen.update()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. You see both flowers on top of each other. The second one starts at a different angle.</p>
+<p>Now clear the old drawing before the turn and second drawing.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">draw_flower(flower, 50)</span>
+<span class="new">flower.clear()</span>
+<span class="reference">flower.left(15)</span>
+<span class="reference">draw_flower(flower, 50)</span>
+<span class="reference">screen.update()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Only the rotated flower remains. There was no update between the first drawing and clearing it, so that first drawing was never displayed as a frame.</p>
+<p><code>flower.clear()</code> removes this turtle&#x27;s ink, but keeps its position, heading, and color. Do not use <code>screen.clear()</code> here: it clears the screen and resets screen settings and event connections too.</p>
+<h2 id="section-5">Step 4 - Save A Starting Angle For One Frame</h2>
+<p>Replace everything from the first <code>draw_flower(flower, 50)</code> call through <code>screen.update()</code> with the function and startup below. Keep the definition of <code>draw_flower</code> above it.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        pen.left(180)</span>
+<span class="reference"></span>
+<span class="new">def tick():</span>
+<span class="new">    starting_angle = flower.heading()</span>
+<span class="new">    flower.clear()</span>
+<span class="new">    draw_flower(flower, 50)</span>
+<span class="new">    flower.setheading(starting_angle + 2)</span>
+<span class="new">    screen.update()</span>
+<span class="new"></span>
+<span class="new">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. One flower is expected: this is still just one frame.</p>
+<p><code>heading()</code> gives the turtle&#x27;s current angle. <code>starting_angle</code> remembers it for this call. After drawing, <code>setheading(starting_angle + 2)</code> prepares the angle for the next frame. The turtle object keeps that heading after the function finishes.</p>
+<h2 id="section-6">Step 5 - Animate The Flower</h2>
+<p>Add a timer at the end of <code>tick()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    flower.setheading(starting_angle + 2)</span>
+<span class="reference">    screen.update()</span>
+<span class="new">    screen.ontimer(tick, 100)</span>
+<span class="reference"></span>
+<span class="reference">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. The flower should rotate. Each tick clears the old flower, draws one replacement, prepares the next heading, and shows the completed frame.</p>
+<p>Change only the <code>+ 2</code> to <code>+ 1</code>. Run it. Try <code>- 2</code> instead. Run it again. Restore <code>+ 2</code> before continuing. Small angle changes make movement easier to follow.</p>
+<h2 id="section-7">Step 6 - Keep Several Flower Turtles</h2>
+<p>Replace the three setup lines from <code>flower = turtle.Turtle()</code> through <code>flower.color(&#x27;teal&#x27;)</code> with this list and loop. Leave <code>draw_flower</code> below them.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.tracer(0)</span>
+<span class="reference"></span>
+<span class="new">flowers = []</span>
+<span class="new">for x_position in [-160, 0, 160]:</span>
+<span class="new">    flower = turtle.Turtle()</span>
+<span class="new">    flower.hideturtle()</span>
+<span class="new">    flower.color(&#x27;teal&#x27;)</span>
+<span class="new">    flower.teleport(x_position, 0)</span>
+<span class="new">    flowers.append(flower)</span>
+<span class="reference"></span>
+<span class="reference">def draw_flower(pen, radius):</span>
+<span class="reference">    ...</span></code></pre>
+<p>This loop visits three numbers, not indexes. Each becomes an x coordinate for a new flower turtle. <code>teleport</code> places it without drawing a travel line.</p>
+<p>Before running, replace the whole <code>tick()</code> function with this version. The existing startup call stays below it.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">def tick():</span>
+<span class="new">    for flower in flowers:</span>
+<span class="new">        starting_angle = flower.heading()</span>
+<span class="new">        flower.clear()</span>
+<span class="new">        draw_flower(flower, 50)</span>
+<span class="new">        flower.setheading(starting_angle + 2)</span>
+<span class="new">    screen.update()</span>
+<span class="new">    screen.ontimer(tick, 100)</span>
+<span class="reference"></span>
+<span class="reference">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. All three flowers rotate. The loop clears and redraws each flower using its own turtle. The update is outside the loop, so one frame shows the finished group.</p>
+<h2 id="section-8">Step 7 - Choose A Field Once</h2>
+<p>Replace the setup loop with this version. Keep <code>flowers = []</code> above it and all function definitions below it.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">flowers = []</span>
+<span class="new">colors = [&#x27;red&#x27;, &#x27;gold&#x27;, &#x27;teal&#x27;, &#x27;purple&#x27;]</span>
+<span class="new">for i in range(10):</span>
+<span class="new">    flower = turtle.Turtle()</span>
+<span class="new">    flower.hideturtle()</span>
+<span class="new">    flower.color(random.choice(colors))</span>
+<span class="new">    x_position = random.randint(-210, 210)</span>
+<span class="new">    y_position = random.randint(-290, 290)</span>
+<span class="new">    flower.teleport(x_position, y_position)</span>
+<span class="new">    flower.setheading(random.randint(0, 359))</span>
+<span class="new">    flowers.append(flower)</span>
+<span class="reference"></span>
+<span class="reference">def draw_flower(pen, radius):</span>
+<span class="reference">    ...</span></code></pre>
+<p>Make the flowers smaller by changing the drawing call inside <code>tick()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    for flower in flowers:</span>
+<span class="reference">        starting_angle = flower.heading()</span>
+<span class="reference">        flower.clear()</span>
+<span class="new">        draw_flower(flower, 30)</span>
+<span class="reference">        flower.setheading(starting_angle + 2)</span>
+<span class="reference">    screen.update()</span>
+<span class="reference">    ...</span></code></pre>
+<p class="callout">Run the program. The flowers keep their positions and colors while rotating. Some overlap; restart to try another arrangement.</p>
+<p>Random choices happen once during setup. The timer redraws the flowers we already have. If we chose a new position on every tick, the flowers would jump around instead of rotating in place.</p>
+<h2 id="section-9">Step 8 - Compare Trails With Frames</h2>
+<p>In <code>tick()</code>, temporarily put <code>#</code> before <code>flower.clear()</code> to make it a comment. Run briefly, then close the window.</p>
+<p>The new drawings now pile up into a pattern. Remove the <code>#</code> and run again to restore the rotating field. Clearing old ink is part of this animation; it was not needed when we only moved pen-up turtle pictures.</p>
+<h2 id="section-10">Make It Yours</h2>
+<p>Choose one experiment: change the number of flowers, the petal radius, the angle change, or the timer delay. Predict its effect, then run and compare.</p>
+<p>Challenge: Make a key reverse the rotation of the whole field. Use Lesson 12 for ideas about a shared value and a keyboard function. Keep just one ticking chain.</p>
+<h2 id="section-11">Teacher Check</h2>
+<p>Show a rotating field that stays in place. Explain what is chosen once and what changes every frame. Point to the clear, redraw, update, and timer lines. Explain why turning the turtle alone did not rotate the flower in Step 2.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-group-controls-step-by-step.html">Previous: 12. Group Controls: One Key, Every Turtle</a><a href="turtle-return-values-step-by-step.html">Next: 14. Return Values: Make A Random Color</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

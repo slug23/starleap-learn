@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12. Group Controls: One Key, Every Turtle · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html" aria-current="page">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a></nav><p class="stamp">Build 2026.09.30-131423-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.30-131423-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Keep A Working Copy</a></li><li><a href="#section-3">Step 2 - Turn Them All With One Function</a></li><li><a href="#section-4">Step 3 - Give The Keyboard The Turning Job</a></li><li><a href="#section-5">Step 4 - Add Your Own Right Turn</a></li><li><a href="#section-6">Step 5 - Make A Color Command</a></li><li><a href="#section-7">Step 6 - Let A Key Change The Movement Distance</a></li><li><a href="#section-8">Step 7 - Stop And Go</a></li><li><a href="#section-9">Make Your Own Group Commands</a></li><li><a href="#section-10">Teacher Check</a></li></ul></details><h1 id="section-1">12. Group Controls: One Key, Every Turtle</h1>
+<p>Continue after Lesson 11, Lists. Your global list already lets one tick reach every turtle. Now your own keyboard functions will use that same list.</p>
+<h2 id="section-2">Step 1 - Keep A Working Copy</h2>
+<p>Open the finished <code>turtle_group.py</code> from Lesson 11. Save a copy named <code>group_controls.py</code>. Run it once: clicks and the space bar should add turtles, and the turtles should wander.</p>
+<p>Inside <code>tick()</code>, delete the <code>turn_degrees = random.randint(-30, 30)</code> line. Replace <code>member.left(turn_degrees)</code> with <code>member.left(5)</code> so the loop uses a fixed small turn.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def tick():</span>
+<span class="reference">    for member in turtles:</span>
+<span class="new">        member.left(5)</span>
+<span class="reference">        member.forward(3)</span>
+<span class="reference">    screen.update()</span>
+<span class="reference">    screen.ontimer(tick, 100)</span></code></pre>
+<p class="callout">Run the program. Add a few turtles in different places. They should now follow small circular paths, making the next experiments easier to watch.</p>
+<h2 id="section-3">Step 2 - Turn Them All With One Function</h2>
+<p>Add a new function immediately before <code>tick()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def add_at_center():</span>
+<span class="reference">    add_turtle(0, 0)</span>
+<span class="reference"></span>
+<span class="new">def turn_all_left():</span>
+<span class="new">    for member in turtles:</span>
+<span class="new">        member.left(30)</span>
+<span class="reference"></span>
+<span class="reference">def tick():</span>
+<span class="reference">    ...</span></code></pre>
+<p>Connect it at the bottom.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.onkey(add_at_center, &#x27;space&#x27;)</span>
+<span class="new">screen.onkey(turn_all_left, &#x27;Left&#x27;)</span>
+<span class="reference">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Add three turtles. Press and release Left. All three turn an extra 30 degrees. Add another turtle, then press Left again. It joins in because the function visits the list as it exists when the key is released.</p>
+<p>The keyboard function changes their headings. The next timed frame shows those changes. We keep the timer in <code>tick()</code> only.</p>
+<h2 id="section-4">Step 3 - Give The Keyboard The Turning Job</h2>
+<p>Delete the <code>member.left(5)</code> line inside <code>tick()</code>. The loop should now contain only the forward movement.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def tick():</span>
+<span class="reference">    for member in turtles:</span>
+<span class="reference">        member.forward(3)</span>
+<span class="reference">    screen.update()</span>
+<span class="reference">    screen.ontimer(tick, 100)</span></code></pre>
+<p class="callout">Run the program. The turtles move straight until you press Left. Make several turns before they leave the window. Restart if you need a fresh group.</p>
+<p>The timer controls when they move. Your keyboard function controls where they face. Two different events can work with the same turtles.</p>
+<h2 id="section-5">Step 4 - Add Your Own Right Turn</h2>
+<p>Add a second function immediately below <code>turn_all_left()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def turn_all_left():</span>
+<span class="reference">    for member in turtles:</span>
+<span class="reference">        member.left(30)</span>
+<span class="reference"></span>
+<span class="new">def turn_all_right():</span>
+<span class="new">    for member in turtles:</span>
+<span class="new">        member.right(30)</span>
+<span class="reference"></span>
+<span class="reference">def tick():</span>
+<span class="reference">    ...</span></code></pre>
+<p>Connect Right just below the Left connection.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.onkey(turn_all_left, &#x27;Left&#x27;)</span>
+<span class="new">screen.onkey(turn_all_right, &#x27;Right&#x27;)</span>
+<span class="reference">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Steer the group with Left and Right. Notice that the loop visits turtles one at a time, but the next frame shows the whole group&#x27;s new state together.</p>
+<h2 id="section-6">Step 5 - Make A Color Command</h2>
+<p>Add this function below <code>turn_all_right()</code> and before <code>tick()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        member.right(30)</span>
+<span class="reference"></span>
+<span class="new">def color_all():</span>
+<span class="new">    for member in turtles:</span>
+<span class="new">        member.color(&#x27;teal&#x27;)</span>
+<span class="reference"></span>
+<span class="reference">def tick():</span>
+<span class="reference">    ...</span></code></pre>
+<p>Connect it immediately after the Right key connection, before <code>tick()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.onkey(turn_all_right, &#x27;Right&#x27;)</span>
+<span class="new">screen.onkey(color_all, &#x27;c&#x27;)</span>
+<span class="reference">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Press <code>c</code>, then add another turtle. It starts with its original color. Press <code>c</code> again to include it. Commands affect the turtles present when they run.</p>
+<h2 id="section-7">Step 6 - Let A Key Change The Movement Distance</h2>
+<p>Add a shared number immediately after the global list.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">turtles = []</span>
+<span class="new">step_size = 3</span>
+<span class="reference"></span>
+<span class="reference">def add_turtle(x, y):</span>
+<span class="reference">    ...</span></code></pre>
+<p>Use it inside <code>tick()</code> in place of <code>3</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def tick():</span>
+<span class="reference">    for member in turtles:</span>
+<span class="new">        member.forward(step_size)</span>
+<span class="reference">    screen.update()</span>
+<span class="reference">    screen.ontimer(tick, 100)</span></code></pre>
+<p class="callout">Run the program. It should move just as before. The function reads the shared <code>step_size</code> value each time it runs.</p>
+<h2 id="section-8">Step 7 - Stop And Go</h2>
+<p>Add two functions between <code>color_all()</code> and <code>tick()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        member.color(&#x27;teal&#x27;)</span>
+<span class="reference"></span>
+<span class="new">def stop_all():</span>
+<span class="new">    global step_size</span>
+<span class="new">    step_size = 0</span>
+<span class="new"></span>
+<span class="new">def go_all():</span>
+<span class="new">    global step_size</span>
+<span class="new">    step_size = 3</span>
+<span class="reference"></span>
+<span class="reference">def tick():</span>
+<span class="reference">    ...</span></code></pre>
+<p><code>global step_size</code> says that the assignment changes the variable created outside the functions. Without it, <code>step_size = 0</code> would create a local variable inside <code>stop_all</code>, leaving the shared movement distance unchanged.</p>
+<p>This differs from <code>turtles.append(...)</code>: append changes the contents of the existing list; these assignments replace the value stored under a shared name.</p>
+<p>Connect both keys after the <code>c</code> connection.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.onkey(color_all, &#x27;c&#x27;)</span>
+<span class="new">screen.onkey(stop_all, &#x27;s&#x27;)</span>
+<span class="new">screen.onkey(go_all, &#x27;g&#x27;)</span>
+<span class="reference">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Press <code>s</code> to stop forward movement. While stopped, turn, change colors, and add turtles. Press <code>g</code> to move again. Stop and go several times: the turtles should resume at the same speed each time.</p>
+<p>The timer is still running while the distance is zero. That keeps frames updating. Neither key starts another timer.</p>
+<h2 id="section-9">Make Your Own Group Commands</h2>
+<p>Keep the working program. Choose one goal, build it, and run it before trying another. These are challenges: use the earlier lessons to decide what code you need.</p>
+<ul><li>Make a key lift every turtle&#x27;s pen and another key lower every pen.</li><li>Make a key choose one random color for the entire group.</li><li>Make a different key choose a separate random color for each turtle.</li><li>Make a key turn every turtle around.</li></ul>
+<p class="callout">Think ahead: For the two random-color challenges, where would you make the random choice so it happens once for the group, or once for each member?</p>
+<h2 id="section-10">Teacher Check</h2>
+<p>Show a command working with two turtles. Add two more, then show the same command working with four.</p>
+<p>Point to the list that both the keyboard functions and <code>tick()</code> use. Explain why the movement continues even when no key is pressed.</p>
+<p>Show stop and go. Explain why assigning <code>step_size</code> needs <code>global</code> here but appending to <code>turtles</code> does not. Explain why calling <code>tick()</code> from the go function would start an unwanted extra timer chain.</p>
+<p>If a key seems ignored, click the turtle window and check <code>screen.listen()</code>. Check the spelling and capitalization of the key name. For <code>onkey</code>, press and release the key; holding it down is not the same as repeated releases.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-lists-step-by-step.html">Previous: 11. Lists: A Growing Group Of Turtles</a><a href="turtle-animated-flower-field-step-by-step.html">Next: 13. Animated Flower Field: Redraw A New Frame</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

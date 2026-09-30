@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10. Animation: One Frame At A Time · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html" aria-current="page">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a></nav><p class="stamp">Build 2026.09.30-131423-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.30-131423-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Start With One Visible Turtle</a></li><li><a href="#section-3">Step 2 - Take Charge Of The Redraw</a></li><li><a href="#section-4">Step 3 - Make One Frame With A Key</a></li><li><a href="#section-5">Step 4 - Let A Timer Call Once</a></li><li><a href="#section-6">Step 5 - Arrange The Next Tick</a></li><li><a href="#section-7">Step 6 - Compare Two Kinds Of Speed</a></li><li><a href="#section-8">Finished Lesson - A Small Animation</a></li><li><a href="#section-9">Try Your Own Changes</a></li><li><a href="#section-10">Teacher Check</a></li></ul></details><h1 id="section-1">10. Animation: One Frame At A Time</h1>
+<p>Continue after Lesson 9, Keyboard-Controlled Turtle. You already know how a key calls a function. Now you will decide when the screen shows a change, then let a timer call a function for you.</p>
+<h2 id="section-2">Step 1 - Start With One Visible Turtle</h2>
+<p>Save a new file named <code>animation.py</code>. Type this whole starter program.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.shape(&#x27;turtle&#x27;)</span>
+<span class="new">t.penup()</span>
+<span class="new">t.speed(5)</span>
+<span class="new"></span>
+<span class="new">t.forward(80)</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Watch the turtle move. <code>shape(&#x27;turtle&#x27;)</code> changes its picture; <code>penup()</code> lets it move without leaving a trail.</p>
+<h2 id="section-3">Step 2 - Take Charge Of The Redraw</h2>
+<p>Add this line before you create the turtle.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.setup(600, 800, 0, 0)</span>
+<span class="new">screen.tracer(0)</span>
+<span class="reference">t = turtle.Turtle()</span>
+<span class="reference">...</span></code></pre>
+<p class="callout">Run the program. The automatic drawing updates are off. The turtle still changes position in the program, but you have not asked the screen to show the result.</p>
+<p>Add an update after the movement.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.forward(80)</span>
+<span class="new">screen.update()</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. The turtle appears at its new position without showing the journey. <code>screen.update()</code> shows the current picture. It does not move the turtle or repeat your code.</p>
+<h2 id="section-4">Step 3 - Make One Frame With A Key</h2>
+<p>Replace the two lines <code>t.forward(80)</code> and <code>screen.update()</code> with this function and setup code. Keep <code>screen.mainloop()</code> last.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.speed(5)</span>
+<span class="reference"></span>
+<span class="new">def tick():</span>
+<span class="new">    t.forward(5)</span>
+<span class="new">    t.left(5)</span>
+<span class="new">    screen.update()</span>
+<span class="new"></span>
+<span class="new">screen.listen()</span>
+<span class="new">screen.onkey(tick, &#x27;space&#x27;)</span>
+<span class="new">screen.update()</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Click the turtle window, then press and release the space bar a few times. Each release makes one small move and one turn.</p>
+<p>We call one round of work a <strong>tick</strong>. The picture shown by the update is a <strong>frame</strong>. Our tick changes the turtle, then shows the frame.</p>
+<p>The update inside <code>tick()</code> runs each time you release space. The update at the left edge runs once at startup, so you can see the turtle before pressing anything.</p>
+<p class="callout">Predict: If you change only <code>t.forward(5)</code> to <code>t.forward(10)</code>, what changes? Try it, then change it back to <code>5</code>.</p>
+<h2 id="section-5">Step 4 - Let A Timer Call Once</h2>
+<p>Replace <code>screen.listen()</code> and <code>screen.onkey(tick, &#x27;space&#x27;)</code> with the timer line below. Leave the function unchanged.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    screen.update()</span>
+<span class="reference"></span>
+<span class="new">screen.ontimer(tick, 1000)</span>
+<span class="reference">screen.update()</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Wait one second. The turtle moves once and stops.</p>
+<p><code>1000</code> milliseconds is one second. <code>ontimer</code> asks the screen to call <code>tick</code> later, once. Pass <code>tick</code>, without parentheses, just as you did with a keyboard function.</p>
+<h2 id="section-6">Step 5 - Arrange The Next Tick</h2>
+<p>Add a timer at the end of the function. It belongs inside the function, at the same indentation as <code>screen.update()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def tick():</span>
+<span class="reference">    t.forward(5)</span>
+<span class="reference">    t.left(5)</span>
+<span class="reference">    screen.update()</span>
+<span class="new">    screen.ontimer(tick, 100)</span>
+<span class="reference"></span>
+<span class="reference">screen.ontimer(tick, 1000)</span>
+<span class="reference">...</span></code></pre>
+<p class="callout">Run the program. After the first second, the turtle keeps moving. Each tick arranges one more call for later, then finishes. The screen can handle keys, clicks, and closing the window between ticks.</p>
+<p>Replace the startup timer with a call to start immediately.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    screen.ontimer(tick, 100)</span>
+<span class="reference"></span>
+<span class="new">tick()</span>
+<span class="reference">screen.update()</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p>Now delete the extra <code>screen.update()</code> between <code>tick()</code> and <code>screen.mainloop()</code>. The first call to <code>tick()</code> already updates the screen.</p>
+<p class="callout">Run the program. Motion should start right away.</p>
+<p class="callout">Important: Call <code>tick()</code> once at the bottom. Only the timer inside the function arranges later ticks. Do not connect a key to start another ticking chain.</p>
+<h2 id="section-7">Step 6 - Compare Two Kinds Of Speed</h2>
+<p>Change the timer delay inside <code>tick()</code> from <code>100</code> to <code>50</code>. Run it. Then restore <code>100</code> and change the forward distance from <code>5</code> to <code>10</code>. Run it again.</p>
+<p>A shorter delay requests frames more often. A larger distance moves farther per frame. Change one at a time so you can tell their effects apart. Timing is approximate because drawing takes time too.</p>
+<p>With <code>tracer(0)</code>, <code>t.speed(5)</code> no longer paces the frames. The timer and the movement per tick do that work.</p>
+<h2 id="section-8">Finished Lesson - A Small Animation</h2>
+<p>Compare your program with this version. Use it to find missing or misplaced lines.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">screen.tracer(0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.shape(&#x27;turtle&#x27;)</span>
+<span class="new">t.penup()</span>
+<span class="new">t.speed(5)</span>
+<span class="new"></span>
+<span class="new">def tick():</span>
+<span class="new">    t.forward(5)</span>
+<span class="new">    t.left(5)</span>
+<span class="new">    screen.update()</span>
+<span class="new">    screen.ontimer(tick, 100)</span>
+<span class="new"></span>
+<span class="new">tick()</span>
+<span class="new">screen.mainloop()</span></code></pre>
+<h2 id="section-9">Try Your Own Changes</h2>
+<p>Make a wider circular path. Then make the turtle travel around it more slowly. Experiment with distance, turn, and delay separately.</p>
+<p class="callout">Run the program. Explain which change affected the path and which affected the timing.</p>
+<h2 id="section-10">Teacher Check</h2>
+<p>Show the animation. Point to the lines that change the turtle, show the frame, arrange the next tick, and start the first tick.</p>
+<p>Explain why <code>screen.update()</code> by itself would not make the turtle move. Explain why the timer receives <code>tick</code>, while the startup line uses <code>tick()</code>.</p>
+<p>If nothing moves, check that you called <code>tick()</code> at the bottom. If it moves once, look for the timer inside the function. If it changes in the program but not on the screen, check for <code>screen.update()</code>.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-keyboard-control-step-by-step.html">Previous: 9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-lists-step-by-step.html">Next: 11. Lists: A Growing Group Of Turtles</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

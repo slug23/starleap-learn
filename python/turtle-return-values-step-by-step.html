@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14. Return Values: Make A Random Color · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html" aria-current="page">14. Return Values: Make A Random Color</a></nav><p class="stamp">Build 2026.09.30-131423-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.09.30-131423-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - A Function That Gives An Answer</a></li><li><a href="#section-3">Step 2 - Printing Is Not Returning</a></li><li><a href="#section-4">Step 3 - Let The Turtle Use The Answer</a></li><li><a href="#section-5">Step 4 - Return An RGB Color</a></li><li><a href="#section-6">Step 5 - Randomize One Channel</a></li><li><a href="#section-7">Step 6 - Randomize All Three Channels</a></li><li><a href="#section-8">Step 7 - Reuse The Returned Color</a></li><li><a href="#section-9">Step 8 - Ask For Another Color</a></li><li><a href="#section-10">Step 9 - A Row Of Random Colors</a></li><li><a href="#section-11">Try It Yourself</a></li><li><a href="#section-12">Teacher Check</a></li></ul></details><h1 id="section-1">14. Return Values: Make A Random Color</h1>
+<p>Your functions have drawn shapes and moved turtles. Now a function will give a value back to the code that called it. You will use that value to set a turtle&#x27;s color.</p>
+<h2 id="section-2">Step 1 - A Function That Gives An Answer</h2>
+<p>Save a new file named <code>return_colors.py</code>. Start with this small program, without a turtle window yet.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def make_color():</span>
+<span class="new">    return &#x27;red&#x27;</span>
+<span class="new"></span>
+<span class="new">ink = make_color()</span>
+<span class="new">print(ink)</span></code></pre>
+<p class="callout">Predict: What will the last line print? Run the program and check.</p>
+<p>The call <code>make_color()</code> runs the function. <code>return &#x27;red&#x27;</code> ends that call and sends the text <code>&#x27;red&#x27;</code> back. The assignment stores that returned value in <code>ink</code>. Then <code>print(ink)</code> displays it.</p>
+<p>The function does not print anything itself. Its job is to supply a value that the caller can use. <code>return</code> ends the function immediately; any work the function needs to do must come before it.</p>
+<h2 id="section-3">Step 2 - Printing Is Not Returning</h2>
+<p>Temporarily replace the <code>return</code> line with a <code>print</code> line. Keep the two lines at the bottom.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def make_color():</span>
+<span class="new">    print(&#x27;red&#x27;)</span>
+<span class="reference"></span>
+<span class="reference">ink = make_color()</span>
+<span class="reference">print(ink)</span></code></pre>
+<p class="callout">Predict: There are now two print calls. What will each display?</p>
+<p class="callout">Run the program. You should see <code>red</code>, then <code>None</code>.</p>
+<p>The function printed red, but it did not return a color. A function that reaches its end without a return value gives back <code>None</code>. That is what <code>ink</code> received and the last line printed.</p>
+<p>Restore the return line before continuing.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def make_color():</span>
+<span class="new">    return &#x27;red&#x27;</span>
+<span class="reference"></span>
+<span class="reference">ink = make_color()</span>
+<span class="reference">print(ink)</span></code></pre>
+<p class="callout">Run the program. You should see just <code>red</code> again. We need a returned value because the turtle cannot use a message that was only printed.</p>
+<h2 id="section-4">Step 3 - Let The Turtle Use The Answer</h2>
+<p>At the very top of the same file, insert the import and turtle setup before the function definition.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 800, 0, 0)</span>
+<span class="new">t = turtle.Turtle()</span>
+<span class="new">t.shape(&#x27;turtle&#x27;)</span>
+<span class="new">t.penup()</span>
+<span class="new">t.speed(5)</span>
+<span class="new"></span>
+<span class="reference">def make_color():</span>
+<span class="reference">    return &#x27;red&#x27;</span>
+<span class="reference">...</span></code></pre>
+<p>Add these lines after the existing <code>print(ink)</code>, at the left edge. Keep <code>screen.mainloop()</code> last.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">ink = make_color()</span>
+<span class="reference">print(ink)</span>
+<span class="new">t.color(ink)</span>
+<span class="new">t.dot(40)</span>
+<span class="new">t.forward(60)</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. You should see a red dot and a red turtle beside it. The same returned value was printed and used as a color.</p>
+<p><code>make_color()</code> supplies the color. <code>t.color(ink)</code> applies it. These are separate jobs: returning a color does not change the turtle until the caller uses it.</p>
+<h2 id="section-5">Step 4 - Return An RGB Color</h2>
+<p>RGB means red, green, and blue. We will mix amounts of these three colors of light. Add this setting after the screen setup so each amount can be a whole number from <code>0</code> through <code>255</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.setup(600, 800, 0, 0)</span>
+<span class="new">screen.colormode(255)</span>
+<span class="reference">t = turtle.Turtle()</span>
+<span class="reference">...</span></code></pre>
+<p>Replace the function&#x27;s <code>return &#x27;red&#x27;</code> line with these four lines.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def make_color():</span>
+<span class="new">    red = 40</span>
+<span class="new">    green = 160</span>
+<span class="new">    blue = 220</span>
+<span class="new">    return (red, green, blue)</span>
+<span class="reference"></span>
+<span class="reference">ink = make_color()</span>
+<span class="reference">...</span></code></pre>
+<p class="callout">Run the program. The output is <code>(40, 160, 220)</code>, and the turtle uses that mix. The parentheses and commas group the three amounts into one value called a <strong>tuple</strong>. The function returns that one tuple; <code>ink</code> holds it, and <code>t.color(ink)</code> accepts it.</p>
+<p>Keep the order red, green, blue. <code>0</code> means none of that channel; <code>255</code> means its full amount. You do not need to unpack the tuple to give it to the turtle.</p>
+<h2 id="section-6">Step 5 - Randomize One Channel</h2>
+<p>Add the random import above the turtle import.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">import random</span>
+<span class="reference">import turtle</span>
+<span class="reference">...</span></code></pre>
+<p>Change only the red assignment inside the function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def make_color():</span>
+<span class="new">    red = random.randint(0, 255)</span>
+<span class="reference">    green = 160</span>
+<span class="reference">    blue = 220</span>
+<span class="reference">    return (red, green, blue)</span></code></pre>
+<p class="callout">Run the program a few times, closing the turtle window between runs. Compare the printed tuples. The first amount can change; green and blue stay fixed. The color may change too.</p>
+<p><code>random.randint(0, 255)</code> already returns a value. You are using its answer as the red amount inside your own function.</p>
+<h2 id="section-7">Step 6 - Randomize All Three Channels</h2>
+<p>Change the other two assignments too. Keep the return line below all three choices, inside the function.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def make_color():</span>
+<span class="reference">    red = random.randint(0, 255)</span>
+<span class="new">    green = random.randint(0, 255)</span>
+<span class="new">    blue = random.randint(0, 255)</span>
+<span class="reference">    return (red, green, blue)</span></code></pre>
+<p class="callout">Run the program several times. All three amounts can now vary. Some colors will be pale or hard to see against white; the printed tuple lets you inspect them. Random choices can repeat.</p>
+<p><code>red</code>, <code>green</code>, and <code>blue</code> are local variables in this function. Returning their tuple makes the result available to the caller as <code>ink</code>; you do not need global variables for these channels.</p>
+<h2 id="section-8">Step 7 - Reuse The Returned Color</h2>
+<p>Add another dot after the forward movement. Do not call <code>make_color()</code> again yet.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.color(ink)</span>
+<span class="reference">t.dot(40)</span>
+<span class="reference">t.forward(60)</span>
+<span class="new">t.dot(40)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Predict: Will the second dot have a new random color?</p>
+<p class="callout">Run the program. Both dots use the same color. You called the function once and applied its answer once. Moving and drawing again do not call the function for you.</p>
+<h2 id="section-9">Step 8 - Ask For Another Color</h2>
+<p>Insert these lines between the movement and the second dot.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">t.forward(60)</span>
+<span class="new">ink = make_color()</span>
+<span class="new">print(ink)</span>
+<span class="new">t.color(ink)</span>
+<span class="reference">t.dot(40)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. Two tuples print, and the dots can have different colors. The new call runs all three random choices again and returns a new tuple. Reassigning <code>ink</code> stores the new answer; it does not recolor the first dot.</p>
+<h2 id="section-10">Step 9 - A Row Of Random Colors</h2>
+<p>Replace all the code below the function definition, from the first <code>ink = make_color()</code> through the second dot, with this loop. Keep <code>screen.mainloop()</code> last.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    return (red, green, blue)</span>
+<span class="reference"></span>
+<span class="new">t.teleport(-210, 0)</span>
+<span class="new">for i in range(8):</span>
+<span class="new">    ink = make_color()</span>
+<span class="new">    print(ink)</span>
+<span class="new">    t.color(ink)</span>
+<span class="new">    t.dot(40)</span>
+<span class="new">    t.forward(60)</span>
+<span class="reference"></span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p class="callout">Run the program. You should see eight dots, with a fresh color choice for each. Trace one pass: call the function, receive the tuple, store it, print it, use it, draw, and move.</p>
+<h2 id="section-11">Try It Yourself</h2>
+<p>Make all eight dots share one randomly chosen color. Use the lesson about choosing once before a loop versus choosing inside it. Keep the function returning a value.</p>
+<p>Challenge: In a copy of your keyboard drawing program, make a key use this RGB function to change the turtle&#x27;s color. Use the keyboard lesson for the event connection and remember the screen&#x27;s color mode. Your color function should return a color; let the keyboard function decide how to use it.</p>
+<h2 id="section-12">Teacher Check</h2>
+<p>Point to the function definition, its return line, a call, and the variable that receives its answer. Explain how <code>return</code> differs from <code>print</code>.</p>
+<p>Show the three RGB amounts and explain why they are returned together. Explain why drawing twice did not choose twice until you added another function call.</p>
+<p>If the output contains <code>None</code>, check that your function returns the tuple. If Python reports a bad color sequence, check <code>screen.colormode(255)</code> and that all three amounts are between <code>0</code> and <code>255</code>.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-animated-flower-field-step-by-step.html">Previous: 13. Animated Flower Field: Redraw A New Frame</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

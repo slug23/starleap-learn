@@ -1,6 +1,6 @@
 {
   "course": "turtle-python",
-  "build": "2026.09.17-001210-0400",
+  "build": "2026.09.30-131423-0400",
   "pages": [
     {
       "file": "turtle-variables-step-by-step.html",
@@ -32,7 +32,7 @@
       "number": 4,
       "group": "Lessons",
       "source": "src/turtle-functions-step-by-step.md",
-      "sha256": "f78afa7b7b720c5c0374309eeef8f9ad5bfe3bd4364d29810ad9f077e37079f1"
+      "sha256": "a50d643e5ee9661c0e3bd4a9ef197bd1b4d0306a366157c2d553c90342cc2771"
     },
     {
       "file": "turtle-circles-arcs-step-by-step.html",
@@ -40,39 +40,79 @@
       "number": 5,
       "group": "Lessons",
       "source": "src/turtle-circles-arcs-step-by-step.md",
-      "sha256": "627b0d05721693cc5e78f6226cec59f1c9169a69373dd307bb91ec5e4b6693f0"
+      "sha256": "b3caff7f8d0a0f2f908fe677a756051dcca2ab7a9e0cb3ac7257d31fcfb266e1"
     },
     {
       "file": "turtle-scene-builder-step-by-step.html",
       "title": "6. Turtle Scene Builder: Many Functions Make One Picture",
       "number": 6,
-      "group": "Projects",
+      "group": "Lessons",
       "source": "src/turtle-scene-builder-step-by-step.md",
-      "sha256": "5cb0268f71717265e125ee0ec8be5e59ad6b339c6694e91808f4fc0bb9dca1e4"
+      "sha256": "2d676ed7f90360a8937e83668236ba25801442b7867927171925b599260813fb"
     },
     {
       "file": "turtle-random-flower-field-step-by-step.html",
       "title": "7. Random Flower Field: Let Python Choose",
       "number": 7,
-      "group": "Projects",
+      "group": "Lessons",
       "source": "src/turtle-random-flower-field-step-by-step.md",
-      "sha256": "b2dc2b390469dc1c14cdda93111bbb4b40cea47bb2b3cf4fed7bc257cd76ddd8"
+      "sha256": "d2dda1adb706fef24cd3b9cac9f3ad692d2161891ded40badd8124d579a4b18f"
     },
     {
       "file": "turtle-layered-flower-design-step-by-step.html",
       "title": "8. Layered Flower Design: Small Flower, Big Flower",
       "number": 8,
-      "group": "Projects",
+      "group": "Lessons",
       "source": "src/turtle-layered-flower-design-step-by-step.md",
-      "sha256": "3d087fb3a150265e7704d866760ddf16483fc3218ac874b0a88d7c3e8f405210"
+      "sha256": "4a9e2097186609cfd946a80b76fcc16c0ae5f91bbc75559334707f9ca5e3a122"
     },
     {
       "file": "turtle-keyboard-control-step-by-step.html",
       "title": "9. Keyboard-Controlled Turtle: Programs That Wait",
       "number": 9,
-      "group": "Projects",
+      "group": "Lessons",
       "source": "src/turtle-keyboard-control-step-by-step.md",
-      "sha256": "d1da4949193fb3d2da62f021b1f853c0890518de7b14155cfea77a9ff5921c43"
+      "sha256": "778bfe6c1e00b1a7ae850f85b901575b5cf3c8614d6b75f706b05dd6aebf6847"
+    },
+    {
+      "file": "turtle-animation-step-by-step.html",
+      "title": "10. Animation: One Frame At A Time",
+      "number": 10,
+      "group": "Lessons",
+      "source": "src/turtle-animation-step-by-step.md",
+      "sha256": "bfd768c70506fa39989760b15712df9b5e106761bbb5740cbbad218b3b86ce99"
+    },
+    {
+      "file": "turtle-lists-step-by-step.html",
+      "title": "11. Lists: A Growing Group Of Turtles",
+      "number": 11,
+      "group": "Lessons",
+      "source": "src/turtle-lists-step-by-step.md",
+      "sha256": "eec90dee0a27f0195fda9e48df53704ce6ad9041280e51e51acfd3e08509f413"
+    },
+    {
+      "file": "turtle-group-controls-step-by-step.html",
+      "title": "12. Group Controls: One Key, Every Turtle",
+      "number": 12,
+      "group": "Lessons",
+      "source": "src/turtle-group-controls-step-by-step.md",
+      "sha256": "92d290a864c6d63c6a4a8a78f348c79ab4df7bec77dfc273996b11c88e6d2c86"
+    },
+    {
+      "file": "turtle-animated-flower-field-step-by-step.html",
+      "title": "13. Animated Flower Field: Redraw A New Frame",
+      "number": 13,
+      "group": "Lessons",
+      "source": "src/turtle-animated-flower-field-step-by-step.md",
+      "sha256": "5d63cf7d371c740341e466af3134cb11a8b8ba7c906e0dc23faec5979d62eec6"
+    },
+    {
+      "file": "turtle-return-values-step-by-step.html",
+      "title": "14. Return Values: Make A Random Color",
+      "number": 14,
+      "group": "Lessons",
+      "source": "src/turtle-return-values-step-by-step.md",
+      "sha256": "ba9edf3896e9190c720169155bfd130cd60e81dc8bb96229b0aba8773b2a5114"
     }
   ]
 }
