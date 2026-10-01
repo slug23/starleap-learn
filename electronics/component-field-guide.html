@@ -134,7 +134,7 @@ footer.lesson-foot {
 </style>
 </head>
 <body>
-<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-2249</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html" class="cur">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.28-1308</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html" class="cur">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
 #sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
 html.nav-open #sidenav{transform:none}
 #sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
@@ -144,6 +144,7 @@ html.nav-open #sidenav{transform:none}
 #sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
 #sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
 #sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav .sn-part{font:700 10.5px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--copper-ink,#8a3d07);margin:8px 0 2px 30px}
 #sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
 html{scroll-behavior:smooth}
 #sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
@@ -156,7 +157,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 </style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
 
 <header class="lesson-head">
-  <p class="kicker">Electronics · Reference card · Keep me all year &middot; build 2026.09.23-2249</p>
+  <p class="kicker">Electronics · Reference card · Keep me all year &middot; build 2026.09.28-1308</p>
   <h1>Component Field Guide</h1>
 </header>
 
@@ -180,10 +181,64 @@ html.nav-open body{margin-left:248px;margin-right:auto}
       <li><b>Symbol:</b> the long line is +, the short line is −.</li>
       <li><b>In real life:</b> our power supply — red wire = +, black wire = −, supplying <span class="val">5 V</span>. (Inside it: a rechargeable battery.)</li>
       <li><b>Unit:</b> volts (V).</li>
+      <li><b>Drawn two ways:</b> as this symbol, with the whole loop drawn — or, from lesson 6 on, left out entirely, with its two ends drawn as labeled lines: the <b>+5 V rail</b> (its + side) and the <b>ground rail</b> (its − side). No loop in sight? It's still there — see below.</li>
       <li class="warn"><b>Watch out:</b> red touching black with nothing in between is a short circuit — safety rule 1.</li>
     </ul>
   </div>
 </section>
+
+<div class="codebox">
+  <figure>
+  <svg style="max-width:600px" viewBox="0 0 640 250" role="img" aria-label="The same LED circuit drawn two ways. Left: a closed loop with the 5 volt power source symbol, a 220 ohm resistor, and an LED. Right: the rail style, with no power source symbol: a line labeled +5 V rail at the top, the resistor and LED hanging down from it, and a line labeled ground rail at the bottom. A dashed arrow shows the loop closing back through the supply.">
+    <!-- left: the whole loop, supply drawn -->
+    <line class="w" x1="60" y1="40" x2="60" y2="108"/>
+    <line class="w" x1="42" y1="108" x2="78" y2="108"/>
+    <line class="w" x1="50" y1="124" x2="70" y2="124"/>
+    <line class="w" x1="60" y1="124" x2="60" y2="210"/>
+    <text class="lbl" x="86" y="112">+</text>
+    <text class="lbl" x="86" y="132">−</text>
+    <text class="lbl" x="34" y="120" text-anchor="end">5 V</text>
+    <line class="w" x1="60" y1="40" x2="110" y2="40"/>
+    <path class="w" d="M110,40 l5,-10 l10,20 l10,-20 l10,20 l10,-20 l10,20 l5,-10"/>
+    <line class="w" x1="170" y1="40" x2="220" y2="40"/>
+    <line class="w" x1="220" y1="40" x2="220" y2="100"/>
+    <polygon class="w" points="208,100 232,100 220,122"/>
+    <line class="w" x1="208" y1="122" x2="232" y2="122"/>
+    <path class="w" style="stroke-width:1.75" d="M236,104 L248,94 M248,94 l-9,2 M248,94 l-2,9"/>
+    <line class="w" x1="220" y1="122" x2="220" y2="210"/>
+    <line class="w" x1="60" y1="210" x2="220" y2="210"/>
+    <g><circle cx="88" cy="40" r="12" fill="#fff" stroke="var(--copper)" stroke-width="2.5"/><text x="88" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="var(--copper-ink)">A</text></g>
+    <g><circle cx="196" cy="40" r="12" fill="#fff" stroke="var(--copper)" stroke-width="2.5"/><text x="196" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="var(--copper-ink)">B</text></g>
+    <g><circle cx="140" cy="210" r="12" fill="#fff" stroke="var(--copper)" stroke-width="2.5"/><text x="140" y="215" text-anchor="middle" font-size="14" font-weight="700" fill="var(--copper-ink)">C</text></g>
+    <text class="lbl-muted" x="140" y="240" text-anchor="middle">the whole loop</text>
+    <!-- middle -->
+    <text x="290" y="134" text-anchor="middle" font-size="34" font-weight="700" fill="var(--muted)">=</text>
+    <!-- right: rail style, supply left out -->
+    <text class="lbl" x="415" y="26" text-anchor="middle">+5 V rail</text>
+    <line class="w" x1="360" y1="40" x2="470" y2="40"/>
+    <line class="w" x1="440" y1="40" x2="440" y2="56"/>
+    <path class="w" d="M440,56 l-10,5 l20,10 l-20,10 l20,10 l-20,10 l20,10 l-10,5"/>
+    <line class="w" x1="440" y1="116" x2="440" y2="140"/>
+    <polygon class="w" points="428,140 452,140 440,162"/>
+    <line class="w" x1="428" y1="162" x2="452" y2="162"/>
+    <path class="w" style="stroke-width:1.75" d="M456,144 L468,134 M468,134 l-9,2 M468,134 l-2,9"/>
+    <line class="w" x1="440" y1="162" x2="440" y2="210"/>
+    <line class="w" x1="360" y1="210" x2="470" y2="210"/>
+    <text class="lbl" x="415" y="234" text-anchor="middle">ground rail</text>
+    <g><circle cx="385" cy="40" r="12" fill="#fff" stroke="var(--copper)" stroke-width="2.5"/><text x="385" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="var(--copper-ink)">A</text></g>
+    <g><circle cx="440" cy="128" r="12" fill="#fff" stroke="var(--copper)" stroke-width="2.5"/><text x="440" y="133" text-anchor="middle" font-size="14" font-weight="700" fill="var(--copper-ink)">B</text></g>
+    <g><circle cx="385" cy="210" r="12" fill="#fff" stroke="var(--copper)" stroke-width="2.5"/><text x="385" y="215" text-anchor="middle" font-size="14" font-weight="700" fill="var(--copper-ink)">C</text></g>
+    <!-- the loop closes through the supply, off the drawing -->
+    <path d="M474,210 C540,210 540,40 480,40" fill="none" stroke="var(--copper)" stroke-width="2" stroke-dasharray="6 5"/>
+    <polygon points="476,40 488,34 488,46" fill="var(--copper)"/>
+    <text class="lbl-muted" x="536" y="112">back through</text>
+    <text class="lbl-muted" x="536" y="128">the supply</text>
+    <text class="lbl-muted" x="536" y="144">(not drawn)</text>
+  </svg>
+  </figure>
+  <p><b>Same circuit, two drawings</b> — same parts, same nodes <b>A</b>, <b>B</b>, <b>C</b>. On the left, the supply is drawn and the loop is plain to see. On the right, the supply is left out: its + end becomes the line labeled <b>+5 V rail</b>, and its − end becomes the line labeled <b>ground rail</b> — the same two rails the supply feeds on your board. The loop hasn't gone anywhere: current leaves the + rail, runs down through the parts to the ground rail, and returns through the supply, which just isn't drawn.</p>
+  <p>Why draw it that way? Once a circuit has several paths, every one of them needs + and ground, and wiring each back to one battery symbol turns the page into spaghetti. The rails keep it readable: <b>start at the + rail, follow the parts down, arrive at ground</b> — that's one loop.</p>
+</div>
 
 <section class="comp">
   <div class="sym">

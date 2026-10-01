@@ -242,6 +242,46 @@ details.teacher summary {
   color: var(--copper-ink);
   padding: 9px 0;
 }
+.part {
+  margin: 2.8em 0 .4em;
+  padding: 14px 20px;
+  border: 2px solid var(--copper);
+  border-radius: 12px;
+  background: var(--copper-soft);
+}
+.part .part-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper-ink);
+  margin: 0;
+}
+.part .part-title { font-size: 27px; font-weight: 800; line-height: 1.15; margin: 2px 0 4px; }
+.part p:last-child { margin-bottom: 0; }
+.part.further { border-style: dashed; border-color: var(--green); background: var(--green-soft); }
+.part.further .part-label { color: var(--green); }
+.part.further ~ h2 .num { background: var(--green); }
+.done {
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  padding: 12px 20px;
+  margin: 1.6em 0;
+  background: var(--card);
+}
+.done .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 0 0 4px;
+}
+.done ul { list-style: none; padding: 0; }
+.done li::before { content: "▢"; margin-right: .55em; color: var(--green); }
+.done p:last-child { margin-bottom: 2px; }
 footer.lesson-foot {
   margin-top: 70px;
   border-top: 1.5px solid var(--line);
@@ -257,8 +297,11 @@ footer.lesson-foot {
   :root { --paper: #fff; }
   body { max-width: none; padding: 0; font-size: 12pt; }
   details.teacher { display: none; }
-  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox,
+    .part, .done
     { break-inside: avoid; }
+  .part.further { break-before: page; }
+  .part { break-after: avoid; }
   h2, h3 { break-after: avoid; }
 }
 @media (max-width: 560px) {
@@ -267,7 +310,7 @@ footer.lesson-foot {
 </style>
 </head>
 <body>
-<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.23-2249</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html" class="cur">7 &middot; The Transistor Switch</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: stored light, from memory</a><a class="sub" href="#s4">4 &middot; New component: the transistor</a><a class="sub" href="#s5">5 &middot; Build the switch</a><a class="sub" href="#s6">6 &middot; Measure the switch itself</a><a class="sub" href="#s7">7 &middot; The multiplier, sampled</a><a class="sub" href="#s8">8 &middot; The knob that decides</a><a class="sub" href="#s9">9 &middot; The capacitor runs the show</a><a class="sub" href="#s10">10 &middot; Challenge: tune the timer</a><a class="sub" href="#s11">11 &middot; Words to know</a><a class="sub" href="#s12">12 &middot; Exit ticket</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.28-1308</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html" class="cur">7 &middot; The Transistor Switch</a><p class="sn-part">The basics</p><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: stored light, on paper</a><a class="sub" href="#s4">4 &middot; New component: the transistor</a><a class="sub" href="#s5">5 &middot; Build the switch</a><a class="sub" href="#s6">6 &middot; Words to know</a><a class="sub" href="#s7">7 &middot; Exit ticket</a><p class="sn-part">Going further</p><a class="sub" href="#s8">8 &middot; Measure the switch itself</a><a class="sub" href="#s9">9 &middot; The multiplier, sampled</a><a class="sub" href="#s10">10 &middot; The knob that decides</a><a class="sub" href="#s11">11 &middot; The capacitor runs the show</a><a class="sub" href="#s12">12 &middot; Challenge: tune the timer</a><a class="sub" href="#s13">13 &middot; More to try</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
 #sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
 html.nav-open #sidenav{transform:none}
 #sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
@@ -277,6 +320,7 @@ html.nav-open #sidenav{transform:none}
 #sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
 #sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
 #sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav .sn-part{font:700 10.5px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--copper-ink,#8a3d07);margin:8px 0 2px 30px}
 #sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
 html{scroll-behavior:smooth}
 #sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
@@ -289,7 +333,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 </style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
 
 <header class="lesson-head">
-  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 7 · 55 min &middot; build 2026.09.23-2249</p>
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 7 · 55 min &middot; build 2026.09.28-1308</p>
   <h1>The Transistor Switch</h1>
 </header>
 
@@ -298,22 +342,76 @@ html.nav-open body{margin-left:248px;margin-right:auto}
   <p>The transistor lets a <strong>small current control a big one</strong>. Every automatic thing electricity does — sensing, deciding, computing — starts with the transistor family. Ours is the classic; your laptop packs billions of its cousins.</p>
 </div>
 
+<div class="part">
+  <p class="part-label">Part 1</p>
+  <p class="part-title">The basics</p>
+  <p>One new part, one build, one big idea. This part <em>is</em> the lesson: finish it and you've done the day's work. Part 2, further down, is extra.</p>
+</div>
+
 <h2 id="s1"><span class="num">1</span> Today you will…</h2>
 <ul>
+  <li>Meet the <strong>transistor</strong>: three legs, three names, and the one rule that keeps it alive.</li>
   <li>Build a switch with <strong>no moving parts</strong> — and flip it with a wire that carries almost nothing.</li>
-  <li>Measure the switch itself: ≈ <span class="val">0.2 V</span> when on, ≈ <span class="val">5 V</span> when off.</li>
-  <li>See <strong>gain vary part to part</strong> — and why the circuit is designed for the weakest.</li>
-  <li>Discover what a knob does to a transistor — and what a charged capacitor does.</li>
+  <li>Find out why a wire left dangling is <strong>no command at all</strong>.</li>
 </ul>
 
 <h2 id="s2"><span class="num">2</span> Your kit today</h2>
 <ul class="kit">
-  <li>Board with supply on the rails — cleared last lesson — plus jumpers, LEDs, <span class="val">220 Ω</span>, assortment, pot, capacitors, multimeter</li>
-  <li><strong>NPN transistor</strong> — the little half-round can with a flat face and three legs (plus a spare)</li>
+  <li>Board with supply on the rails — cleared to bare rails last lesson — plus jumpers, a red LED, <span class="val">220 Ω</span>, <span class="val">4.7 kΩ</span>, multimeter</li>
+  <li><strong>NPN transistor</strong> — the little black half-cylinder with a flat face and three legs (plus a spare)</li>
+  <li>For Part 2, if you get there: pot, capacitors, the two pushbuttons, the rest of your resistors — they stay in the box until you need them</li>
 </ul>
 
-<h2 id="s3"><span class="num">3</span> Warm-up: stored light, from memory</h2>
-<p>Lesson 6, no peeking: charge a <span class="val">1000 µF</span> capacitor through a <span class="val">220 Ω</span>, meter-prove ≈ <span class="val">5 V</span>, disconnect the supply path, and light an LED from the stored charge. Stripe to ground — say it out loud. Done when you've seen the fade.</p>
+<h2 id="s3"><span class="num">3</span> Warm-up: stored light, on paper</h2>
+<p><strong>Kits closed, one minute:</strong> draw lesson 6's store-and-spend circuit from memory — the capacitor, the path that fills it, the path that spends it through an LED, a button on each, and which leg gets the stripe. Blanks and guesses are fine; this is a check, not a test. Then open the answer and fix your drawing.</p>
+<details>
+  <summary><strong>Check your drawing</strong></summary>
+  <figure class="schematic">
+    <svg viewBox="0 0 560 330" role="img" aria-label="A 1000 microfarad capacitor from node A to ground. On the left, button 1 connects the 5 volt rail through a 220 ohm resistor to node A, charging it. On the right, button 2 connects node A to a red LED and a 220 ohm resistor to ground, spending the stored charge.">
+      <text class="lbl" x="130" y="34" text-anchor="end">+5 V rail</text>
+      <line class="w" x1="140" y1="30" x2="230" y2="30"/>
+      <line class="w" x1="180" y1="30" x2="180" y2="41"/>
+      <circle class="w" cx="180" cy="46" r="5" fill="#fff"/>
+      <circle class="w" cx="180" cy="78" r="5" fill="#fff"/>
+      <line class="w" x1="164" y1="38" x2="164" y2="86"/>
+      <line class="w" x1="164" y1="62" x2="148" y2="62"/>
+      <line class="w" x1="148" y1="53" x2="148" y2="71"/>
+      <text class="lbl" x="138" y="67" text-anchor="end">① charge</text>
+      <line class="w" x1="180" y1="83" x2="180" y2="90"/>
+      <path class="w" d="M180,90 l-6,5 l12,10 l-12,10 l12,10 l-12,10 l12,10 l-6,5"/>
+      <text class="lbl" x="196" y="126">220 Ω</text>
+      <line class="w" x1="180" y1="150" x2="180" y2="170"/>
+      <line class="w" x1="180" y1="170" x2="393" y2="170"/>
+      <g class="nodeb"><circle cx="238" cy="170" r="13"/><text x="238" y="175" text-anchor="middle">A</text></g>
+      <circle class="jdot" cx="300" cy="170" r="4.5"/>
+      <line class="w" x1="300" y1="170" x2="300" y2="196"/>
+      <line class="w" x1="276" y1="196" x2="324" y2="196"/>
+      <path class="w" d="M276,208 a44,44 0 0 0 48,0"/>
+      <line class="w" x1="300" y1="215" x2="300" y2="310"/>
+      <text class="lbl" x="266" y="194" text-anchor="end">+</text>
+      <text class="lbl" x="334" y="220">1000 µF</text>
+      <circle class="w" cx="398" cy="170" r="5" fill="#fff"/>
+      <circle class="w" cx="428" cy="170" r="5" fill="#fff"/>
+      <line class="w" x1="390" y1="154" x2="436" y2="154"/>
+      <line class="w" x1="413" y1="154" x2="413" y2="140"/>
+      <line class="w" x1="404" y1="140" x2="422" y2="140"/>
+      <text class="lbl" x="413" y="126" text-anchor="middle">② spend</text>
+      <line class="w" x1="433" y1="170" x2="440" y2="170"/>
+      <line class="w" x1="440" y1="170" x2="440" y2="185"/>
+      <polygon class="w" points="426,185 454,185 440,209"/>
+      <line class="w" x1="426" y1="209" x2="454" y2="209"/>
+      <path class="w" style="stroke-width:1.75" d="M457,191 L471,179 M471,179 l-10,2 M471,179 l-2,10"/>
+      <line class="w" x1="440" y1="209" x2="440" y2="224"/>
+      <path class="w" d="M440,224 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+      <text class="lbl" x="458" y="264">220 Ω</text>
+      <line class="w" x1="440" y1="296" x2="440" y2="310"/>
+      <line class="w" x1="140" y1="310" x2="440" y2="310"/>
+      <text class="lbl" x="130" y="316" text-anchor="end">ground rail</text>
+    </svg>
+    <figcaption>One capacitor, two paths, two buttons. <b>①</b> fills node <span class="node">A</span> from the rail; <b>②</b> lets the stored charge back around through an LED.</figcaption>
+  </figure>
+</details>
+<p>One question for your neighbor before the boxes open: when the LED went dark, was the capacitor empty? (No — the meter still read well over a volt. Dark doesn't mean drained — only the <strong>reset</strong> drains it: a bare <span class="val">220 Ω</span> from node <span class="node">A</span> to ground.) Keep your drawing — Part 2's timer is built from it.</p>
 
 <h2 id="s4"><span class="num">4</span> New component: the transistor</h2>
 <p>Three legs, and each has a name and a job. The big current flows in at the <strong>collector</strong> and out at the <strong>emitter</strong> — but <em>only</em> when a small current is flowing into the <strong>base</strong>. Think of a faucet lever once: the effort at the handle is not the water. From here on, the real words: base current <em>permits</em> collector current — up to the transistor's <strong>gain</strong> times bigger. The collector's own circuit decides how much of that permission actually gets used.</p>
@@ -407,7 +505,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
     <line class="w" x1="205" y1="272" x2="390" y2="272"/>
     <text class="lbl" x="195" y="278" text-anchor="end">ground rail</text>
   </svg>
-  <figcaption>The collector loop is a normal LED circuit — until it meets the transistor. All three legs are named right on the symbol: <b>B</b>, <b>C</b>, <b>E</b>. The control wire's free end stays in your hand.</figcaption>
+  <figcaption>The collector loop is a normal LED circuit — until it meets the transistor. All three legs are named right on the symbol: <b>B</b>, <b>C</b>, <b>E</b>. The control wire's free end stays in your hand. (No supply symbol: the +5 V rail and ground rail lines are the supply's two ends, and the loop closes back through the supply — lesson 1's loop, drawn the rail way.)</figcaption>
 </figure>
 
 <div class="callout note">
@@ -419,13 +517,42 @@ html.nav-open body{margin-left:248px;margin-right:auto}
   <li>Flat face toward you, legs down: <strong>E · B · C</strong> into three neighboring rows. Say the legs out loud as you plug them.</li>
   <li>Collector loop: + rail → <span class="val">220 Ω</span> → LED (long leg toward +) → collector row. Emitter row → ground rail.</li>
   <li>Base: <span class="val">4.7 kΩ</span> from the base row to an empty row; a jumper from that row is your <strong>control wire</strong> — free end in your hand.</li>
+  <li><strong>Before power:</strong> trace the base with a finger. Its only way in is through the 4.7 kΩ — no wire goes straight from a rail to the base row.</li>
   <li>Power on. <strong>Predict all three, then test:</strong> control wire touched to the <strong>+ rail</strong>? Touched to the <strong>ground rail</strong>? Dangling in the air?</li>
 </ol>
 <p>On, off — and the dangling wire? Probably off too. But look closely at what "dangling" means: nothing is <em>holding</em> the base off. Touching + is a command; touching ground is a command; dangling is <strong>no command at all</strong>, and an uncommanded input is at the mercy of static, damp air, and luck. It behaved today; never design a circuit that needs it to. The rule, from here through the whole digital semester: <strong>an input you mean to be off gets wired to ground</strong> — told, not left to hope.</p>
 <p>Still: you just operated a switch with no moving parts — flipped by a wire carrying a small fraction of the current it commands. Where lesson 2's slide switch needed a thumb, this one needs only a whisper of current — and <em>anything</em> that can make a whisper can now be a thumb.</p>
 
-<h2 id="s6"><span class="num">6</span> Measure the switch itself</h2>
-<p>Black probe parked at ground. Red probe on the transistor's own legs — predict each before you measure:</p>
+<div class="done">
+  <p class="label">Part 1 is done when…</p>
+  <ul>
+    <li>Your LED lights when the control wire touches the + rail, and goes dark when it touches ground.</li>
+    <li>You can say why the dangling wire is not a third command.</li>
+    <li>You can point to the base, the collector, and the emitter — on your board and on the schematic.</li>
+  </ul>
+  <p>All three? That's the lesson — nice work. Leave the switch standing: next lesson hires it exactly as it is. The words and the exit ticket are right below; Part 2 comes after them, if you want more.</p>
+</div>
+
+<h2 id="s6"><span class="num">6</span> Words to know</h2>
+<dl class="vocab">
+  <dt>transistor</dt><dd>three legs; a small base current permits a big collector-to-emitter current</dd>
+  <dt>base · collector · emitter</dt><dd>the control leg · where the big current enters · where it leaves (the arrow)</dd>
+  <dt>NPN</dt><dd>our transistor's family — control current flows <em>into</em> the base</dd>
+  <dt>base resistor</dt><dd>the resistor every base gets, because the base behaves like a diode — never a bare base on the supply</dd>
+</dl>
+
+<h2 id="s7"><span class="num">7</span> Exit ticket</h2>
+<p>At the end of class — wherever you got to, Part 1 or deep in Part 2 — on your card: <strong>1.</strong> draw the transistor switch from memory — symbol, all three legs labeled, base resistor in place. <strong>2.</strong> One sentence: what does the base current actually do? Hand it in at the door.</p>
+<p><strong>Then power off and put things away.</strong> The switch stays standing — LED, <span class="val">220 Ω</span>, transistor, <span class="val">4.7 kΩ</span>, control wire free — because next lesson starts from it. Anything from Part 2 comes off: every capacitor gets the reset (bare <span class="val">220 Ω</span> from its + row to ground until the meter reads under <span class="val">0.1 V</span>), then capacitors, pot, and buttons go back in the box. Swapped a part in the switch (a blue LED, a different base resistor)? Put the drawing's part back.</p>
+
+<div class="part further">
+  <p class="part-label">Part 2 · optional</p>
+  <p class="part-title">Going further</p>
+  <p>For the fast and the curious. More measurements and two more builds, every one starting from the switch you just built — pick any, or go in order. Power off before you change the board, and when time's called, stop wherever you are for the exit ticket (section 7).</p>
+</div>
+
+<h2 id="s8"><span class="num">8</span> Measure the switch itself</h2>
+<p>Black probe parked in the ground rail. Red probe on the transistor's own legs — the top of the leg, or a bare wire stub plugged into its row. Predict each before you measure:</p>
 <div class="sn-tbl"><table>
   <tr><th>Measurement</th><th>Control at +5 V (LED on)</th><th>Control at ground (LED off)</th></tr>
   <tr><td>Collector leg to ground — across the "switch"</td><td></td><td></td></tr>
@@ -433,18 +560,25 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 </table></div>
 <div class="callout note">
   <p class="label">What the numbers say</p>
-  <p><strong>On:</strong> the collector reads ≈ <span class="val">0.2 V</span> — the transistor is almost a closed switch, almost a plain wire to ground. <strong>Off:</strong> it reads ≈ <span class="val">5 V</span> — an open switch, and the whole supply piles up across the open gap, exactly like the dark circuit in lesson 4. The base, when on, sits at ≈ <span class="val">0.7 V</span>: the base's own voltage drop — same idea as an LED's, smaller.</p>
+  <p><strong>On:</strong> the collector reads ≈ <span class="val">0.2 V</span> — the transistor is almost a closed switch, almost a plain wire to ground. The base sits at ≈ <span class="val">0.7 V</span>: the base's own voltage drop — same idea as an LED's, smaller. <strong>Off:</strong> the collector reads high — but probably not the full 5 V; somewhere around <span class="val">3.5 V</span> is typical. Where did the rest go? Lesson 6 already showed you: a dark red LED still holds about a volt and a half. The meter itself lets a tiny trickle through the loop — far too little to light anything — and at that trickle the LED still takes its volt and a half. The rest piles up across the open switch. Nearly nothing across it when on, most of the supply when off: that's what a switch looks like to a meter.</p>
 </div>
 
-<h2 id="s7"><span class="num">7</span> The multiplier, sampled</h2>
-<p>How much bigger is the permitted current? The meter can ask: the dial position marked <span class="val">hFE</span> and the little socket with lettered holes. Watch the front table: teachers will power off, borrow two transistors from the room, and socket them — same part number, same bin, and the numbers land anywhere from about 100 to 300. That's the <strong>gain</strong> — engineers write it <strong>β</strong>, "beta" — and each reading is one sample, taken at the meter's own tiny test current, not a constant of nature.</p>
+<h2 id="s9"><span class="num">9</span> The multiplier, sampled</h2>
+<p>How much bigger is the permitted current? The meter can ask: the dial position marked <span class="val">hFE</span> and the little socket with lettered holes.</p>
+<ol class="steps">
+  <li><strong>Power off.</strong> Pull your transistor and seat it in the meter's NPN socket, each leg in the hole with its letter: <span class="val">E</span>, <span class="val">B</span>, <span class="val">C</span>.</li>
+  <li>Dial to <span class="val">hFE</span> and read the number. Compare with the tables around you — same part number, same bin.</li>
+  <li>Reseat it on the board — flat face toward you, E-B-C, said out loud — before the power comes back.</li>
+</ol>
+<p>The numbers land anywhere from about 100 to 300. That's the <strong>gain</strong> — engineers write it <strong>β</strong>, "beta" — and each reading is one sample, taken at the meter's own tiny test current, not a constant of nature.</p>
 <div class="callout note">
   <p class="label">Design for the weakest</p>
-  <p>If β is a lottery, how does anyone design with it? Plan on the <em>smallest</em> number the bin might hold. Our switch feeds the base several times the minimum whisper a weak part would need — so every transistor in the bin slams fully on, and a strong β is a bonus, never a requirement. (Want your own part's number? Stretch #1.)</p>
+  <p>If β is a lottery, how does anyone design with it? Plan on the <em>smallest</em> number the bin might hold. Our switch feeds the base several times the minimum whisper a weak part would need — so every transistor in the bin slams fully on, and a strong β is a bonus, never a requirement.</p>
 </div>
 
-<h2 id="s8"><span class="num">8</span> The knob that decides</h2>
-<p>In lesson 5, the pot dimmed the LED smoothly, end to end. Feed the pot's tap to the <em>base</em> instead and something different happens:</p>
+<h2 id="s10"><span class="num">10</span> The knob that decides</h2>
+<p>In lesson 5, the pot dimmed an LED smoothly, end to end. Feed the pot's wiper to the <em>base</em> instead and something different happens.</p>
+<p>First, what a pot does with all three legs wired: it's lesson 5's divider in one part. The wiper splits the pot's 10 kΩ into a top half and a bottom half, and <strong>the bigger half takes the bigger share</strong> of the 5 volts — the rule from lesson 5 and lesson 6's warm-up. The wiper reads the bottom half's share: turn toward the + end, the bottom half grows, and the wiper climbs from 0 toward 5 V.</p>
 <figure class="schematic">
   <svg viewBox="0 0 560 330" role="img" aria-label="Potentiometer across the rails with its wiper feeding the base resistor of the transistor LED switch">
     <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
@@ -459,6 +593,8 @@ html.nav-open body{margin-left:248px;margin-right:auto}
     <text class="lbl-muted" x="222" y="120">wiper</text>
     <line class="w" x1="212" y1="132" x2="212" y2="220"/>
     <line class="w" x1="212" y1="220" x2="246" y2="220"/>
+    <circle cx="212" cy="176" r="4" fill="#b23a32"/>
+    <text class="lbl-muted" x="222" y="162">red probe</text>
     <line class="w" x1="390" y1="26" x2="390" y2="48"/>
     <polygon class="w" points="376,48 404,48 390,72"/>
     <line class="w" x1="376" y1="72" x2="404" y2="72"/>
@@ -481,36 +617,47 @@ html.nav-open body{margin-left:248px;margin-right:auto}
     <line class="w" x1="140" y1="272" x2="390" y2="272"/>
     <text class="lbl" x="130" y="278" text-anchor="end">ground rail</text>
   </svg>
-  <figcaption>Lesson 5's divider, feeding the base: the wiper's voltage — through the 4.7 kΩ — is now the control signal.</figcaption>
+  <figcaption>Lesson 5's divider, feeding the base: the wiper's voltage — through the 4.7 kΩ — is now the control signal. The meter watches the wiper.</figcaption>
 </figure>
 
 <ol class="steps">
-  <li>Pot across the rails, outer legs to + and ground — the lesson 5 divider.</li>
-  <li>Wiper → <span class="val">4.7 kΩ</span> → base, replacing the control wire. Collector loop unchanged.</li>
-  <li><strong>Predict:</strong> turning the knob end to end — a smooth dim, like the dimmer? Sweep slowly and watch.</li>
+  <li><strong>Power off.</strong> Pot across the rails: outer legs to + and ground.</li>
+  <li>Unplug the control wire. The wiper → the 4.7 kΩ's free row takes its place. Collector loop unchanged.</li>
+  <li>Meter: black probe parked in ground, red on the wiper's row.</li>
+  <li><strong>Predict:</strong> turning the knob end to end — a smooth dim, like the dimmer? Power on, sweep <em>slowly</em>, and catch two numbers:</li>
 </ol>
-<p>Most of the turn does <em>nothing</em> — dark, dark, dark — then the whole performance arrives in one narrow slice: a faint glow, a quick climb, full brightness. After that, more turning changes nothing again. Below the base's ≈ 0.7 V door, no whisper gets in. Inside the slice the transistor really is dimming — where the slice sits depends on your pot and your part. Past it, saturation: fully on, permission to spare. Where lesson 5's dimmer spread its change across the whole knob, this circuit crushes it into a sliver: <em>almost</em> off-or-on. A circuit that squeezes a smooth quantity toward yes-or-no is making a <strong>threshold</strong> decision, and that word is next lesson's whole story.</p>
+<div class="sn-tbl"><table>
+  <tr><th>The LED…</th><th>Wiper voltage</th></tr>
+  <tr><td>first glows at</td><td></td></tr>
+  <tr><td>stops getting brighter at</td><td></td></tr>
+</table></div>
+<p>Most of the turn does <em>nothing</em> — dark, dark, dark — then the whole performance arrives in one narrow slice: a faint glow, a quick climb, full brightness. After that, more turning changes nothing again. Below the base's ≈ 0.7 V door, no whisper gets in. Inside the slice the transistor really is dimming — where the slice sits depends on your pot and your part. Past it, <strong>saturation</strong>: fully on, permission to spare. Where lesson 5's dimmer spread its change across the whole knob, this circuit crushes it into a sliver: <em>almost</em> off-or-on. A circuit that squeezes a smooth quantity toward yes-or-no is making a <strong>threshold</strong> decision — and your two numbers bracket this one's threshold, just above the base's 0.7 V. Done? Power off, pot out, control wire back.</p>
 
-<h2 id="s9"><span class="num">9</span> The capacitor runs the show</h2>
-<p>Lesson 6's capacitor could light an LED for about a second. Watch what the transistor does for it:</p>
+<h2 id="s11"><span class="num">11</span> The capacitor runs the show</h2>
+<p>Lesson 6's capacitor could light an LED for about a second. Watch what the transistor does for it. Get out your warm-up drawing — it's half of this build.</p>
 <figure class="schematic">
-  <svg viewBox="0 0 560 330" role="img" aria-label="A charged 1000 microfarad capacitor feeding the base resistor of the transistor LED switch; a charge wire from the 5 volt rail touches the capacitor and is then removed">
+  <svg viewBox="0 0 560 330" role="img" aria-label="Timer: button 1 connects the 5 volt rail through a 220 ohm resistor to node A, where a 1000 microfarad capacitor goes to ground and a 4.7 kilohm resistor feeds the base of the transistor LED switch">
     <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
     <line class="w" x1="140" y1="26" x2="390" y2="26"/>
-    <path class="flow" d="M150,36 L150,86"/>
-    <path class="w" d="M150,86 l-6,5 l12,10 l-12,10 l12,10 l-12,10 l12,10 l-6,5"/>
-    <text class="lbl" x="164" y="122">220 Ω</text>
-    <path class="flow" d="M150,146 L150,200"/>
-    <polygon points="150,210 144,198 156,198" fill="var(--copper)"/>
-    <text class="lbl-muted" x="138" y="104" text-anchor="end">touch to charge,</text>
-    <text class="lbl-muted" x="138" y="122" text-anchor="end">then pull away</text>
+    <line class="w" x1="150" y1="26" x2="150" y2="37"/>
+    <circle class="w" cx="150" cy="42" r="5" fill="#fff"/>
+    <circle class="w" cx="150" cy="74" r="5" fill="#fff"/>
+    <line class="w" x1="134" y1="34" x2="134" y2="82"/>
+    <line class="w" x1="134" y1="58" x2="118" y2="58"/>
+    <line class="w" x1="118" y1="49" x2="118" y2="67"/>
+    <text class="lbl" x="108" y="63" text-anchor="end">① charge</text>
+    <line class="w" x1="150" y1="79" x2="150" y2="90"/>
+    <path class="w" d="M150,90 l-6,5 l12,10 l-12,10 l12,10 l-12,10 l12,10 l-6,5"/>
+    <text class="lbl" x="164" y="126">220 Ω</text>
+    <line class="w" x1="150" y1="150" x2="150" y2="220"/>
     <line class="w" x1="150" y1="220" x2="246" y2="220"/>
-    <circle cx="150" cy="220" r="4.5" fill="var(--ink)"/>
+    <circle class="jdot" cx="150" cy="220" r="4.5"/>
+    <g class="nodeb"><circle cx="200" cy="220" r="13"/><text x="200" y="225" text-anchor="middle">A</text></g>
     <line class="w" x1="150" y1="220" x2="150" y2="232"/>
     <line class="w" x1="126" y1="232" x2="174" y2="232"/>
     <path class="w" d="M126,244 a44,44 0 0 0 48,0"/>
     <line class="w" x1="150" y1="251" x2="150" y2="272"/>
-    <text class="lbl" x="116" y="226" text-anchor="end">+</text>
+    <text class="lbl" x="116" y="228" text-anchor="end">+</text>
     <text class="lbl" x="184" y="250">1000 µF</text>
     <line class="w" x1="390" y1="26" x2="390" y2="48"/>
     <polygon class="w" points="376,48 404,48 390,72"/>
@@ -534,21 +681,27 @@ html.nav-open body{margin-left:248px;margin-right:auto}
     <line class="w" x1="140" y1="272" x2="390" y2="272"/>
     <text class="lbl" x="130" y="278" text-anchor="end">ground rail</text>
   </svg>
-  <figcaption>The stored charge pays only the base's whisper; the LED's bright current comes from the supply, through the collector.</figcaption>
+  <figcaption>The timer: button <b>①</b> fills node <span class="node">A</span> — the capacitor's + plate — through the 220 Ω, and node <span class="node">A</span> feeds the base through the 4.7 kΩ. The stored charge pays only the base's whisper; the LED's bright current comes from the supply, through the collector. (Path ② from the warm-up stands beside it — just leave its button alone.)</figcaption>
 </figure>
 
 <ol class="steps">
-  <li>Take the pot back out. In its place: <span class="val">1000 µF</span> capacitor, + leg to the base resistor's input row, striped leg to ground. Stripe check, out loud.</li>
-  <li>Charge wire: a <span class="val">220 Ω</span> from the + rail to an empty row, and a jumper from that row — its free end is your charge wire. Touch it to the capacitor's + row for a full second, then <strong>pull it away</strong>. (Big caps fill through a resistor — the same habit as every fill in lesson 6; a bare rail wire is a spark habit.) Predict first: what will the LED do, and for how long?</li>
+  <li><strong>Power off.</strong> Unplug the control wire (and the pot, if it's still in) — the base resistor's free row is about to get a new signal.</li>
+  <li>On free rows beside the switch, build lesson 6's store-and-spend circuit from your warm-up drawing: beep-test both buttons first, and stripe to ground — say it.</li>
+  <li><strong>The baseline, the lesson 6 way:</strong> power on, hold ① for two seconds, let go, press ② and count the flash. About a second of light.</li>
+  <li><strong>Power off.</strong> One new wire: node <span class="node">A</span> → the 4.7 kΩ's free row. Path ② stays; leave its button alone from here on.</li>
+  <li>Power on. <strong>Predict first:</strong> what will the switch's LED do after you let go of ①, and for how long? Then hold ① for two seconds, let go, and count.</li>
 </ol>
-<p>The LED holds on — for on the order of ten seconds — then dies. Same capacitor, same stored energy as lesson 6's one-second fade. The difference: the LED's light is paid for by the <em>supply</em> now, through the collector; the capacitor's store goes only to the base's whisper. <strong>A small store, trickled out slowly, commanding a big bright current: that is amplification</strong>, and you just watched it.</p>
+<p>The LED holds on — ten seconds or more — then slowly fades. Same capacitor, same stored energy as the one-second flash you just counted. The difference: the switch's LED is paid for by the <em>supply</em> now, through the collector; the capacitor's store goes only to the base's whisper. <strong>A small store, trickled out slowly, commanding a big bright current: that is amplification</strong>, and you just watched it.</p>
 
-<h2 id="s10"><span class="num">10</span> Challenge: tune the timer</h2>
-<p>The timer schematic one more time — but now it reads <strong>C = <span class="val">▢</span>, base resistor = <span class="val">▢</span></strong>. Pick them so the LED stays on <strong>as close to five seconds as you can get</strong> after the charge wire lifts. Predict which direction each lever pushes before you swap anything. Closest table wins.</p>
+<h2 id="s12"><span class="num">12</span> Challenge: tune the timer</h2>
+<p>The timer schematic one more time — but now it reads <strong>C = <span class="val">▢</span>, base resistor = <span class="val">▢</span></strong>. Pick them so the LED stays on <strong>as close to five seconds as you can get</strong> after you let go of ①. Predict which direction each lever pushes before you swap anything. Closest table wins.</p>
+<p><strong>The finish line.</strong> The LED fades instead of snapping off, so eyes will argue about when it's "off." The meter settles it, like lesson 6's 3.2 V line: black probe in ground, red on the <strong>collector</strong>. It reads ≈ 0.2 V while the switch is fully on, and climbs as the switch lets go. <strong>Stop the clock when the collector crosses <span class="val">2.5 V</span></strong> — the switch half open. Meter partners split the jobs: one lets go of ① and counts; the other watches the meter and calls <em>"two-point-five!"</em></p>
+<p>Hold ① for two seconds before every run — it refills the capacitor, so every run starts from the same place. Swapping capacitors? Reset the one you pull out before it goes in the box.</p>
 
+<h2 id="s13"><span class="num">13</span> More to try</h2>
 <div class="callout tryit">
-  <p class="label">Go further — for the fast and the curious</p>
-  <p><strong>1.</strong> Sample your own β: <strong>power off</strong>, pull your transistor, seat it in the meter's NPN socket holes <span class="val">E</span>-<span class="val">B</span>-<span class="val">C</span>, read the number, compare across the table. Then reseat it — flat face toward you, E-B-C, said out loud. <strong>2.</strong> Swap the red LED for blue in the collector loop. Predict the collector-to-ground reading when on, and the brightness, before you look. <strong>3.</strong> Replace the 4.7 kΩ base resistor with 1 kΩ, then 10 kΩ — what changes, in the pot build and in the timer? <strong>4.</strong> Bold move: make <em>yourself</em> the base resistor — control wire in one hand, a jumper from the + rail pinched in the other. Your ≈ 100 kΩ body is a legal base resistor; the glow may be faint. (A Darlington pair — two transistors stacked so their gains multiply — makes this trick effortless; ask us about it.)</p>
+  <p class="label">For the fast and the curious</p>
+  <p><strong>1. Blue in the collector loop.</strong> Swap the red LED for blue. Predict the collector-to-ground reading when on, and the brightness, before you look. <strong>2. Other base resistors.</strong> In the knob build, replace the 4.7 kΩ with 1 kΩ, then 10 kΩ — where does the glow-to-full slice move? (In the timer, that's the challenge's second lever.) <strong>3. Push to light, let go to dark.</strong> Replace the control wire with a pushbutton — + rail → button (the two legs that beep only while pressed) → the 4.7 kΩ's free row. Predict pressed, then released. Released is the dangling wire all over again: no command. Fix it with a <span class="val">10 kΩ</span> from that row to the ground rail. Now letting go means off — told, not hoped. That resistor is a <strong>pull-down</strong>, and digital circuits put one — or its mirror image, a pull-up — on nearly every button. (Pressed, the button ties the row straight to +, and the 10 kΩ just carries a harmless half-milliamp to ground.) <strong>4. Bold move:</strong> make <em>yourself</em> the base resistor — control wire in one hand, a jumper from the + rail pinched in the other. Hand to hand, you're hundreds of kΩ: a legal base resistor, and the glow may be faint. (A Darlington pair — two transistors stacked so their gains multiply — makes this trick effortless; ask us about it.)</p>
 </div>
 
 <div class="callout math">
@@ -562,19 +715,14 @@ html.nav-open body{margin-left:248px;margin-right:auto}
   <p>— about seven times that minimum, on purpose. The surplus is why the whole bin works: the switch saturates whether your β is 100 or 300. The <em>Transistor's Arithmetic</em> sheet on the math shelf runs the whole design, including how the 4.7 kΩ was chosen.</p>
 </div>
 
-<h2 id="s11"><span class="num">11</span> Words to know</h2>
+<h3>Words from Part 2</h3>
 <dl class="vocab">
-  <dt>transistor</dt><dd>three legs; a small base current permits a big collector-to-emitter current</dd>
-  <dt>base · collector · emitter</dt><dd>the control leg · where the big current enters · where it leaves (the arrow)</dd>
-  <dt>NPN</dt><dd>our transistor's family — control current flows <em>into</em> the base</dd>
   <dt>gain (β)</dt><dd>the permission multiplier: one unit of base current permits up to β units of collector current (the meter's <span class="val">hFE</span> socket reads one sample of it)</dd>
   <dt>saturation</dt><dd>fully on — the base permits more than the collector loop can draw, and the transistor drops only ≈ 0.2 V, as close to a closed switch as it gets</dd>
   <dt>threshold</dt><dd>the input level where a circuit stops dimming and starts deciding</dd>
+  <dt>amplification</dt><dd>a small signal commanding a bigger one — here, a capacitor's trickle into the base running a bright LED from the supply</dd>
+  <dt>pull-down</dt><dd>a resistor from an input to ground, so "no command" still means off</dd>
 </dl>
-
-<h2 id="s12"><span class="num">12</span> Exit ticket</h2>
-<p>On your card: <strong>1.</strong> draw the transistor switch from memory — symbol, all three legs labeled, base resistor in place. <strong>2.</strong> One sentence: what does the base current actually do? Hand it in at the door.</p>
-<p>Then lesson 6's teardown ritual: bare <span class="val">220 Ω</span> across the 1000 µF until the meter calls it empty. Retire the drained caps and the pot to the box — but <strong>leave the switch standing</strong>: LED, <span class="val">220 Ω</span>, transistor, base resistor, control wire free. Next lesson hires it exactly as it stands.</p>
 
 <footer class="lesson-foot">
   <span>StarLeap Electronics · Lesson 7</span>
