@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lesson 9 · The 555 Timer</title>
+<title>Lesson 10 · The 555 Timer</title>
 <style>
 /* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
 :root {
@@ -310,7 +310,7 @@ footer.lesson-foot {
 </style>
 </head>
 <body>
-<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.28-1308</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html">8 &middot; Sensors</a><a href="s1-09-the-555-timer.html" class="cur">9 &middot; The 555 Timer</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: the night-light, on paper</a><a class="sub" href="#s4">4 &middot; New component: the chip</a><a class="sub" href="#s5">5 &middot; Build A: trigger and threshold, by hand</a><a class="sub" href="#s6">6 &middot; Build B: hand it the stopwatch</a><a class="sub" href="#s7">7 &middot; Watch it breathe</a><a class="sub" href="#s8">8 &middot; Challenge: the two-second metronome</a><a class="sub" href="#s9">9 &middot; The cliffhanger</a><a class="sub" href="#s10">10 &middot; Words to know</a><a class="sub" href="#s11">11 &middot; Exit ticket</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.10.04-0007</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-the-blinker.html">8 &middot; The Blinker</a><a href="s1-09-sensors.html">9 &middot; Sensors</a><a href="s1-10-the-555-timer.html" class="cur">10 &middot; The 555 Timer</a><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: the night-light, on paper</a><a class="sub" href="#s4">4 &middot; New component: the chip</a><a class="sub" href="#s5">5 &middot; Build A: trigger and threshold, by hand</a><a class="sub" href="#s6">6 &middot; Build B: hand it the stopwatch</a><a class="sub" href="#s7">7 &middot; Watch it breathe</a><a class="sub" href="#s8">8 &middot; Challenge: the two-second metronome</a><a class="sub" href="#s9">9 &middot; The cliffhanger</a><a class="sub" href="#s10">10 &middot; Words to know</a><a class="sub" href="#s11">11 &middot; Exit ticket</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
 #sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
 html.nav-open #sidenav{transform:none}
 #sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
@@ -333,7 +333,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 </style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
 
 <header class="lesson-head">
-  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 9 · 55 min &middot; build 2026.09.28-1308</p>
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 10 · 55 min &middot; build 2026.10.04-0007</p>
   <h1>The 555 Timer</h1>
 </header>
 
@@ -359,7 +359,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 </ul>
 
 <h2 id="s3"><span class="num">3</span> Warm-up: the night-light, on paper</h2>
-<p>Lesson 8, no peeking, no board: <strong>draw the night-light from memory</strong> — sensing stage, tap, base resistor, switch stage. Then mark two things on your drawing: the <strong>node the circuit watches</strong>, and the <strong>voltage where it flips</strong>. Two minutes, trade with a neighbor, check each other's topology. Keep that word <em>threshold</em> warm — today you meet a part that watches <em>two</em> of them at once.</p>
+<p>Lesson 9, no peeking, no board: <strong>draw the night-light from memory</strong> — sensing stage, tap, base resistor, switch stage. Then mark two things on your drawing: the <strong>node the circuit watches</strong>, and the <strong>voltage where it flips</strong>. Two minutes, trade with a neighbor, check each other's topology. Keep that word <em>threshold</em> warm — today you meet a part that watches <em>two</em> of them at once.</p>
 
 <h2 id="s4"><span class="num">4</span> New component: the chip</h2>
 <p>The black brick in your kit is an <strong>integrated circuit</strong> — IC for short, <strong>chip</strong> to everyone. Inside is a complete circuit: for the 555, about twenty-five transistors with their resistors, built onto one flake of silicon and sealed in plastic. Nothing in there is a new kind of part. What's new is that you can't touch any of it — the only handles you get are the <strong>pins</strong>, and the only way to know what each pin does is the map. That map is the <strong>pinout</strong>, and it comes from the part's manual — its <strong>datasheet</strong>. Here's ours:</p>
@@ -576,7 +576,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
   <p>Before power: what will the LED do, and roughly how often? Put a number on it — the challenge will grade your guess: <span class="writeline"></span></p>
 </div>
 
-<p>Power on. It blinks — steadily, forever, hands nowhere near it. You built an <strong>oscillator</strong>: a circuit with no resting state, so it flips between its two states for as long as it's powered. The 555 wired this way is called <strong>astable</strong> — "no stable state" — and that word will follow this chip for the rest of the year.</p>
+<p>Power on. It blinks — steadily, forever, hands nowhere near it. You built an <strong>oscillator</strong> — your second, after lesson 8's blinker: a circuit with no resting state, so it flips between its two states for as long as it's powered. That one took two transistors and two capacitors, each timing half the beat; this one runs on one chip watching one capacitor. The 555 wired this way is called <strong>astable</strong> — "no stable state" — and that word will follow this chip for the rest of the year.</p>
 
 <h2 id="s7"><span class="num">7</span> Watch it breathe</h2>
 <div class="callout predict">
@@ -653,7 +653,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 <p>Then the teardown ritual, chips or no chips: bare <span class="val">220 Ω</span> across every capacitor until the meter calls it empty. Parts go back in the box asleep.</p>
 
 <footer class="lesson-foot">
-  <span>StarLeap Electronics · Lesson 9</span>
+  <span>StarLeap Electronics · Lesson 10</span>
   <span>Next: The 555 Timer II — Sound</span>
 </footer>
 

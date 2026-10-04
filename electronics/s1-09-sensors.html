@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lesson 8 · Sensors</title>
+<title>Lesson 9 · Sensors</title>
 <style>
 /* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
 :root {
@@ -310,7 +310,7 @@ footer.lesson-foot {
 </style>
 </head>
 <body>
-<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.09.28-1308</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-sensors.html" class="cur">8 &middot; Sensors</a><p class="sn-part">The basics</p><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: the switch, from memory</a><a class="sub" href="#s4">4 &middot; New component: the LDR</a><a class="sub" href="#s5">5 &middot; Light becomes a voltage</a><a class="sub" href="#s6">6 &middot; The night-light</a><a class="sub" href="#s7">7 &middot; Words to know</a><a class="sub" href="#s8">8 &middot; Exit ticket</a><p class="sn-part">Going further</p><a class="sub" href="#s9">9 &middot; Find your threshold</a><a class="sub" href="#s10">10 &middot; Challenge: the flip</a><a class="sub" href="#s11">11 &middot; More to try</a><a href="s1-09-the-555-timer.html">9 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.10.04-0007</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-the-blinker.html">8 &middot; The Blinker</a><a href="s1-09-sensors.html" class="cur">9 &middot; Sensors</a><p class="sn-part">The basics</p><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: the switch, from memory</a><a class="sub" href="#s4">4 &middot; New component: the LDR</a><a class="sub" href="#s5">5 &middot; Light becomes a voltage</a><a class="sub" href="#s6">6 &middot; The night-light</a><a class="sub" href="#s7">7 &middot; Words to know</a><a class="sub" href="#s8">8 &middot; Exit ticket</a><p class="sn-part">Going further</p><a class="sub" href="#s9">9 &middot; Find your threshold</a><a class="sub" href="#s10">10 &middot; Challenge: the flip</a><a class="sub" href="#s11">11 &middot; More to try</a><a href="s1-10-the-555-timer.html">10 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
 #sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
 html.nav-open #sidenav{transform:none}
 #sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
@@ -333,7 +333,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 </style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
 
 <header class="lesson-head">
-  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 8 · 55 min &middot; build 2026.09.28-1308</p>
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 9 · 55 min &middot; build 2026.10.04-0007</p>
   <h1>Sensors</h1>
 </header>
 
@@ -352,7 +352,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 <ul>
   <li>Measure a resistor that <strong>light pushes around</strong>, and prove it with the meter.</li>
   <li>Build the <strong>sensing stage</strong>: a divider that turns light into a voltage the meter can watch move.</li>
-  <li>Connect it to last lesson's switch and build the <strong>night-light</strong> — a circuit that acts on its own, no hands.</li>
+  <li>Connect it to lesson 7's switch and build the <strong>night-light</strong> — a circuit that acts on its own, no hands.</li>
 </ul>
 
 <h2 id="s2"><span class="num">2</span> Your kit today</h2>
@@ -364,7 +364,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 </ul>
 
 <h2 id="s3"><span class="num">3</span> Warm-up: the switch, from memory</h2>
-<p><strong>Kits closed, one minute:</strong> draw lesson 7's <strong>transistor switch</strong> from memory — LED and <span class="val">220 Ω</span> into the collector, emitter to ground, <span class="val">4.7 kΩ</span> guarding the base, control wire. Blanks and guesses are fine. Then open the answer and fix your drawing.</p>
+<p><strong>Kits closed, one minute:</strong> draw lesson 7's <strong>transistor switch</strong> from memory — LED and <span class="val">220 Ω</span> into the collector, emitter to ground, <span class="val">4.7 kΩ</span> guarding the base, control wire. Blanks and guesses are fine. (Time left? Add its twin and the two capacitors — last lesson's whole blinker.) Then open the answer and fix your drawing.</p>
 <details>
   <summary><strong>Check your drawing</strong></summary>
   <figure class="schematic">
@@ -399,7 +399,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
     <figcaption>The collector loop is a normal LED circuit — until it meets the transistor. All three legs are named right on the symbol: <b>B</b>, <b>C</b>, <b>E</b>. The control wire's free end stays in your hand. (No supply symbol: the +5 V rail and ground rail lines are the supply's two ends, and the loop closes back through the supply — lesson 1's loop, drawn the rail way.)</figcaption>
   </figure>
 </details>
-<p>Now open the box: the switch is standing where you left it. Check it against your drawing, then prove both commands — control wire to the + rail: on; to the ground rail: off — and say why the dangling wire is <em>not</em> a third command. (Box lost it, or never finished it? Build it now from the drawing — flat face toward you, E-B-C.) <strong>Leave it standing.</strong> Last lesson <em>you</em> were the sensor — your hand decided when the base got its whisper. Today the circuit takes that job away from you.</p>
+<p>Now open the box: the switch is standing where you left it. Check it against your drawing, then prove both commands — control wire to the + rail: on; to the ground rail: off — and say why the dangling wire is <em>not</em> a third command. (Box lost it, or never finished it? Build it now from the drawing — flat face toward you, E-B-C.) <strong>Leave it standing.</strong> In lesson 7 <em>you</em> were the sensor — your hand decided when the base got its whisper. Last lesson a second switch did the deciding. Today the job goes to the light in the room.</p>
 
 <h2 id="s4"><span class="num">4</span> New component: the LDR</h2>
 <p>Two names, one part: the <strong>LDR</strong> — light-dependent resistor — also sold as a <strong>photoresistor</strong>. Both names are everywhere; both mean this flat disc. It measures like a resistor because it <em>is</em> one, but its value refuses to hold still: flood the squiggle face with light and the resistance collapses to a few thousand ohms; seal it in darkness and it swells into the hundreds of thousands.</p>
@@ -611,7 +611,7 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 <h2 id="s11"><span class="num">11</span> More to try</h2>
 <div class="callout tryit">
   <p class="label">For the fast and the curious</p>
-  <p><strong>1. Picky night-light:</strong> stack the spare <span class="val">100 kΩ</span> in series with the first, doubling the divider's top. Predict first: does the room now need to be darker, or less dark, before the LED wakes? <strong>2. Sensitivity knob:</strong> in the beam detector, make the bottom resistor the pot — wiper plus one leg, lesson 5's adjustable resistor. One knob now sets how bright "bright" means; find the edge where room light alone trips it. <strong>3. Patience</strong> — back on the night-light: a <span class="val">100 µF</span> capacitor from the tap to ground — stripe to ground, out loud. A hand waved over the disc now does nothing; only darkness that <em>stays</em> wakes the LED, a beat later. Predict what the <span class="val">1000 µF</span> would do before you try it. <strong>4. Feedback:</strong> re-plug the night-light's LED so it stares straight at its own LDR, cup both under your hands, and watch closely: a flicker, a shimmer, or a steady dim truce — different builds settle differently. The circuit is sensing its own output — the word is <strong>feedback</strong>. Explain whatever yours does.</p>
+  <p><strong>1. Picky night-light:</strong> stack the spare <span class="val">100 kΩ</span> in series with the first, doubling the divider's top. Predict first: does the room now need to be darker, or less dark, before the LED wakes? <strong>2. Sensitivity knob:</strong> in the beam detector, make the bottom resistor the pot — wiper plus one leg, lesson 5's adjustable resistor. One knob now sets how bright "bright" means; find the edge where room light alone trips it. <strong>3. Patience</strong> — back on the night-light: a <span class="val">100 µF</span> capacitor from the tap to ground — stripe to ground, out loud. A hand waved over the disc now does nothing; only darkness that <em>stays</em> wakes the LED, a beat later. Predict what the <span class="val">1000 µF</span> would do before you try it. <strong>4. Feedback:</strong> re-plug the night-light's LED so it stares straight at its own LDR, cup both under your hands, and watch closely: a flicker, a shimmer, or a steady dim truce — different builds settle differently. The circuit is sensing its own output — lesson 8's <strong>feedback</strong>, this time through the air. Explain whatever yours does.</p>
 </div>
 
 <div class="callout math">
@@ -628,11 +628,11 @@ html.nav-open body{margin-left:248px;margin-right:auto}
 <dl class="vocab">
   <dt>sensitivity</dt><dd>how much the world must change before a circuit crosses its threshold; set by the fixed resistor — or a pot</dd>
   <dt>loading</dt><dd>what happens when a stage draws current from a divider's tap: the tap sags below what the divider alone would give — the stall you saw in section 9</dd>
-  <dt>feedback</dt><dd>a circuit sensing its own output — the LED lighting its own LDR</dd>
+  <dt>feedback</dt><dd>lesson 8's word, back again: a circuit's output looping around to its own input — here, the LED lighting its own LDR</dd>
 </dl>
 
 <footer class="lesson-foot">
-  <span>StarLeap Electronics · Lesson 8</span>
+  <span>StarLeap Electronics · Lesson 9</span>
   <span>Next: The 555 Timer</span>
 </footer>
 
