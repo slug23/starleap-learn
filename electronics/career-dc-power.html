@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Careers in DC Power</title>
+<style>
+/* Embedded subset of assets/lesson.css (careers accent: teal) — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+  --teal: #0e7377;
+  --teal-soft: #e0f1f0;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+h2 {
+  margin: 2.2em 0 .3em;
+  font-size: 23px;
+  border-bottom: 2px solid var(--copper);
+  padding-bottom: 6px;
+}
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 620px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  /* tables here run long: let them break between rows, never inside one */
+  .callout, figure.schematic, tr { break-inside: avoid; }
+  h2 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+  dl.vocab { grid-template-columns: 1fr; gap: 0; }
+  dl.vocab dd { margin-bottom: 8px; }
+}
+
+/* ---- careers accent: teal ---- */
+.kicker { color: var(--teal); }
+h2 { border-color: var(--teal); }
+.callout.idea { border-color: var(--teal); background: var(--teal-soft); }
+.callout.idea .label { color: var(--teal); }
+table th { background: var(--teal-soft); }
+dl.vocab dt { color: var(--teal); }
+a { color: var(--teal); font-weight: 600; }
+
+/* ---- local: the to-do checklist and the power-path figure ---- */
+ul.todo { list-style: none; padding: 0; }
+ul.todo li { position: relative; padding-left: 1.7em; margin: .55em 0; }
+ul.todo li::before { content: "▢"; position: absolute; left: 0; color: var(--teal); }
+svg .box-ac { fill: var(--blue-soft); stroke: var(--blue); stroke-width: 1.8; }
+svg .box-dc { fill: var(--teal-soft); stroke: var(--teal); stroke-width: 1.8; }
+svg .box-new { stroke-width: 3.6; }
+svg .volt { fill: var(--ink); font-size: 17px; font-weight: 700;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .kind-ac, svg .kind-dc { font-size: 12.5px; font-weight: 700; letter-spacing: .1em;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .kind-ac { fill: var(--blue); }
+svg .kind-dc { fill: var(--teal); }
+svg .row-title { fill: var(--muted); font-size: 12.5px; font-weight: 700; letter-spacing: .12em;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .arrow { stroke: var(--ink); stroke-width: 1.8; fill: none;
+             stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---- local: on phones the three-column tables become one card per row ---- */
+@media screen and (max-width: 560px) {
+  table.stack, table.stack tbody, table.stack tr, table.stack td { display: block; }
+  table.stack { background: none; }
+  table.stack tr.head { display: none; }
+  table.stack tr { background: var(--card); border: 1px solid var(--line);
+                   border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+  table.stack td { border: 0; padding: 2px 0; }
+  table.stack td:nth-child(3)::before { font-weight: 700; color: var(--teal); }
+  table.stack.where td:nth-child(3)::before { content: "Who: "; }
+  table.stack.jobs td:nth-child(3)::before { content: "Way in: "; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.10.05-1829</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-the-blinker.html">8 &middot; The Blinker</a><a href="s1-09-sensors.html">9 &middot; Sensors</a><a href="s1-10-the-555-timer.html">10 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a><p class="sn-sec">Where this leads</p><a href="career-dc-power.html" class="cur">Careers in DC Power</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav .sn-part{font:700 10.5px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--copper-ink,#8a3d07);margin:8px 0 2px 30px}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media screen and (max-width:899px){body{padding-top:56px}}
+@media screen and (max-width:599px){.val{white-space:normal}}
+.sn-tbl{overflow-x:auto}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}.sn-tbl{overflow:visible}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Where this leads · Optional — a career report &middot; build 2026.10.05-1829</p>
+  <h1>Careers in DC Power</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>Say "electrician" and most people picture house wiring: outlets, breaker panels, AC. But a fast-growing part of the trade works in <strong>DC</strong> — the same kind of electricity as your kit — inside datacenters, battery plants, solar farms, and fast chargers. <strong>Same rules as your breadboard. Much bigger numbers.</strong></p>
+</div>
+
+<h2>The electrician most people never meet</h2>
+<p>The electricians you have seen at work wire homes, stores, and offices. That is skilled, essential work, and nearly all of it is AC: 120 and 240 V in a house, up to 480 V in a large building.</p>
+<p>Follow the wires into certain buildings, though, and the AC ends. Anything that <em>stores</em> energy in a battery, <em>makes</em> it in a solar panel, or <em>computes</em> with it in a chip runs on DC. Somebody has to build those systems, test them, and keep them alive — and that somebody is usually an electrician or an electrical technician whose job most people have never heard of.</p>
+<p>This report is about that work: where it is, what the jobs are called, how people get into them, and what you could do about it while you are still in high school.</p>
+
+<h2>Where DC lives</h2>
+<div class="sn-tbl"><table class="stack where">
+  <tr class="head"><th>Where</th><th>Typical DC voltage</th><th>Who works on it</th></tr>
+  <tr><td><strong>Your kit</strong></td><td><span class="val">5 V</span></td><td>You</td></tr>
+  <tr><td><strong>Telephone exchanges and cell towers</strong></td><td><span class="val">48 V</span></td><td>Telecom DC power technicians. Battery rooms have kept phones working through blackouts for over a century.</td></tr>
+  <tr><td><strong>Datacenter racks</strong></td><td><span class="val">≈ 54 V</span> today, <span class="val">800 V</span> planned</td><td>Electricians and critical facilities technicians</td></tr>
+  <tr><td><strong>Datacenter backup batteries</strong></td><td>around <span class="val">500 V</span></td><td>Battery and UPS field service technicians</td></tr>
+  <tr><td><strong>Electric cars and fast chargers</strong></td><td><span class="val">400–1,000 V</span></td><td>EV charging installers and service technicians</td></tr>
+  <tr><td><strong>Solar farms and grid battery storage</strong></td><td>up to <span class="val">1,500 V</span></td><td>Solar electricians and energy storage technicians</td></tr>
+  <tr><td><strong>Subways and electric rail</strong></td><td><span class="val">600–1,500 V</span> on many systems</td><td>Transit electricians</td></tr>
+  <tr><td><strong>Long-distance DC power lines</strong></td><td>hundreds of thousands of volts</td><td>Lineworkers and substation technicians — separate trades with their own apprenticeships</td></tr>
+</table></div>
+<p>Datacenters get most of this report, because that is where the most new work is right now.</p>
+
+<h2>Follow the power through a datacenter</h2>
+<p>A datacenter is a warehouse full of computers. From an electrician's point of view it is something else: a machine for delivering power that is never allowed to stop. Power arrives from the utility as AC at thousands of volts, and it has to reach chips that run on <em>less than one volt</em> of DC. Every step in between is a conversion, and every conversion is equipment that someone installs, tests, and maintains.</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 640 276" role="img" aria-label="Two power paths compared. Most datacenters today: 13.8 kilovolts AC from the utility, 480 volts AC through the building, 54 volts DC down the rack, 12 volts DC across the circuit board, about 0.8 volts DC into the chip. The 800 volt DC plan is identical except that the building stage becomes 800 volts DC.">
+    <text class="row-title" x="10" y="18">MOST DATACENTERS TODAY</text>
+    <rect class="box-ac" x="10" y="30" width="110" height="58" rx="9"/>
+    <text class="volt" x="65" y="56" text-anchor="middle">13.8 kV</text>
+    <text class="kind-ac" x="65" y="77" text-anchor="middle">AC</text>
+    <text class="lbl-muted" x="65" y="106" text-anchor="middle">from the</text>
+    <text class="lbl-muted" x="65" y="121" text-anchor="middle">utility</text>
+    <path class="arrow" d="M123,59 h9 m-4,-4 l4,4 l-4,4"/>
+    <rect class="box-ac" x="136" y="30" width="110" height="58" rx="9"/>
+    <text class="volt" x="191" y="56" text-anchor="middle">480 V</text>
+    <text class="kind-ac" x="191" y="77" text-anchor="middle">AC</text>
+    <text class="lbl-muted" x="191" y="106" text-anchor="middle">through the</text>
+    <text class="lbl-muted" x="191" y="121" text-anchor="middle">building</text>
+    <path class="arrow" d="M249,59 h9 m-4,-4 l4,4 l-4,4"/>
+    <rect class="box-dc" x="262" y="30" width="110" height="58" rx="9"/>
+    <text class="volt" x="317" y="56" text-anchor="middle">54 V</text>
+    <text class="kind-dc" x="317" y="77" text-anchor="middle">DC</text>
+    <text class="lbl-muted" x="317" y="106" text-anchor="middle">down the</text>
+    <text class="lbl-muted" x="317" y="121" text-anchor="middle">rack</text>
+    <path class="arrow" d="M375,59 h9 m-4,-4 l4,4 l-4,4"/>
+    <rect class="box-dc" x="388" y="30" width="110" height="58" rx="9"/>
+    <text class="volt" x="443" y="56" text-anchor="middle">12 V</text>
+    <text class="kind-dc" x="443" y="77" text-anchor="middle">DC</text>
+    <text class="lbl-muted" x="443" y="106" text-anchor="middle">across the</text>
+    <text class="lbl-muted" x="443" y="121" text-anchor="middle">circuit board</text>
+    <path class="arrow" d="M501,59 h9 m-4,-4 l4,4 l-4,4"/>
+    <rect class="box-dc" x="514" y="30" width="110" height="58" rx="9"/>
+    <text class="volt" x="569" y="56" text-anchor="middle">≈ 0.8 V</text>
+    <text class="kind-dc" x="569" y="77" text-anchor="middle">DC</text>
+    <text class="lbl-muted" x="569" y="106" text-anchor="middle">into the</text>
+    <text class="lbl-muted" x="569" y="121" text-anchor="middle">chip</text>
+
+    <text class="row-title" x="10" y="160">THE 800 V DC PLAN</text>
+    <rect class="box-ac" x="10" y="172" width="110" height="58" rx="9"/>
+    <text class="volt" x="65" y="198" text-anchor="middle">13.8 kV</text>
+    <text class="kind-ac" x="65" y="219" text-anchor="middle">AC</text>
+    <text class="lbl-muted" x="65" y="248" text-anchor="middle">from the</text>
+    <text class="lbl-muted" x="65" y="263" text-anchor="middle">utility</text>
+    <path class="arrow" d="M123,201 h9 m-4,-4 l4,4 l-4,4"/>
+    <rect class="box-dc box-new" x="136" y="172" width="110" height="58" rx="9"/>
+    <text class="volt" x="191" y="198" text-anchor="middle">800 V</text>
+    <text class="kind-dc" x="191" y="219" text-anchor="middle">DC</text>
+    <text class="lbl-muted" x="191" y="248" text-anchor="middle">through the</text>
+    <text class="lbl-muted" x="191" y="263" text-anchor="middle">building</text>
+    <path class="arrow" d="M249,201 h9 m-4,-4 l4,4 l-4,4"/>
+    <rect class="box-dc" x="262" y="172" width="110" height="58" rx="9"/>
+    <text class="volt" x="317" y="198" text-anchor="middle">54 V</text>
+    <text class="kind-dc" x="317" y="219" text-anchor="middle">DC</text>
+    <text class="lbl-muted" x="317" y="248" text-anchor="middle">down the</text>
+    <text class="lbl-muted" x="317" y="263" text-anchor="middle">rack</text>
+    <path class="arrow" d="M375,201 h9 m-4,-4 l4,4 l-4,4"/>
+    <rect class="box-dc" x="388" y="172" width="110" height="58" rx="9"/>
+    <text class="volt" x="443" y="198" text-anchor="middle">12 V</text>
+    <text class="kind-dc" x="443" y="219" text-anchor="middle">DC</text>
+    <text class="lbl-muted" x="443" y="248" text-anchor="middle">across the</text>
+    <text class="lbl-muted" x="443" y="263" text-anchor="middle">circuit board</text>
+    <path class="arrow" d="M501,201 h9 m-4,-4 l4,4 l-4,4"/>
+    <rect class="box-dc" x="514" y="172" width="110" height="58" rx="9"/>
+    <text class="volt" x="569" y="198" text-anchor="middle">≈ 0.8 V</text>
+    <text class="kind-dc" x="569" y="219" text-anchor="middle">DC</text>
+    <text class="lbl-muted" x="569" y="248" text-anchor="middle">into the</text>
+    <text class="lbl-muted" x="569" y="263" text-anchor="middle">chip</text>
+  </svg>
+  <figcaption><b>One box changes.</b> Today, AC runs through the building and every rack converts it to DC for itself. In the 800 V plan, one large rectifier at the edge of the building converts once, and DC runs the rest of the way. Voltages are typical U.S. values; real sites vary.</figcaption>
+</figure>
+
+<p>Three things to notice:</p>
+<ul>
+  <li><strong>Batteries have always put DC in the building.</strong> A datacenter cannot blink when the utility fails, so it keeps rooms of batteries charged and waiting. They carry the entire load until the backup generators start and take over, usually in under a minute. The system that manages this is the <strong>UPS</strong>, the uninterruptible power supply — and a battery can only be DC. Every datacenter has had a serious DC system in it from the start.</li>
+  <li><strong>The chip end is extreme.</strong> A single top-end AI processor can use roughly a thousand watts at less than one volt. That works out to more than <span class="val">1,000 A</span> flowing into a part smaller than your palm.</li>
+  <li><strong>The middle is what's changing.</strong> The newest designs replace the AC that runs through the building with 800 V DC.</li>
+</ul>
+
+<h2>Why 800 volts</h2>
+<p>Computers live in cabinets called <strong>racks</strong>. A rack of ordinary servers uses perhaps 5 to 15 kW. The racks being built for AI use well over 100 kW each, and the chip maker NVIDIA has announced designs for <span class="val">1 MW</span> in a single rack — a million watts, roughly what 800 average American homes use, in one cabinet.</p>
+<p>The rule that decides everything here is <em>P = I × V</em> (it has its own page on the math shelf: <em>P = IV</em>). The power is fixed by what the chips need, so the only choice left is the trade between volts and amps. Feed that rack at 54 V and the current is enormous — about fifteen times more than at 800 V. Enormous current needs enormous copper: NVIDIA's own figure is up to <span class="val">200 kg</span> of copper bar to feed one such rack at 54 V. Raise the voltage and the same power arrives on a fraction of the metal, with a fraction of the heat.</p>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>Power is current times voltage, so the current a load draws is</p>
+  <math display="block"><mrow><mtext>current</mtext><mo>=</mo><mfrac><mtext>power</mtext><mtext>voltage</mtext></mfrac></mrow></math>
+  <p>A 1 MW rack fed at 54 V:</p>
+  <math display="block"><mrow><mfrac><mrow><mn>1,000,000</mn><mtext>&#160;W</mtext></mrow><mrow><mn>54</mn><mtext>&#160;V</mtext></mrow></mfrac><mo>≈</mo><mn>18,500</mn><mtext>&#160;A</mtext></mrow></math>
+  <p>The same rack fed at 800 V:</p>
+  <math display="block"><mrow><mfrac><mrow><mn>1,000,000</mn><mtext>&#160;W</mtext></mrow><mrow><mn>800</mn><mtext>&#160;V</mtext></mrow></mfrac><mo>=</mo><mn>1,250</mn><mtext>&#160;A</mtext></mrow></math>
+  <p>About fifteen times less current. And the heat wasted in a wire grows with the <em>square</em> of the current, so the same piece of copper would waste about</p>
+  <math display="block"><mrow><mn>15</mn><mo>×</mo><mn>15</mn><mo>≈</mo><mn>220</mn><mtext>&#160;times less</mtext></mrow></math>
+  <p>For scale, the LED loop on your breadboard:</p>
+  <math display="block"><mrow><mn>5</mn><mtext>&#160;V</mtext><mo>×</mo><mn>0.014</mn><mtext>&#160;A</mtext><mo>=</mo><mn>0.07</mn><mtext>&#160;W</mtext></mrow></math>
+  <p>A 1 MW rack is about fourteen million of those.</p>
+</div>
+
+<div class="callout note">
+  <p class="label">Where this stands — fall 2026</p>
+  <p>NVIDIA announced its 800 V DC design in May 2025, for racks arriving around 2027. In August 2026, Google, Microsoft, and NVIDIA agreed to work toward shared 800 V DC standards through the Open Compute Project. As of this writing it is being built and tested, not yet running at scale — which means the people who will install and maintain it are being trained about now.</p>
+</div>
+
+<h2>High-voltage DC is not breadboard DC</h2>
+<p>The 5 V on your bench is a safe teacher. Hundreds of volts of DC is a different animal, and in one way it is harder to handle than AC at the same voltage.</p>
+<ul>
+  <li><strong>The arc that doesn't quit.</strong> AC voltage passes through zero 120 times every second, and each zero is a chance for a spark to go out by itself. DC never passes through zero. Open a switch that is carrying high-voltage DC and the current can keep jumping the gap as an <strong>arc</strong> — a channel of glowing gas that can be hotter than the surface of the sun — until something melts. Switches, breakers, and connectors have to be built and rated specifically for DC.</li>
+  <li><strong>Batteries have no off switch.</strong> A battery string is live the day it is delivered and stays live. Solar panels are live whenever there is light on them.</li>
+  <li><strong>Capacitors remember.</strong> You have watched a capacitor light an LED with the supply unplugged. Scale that to 800 V and equipment can stay dangerous after it has been switched off.</li>
+</ul>
+<div class="callout safety">
+  <p class="label">Concepts, not procedures</p>
+  <p>This is why the work is a licensed, trained trade and not a hobby. Professionals lock power sources off with their own padlock, prove a conductor is dead using a meter they have just proven is working, and wear gear rated for arcs. None of that is learned from a web page. It is learned in an apprenticeship, beside people who do it every day — which is exactly why it is a career.</p>
+</div>
+
+<h2>You have already started</h2>
+<p>Nothing at the bench is wasted. The habits this course drills are the habits the trade runs on.</p>
+<div class="sn-tbl"><table>
+  <tr><th>What you do at the bench</th><th>The same skill on the job</th></tr>
+  <tr><td>Read a schematic, and build only from it</td><td>Read a <strong>one-line diagram</strong> — the schematic of a whole building's power — and work only from it</td></tr>
+  <tr><td>Work the Debugging Loop instead of jiggling wires</td><td>Troubleshooting by method. Finding the fault fast is most of a technician's value.</td></tr>
+  <tr><td>Check a point with the meter before trusting it</td><td>Test before touch: nothing is "off" until a meter says so</td></tr>
+  <tr><td>Watch the voltage drops add up to the supply</td><td>Sizing cable so the far end of a long run still gets the voltage it needs</td></tr>
+  <tr><td>Check the stripe on a capacitor before power-up</td><td>DC polarity. Connect a battery string backwards and equipment is destroyed in an instant.</td></tr>
+  <tr><td>Drain the capacitor before it goes back in the box</td><td>Stored energy is discharged or isolated, then verified, before hands go in</td></tr>
+  <tr><td>Put parts in series and watch what adds</td><td>Battery strings: cells in series add their voltages. Twenty-four cells at about 2 V each make the classic 48 V telephone battery.</td></tr>
+  <tr><td>Use a transistor as a switch</td><td>Power electronics: every converter in the figure above is transistors switching thousands of times a second</td></tr>
+</table></div>
+
+<h2>The jobs</h2>
+<p>These are real titles you can type into a job site today.</p>
+<div class="sn-tbl"><table class="stack jobs">
+  <tr class="head"><th>Search for</th><th>What you would actually do</th><th>Usual way in</th></tr>
+  <tr><td><strong>Electrician</strong> (journeyman, inside wireman)</td><td><em>Build it.</em> Install the switchgear, busway, conduit, cable, UPS, and battery systems of a new datacenter, solar farm, or charging site.</td><td>A paid apprenticeship of 4–5 years</td></tr>
+  <tr><td><strong>Critical facilities technician</strong> (also: critical environment technician, engineering operations technician)</td><td><em>Run it.</em> Keep power and cooling alive around the clock: inspections, maintenance, switching power by written procedure, first response when an alarm goes off.</td><td>Electrical or mechanical training from a trade school, community college, the military, or an apprenticeship</td></tr>
+  <tr><td><strong>Commissioning technician</strong></td><td><em>Prove it.</em> Before a new site goes live, test every system — including cutting the utility feed on purpose to confirm the batteries and generators take over.</td><td>Usually after experience as an electrician or facilities technician</td></tr>
+  <tr><td><strong>Field service technician</strong> (UPS, batteries, switchgear)</td><td><em>Fix it.</em> Work for an equipment maker such as Vertiv, Eaton, or Schneider Electric, traveling between customer sites for start-ups, maintenance, and emergency repairs.</td><td>An electrical or electronics associate degree, or military electrical training, then factory training</td></tr>
+  <tr><td><strong>Telecom DC power technician</strong></td><td>Install and maintain the 48 V battery plants and rectifiers behind phone and internet networks.</td><td>On-the-job training with a telecom contractor</td></tr>
+  <tr><td><strong>Solar or energy storage technician</strong></td><td>Build and maintain solar arrays and the battery systems that store their output.</td><td>An electrician apprenticeship, or starting as a solar installer; NABCEP certifications</td></tr>
+  <tr><td><strong>EV charging installer</strong></td><td>Install and service fast chargers.</td><td>Electrician's license plus EVITP training</td></tr>
+  <tr><td><strong>Controls technician</strong> (BMS, EPMS)</td><td>The digital side: the sensors, controllers, and networks that watch every breaker and battery in the building.</td><td>A controls or instrumentation program, or an electrician's background</td></tr>
+</table></div>
+<div class="callout note">
+  <p class="label">Watch the titles</p>
+  <p>"Data center technician" usually means the computer-hardware job: installing servers, swapping drives, running network cable. It is good work, but a different path. The power jobs are the ones with <em>facilities</em>, <em>critical environment</em>, or <em>engineering operations</em> in the title.</p>
+  <p>And if you would rather <em>design</em> this equipment than install it, that road is an electrical engineering degree.</p>
+</div>
+
+<h2>How people actually get in</h2>
+<p><strong>There is no separate "DC electrician" license.</strong> An electrician's license covers AC and DC both, and most of an apprenticeship is AC, because most of the world's wiring is. People get into DC work by where they choose to work once they are in the trade. So the honest answer to "how do I become a datacenter electrician?" is: become an electrician, then steer.</p>
+<p><strong>The apprenticeship</strong> is the main door. It is a job, not a school you pay for: you earn a wage from the first day, working under licensed electricians, and take classes alongside.</p>
+<ul>
+  <li><strong>Length:</strong> four to five years, with about 2,000 hours of paid on-the-job training each year plus classroom instruction.</li>
+  <li><strong>Who runs them:</strong> union programs (the IBEW electricians' union together with the contractors' association NECA, through about 300 local training centers), and non-union programs run by contractor groups such as IEC and ABC.</li>
+  <li><strong>What the union programs typically ask for:</strong> age 18, a high school diploma or GED, <strong>one full year of high school algebra</strong>, a driver's license, an aptitude test, and an interview. The aptitude test has two parts: algebra, and reading comprehension.</li>
+  <li><strong>At the end:</strong> you are a journeyman. Most states then require passing a licensing exam.</li>
+</ul>
+<p>Many programs get more applicants than they have openings. Algebra and reading are how they sort the pile.</p>
+<p><strong>Other doors:</strong></p>
+<ul>
+  <li><strong>Community college and trade school.</strong> Two-year programs in electrical technology lead to technician jobs directly. Some colleges near large datacenters run datacenter-specific programs with the companies themselves; Microsoft's Datacenter Academy is one example.</li>
+  <li><strong>The military.</strong> Electrical specialties in any branch transfer well. Datacenter operators recruit veterans of the Navy's nuclear power program by name, because they arrive already trained to run a power plant by written procedure.</li>
+  <li><strong>Company trainee programs.</strong> Some large operators hire trainees with no experience, or run short paid pre-apprenticeships through local colleges. These come and go, so check the companies' own career pages.</li>
+</ul>
+<div class="callout note">
+  <p class="label">If you are homeschooled</p>
+  <p>Programs ask for a diploma or GED and a transcript that shows algebra. Ask your local training center how they want a homeschool transcript documented, and ask early — it is far easier to line up in tenth grade than in the week applications open.</p>
+</div>
+
+<h2>What you can do now</h2>
+<ul class="todo">
+  <li><strong>Take algebra seriously.</strong> It is on the entrance test. Then keep going: bending conduit to fit a building is applied trigonometry, and so is AC theory.</li>
+  <li><strong>Read hard things.</strong> Half the aptitude test is reading comprehension, and the National Electrical Code — the rulebook you would work from — runs to nearly a thousand pages.</li>
+  <li><strong>Keep building.</strong> Get so comfortable with a meter and a schematic that troubleshooting by method is a reflex.</li>
+  <li><strong>Find your local programs.</strong> Look up the apprenticeships in your area, when they take applications, and what they require. Many hold open houses.</li>
+  <li><strong>Read three real job postings</strong> for "critical facilities technician." Write down what they require, and what shifts they list.</li>
+  <li><strong>Talk to someone who does the work.</strong> Ask an electrician or a datacenter technician what an ordinary Tuesday looks like.</li>
+  <li><strong>Protect the basics every program checks.</strong> A driver's license and a clean driving record. Drug testing is standard across the trade.</li>
+</ul>
+
+<h2>The honest trade-offs</h2>
+<ul>
+  <li><strong>It never closes.</strong> A datacenter runs every hour of every day. Operations jobs mean nights, weekends, holidays, and being on call.</li>
+  <li><strong>You go where it is being built.</strong> Datacenters and solar farms go up where land and power are available, often far from cities. Construction electricians may travel or relocate for months at a time.</li>
+  <li><strong>Procedure beats improvisation.</strong> One wrong breaker can take down a site that millions of people are using, so every step is written down, reviewed, and checked by a second person. Some people love that discipline. Some find it suffocating.</li>
+  <li><strong>It is physical.</strong> Loud rooms, hot aisles and cold aisles, ladders and lifts, heavy cable — and on construction sites, all of it outdoors in whatever the weather is.</li>
+  <li><strong>The hazard is real.</strong> Training and procedure manage it; they do not remove it.</li>
+  <li><strong>It is a boom.</strong> The AI building spree is an enormous construction wave, and nobody can promise how long it lasts. The protection is the license: a journeyman electrician can move to hospitals, factories, transit, solar, or homes. Learn the trade, not just the trend.</li>
+</ul>
+
+<h2>What it pays</h2>
+<p>The U.S. Bureau of Labor Statistics tracks this, and its numbers are the ones to trust over anybody's sales pitch. For all electricians, as of May 2025:</p>
+<div class="sn-tbl"><table>
+  <tr><th>Measure</th><th>Figure</th></tr>
+  <tr><td>Median pay (half earn more, half earn less)</td><td><span class="val">$63,190</span> a year, or <span class="val">$30.38</span> an hour</td></tr>
+  <tr><td>Lowest-paid tenth</td><td>under <span class="val">$42,640</span></td></tr>
+  <tr><td>Highest-paid tenth</td><td>over <span class="val">$108,510</span></td></tr>
+  <tr><td>Electrician jobs in the U.S.</td><td>about <span class="val">821,000</span></td></tr>
+  <tr><td>Projected growth, 2025–2035</td><td><span class="val">9%</span> — "much faster than average"</td></tr>
+  <tr><td>Openings expected each year</td><td>about <span class="val">72,700</span></td></tr>
+</table></div>
+<p>The Bureau's outlook points to AI datacenters, solar and wind power, and upgrades to the power grid as reasons for that growth. Specialized work often pays above the median, and overtime and shift pay add to it — but pay varies a great deal by region and employer, so real postings in your own area are the best evidence. Apprentices start at a fraction of the journeyman rate, often near half, and step up as they advance.</p>
+<p>One more sign of the demand: Google has funded the electrical industry's own training organization, with a stated goal of 100,000 more trained electrical workers and 30,000 new apprentices.</p>
+
+<h2>Words worth knowing</h2>
+<dl class="vocab">
+  <dt>apprenticeship</dt><dd>paid training on real jobs under licensed workers, with classes alongside</dd>
+  <dt>journeyman</dt><dd>a fully trained electrician who has finished an apprenticeship</dd>
+  <dt>UPS</dt><dd>uninterruptible power supply: the batteries and converters that carry the load when the utility fails</dd>
+  <dt>rack</dt><dd>the cabinet that holds servers; the unit datacenter power is counted in</dd>
+  <dt>busbar, busway</dt><dd>solid bars of copper or aluminum that carry currents too large for wire</dd>
+  <dt>switchgear</dt><dd>the building-sized breakers and switches that route and protect power</dd>
+  <dt>rectifier / inverter</dt><dd>equipment that turns AC into DC / DC into AC</dd>
+  <dt>one-line diagram</dt><dd>the schematic of an entire building's power system</dd>
+  <dt>arc flash</dt><dd>the violent burst of heat and light when current jumps through air</dd>
+  <dt>lockout/tagout</dt><dd>locking a power source off with your own lock and tag before working on it</dd>
+  <dt>commissioning</dt><dd>testing a new facility's systems, failures included, before it goes live</dd>
+  <dt>critical facility</dt><dd>a building whose power is not allowed to stop</dd>
+  <dt>NEC</dt><dd>the National Electrical Code, the rulebook for electrical installation in the U.S.</dd>
+</dl>
+
+<h2>Where to look next</h2>
+<ul>
+  <li><strong>The official numbers:</strong> the Bureau of Labor Statistics' Occupational Outlook Handbook page for electricians, at <a href="https://www.bls.gov/ooh/construction-and-extraction/electricians.htm">bls.gov/ooh</a>.</li>
+  <li><strong>Apprenticeships near you:</strong> the U.S. Department of Labor's finder at <a href="https://www.apprenticeship.gov/apprenticeship-job-finder">apprenticeship.gov</a>.</li>
+  <li><strong>Union programs:</strong> the electrical training ALLIANCE (IBEW and NECA) at <a href="https://www.electricaltrainingalliance.org">electricaltrainingalliance.org</a>.</li>
+  <li><strong>Non-union programs:</strong> Independent Electrical Contractors at <a href="https://www.ieci.org">ieci.org</a>, and Associated Builders and Contractors at <a href="https://www.abc.org">abc.org</a>.</li>
+  <li><strong>Solar and EV credentials:</strong> <a href="https://www.nabcep.org">nabcep.org</a> and <a href="https://evitp.org">evitp.org</a>.</li>
+  <li><strong>The 800 V announcement itself:</strong> NVIDIA's engineering post, <a href="https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/">"NVIDIA 800 VDC Architecture Will Power the Next Generation of AI Factories"</a>. Read it and count how much you can already follow.</li>
+</ul>
+
+<footer class="lesson-foot">
+  <span>Electronics · Where this leads · Careers in DC Power v1</span>
+  <span>Same rules · bigger numbers</span>
+</footer>
+
+</body>
+</html>
