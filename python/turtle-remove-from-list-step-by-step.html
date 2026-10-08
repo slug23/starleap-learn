@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17. Remove From A List: Which Turtle Leaves? · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a><a href="turtle-if-else-step-by-step.html">15. Conditions: Choose A Turtle Path</a><a href="turtle-elif-step-by-step.html">16. More Conditions: Choose A Turtle Color</a><a href="turtle-remove-from-list-step-by-step.html" aria-current="page">17. Remove From A List: Which Turtle Leaves?</a><a href="turtle-lost-turtles-step-by-step.html">18. Lost Turtles: Leave The Safe Zone</a><a href="turtle-find-and-filter-step-by-step.html">19. Find And Filter: Choose Turtles By A Rule</a></nav><p class="stamp">Build 2026.10.08-090035-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.10.08-090035-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Notice What Is Still In The Group</a></li><li><a href="#section-3">Step 2 - Remove The Newest</a></li><li><a href="#section-4">Step 3 - Remove The Oldest</a></li><li><a href="#section-5">Step 4 - Try The List Without Graphics</a></li><li><a href="#section-6">Step 5 - Remove A Random Member</a></li><li><a href="#section-7">Step 6 - Keep One Timer</a></li><li><a href="#section-8">Final File Check</a></li><li><a href="#section-9">Teacher Check</a></li></ul></details><h1 id="section-1">17. Remove From A List: Which Turtle Leaves?</h1>
+<p>Continue from Lesson 12&#x27;s <code>group_controls.py</code>. Save a copy as <code>turtle_removal.py</code>. This lesson uses <code>pop</code> to take a turtle out of the group. Lesson 14&#x27;s return values can help you read what <code>pop</code> gives back.</p>
+<h2 id="section-2">Step 1 - Notice What Is Still In The Group</h2>
+<p>Run your copy. Click three different places to add turtles. Press <code>s</code> to stop them. The list remembers the order you added them, even when their positions on screen change. Predict: Which turtle is <code>turtles[0]</code>? Which is <code>turtles[-1]</code>?</p>
+<p>A list index describes <strong>order in the list</strong>, not a turtle&#x27;s screen position. The newest turtle is at the end. <code>-1</code> means the last item.</p>
+<h2 id="section-3">Step 2 - Remove The Newest</h2>
+<p>Add this function just before <code>tick()</code>.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def remove_newest():</span>
+<span class="new">    if len(turtles) == 0:</span>
+<span class="new">        print(&#x27;No turtles to remove&#x27;)</span>
+<span class="new">        return</span>
+<span class="new">    leaving = turtles.pop()</span>
+<span class="new">    leaving.hideturtle()</span>
+<span class="new">    print(&#x27;Turtles left:&#x27;, len(turtles))</span></code></pre>
+<p>Connect the Delete key near your other <code>screen.onkey</code> lines.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">screen.onkey(remove_newest, &#x27;Delete&#x27;)</span></code></pre>
+<p class="callout">Run the program. Add three turtles in separate places, stop them, click the Turtle window, and press and release Delete. The last one you added should disappear. Press Delete until the list is empty, then press it once more. The program should keep running.</p>
+<p><code>pop()</code> changes the list and <strong>returns</strong> the removed turtle. <code>hideturtle()</code> hides that object on the screen. Removing only the list reference would leave a visible turtle behind.</p>
+<h2 id="section-4">Step 3 - Remove The Oldest</h2>
+<p>Add this function after <code>remove_newest()</code>.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def remove_oldest():</span>
+<span class="new">    if len(turtles) == 0:</span>
+<span class="new">        print(&#x27;No turtles to remove&#x27;)</span>
+<span class="new">        return</span>
+<span class="new">    leaving = turtles.pop(0)</span>
+<span class="new">    leaving.hideturtle()</span>
+<span class="new">    print(&#x27;Turtles left:&#x27;, len(turtles))</span></code></pre>
+<p>Connect it to <code>o</code>.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">screen.onkey(remove_oldest, &#x27;o&#x27;)</span></code></pre>
+<p class="callout">Run the program. Add one turtle on the left, then two others at different spots. Press <code>o</code>. The first turtle you added should leave. Which turtle is <code>turtles[0]</code> now? Try pressing <code>o</code> with an empty group.</p>
+<p><code>pop(0)</code> removes the first item. Every later item shifts one index toward zero. The surviving turtle objects do not move on the screen because of that shift.</p>
+<h2 id="section-5">Step 4 - Try The List Without Graphics</h2>
+<p>Create a small file named <code>pop_practice.py</code> and run it.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">names = [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;]</span>
+<span class="new">print(names.pop())</span>
+<span class="new">print(names)</span>
+<span class="new">print(names.pop(0))</span>
+<span class="new">print(names)</span></code></pre>
+<p>Predict the four printed lines first. Explain why the first call returns <code>C</code> and the second returns <code>A</code>. Both calls change the same list.</p>
+<h2 id="section-6">Step 5 - Remove A Random Member</h2>
+<p>Your program already imports <code>random</code>. Add a third function after <code>remove_oldest()</code>.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def remove_random():</span>
+<span class="new">    if len(turtles) == 0:</span>
+<span class="new">        print(&#x27;No turtles to remove&#x27;)</span>
+<span class="new">        return</span>
+<span class="new">    index = random.randrange(len(turtles))</span>
+<span class="new">    leaving = turtles.pop(index)</span>
+<span class="new">    leaving.hideturtle()</span>
+<span class="new">    print(&#x27;Removed index:&#x27;, index)</span>
+<span class="new">    print(&#x27;Turtles left:&#x27;, len(turtles))</span></code></pre>
+<p>Connect it to <code>r</code>.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">screen.onkey(remove_random, &#x27;r&#x27;)</span></code></pre>
+<p class="callout">Run the program. Add several turtles, stop them, then press <code>r</code> one time. Compare the printed index with the turtle that disappeared. Repeat with fresh groups. <code>randrange(len(turtles))</code> picks a valid index from <code>0</code> through <code>len(turtles) - 1</code>. The empty-list check must happen first because there is no valid index when the list is empty.</p>
+<h2 id="section-7">Step 6 - Keep One Timer</h2>
+<p>None of the three removal functions calls <code>tick()</code>. The original timer keeps moving the survivors. Press <code>g</code> after removing a turtle: only current list members should move. The hidden turtle no longer receives movement commands.</p>
+<p>If Delete seems ignored, click the Turtle window and press and release the key. You can bind <code>n</code> to <code>remove_newest</code> too if your keyboard sends a different Delete key name.</p>
+<h2 id="section-8">Final File Check</h2>
+<p>Your file should have one global <code>turtles = []</code>, one <code>tick()</code> definition, and one <code>tick()</code> call near the bottom. Keep the original click, space, arrow, color, stop, and go controls. Put the three new functions before <code>tick()</code> and the three new key connections before the call to <code>tick()</code>.</p>
+<p>Run one final experiment: add four turtles, stop them, remove one with each key, then press <code>g</code>. Only the survivor should move. If a turtle stays visible after removal, check that the matching function calls <code>leaving.hideturtle()</code>.</p>
+<h2 id="section-9">Teacher Check</h2>
+<p>Show three turtles. Remove the newest, then the oldest. Point to the two <code>pop</code> calls and explain which item each returns. Show that removing from an empty list does not crash. Explain why the function also calls <code>hideturtle()</code>.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-elif-step-by-step.html">Previous: 16. More Conditions: Choose A Turtle Color</a><a href="turtle-lost-turtles-step-by-step.html">Next: 18. Lost Turtles: Leave The Safe Zone</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

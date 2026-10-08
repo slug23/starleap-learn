@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>18. Lost Turtles: Leave The Safe Zone · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a><a href="turtle-if-else-step-by-step.html">15. Conditions: Choose A Turtle Path</a><a href="turtle-elif-step-by-step.html">16. More Conditions: Choose A Turtle Color</a><a href="turtle-remove-from-list-step-by-step.html">17. Remove From A List: Which Turtle Leaves?</a><a href="turtle-lost-turtles-step-by-step.html" aria-current="page">18. Lost Turtles: Leave The Safe Zone</a><a href="turtle-find-and-filter-step-by-step.html">19. Find And Filter: Choose Turtles By A Rule</a></nav><p class="stamp">Build 2026.10.08-090035-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.10.08-090035-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Draw A Visible Safe Zone</a></li><li><a href="#section-3">Step 2 - Ask Whether One Turtle Is Inside</a></li><li><a href="#section-4">Step 3 - Notice A Turtle Leaving</a></li><li><a href="#section-5">Step 4 - Collect The Lost Turtles</a></li><li><a href="#section-6">Why Two Loops?</a></li><li><a href="#section-7">Finished Changes</a></li><li><a href="#section-8">Teacher Check</a></li></ul></details><h1 id="section-1">18. Lost Turtles: Leave The Safe Zone</h1>
+<p>Open your finished <code>turtle_removal.py</code> from Lesson 15 and save a copy as <code>lost_turtles.py</code>. Turtles that wander outside a box will leave the group automatically. You can still add turtles with a click or the space bar.</p>
+<h2 id="section-2">Step 1 - Draw A Visible Safe Zone</h2>
+<p>The window is 600 by 800. We will use a smaller box so there is room to see a turtle cross its edge. Add these numbers below <code>step_size = 3</code>.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">LIMIT_X = 220</span>
+<span class="new">LIMIT_Y = 320</span></code></pre>
+<p>Add this function just before <code>add_turtle()</code>.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def draw_boundary():</span>
+<span class="new">    border = turtle.Turtle()</span>
+<span class="new">    border.hideturtle()</span>
+<span class="new">    border.penup()</span>
+<span class="new">    border.teleport(-LIMIT_X, -LIMIT_Y)</span>
+<span class="new">    border.pendown()</span>
+<span class="new">    for side in range(2):</span>
+<span class="new">        border.forward(2 * LIMIT_X)</span>
+<span class="new">        border.left(90)</span>
+<span class="new">        border.forward(2 * LIMIT_Y)</span>
+<span class="new">        border.left(90)</span></code></pre>
+<p>Call it once just before <code>tick()</code> at the bottom.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">draw_boundary()</span>
+<span class="new">tick()</span></code></pre>
+<p class="callout">Run the program. You should see a rectangle inside the window. The <code>border</code> turtle is deliberately <strong>not</strong> appended to <code>turtles</code>, so group keys cannot move or remove it.</p>
+<h2 id="section-3">Step 2 - Ask Whether One Turtle Is Inside</h2>
+<p>Add this function before <code>tick()</code>.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def is_inside(member):</span>
+<span class="new">    return (-LIMIT_X &lt;= member.xcor() &lt;= LIMIT_X</span>
+<span class="new">            and -LIMIT_Y &lt;= member.ycor() &lt;= LIMIT_Y)</span></code></pre>
+<p class="callout">Predict: Is a turtle exactly on the line inside? Is one just beyond it inside? <code>and</code> requires both its horizontal and vertical positions to be in range. The function returns <code>True</code> or <code>False</code>.</p>
+<h2 id="section-4">Step 3 - Notice A Turtle Leaving</h2>
+<p>Inside <code>tick()</code>, add a check just after moving each member.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def tick():</span>
+<span class="reference">    for member in turtles:</span>
+<span class="reference">        member.forward(step_size)</span>
+<span class="new">        if not is_inside(member):</span>
+<span class="new">            print(&#x27;A turtle crossed the boundary&#x27;)</span>
+<span class="reference">    screen.update()</span></code></pre>
+<p class="callout">Run the program. Click near the right edge of the box, turn the turtle toward that edge, and press <code>g</code> if the group was stopped. Watch the message repeat after it crosses. Checking a condition does not remove anything yet.</p>
+<h2 id="section-5">Step 4 - Collect The Lost Turtles</h2>
+<p>Replace the <code>tick()</code> function with this version. Read the two loops before running it.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def tick():</span>
+<span class="new">    lost = []</span>
+<span class="new">    for member in turtles:</span>
+<span class="new">        member.forward(step_size)</span>
+<span class="new">        if not is_inside(member):</span>
+<span class="new">            lost.append(member)</span>
+<span class="new">    for member in lost:</span>
+<span class="new">        turtles.remove(member)</span>
+<span class="new">        member.hideturtle()</span>
+<span class="new">    if lost:</span>
+<span class="new">        print(&#x27;Lost:&#x27;, len(lost), &#x27;Still here:&#x27;, len(turtles))</span>
+<span class="new">    screen.update()</span>
+<span class="new">    screen.ontimer(tick, 100)</span></code></pre>
+<p class="callout">Run the program. Add two turtles near an edge and steer them out. Both should disappear, the count should drop, and the remaining turtles should keep moving. <code>lost</code> is a new temporary list for this frame. <code>remove(member)</code> removes that particular object from <code>turtles</code>.</p>
+<h2 id="section-6">Why Two Loops?</h2>
+<p>The first loop visits the current group and writes down who crossed the line. The second loop changes the group. If you remove an item from <code>turtles</code> during the first loop, later items shift left and the loop can skip one. This is easiest to notice when two turtles leave in the same frame.</p>
+<p>A click outside the safe zone adds a turtle; the next frame removes it. Try it and explain why. Press Delete, <code>o</code>, or <code>r</code> after some turtles leave: the old removal keys still work with the smaller list.</p>
+<h2 id="section-7">Finished Changes</h2>
+<p>Your file should retain Lesson 15&#x27;s functions and key connections. These are the complete new parts, in their order in the file.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">LIMIT_X = 220</span>
+<span class="new">LIMIT_Y = 320</span>
+<span class="new"></span>
+<span class="new">def draw_boundary():</span>
+<span class="new">    border = turtle.Turtle()</span>
+<span class="new">    border.hideturtle()</span>
+<span class="new">    border.penup()</span>
+<span class="new">    border.teleport(-LIMIT_X, -LIMIT_Y)</span>
+<span class="new">    border.pendown()</span>
+<span class="new">    for side in range(2):</span>
+<span class="new">        border.forward(2 * LIMIT_X)</span>
+<span class="new">        border.left(90)</span>
+<span class="new">        border.forward(2 * LIMIT_Y)</span>
+<span class="new">        border.left(90)</span>
+<span class="new"></span>
+<span class="new">def is_inside(member):</span>
+<span class="new">    return (-LIMIT_X &lt;= member.xcor() &lt;= LIMIT_X</span>
+<span class="new">            and -LIMIT_Y &lt;= member.ycor() &lt;= LIMIT_Y)</span>
+<span class="new"></span>
+<span class="new">def tick():</span>
+<span class="new">    lost = []</span>
+<span class="new">    for member in turtles:</span>
+<span class="new">        member.forward(step_size)</span>
+<span class="new">        if not is_inside(member):</span>
+<span class="new">            lost.append(member)</span>
+<span class="new">    for member in lost:</span>
+<span class="new">        turtles.remove(member)</span>
+<span class="new">        member.hideturtle()</span>
+<span class="new">    if lost:</span>
+<span class="new">        print(&#x27;Lost:&#x27;, len(lost), &#x27;Still here:&#x27;, len(turtles))</span>
+<span class="new">    screen.update()</span>
+<span class="new">    screen.ontimer(tick, 100)</span>
+<span class="new"></span>
+<span class="new"># Keep your existing click and key connections here.</span>
+<span class="new">draw_boundary()</span>
+<span class="new">tick()</span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p>The listing shows the new parts together; it does not replace the entire file. Keep one <code>tick()</code> definition and one <code>tick()</code> call.</p>
+<h2 id="section-8">Teacher Check</h2>
+<p>Show a turtle cross the line and disappear. Point to the position test, the temporary <code>lost</code> list, and the second loop. Explain why the border turtle stays visible and why removing inside the movement loop could skip a turtle.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-remove-from-list-step-by-step.html">Previous: 17. Remove From A List: Which Turtle Leaves?</a><a href="turtle-find-and-filter-step-by-step.html">Next: 19. Find And Filter: Choose Turtles By A Rule</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

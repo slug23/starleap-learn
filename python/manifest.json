@@ -1,6 +1,6 @@
 {
   "course": "turtle-python",
-  "build": "2026.09.30-131423-0400",
+  "build": "2026.10.08-090035-0400",
   "pages": [
     {
       "file": "turtle-variables-step-by-step.html",
@@ -113,6 +113,46 @@
       "group": "Lessons",
       "source": "src/turtle-return-values-step-by-step.md",
       "sha256": "ba9edf3896e9190c720169155bfd130cd60e81dc8bb96229b0aba8773b2a5114"
+    },
+    {
+      "file": "turtle-if-else-step-by-step.html",
+      "title": "15. Conditions: Choose A Turtle Path",
+      "number": 15,
+      "group": "Lessons",
+      "source": "src/turtle-if-else-step-by-step.md",
+      "sha256": "736d5d328f3cacc53435021d9708dd248282fb449062cd21483b5f14f7eeb0e8"
+    },
+    {
+      "file": "turtle-elif-step-by-step.html",
+      "title": "16. More Conditions: Choose A Turtle Color",
+      "number": 16,
+      "group": "Lessons",
+      "source": "src/turtle-elif-step-by-step.md",
+      "sha256": "ba6e607b14d96863ff9247ce1d17690930a5eed7880fd7a3c717812e8f87d743"
+    },
+    {
+      "file": "turtle-remove-from-list-step-by-step.html",
+      "title": "17. Remove From A List: Which Turtle Leaves?",
+      "number": 17,
+      "group": "Lessons",
+      "source": "src/turtle-remove-from-list-step-by-step.md",
+      "sha256": "1a9d495a48b5a7cbe99ed481550b0a476285614614131230e10afc01ee6cf06d"
+    },
+    {
+      "file": "turtle-lost-turtles-step-by-step.html",
+      "title": "18. Lost Turtles: Leave The Safe Zone",
+      "number": 18,
+      "group": "Lessons",
+      "source": "src/turtle-lost-turtles-step-by-step.md",
+      "sha256": "df41142924cbcde96c6bc8a5540b1b6149644ffe898a3eca47f704f4c7d3249f"
+    },
+    {
+      "file": "turtle-find-and-filter-step-by-step.html",
+      "title": "19. Find And Filter: Choose Turtles By A Rule",
+      "number": 19,
+      "group": "Lessons",
+      "source": "src/turtle-find-and-filter-step-by-step.md",
+      "sha256": "f8c6b1a088371528f0dc003c0efed4784a8d81f7e1beca79e478a47e8f6dea3a"
     }
   ]
 }

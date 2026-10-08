@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>15. Conditions: Choose A Turtle Path · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a><a href="turtle-if-else-step-by-step.html" aria-current="page">15. Conditions: Choose A Turtle Path</a><a href="turtle-elif-step-by-step.html">16. More Conditions: Choose A Turtle Color</a><a href="turtle-remove-from-list-step-by-step.html">17. Remove From A List: Which Turtle Leaves?</a><a href="turtle-lost-turtles-step-by-step.html">18. Lost Turtles: Leave The Safe Zone</a><a href="turtle-find-and-filter-step-by-step.html">19. Find And Filter: Choose Turtles By A Rule</a></nav><p class="stamp">Build 2026.10.08-090035-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.10.08-090035-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Ask A True Or False Question</a></li><li><a href="#section-3">Step 2 - Run Code Only When The Condition Is True</a></li><li><a href="#section-4">Step 3 - Give The Other Case A Job</a></li><li><a href="#section-5">Step 4 - Draw The Choice</a></li><li><a href="#section-6">Step 5 - Check The Boundary</a></li></ul></details><h1 id="section-1">15. Conditions: Choose A Turtle Path</h1>
+<p>A condition lets your program choose what to do. First try the choice in the console, then make a turtle show the result.</p>
+<h2 id="section-2">Step 1 - Ask A True Or False Question</h2>
+<p>Save a new file named <code>choose_path.py</code>. Type and run this program.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">steps = 8</span>
+<span class="new">print(steps &gt; 5)</span>
+<span class="new">print(steps &lt; 5)</span></code></pre>
+<p>Predict both lines before you run. You should see <code>True</code> and <code>False</code>. A comparison produces a Boolean value: either true or false. <code>&gt;</code> means greater than; <code>&lt;</code> means less than.</p>
+<h2 id="section-3">Step 2 - Run Code Only When The Condition Is True</h2>
+<p>Add this code at the bottom of the file.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">print(steps &lt; 5)</span>
+<span class="new">if steps &gt; 5:</span>
+<span class="new">    print(&#x27;long path&#x27;)</span>
+<span class="new">print(&#x27;finished&#x27;)</span></code></pre>
+<p>Run it. After the two Boolean values, you should see <code>long path</code>, then <code>finished</code>. The indented line belongs to the <code>if</code> block. The last line is outside it and always runs. Change <code>steps</code> to <code>3</code> and run again: <code>long path</code> disappears, but <code>finished</code> remains.</p>
+<h2 id="section-4">Step 3 - Give The Other Case A Job</h2>
+<p>Replace the <code>if</code> block with this one. Keep the final print line.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">print(steps &lt; 5)</span>
+<span class="new">if steps &gt; 5:</span>
+<span class="new">    print(&#x27;long path&#x27;)</span>
+<span class="new">else:</span>
+<span class="new">    print(&#x27;short path&#x27;)</span>
+<span class="reference">print(&#x27;finished&#x27;)</span></code></pre>
+<p>Run with <code>steps = 3</code>, then with <code>steps = 8</code>. Exactly one path message appears each time. <code>else</code> has no condition: it handles every case where the <code>if</code> condition is false. Keep the colon and four spaces of indentation.</p>
+<h2 id="section-5">Step 4 - Draw The Choice</h2>
+<p>Save a separate file named <code>turtle_choice.py</code>. Type the complete program.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 600, 0, 0)</span>
+<span class="new">artist = turtle.Turtle()</span>
+<span class="new">artist.shape(&#x27;turtle&#x27;)</span>
+<span class="new"></span>
+<span class="new">steps = 8</span>
+<span class="new">if steps &gt; 5:</span>
+<span class="new">    artist.pencolor(&#x27;blue&#x27;)</span>
+<span class="new">    artist.forward(160)</span>
+<span class="new">else:</span>
+<span class="new">    artist.pencolor(&#x27;orange&#x27;)</span>
+<span class="new">    artist.left(90)</span>
+<span class="new">    artist.forward(80)</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p>Predict the color and direction. Run it and check. Change <code>steps</code> to <code>3</code> and run again. The turtle now takes the other path. The code inside each branch runs in order; the unused branch is skipped.</p>
+<h2 id="section-6">Step 5 - Check The Boundary</h2>
+<p>Change only the assignment to <code>steps = 5</code>. Predict which path the turtle takes, then run. It takes the orange path because <code>5 &gt; 5</code> is false. Change the comparison to <code>steps &gt;= 5</code> and run again. <code>&gt;=</code> means greater than <strong>or equal to</strong>, so the blue path now runs.</p>
+<p>Try <code>steps = 4</code>, <code>5</code>, and <code>6</code>. Tell your teacher which color each value draws and why. Show both branches running on your screen.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-return-values-step-by-step.html">Previous: 14. Return Values: Make A Random Color</a><a href="turtle-elif-step-by-step.html">Next: 16. More Conditions: Choose A Turtle Color</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

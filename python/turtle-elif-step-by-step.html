@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>16. More Conditions: Choose A Turtle Color · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a><a href="turtle-if-else-step-by-step.html">15. Conditions: Choose A Turtle Path</a><a href="turtle-elif-step-by-step.html" aria-current="page">16. More Conditions: Choose A Turtle Color</a><a href="turtle-remove-from-list-step-by-step.html">17. Remove From A List: Which Turtle Leaves?</a><a href="turtle-lost-turtles-step-by-step.html">18. Lost Turtles: Leave The Safe Zone</a><a href="turtle-find-and-filter-step-by-step.html">19. Find And Filter: Choose Turtles By A Rule</a></nav><p class="stamp">Build 2026.10.08-090035-0400</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.10.08-090035-0400</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - See A Middle Case</a></li><li><a href="#section-3">Step 2 - Test The Edges</a></li><li><a href="#section-4">Step 3 - Let A Turtle Show The Result</a></li><li><a href="#section-5">Step 4 - Combine Two Questions</a></li><li><a href="#section-6">Step 5 - Explain The Decision</a></li></ul></details><h1 id="section-1">16. More Conditions: Choose A Turtle Color</h1>
+<p>You have used <code>if</code> and <code>else</code> to choose between two paths. Now give the turtle three possible results, then combine two questions.</p>
+<h2 id="section-2">Step 1 - See A Middle Case</h2>
+<p>Save a new file named <code>three_choices.py</code>. Type this program.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">distance = 75</span>
+<span class="new"></span>
+<span class="new">if distance &lt; 50:</span>
+<span class="new">    print(&#x27;near&#x27;)</span>
+<span class="new">elif distance &lt; 100:</span>
+<span class="new">    print(&#x27;middle&#x27;)</span>
+<span class="new">else:</span>
+<span class="new">    print(&#x27;far&#x27;)</span></code></pre>
+<p>Predict the output and run it. Change <code>distance</code> to <code>30</code>, then <code>120</code>, running after each edit. <code>elif</code> means “else, if this condition is true.” Python checks from top to bottom and runs the first matching branch. If neither condition matches, <code>else</code> runs.</p>
+<h2 id="section-3">Step 2 - Test The Edges</h2>
+<p>Try <code>distance = 50</code> and <code>distance = 100</code>. Predict before each run. <code>50</code> is middle; <code>100</code> is far. The <code>&lt;</code> comparison does not include the number on its right. Change the first condition to <code>distance &lt;= 50</code>, then run with <code>50</code> again. <code>&lt;=</code> includes 50, so it is now near.</p>
+<p>Restore <code>&lt;</code> before the next step.</p>
+<h2 id="section-4">Step 3 - Let A Turtle Show The Result</h2>
+<p>Save a separate file named <code>color_choice.py</code>. Type the whole program.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 600, 0, 0)</span>
+<span class="new">artist = turtle.Turtle()</span>
+<span class="new">artist.shape(&#x27;turtle&#x27;)</span>
+<span class="new">artist.penup()</span>
+<span class="new"></span>
+<span class="new">distance = 75</span>
+<span class="new">if distance &lt; 50:</span>
+<span class="new">    artist.pencolor(&#x27;green&#x27;)</span>
+<span class="new">elif distance &lt; 100:</span>
+<span class="new">    artist.pencolor(&#x27;gold&#x27;)</span>
+<span class="new">else:</span>
+<span class="new">    artist.pencolor(&#x27;red&#x27;)</span>
+<span class="new"></span>
+<span class="new">artist.dot(60)</span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p>Predict the dot color and run. Try <code>30</code> and <code>120</code> too. The shared <code>artist.dot(60)</code> line sits outside the branches, so it runs after any of the three colors is chosen.</p>
+<h2 id="section-5">Step 4 - Combine Two Questions</h2>
+<p>Add <code>active = True</code> just before <code>distance = 75</code>. Replace only the first condition with this line.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">active = True</span>
+<span class="reference">distance = 75</span>
+<span class="new">if active and distance &lt; 50:</span>
+<span class="reference">    artist.pencolor(&#x27;green&#x27;)</span>
+<span class="reference">elif distance &lt; 100:</span></code></pre>
+<p>Run with <code>distance = 30</code> and <code>active = True</code>, then change <code>active</code> to <code>False</code> and run again. <code>and</code> needs both sides to be true. With <code>False</code>, the first branch is skipped and the middle branch makes a gold dot. This demonstrates why branch order matters.</p>
+<h2 id="section-6">Step 5 - Explain The Decision</h2>
+<p>Try <code>distance = 49</code>, <code>50</code>, and <code>100</code> with <code>active = True</code>. For each, predict the color, run, and explain which branch matched. Then set <code>active = False</code> and <code>distance = 30</code>. Show your teacher the gold dot and explain why the green branch did not run.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-if-else-step-by-step.html">Previous: 15. Conditions: Choose A Turtle Path</a><a href="turtle-remove-from-list-step-by-step.html">Next: 17. Remove From A List: Which Turtle Leaves?</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>
