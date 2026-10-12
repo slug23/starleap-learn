@@ -1,6 +1,6 @@
 {
   "course": "lego-python",
-  "build": "2026.09.22-090630-0400",
+  "build": "2026.10.12-191437-0400",
   "pages": [
     {
       "file": "00_Project_Path.html",
@@ -21,7 +21,7 @@
       "title": "Project 02: One Motor Mini Machine",
       "group": "Projects",
       "source": "handouts/02_One_Motor_Mini_Machine.md",
-      "sha256": "ddb223147876f2c567bf13f5b4f6b60686ea0355569894a6fcb683cb05fc7777"
+      "sha256": "7fd2c6dd38d1b40d17488184461530cea5577d5fd5bb3f6560aea75c48065893"
     },
     {
       "file": "03_Hopper_Driver.html",
@@ -35,42 +35,42 @@
       "title": "Project 04: LEGO Bin Rectangle",
       "group": "Projects",
       "source": "handouts/04_LEGO_Bin_Rectangle.md",
-      "sha256": "ed6da9bf8497cf00c9d44b6efe3f0f3b0a30aeaf902ef29dff141ed6d47dea57"
+      "sha256": "eb7b3fe6b662ffb1514fe9350d58f2416c8647b8d84948f071a8b03464f66366"
     },
     {
       "file": "05_Force_Button_Machine.html",
       "title": "Project 05: Force Button Machine",
       "group": "Projects",
       "source": "handouts/05_Force_Button_Machine.md",
-      "sha256": "f426ad896cd442a090b4f6408769a0b29e4ae78d473ea91f920ba59b400c2076"
+      "sha256": "05fc5cdc85caa803f7e52927c8427fea90336132d916fb4820b0603b8cb3339c"
     },
     {
       "file": "06_Bouncing_Rhino_Arena.html",
       "title": "Project 06: Bouncing Rhino Arena",
       "group": "Projects",
       "source": "handouts/06_Bouncing_Rhino_Arena.md",
-      "sha256": "bd3537f754657878497a815a2fd167ad5795554f4fd7cd0d246ad654a1cf3998"
+      "sha256": "b16f911f47992efae43a38782a4218d809dba75df9bdc893d36b314104665795"
     },
     {
       "file": "07_Parking_Beeper.html",
       "title": "Project 07: Parking Beeper",
       "group": "Projects",
       "source": "handouts/07_Parking_Beeper.md",
-      "sha256": "43d6aa661166627771b122c9408ddd4a3e78d36e2474f4fb04446b2ac4d0a05a"
+      "sha256": "0fdce2dd4b3a67134615ecef3579979f56844b7fa499a4b19d270774e5f9e85c"
     },
     {
       "file": "08_Driving_Base_2_Parking_Zone.html",
       "title": "Project 08: Driving Base 2 Parking Zone",
       "group": "Projects",
       "source": "handouts/08_Driving_Base_2_Parking_Zone.md",
-      "sha256": "571eb2a1a8702cae0f1b1d3c5d799b5ae557c44ddcbf856ebae80200963cd8cb"
+      "sha256": "6073a4b3cbab7be75739c27953592142bbacc30a43ba499b456ae2a9ab077f07"
     },
     {
       "file": "09_Parking_Approach_Alarm.html",
       "title": "Project 09: Parking Approach Alarm",
       "group": "Projects",
       "source": "handouts/09_Parking_Approach_Alarm.md",
-      "sha256": "fe5225bf8c394f791fe14f21718e4acbd60ed42a23b7480928267d5872536024"
+      "sha256": "dc6f7e581497f855694307ab286c0e453264361e44f138ea7350745f1e8e0b67"
     },
     {
       "file": "10_Claw_Relay.html",
@@ -91,7 +91,7 @@
       "title": "Project 12: Tabletop Score Shooter",
       "group": "Projects",
       "source": "handouts/12_Tabletop_Score_Shooter.md",
-      "sha256": "cefcbc15414da43676ec69d2e618535222ed62ab4e0d2a2be8669f0f90d8926e"
+      "sha256": "56a84d132405bc3f1a9bb594715493d2ce91a690fd10e49a6d55d0db49ff63b8"
     },
     {
       "file": "13_Coach_Dance_Reps.html",
@@ -105,7 +105,7 @@
       "title": "Project 14: Safe Deposit Box Lock",
       "group": "Projects",
       "source": "handouts/14_Safe_Deposit_Box_Lock.md",
-      "sha256": "9b283c22173182a1a004f7755042ebff45406c215dd96d055c25aa8d9458d2bc"
+      "sha256": "b41f908f9e49c3a86079483cbc6228105b7469f56ecda1b8da7925abe3ff565d"
     },
     {
       "file": "15_Package_Sorter.html",
@@ -119,7 +119,7 @@
       "title": "Project 16: Driving Base Mission Lab",
       "group": "Projects",
       "source": "handouts/16_Driving_Base_Mission_Lab.md",
-      "sha256": "1c169d51effe2c3089359197d07e3fda44d65a12a022719f4656896f028b1f9c"
+      "sha256": "032b77b853edf0f09caeca3018d20e95732e2cf5120a1f6ac2c40691539b70ce"
     },
     {
       "file": "17_Smart_Bike_Slope_Lab.html",
@@ -140,28 +140,28 @@
       "title": "Project 19: Smart Bike Speed Modes",
       "group": "Projects",
       "source": "handouts/19_Smart_Bike_Speed_Modes.md",
-      "sha256": "4f0f1eaa15d5d51513e2a2dd2893201099121d7f8c0d9214044334eb834e2d6d"
+      "sha256": "ab73e980753b5550f0c9dcbb8e3a38aee854ddeff9317163ff05cd2cc394155b"
     },
     {
       "file": "20_Smart_Bike_Trip_Computer.html",
       "title": "Project 20: Smart Bike Trip Computer",
       "group": "Projects",
       "source": "handouts/20_Smart_Bike_Trip_Computer.md",
-      "sha256": "5cbef37f87487b1ca01d09d09545d025db1311da36a00731922ea7969f5b3caa"
+      "sha256": "f7361e1eb1dd14aa5c45ffa49444906a96788b0d20c56c2cd6289bef4b6e4696"
     },
     {
       "file": "21_Smart_Bike_Security_Alarm.html",
       "title": "Project 21: Smart Bike Security Alarm",
       "group": "Projects",
       "source": "handouts/21_Smart_Bike_Security_Alarm.md",
-      "sha256": "df2b9532e645cafb368edc4d4e9890747542c90224c6d2bfd73132d79b5178d8"
+      "sha256": "aa459d2396982888119ebfdbc730627c6e772b61101e66479187b711215cfbe1"
     },
     {
       "file": "22_Smart_Bike_Route_Data_Recorder.html",
       "title": "Project 22: Smart Bike Route Data Recorder",
       "group": "Projects",
       "source": "handouts/22_Smart_Bike_Route_Data_Recorder.md",
-      "sha256": "14cc5edecc7c496f1265b701aad7d80b92b6d9b455c4b60d924e263a005f366c"
+      "sha256": "4583b62031508f03921c395fca30effc6bb2bd4d57446609c5c572bc916cc1d3"
     },
     {
       "file": "00_Quick_Start_And_Debug.html",
