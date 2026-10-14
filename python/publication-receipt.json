@@ -1,0 +1,30 @@
+{
+  "mode": "published",
+  "sourceFingerprint": "c806475c7fd5ecad23a4dc1a24c6f347de98c26178a47f1889704ee7aa129f85",
+  "files": {
+    ".turtle-python-course": "2e8ee3e17cb84b0f73d29cf7dadcc795d22ff4c9054247fa57b41e8d3bb4f26d",
+    "assets/lesson.css": "4e95ffa29cb31bfba3c4940186289f1c77a93120be2ed78aa229476f198443aa",
+    "assets/lesson.js": "b81084828c6fbf2875dcd4f1c9b5543b6423f4e02da954b4c1102ae199750131",
+    "index.html": "f1634b996c09b208742e685690febdad2cbd28cc9c50cc48fc41a209bab9ebeb",
+    "manifest.json": "5e783a5c8fc7245a347eb2c67c851b6234fdb2b4158a5c808faf67dce9f5f3ed",
+    "turtle-animated-flower-field-step-by-step.html": "1468995b9672a78b7d3fc8e0e183d7cdf422899a0ca871ef54543639934faaf4",
+    "turtle-animation-step-by-step.html": "14b65f8a7a20406255f2eeb9c7d979c7bc9dbf448b79e249bc36ecff660adbba",
+    "turtle-circles-arcs-step-by-step.html": "fd55211c20b53dfaf6d87c75efccc40ebd866e92a7e9d589f9e3d53b9ce0de1f",
+    "turtle-elif-step-by-step.html": "572f1b6e33fef2ae52617f0b8feb6b4d497035a868f60af32db7bcee6e844efe",
+    "turtle-find-and-filter-step-by-step.html": "15ec6f321fbff397f28624c32e45fc3e43c276c2b37f41535a219a545514cf55",
+    "turtle-for-loops-step-by-step.html": "a2dfcf87333163bf073ec21d060cd85b6e4b21165eb9da2a3a8bdd6e7fac40c5",
+    "turtle-functions-step-by-step.html": "b790d83f1ec49e648f46659a6d0c672a7ff551d1d86423e097c77ad2728dcb73",
+    "turtle-group-controls-step-by-step.html": "e85e2a3ef4411341a833f9f075f3061a775617d0958d0c40a664f3dd6d194c98",
+    "turtle-if-else-step-by-step.html": "818697badb437dbf6064ed60a190b03035919af4fe9fd40debed5f3279c5da55",
+    "turtle-keyboard-control-step-by-step.html": "0334f84dbf5e57878b8d7c3f0329ea7a107021cadb26979cb000174f8e3477b4",
+    "turtle-layered-flower-design-step-by-step.html": "4e83d01ed9bafd9d32255edaf98f67433674403cc0f833d38b008db2c7405a6f",
+    "turtle-lists-step-by-step.html": "fa6b323239123c06171953b0b3965e78f4b03f7569cb942034ee7ecb303ac84b",
+    "turtle-lost-turtles-step-by-step.html": "03e9c339009634265d0b0d2c662208ee3f0ab5a0b4c05804aae26792d7a0b17f",
+    "turtle-random-flower-field-step-by-step.html": "c62d00d42b39002f4d3cef7a13a2247ea1e2a33111cc98d09ac9f16b52c1213d",
+    "turtle-regular-polygon-step-by-step.html": "a36b61015ba9fe56df2382a24a1fad75f7fb0e3563df5e56cb2131176b1de926",
+    "turtle-remove-from-list-step-by-step.html": "50828b1ee4f7ba74ebfb436cf97be93cf66747a59cc97e74b07a06da8fcdcade",
+    "turtle-return-values-step-by-step.html": "8989c611f1cc549f49dee532d0c8591c0e5196bc8d4ea6fd4c027fc398a74690",
+    "turtle-scene-builder-step-by-step.html": "8f57c1ad6da34d48ca19428934b1d5a0423b4fc14a883b303c9c5ba88c582903",
+    "turtle-variables-step-by-step.html": "5a7c4fec6be68162767cb3dd3ed82a46f7f4103e3ac464ef7fafef1c821b3807"
+  }
+}

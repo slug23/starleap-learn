@@ -1,6 +1,6 @@
 {
   "course": "turtle-python",
-  "build": "2026.10.08-090035-0400",
+  "build": "2026.10.14-173316-0400",
   "pages": [
     {
       "file": "turtle-variables-step-by-step.html",
@@ -128,7 +128,7 @@
       "number": 16,
       "group": "Lessons",
       "source": "src/turtle-elif-step-by-step.md",
-      "sha256": "ba6e607b14d96863ff9247ce1d17690930a5eed7880fd7a3c717812e8f87d743"
+      "sha256": "f67969856d1818cf21f1a010f9034ac59eb110b041bb3a7fd90ebfbd1410e287"
     },
     {
       "file": "turtle-remove-from-list-step-by-step.html",
@@ -136,7 +136,7 @@
       "number": 17,
       "group": "Lessons",
       "source": "src/turtle-remove-from-list-step-by-step.md",
-      "sha256": "1a9d495a48b5a7cbe99ed481550b0a476285614614131230e10afc01ee6cf06d"
+      "sha256": "ea626b57366da68a03aa09f617ca1c504d28d206e5956b92b956d8192a69122c"
     },
     {
       "file": "turtle-lost-turtles-step-by-step.html",
