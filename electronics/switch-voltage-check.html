@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Switch Voltage Check</title>
+<style>
+/* Trimmed copy of assets/lesson.css, plus the card's own overrides at the bottom. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 11.5pt; }
+  details.teacher { display: none; }
+  figure.schematic, .callout, table { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+  /* a bench card, not a booklet: tighten everything for paper */
+  body { font-size: 9.5pt; line-height: 1.4; }
+  .lesson-head { padding-bottom: 8px; }
+  .lesson-head h1 { font-size: 24pt; }
+  h2 { font-size: 14pt; margin: 1.1em 0 .3em; }
+  h2 .num { width: 24px; height: 24px; font-size: 13px; }
+  h3.fix { font-size: 10.5pt; margin-top: .8em; }
+  table { font-size: 9pt; margin: .5em 0; }
+  th, td { padding: 3px 8px; }
+  th { font-size: 8pt; }
+  .callout { padding: 6px 14px; margin: .7em 0; }
+  .callout.idea p:not(.label) { font-size: 11pt; }
+  figure.schematic { padding: 8px 12px 6px; margin: .8em 0; }
+  figure.schematic svg { max-width: 400px !important; }
+  figure.schematic figcaption { font-size: 8.5pt; }
+  .tp-tag { font-size: 8.5pt; line-height: 13px; min-width: 24px; border-width: 1.5px; }
+  footer.lesson-foot { margin-top: 20px; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+
+/* ---- voltage-card overrides ---- */
+/* Test-point tags: a pill on the schematic, the same pill inline in the text. */
+svg .tp rect { fill: #fff; stroke: var(--copper); stroke-width: 2.2; }
+svg .tp text { fill: var(--copper-ink); font-size: 12.5px; font-weight: 700; text-anchor: middle;
+               font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.tp-tag {
+  display: inline-block;
+  min-width: 30px;
+  padding: 0 6px;
+  border: 2px solid var(--copper);
+  border-radius: 11px;
+  background: #fff;
+  color: var(--copper-ink);
+  font: 700 13px/18px ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-align: center;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+th.yours, td.yours { width: 92px; }
+table.fix td:first-child { width: 40%; }
+table.fix th { background: var(--red-soft); }
+h3.fix { color: var(--red); font-size: 17px; margin-bottom: .2em; }
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.10.15-1300</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-the-blinker.html">8 &middot; The Blinker</a><a href="s1-09-sensors.html">9 &middot; Sensors</a><a href="s1-10-the-555-timer.html">10 &middot; The 555 Timer</a><p class="sn-sec">Extras</p><a href="blinker-voltage-check.html">Blinker Voltage Check</a><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><a href="sensor-voltage-check.html">Sensor Voltage Check</a><a href="switch-voltage-check.html" class="cur">Switch Voltage Check</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a><p class="sn-sec">Where this leads</p><a href="career-dc-power.html">Careers in DC Power</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav .sn-part{font:700 10.5px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--copper-ink,#8a3d07);margin:8px 0 2px 30px}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media screen and (max-width:899px){body{padding-top:56px}}
+@media screen and (max-width:599px){.val{white-space:normal}}
+.sn-tbl{overflow-x:auto}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}.sn-tbl{overflow:visible}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Lesson 7 · Debugging card &middot; build 2026.10.15-1300</p>
+  <h1>Switch Voltage Check</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>A build can <em>look</em> right and still be wrong. The meter doesn't look — it measures. A working transistor switch has only two states, <strong>told on</strong> and <strong>told off</strong>, and every row sits at a voltage you can know ahead of time in each. Measure the rows in order and <strong>stop at the first one that disagrees</strong>: the bug is touching that row.</p>
+</div>
+
+<h2>Before you start</h2>
+<ul>
+  <li><strong>The Debugging Loop comes first.</strong> Power, trace, nodes, one-way parts — and the transistor is a one-way part: flat face toward you, E · B · C. This card is for the build that passes the loop and still won't obey.</li>
+  <li>Meter on <span class="val">V⎓</span>. <strong>Black probe on a wire stub in the ground rail, and it stays there.</strong> The red probe does the visiting: touch it to a component leg or a bare wire stub in the row.</li>
+  <li>Read the unit. <span class="val">150 mV</span> is 0.15 V — nearly zero, not one hundred fifty.</li>
+  <li>Park the control wire's free end <em>in</em> a rail rather than holding it — you'll need both hands for the probes. Write every reading in the <em>Yours</em> column, good or bad. Checks in order: each one assumes the checks before it passed.</li>
+</ul>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 330" role="img" aria-label="Transistor switch schematic with five measuring rows tagged: W where the 4.7 kilohm resistor meets the control wire, M between the LED and the 220 ohm resistor, and C, B and E on the transistor's collector, base and emitter.">
+    <text class="lbl" x="195" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="205" y1="26" x2="390" y2="26"/>
+    <line class="w" x1="390" y1="26" x2="390" y2="48"/>
+    <polygon class="w" points="376,48 404,48 390,72"/>
+    <line class="w" x1="376" y1="72" x2="404" y2="72"/>
+    <path class="w" style="stroke-width:1.75" d="M407,54 L421,42 M421,42 l-10,2 M421,42 l-2,10"/>
+    <line class="w" x1="390" y1="72" x2="390" y2="88"/>
+    <path class="w" d="M390,88 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="417" y="128">220 Ω</text>
+    <line class="w" x1="390" y1="160" x2="390" y2="190"/>
+    <line class="w" x1="372" y1="200" x2="372" y2="240"/>
+    <line class="w" x1="390" y1="190" x2="372" y2="210"/>
+    <line class="w" x1="372" y1="230" x2="390" y2="250"/>
+    <polygon points="390,250 373,247 381,235" fill="var(--ink)"/>
+    <line class="w" x1="390" y1="250" x2="390" y2="272"/>
+    <text class="lbl" x="362" y="192" text-anchor="end" font-weight="700">C</text>
+    <text class="lbl" x="362" y="266" text-anchor="end" font-weight="700">E</text>
+    <text class="lbl" x="352" y="212" text-anchor="end" font-weight="700">B</text>
+    <line class="w" x1="160" y1="220" x2="246" y2="220"/>
+    <path class="w" d="M246,220 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <line class="w" x1="330" y1="220" x2="372" y2="220"/>
+    <text class="lbl" x="288" y="190" text-anchor="middle">4.7 kΩ</text>
+    <text class="lbl" x="158" y="208" text-anchor="end">control wire</text>
+    <text class="lbl-muted" x="158" y="240" text-anchor="end">free end in hand</text>
+    <line class="w" x1="205" y1="272" x2="390" y2="272"/>
+    <text class="lbl" x="195" y="278" text-anchor="end">ground rail</text>
+    <g class="tp"><rect x="199" y="230" width="26" height="20" rx="10"/><text x="212" y="244.5">W</text></g>
+    <g class="tp"><rect x="347" y="70" width="26" height="20" rx="10"/><text x="360" y="84.5">M</text></g>
+    <g class="tp"><rect x="405" y="170" width="26" height="20" rx="10"/><text x="418" y="184.5">C</text></g>
+    <g class="tp"><rect x="337" y="232" width="26" height="20" rx="10"/><text x="350" y="246.5">B</text></g>
+    <g class="tp"><rect x="405" y="252" width="26" height="20" rx="10"/><text x="418" y="266.5">E</text></g>
+  </svg>
+  <figcaption>Lesson 7's switch, with the rows you'll measure tagged: <b>W</b> where the 4.7 kΩ meets the control wire, <b>M</b> the middle row between the LED and the 220 Ω, and <b>C</b>, <b>B</b>, <b>E</b> — the rows holding the transistor's three legs. Find each tagged row on your own board before you measure anything.</figcaption>
+</figure>
+
+<h2 id="s1"><span class="num">1</span> The rows that never move</h2>
+<p>Power on, control wire anywhere. These rows hold still whatever the switch is doing.</p>
+<div class="sn-tbl"><table>
+  <tr><th>Red probe on</th><th>Expect</th><th class="yours">Yours</th></tr>
+  <tr><td>+ rail, right beside the power supply</td><td><span class="val">4.8 – 5.2 V</span></td><td class="yours"></td></tr>
+  <tr><td>+ rail, at the far end of the board</td><td>the same number</td><td class="yours"></td></tr>
+  <tr><td>Ground rail, at the far end of the board</td><td><span class="val">0 V</span></td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">E</span></td><td><span class="val">0 V</span></td><td class="yours"></td></tr>
+</table></div>
+<h3 class="fix">If a reading disagrees</h3>
+<div class="sn-tbl"><table class="fix">
+  <tr><th>You read</th><th>Look at</th></tr>
+  <tr><td>+ rail near <span class="val">3.3 V</span></td><td>The power supply's voltage switch.</td></tr>
+  <tr><td>+ rail near <span class="val">0 V</span></td><td>Supply off, flat, or not seated on the rails.</td></tr>
+  <tr><td>Far end of a rail doesn't match the near end</td><td>The rail is split in the middle — lesson 2's hunt. Something of yours is plugged in past the gap.</td></tr>
+  <tr><td><span class="tp-tag">E</span> above <span class="val">0 V</span></td><td>The emitter row's path to the ground rail.</td></tr>
+</table></div>
+
+<h2 id="s2"><span class="num">2</span> Told on</h2>
+<p>Control wire's free end in the <strong>+ rail</strong>. The LED should be lit, full brightness.</p>
+<div class="sn-tbl"><table>
+  <tr><th>Row</th><th>Expect</th><th>Why</th><th class="yours">Yours</th></tr>
+  <tr><td><span class="tp-tag">W</span></td><td>the + rail's number</td><td>The control wire carries the rail's voltage to the 4.7 kΩ.</td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">B</span></td><td><span class="val">0.6 – 0.8 V</span></td><td>The base behaves like a diode: once it conducts, it holds about 0.7 V. The 4.7 kΩ takes the rest.</td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">C</span></td><td>under <span class="val">0.3 V</span></td><td>A switch that's fully on is nearly a plain wire to ground.</td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">M</span></td><td>about <span class="val">3 V</span> if the LED is the part on the + rail; about <span class="val">2 V</span> if the 220 Ω is</td><td>A lit red LED takes about 2 V of the 5. The 220 Ω takes most of the rest.</td><td class="yours"></td></tr>
+</table></div>
+<h3 class="fix">If a reading disagrees</h3>
+<div class="sn-tbl"><table class="fix">
+  <tr><th>You read</th><th>Look at</th></tr>
+  <tr><td><span class="tp-tag">W</span> low, or a number that drifts</td><td>The control wire: is its free end really in the + rail? Is its other end in the 4.7 kΩ's row? Beep-test the jumper itself.</td></tr>
+  <tr><td><span class="tp-tag">B</span> near <span class="val">5 V</span></td><td>No current is entering the base. Is the transistor's B leg in this row? Is its E leg reaching ground? Flat face toward you, E · B · C? If all three are right, suspect the transistor itself.</td></tr>
+  <tr><td><span class="tp-tag">B</span> near <span class="val">0 V</span></td><td>Nothing is feeding the base. The 4.7 kΩ: one leg in <span class="tp-tag">W</span>, the other in <span class="tp-tag">B</span>? Or something else in the base row is tying it to ground.</td></tr>
+  <tr><td><span class="tp-tag">B</span> is right, but <span class="tp-tag">C</span> is above <span class="val">0.3 V</span> and the LED is dim or dark</td><td>The base is asking and the transistor isn't delivering. Transistor in backwards — C and E trading places — or a base resistor that isn't 4.7 kΩ. Read its stripes: yellow · violet · red.</td></tr>
+  <tr><td><span class="tp-tag">C</span> near <span class="val">0 V</span>, LED dark</td><td>The switch is on, but nothing is arriving to switch. The break is above it: LED backwards, both LED legs in one row, or a leg a row off. <span class="tp-tag">M</span> tells you which side of the middle row the break is on.</td></tr>
+</table></div>
+
+<h2 id="s3"><span class="num">3</span> Told off</h2>
+<p>Control wire's free end in the <strong>ground rail</strong>. The LED should be fully dark.</p>
+<div class="sn-tbl"><table>
+  <tr><th>Row</th><th>Expect</th><th>Why</th><th class="yours">Yours</th></tr>
+  <tr><td><span class="tp-tag">W</span></td><td><span class="val">0 V</span></td><td>The control wire now carries ground.</td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">B</span></td><td><span class="val">0 V</span></td><td>Nothing feeds the base, so nothing lifts it.</td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">C</span></td><td><span class="val">3.0 – 3.7 V</span></td><td>Switch open, so the collector rises — but not to 5: a dark red LED still holds about a volt and a half.</td><td class="yours"></td></tr>
+  <tr><td>The LED — with your eyes</td><td>fully dark, no glow</td><td>An open switch, an open loop.</td><td class="yours"></td></tr>
+</table></div>
+<h3 class="fix">If a reading disagrees</h3>
+<div class="sn-tbl"><table class="fix">
+  <tr><th>You see</th><th>Look at</th></tr>
+  <tr><td>LED still lit, <span class="tp-tag">B</span> at <span class="val">0 V</span>, <span class="tp-tag">C</span> under <span class="val">0.3 V</span></td><td>The transistor is off, so the collector row has some other way to ground. What else is plugged into it — a jumper, a neighbor's leg? If nothing, suspect the transistor.</td></tr>
+  <tr><td>LED still lit, <span class="tp-tag">B</span> near <span class="val">0.7 V</span></td><td>Something besides the 4.7 kΩ is feeding the base. Trace every wire that lands in the base row.</td></tr>
+  <tr><td><span class="tp-tag">C</span> near <span class="val">5 V</span></td><td>Nothing in the collector loop is taking its share: the LED is being skipped. Are both of its legs in one row?</td></tr>
+</table></div>
+<p>Both states match? The switch is cleared. If you're on a Part 2 build, carry on below.</p>
+
+<h2 id="s4"><span class="num">4</span> Part 2 builds</h2>
+<h3>The knob</h3>
+<p>Pot across the rails, wiper feeding the 4.7 kΩ in place of the control wire. Sweep slowly and watch two rows.</p>
+<div class="sn-tbl"><table>
+  <tr><th>Row</th><th>Expect</th><th class="yours">Yours</th></tr>
+  <tr><td>Wiper row</td><td>a smooth sweep from <span class="val">0 V</span> at one end to the + rail's number at the other</td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">B</span></td><td>follows the wiper up from 0 — then stops near <span class="val">0.7 V</span> and parks there, however far the wiper climbs. The LED wakes as it parks.</td><td class="yours"></td></tr>
+</table></div>
+<div class="sn-tbl"><table class="fix">
+  <tr><th>You see</th><th>Look at</th></tr>
+  <tr><td>Wiper doesn't sweep — stuck at one number, or 0 to 5 in a jump</td><td>The wiper is the pot's <em>middle</em> leg. Is it the one in the 4.7 kΩ's row, with the two outer legs on the rails?</td></tr>
+  <tr><td>Wiper sweeps, but <span class="tp-tag">B</span> stays at 0</td><td>The wiper's row and the 4.7 kΩ's row aren't the same node.</td></tr>
+</table></div>
+
+<h3>The timer</h3>
+<p>Lesson 6's store-and-spend circuit with node <strong>A</strong> wired to the 4.7 kΩ's row. Hold ① and watch node A; let go and watch it again.</p>
+<div class="sn-tbl"><table>
+  <tr><th>Row</th><th>Expect</th><th class="yours">Yours</th></tr>
+  <tr><td>Node A, while ① is held</td><td>climbs within a second to about <span class="val">4.8 V</span></td><td class="yours"></td></tr>
+  <tr><td>Node A, after you let go</td><td>sags slowly — a fraction of a volt every few seconds. The LED stays bright until A is down near <span class="val">1 V</span>.</td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">B</span>, while the LED is lit</td><td><span class="val">0.6 – 0.8 V</span></td><td class="yours"></td></tr>
+</table></div>
+<div class="sn-tbl"><table class="fix">
+  <tr><th>You see</th><th>Look at</th></tr>
+  <tr><td>Node A doesn't climb while ① is held</td><td>Button ① on the wrong pair of legs — back to the beeper for the pair that beeps only while pressed — or the charge path's 220 Ω a row off.</td></tr>
+  <tr><td>Node A climbs, but the LED never lights</td><td>Node A's wire and the 4.7 kΩ's row aren't the same node.</td></tr>
+  <tr><td>Node A drops fast the moment you let go, and path ②'s LED glows</td><td>Button ② is on its always-joined legs: path ② is spending the charge with nobody pressing.</td></tr>
+  <tr><td>The LED never fades; node A stays high or <span class="tp-tag">B</span> stays at 0.7 V long after A is low</td><td>A second command is still feeding the base: the old control wire, or the pot.</td></tr>
+</table></div>
+
+<div class="callout note">
+  <p class="label">Still stuck? Bring the numbers</p>
+  <p>A filled-in card is a bug report. <em>"Rails good. Told on, the base reads 0.7 but the collector reads 1.8, and the LED's dim"</em> gets you fast help — and usually you'll see the bug yourself while you're writing the sentence.</p>
+</div>
+
+<footer class="lesson-foot">
+  <span>Electronics · Switch voltage check v1</span>
+  <span>First wrong reading: stop there.</span>
+</footer>
+
+</body>
+</html>
