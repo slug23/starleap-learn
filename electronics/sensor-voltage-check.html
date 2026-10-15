@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sensor Voltage Check</title>
+<style>
+/* Trimmed copy of assets/lesson.css, plus the card's own overrides at the bottom. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 11.5pt; }
+  details.teacher { display: none; }
+  figure.schematic, .callout, table { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+  /* a bench card, not a booklet: tighten everything for paper */
+  body { font-size: 9.5pt; line-height: 1.4; }
+  .lesson-head { padding-bottom: 8px; }
+  .lesson-head h1 { font-size: 24pt; }
+  h2 { font-size: 14pt; margin: 1.1em 0 .3em; }
+  h2 .num { width: 24px; height: 24px; font-size: 13px; }
+  h3.fix { font-size: 10.5pt; margin-top: .8em; }
+  table { font-size: 9pt; margin: .5em 0; }
+  th, td { padding: 3px 8px; }
+  th { font-size: 8pt; }
+  .callout { padding: 6px 14px; margin: .7em 0; }
+  .callout.idea p:not(.label) { font-size: 11pt; }
+  figure.schematic { padding: 8px 12px 6px; margin: .8em 0; }
+  figure.schematic svg { max-width: 400px !important; }
+  figure.schematic figcaption { font-size: 8.5pt; }
+  .tp-tag { font-size: 8.5pt; line-height: 13px; min-width: 24px; border-width: 1.5px; }
+  footer.lesson-foot { margin-top: 20px; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+
+/* ---- voltage-card overrides ---- */
+/* Test-point tags: a pill on the schematic, the same pill inline in the text. */
+svg .tp rect { fill: #fff; stroke: var(--copper); stroke-width: 2.2; }
+svg .tp text { fill: var(--copper-ink); font-size: 12.5px; font-weight: 700; text-anchor: middle;
+               font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.tp-tag {
+  display: inline-block;
+  min-width: 30px;
+  padding: 0 6px;
+  border: 2px solid var(--copper);
+  border-radius: 11px;
+  background: #fff;
+  color: var(--copper-ink);
+  font: 700 13px/18px ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-align: center;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+th.yours, td.yours { width: 92px; }
+table.fix td:first-child { width: 40%; }
+table.fix th { background: var(--red-soft); }
+h3.fix { color: var(--red); font-size: 17px; margin-bottom: .2em; }
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.10.15-1258</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Extras</p><a href="sensor-voltage-check.html" class="cur">Sensor Voltage Check</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav .sn-part{font:700 10.5px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--copper-ink,#8a3d07);margin:8px 0 2px 30px}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media screen and (max-width:899px){body{padding-top:56px}}
+@media screen and (max-width:599px){.val{white-space:normal}}
+.sn-tbl{overflow-x:auto}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}.sn-tbl{overflow:visible}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Lesson 9 · Debugging card &middot; build 2026.10.15-1258</p>
+  <h1>Sensor Voltage Check</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The idea</p>
+  <p>A build can <em>look</em> right and still be wrong. The meter doesn't look — it measures. The night-light is two stages joined at one row, so test it the way it's built: <strong>each stage alone, then the two joined</strong>. Every row has a voltage you can know ahead of time. Measure in order and <strong>stop at the first reading that disagrees</strong>: the bug is touching that row.</p>
+</div>
+
+<h2>Before you start</h2>
+<ul>
+  <li><strong>The Debugging Loop comes first.</strong> Power, trace, nodes, one-way parts — the transistor's flat face toward you, E · B · C. (The LDR is the one part here with no direction.) This card is for the build that passes the loop and still won't sense.</li>
+  <li>Meter on <span class="val">V⎓</span> — not Ω, where section 4 left it. <strong>Black probe on a wire stub in the ground rail, and it stays there.</strong> The red probe does the visiting: touch it to a component leg or a bare wire stub in the row.</li>
+  <li>Read the unit. <span class="val">450 mV</span> is 0.45 V.</li>
+  <li>"Room light" means the disc face up, nothing over it. "Cupped" means both hands sealed over it — a partner cups while you measure. Write every reading in the <em>Yours</em> column, good or bad. Checks in order: each one assumes the checks before it passed.</li>
+</ul>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 330" role="img" aria-label="Night-light schematic with six measuring rows tagged: T the tap between the 100 kilohm resistor and the LDR, W where the control wire meets the 4.7 kilohm resistor, M between the LED and the 220 ohm resistor, and C, B and E on the transistor's collector, base and emitter.">
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="390" y2="26"/>
+    <line class="w" x1="150" y1="26" x2="150" y2="48"/>
+    <path class="w" d="M150,48 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="112" y="88" text-anchor="end">100 kΩ</text>
+    <line class="w" x1="150" y1="120" x2="150" y2="158"/>
+    <circle class="jdot" cx="150" cy="146" r="5"/>
+    <line class="w" x1="150" y1="146" x2="212" y2="146"/>
+    <text class="lbl-muted" x="182" y="136" text-anchor="middle">tap</text>
+    <line class="w" x1="212" y1="146" x2="212" y2="220"/>
+    <line class="w" x1="212" y1="220" x2="246" y2="220"/>
+    <circle cx="150" cy="188" r="30" fill="none" stroke="var(--ink)" stroke-width="2.4"/>
+    <path class="w" d="M150,164 l-10,6 l20,12 l-20,12 l20,12 l-10,6"/>
+    <path class="w" d="M76,146 L102,168 M102,168 l-10,-2 M102,168 l-2,-10" style="stroke-width:1.8"/>
+    <path class="w" d="M92,132 L116,152 M116,152 l-10,-2 M116,152 l-2,-10" style="stroke-width:1.8"/>
+    <text class="lbl" x="108" y="234" text-anchor="end">LDR</text>
+    <line class="w" x1="150" y1="218" x2="150" y2="272"/>
+    <line class="w" x1="390" y1="26" x2="390" y2="48"/>
+    <polygon class="w" points="376,48 404,48 390,72"/>
+    <line class="w" x1="376" y1="72" x2="404" y2="72"/>
+    <path class="w" style="stroke-width:1.75" d="M407,54 L421,42 M421,42 l-10,2 M421,42 l-2,10"/>
+    <line class="w" x1="390" y1="72" x2="390" y2="88"/>
+    <path class="w" d="M390,88 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="417" y="128">220 Ω</text>
+    <line class="w" x1="390" y1="160" x2="390" y2="190"/>
+    <line class="w" x1="372" y1="200" x2="372" y2="240"/>
+    <line class="w" x1="390" y1="190" x2="372" y2="210"/>
+    <line class="w" x1="372" y1="230" x2="390" y2="250"/>
+    <polygon points="390,250 373,247 381,235" fill="var(--ink)"/>
+    <line class="w" x1="390" y1="250" x2="390" y2="272"/>
+    <text class="lbl" x="362" y="192" text-anchor="end" font-weight="700">C</text>
+    <text class="lbl" x="362" y="266" text-anchor="end" font-weight="700">E</text>
+    <text class="lbl" x="352" y="212" text-anchor="end" font-weight="700">B</text>
+    <line class="w" x1="330" y1="220" x2="372" y2="220"/>
+    <path class="w" d="M246,220 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <text class="lbl" x="288" y="190" text-anchor="middle">4.7 kΩ</text>
+    <line class="w" x1="140" y1="272" x2="390" y2="272"/>
+    <text class="lbl" x="130" y="278" text-anchor="end">ground rail</text>
+    <g class="tp"><rect x="179" y="152" width="26" height="20" rx="10"/><text x="192" y="166.5">T</text></g>
+    <g class="tp"><rect x="216" y="228" width="26" height="20" rx="10"/><text x="229" y="242.5">W</text></g>
+    <g class="tp"><rect x="347" y="70" width="26" height="20" rx="10"/><text x="360" y="84.5">M</text></g>
+    <g class="tp"><rect x="405" y="170" width="26" height="20" rx="10"/><text x="418" y="184.5">C</text></g>
+    <g class="tp"><rect x="337" y="232" width="26" height="20" rx="10"/><text x="350" y="246.5">B</text></g>
+    <g class="tp"><rect x="405" y="252" width="26" height="20" rx="10"/><text x="418" y="266.5">E</text></g>
+  </svg>
+  <figcaption>The night-light, with the rows you'll measure tagged: <b>T</b> the tap, <b>W</b> the 4.7 kΩ's far row where the control wire lands, <b>M</b> the middle row between the LED and the 220 Ω, and <b>C</b>, <b>B</b>, <b>E</b> — the transistor's three rows. The control wire joins <b>T</b> and <b>W</b> into one node, so once it's plugged in they must read the same.</figcaption>
+</figure>
+
+<h2 id="s1"><span class="num">1</span> The rows that never move</h2>
+<p>Power on. These rows hold still whatever the light is doing.</p>
+<div class="sn-tbl"><table>
+  <tr><th>Red probe on</th><th>Expect</th><th class="yours">Yours</th></tr>
+  <tr><td>+ rail, right beside the power supply</td><td><span class="val">4.8 – 5.2 V</span></td><td class="yours"></td></tr>
+  <tr><td>+ rail, at the far end of the board</td><td>the same number</td><td class="yours"></td></tr>
+  <tr><td>Ground rail, at the far end of the board</td><td><span class="val">0 V</span></td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">E</span></td><td><span class="val">0 V</span></td><td class="yours"></td></tr>
+</table></div>
+<h3 class="fix">If a reading disagrees</h3>
+<div class="sn-tbl"><table class="fix">
+  <tr><th>You read</th><th>Look at</th></tr>
+  <tr><td>+ rail near <span class="val">3.3 V</span></td><td>The power supply's voltage switch.</td></tr>
+  <tr><td>+ rail near <span class="val">0 V</span></td><td>Supply off, flat, or not seated on the rails.</td></tr>
+  <tr><td>Far end of a rail doesn't match the near end</td><td>The rail is split in the middle — lesson 2's hunt. The sensing stage and the switch may be on opposite sides of the gap.</td></tr>
+  <tr><td><span class="tp-tag">E</span> above <span class="val">0 V</span></td><td>The emitter row's path to the ground rail.</td></tr>
+</table></div>
+
+<h2 id="s2"><span class="num">2</span> The sensing stage, alone</h2>
+<p><strong>Power off.</strong> Pull the control wire out of the tap row and park its free end in the <strong>ground rail</strong> — the switch is told off and out of the way. Power on. Now the tap is section 5's divider with nothing else attached.</p>
+<div class="sn-tbl"><table>
+  <tr><th>Red probe on <span class="tp-tag">T</span></th><th>Expect</th><th>Why</th><th class="yours">Yours</th></tr>
+  <tr><td>Room light</td><td><span class="val">0.25 – 0.5 V</span></td><td>A lit LDR is small next to 100 kΩ, so its share of the 5 V is small.</td><td class="yours"></td></tr>
+  <tr><td>Cupped</td><td>above <span class="val">2.5 V</span></td><td>In the dark the LDR outgrows the 100 kΩ and takes the bigger share.</td><td class="yours"></td></tr>
+  <tr><td>A hand waved over the disc</td><td>the number follows the hand</td><td>The tap's voltage follows the light.</td><td class="yours"></td></tr>
+</table></div>
+<h3 class="fix">If a reading disagrees</h3>
+<div class="sn-tbl"><table class="fix">
+  <tr><th>You read</th><th>Look at</th></tr>
+  <tr><td><span class="tp-tag">T</span> near <span class="val">5 V</span>, light or dark</td><td>The LDR isn't completing the path to ground. Is one leg in the tap row and the other in the ground rail?</td></tr>
+  <tr><td><span class="tp-tag">T</span> near <span class="val">0 V</span>, light or dark</td><td>Nothing is arriving from the + rail: the 100 kΩ isn't bridging the + rail to the tap row. Or something else in the tap row is tying it to ground.</td></tr>
+  <tr><td><span class="tp-tag">T</span> goes <em>down</em> when cupped</td><td>The divider is upside down. Which part is on top, and which part's share should grow in the dark?</td></tr>
+  <tr><td><span class="tp-tag">T</span> moves the right way but sits above <span class="val">0.55 V</span> in room light</td><td>Read the top resistor's stripes: brown · black · yellow is 100 kΩ. If it's right, the room is too dim for one 100 kΩ — your night-light will glow with the lights on. Ask about stacking the second 100 kΩ on top.</td></tr>
+  <tr><td><span class="tp-tag">T</span> barely moves</td><td>Is the squiggle face up, where light can land — and are the hands really sealing it?</td></tr>
+</table></div>
+
+<h2 id="s3"><span class="num">3</span> The switch, alone</h2>
+<p>The control wire is still in the ground rail. Read the told-off rows, then move its free end to the <strong>+ rail</strong> and read the told-on rows. This is lesson 7's switch — the <em>Switch Voltage Check</em> card has the full table if a row disagrees.</p>
+<div class="sn-tbl"><table>
+  <tr><th>Row</th><th>Told off — wire in ground</th><th>Told on — wire in + rail</th><th class="yours">Off</th><th class="yours">On</th></tr>
+  <tr><td><span class="tp-tag">B</span></td><td><span class="val">0 V</span></td><td><span class="val">0.6 – 0.8 V</span></td><td class="yours"></td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">C</span></td><td><span class="val">3.0 – 3.7 V</span></td><td>under <span class="val">0.3 V</span></td><td class="yours"></td><td class="yours"></td></tr>
+  <tr><td>The LED — with your eyes</td><td>fully dark</td><td>full brightness</td><td class="yours"></td><td class="yours"></td></tr>
+</table></div>
+<h3 class="fix">If a reading disagrees</h3>
+<div class="sn-tbl"><table class="fix">
+  <tr><th>You read</th><th>Look at</th></tr>
+  <tr><td>Told on: <span class="tp-tag">B</span> near <span class="val">5 V</span></td><td>No current entering the base: the B leg's row, the E leg's path to ground, E · B · C.</td></tr>
+  <tr><td>Told on: <span class="tp-tag">B</span> near <span class="val">0 V</span></td><td>The 4.7 kΩ isn't bridging <span class="tp-tag">W</span> to <span class="tp-tag">B</span>, or the control wire isn't reaching <span class="tp-tag">W</span>.</td></tr>
+  <tr><td>Told on: <span class="tp-tag">B</span> right, <span class="tp-tag">C</span> above <span class="val">0.3 V</span>, LED dim</td><td>Transistor in backwards, or a base resistor that isn't 4.7 kΩ (yellow · violet · red).</td></tr>
+  <tr><td>Told on: <span class="tp-tag">C</span> near <span class="val">0 V</span>, LED dark</td><td>The break is in the collector loop above it: LED backwards, or a leg a row off. <span class="tp-tag">M</span> tells you which side.</td></tr>
+</table></div>
+<p>Both stages pass? Each half is cleared. Whatever is wrong is in the handshake.</p>
+
+<h2 id="s4"><span class="num">4</span> The two, joined</h2>
+<p><strong>Power off.</strong> Control wire's free end back into the <strong>tap row</strong>. Power on, hands off the board.</p>
+<div class="sn-tbl"><table>
+  <tr><th>Row</th><th>Room light</th><th>Cupped</th><th class="yours">Room</th><th class="yours">Cupped</th></tr>
+  <tr><td><span class="tp-tag">T</span></td><td><span class="val">0.25 – 0.5 V</span> — the same as check 2</td><td><span class="val">0.75 – 0.95 V</span> — <em>not</em> 2.5</td><td class="yours"></td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">W</span></td><td colspan="2">exactly what <span class="tp-tag">T</span> reads — they're one node now</td><td class="yours"></td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">B</span></td><td>the same as <span class="tp-tag">T</span></td><td><span class="val">0.6 – 0.75 V</span></td><td class="yours"></td><td class="yours"></td></tr>
+  <tr><td><span class="tp-tag">C</span></td><td><span class="val">3.0 – 3.7 V</span></td><td>somewhere from <span class="val">0.3</span> to <span class="val">2.5 V</span></td><td class="yours"></td><td class="yours"></td></tr>
+  <tr><td>The LED</td><td>dark</td><td>lit — how brightly depends on your transistor</td><td class="yours"></td><td class="yours"></td></tr>
+</table></div>
+<div class="callout note">
+  <p class="label">Three healthy surprises</p>
+  <p><strong>The cupped tap stalls under 1 V.</strong> Once the base conducts, it holds the tap down near its own 0.7 V, and the divider's extra push goes into the base as current instead. Nothing is broken. <strong>In room light, <span class="tp-tag">B</span> matches <span class="tp-tag">T</span>.</strong> No current flows through the 4.7 kΩ, so nothing is lost across it. <strong>Cupped, <span class="tp-tag">C</span> may not reach 0.3 V.</strong> The dark only feeds the base a little current, so a weaker transistor turns only partway on — the LED is lit but not full, and a neighbor's may be brighter.</p>
+</div>
+<h3 class="fix">If a reading disagrees</h3>
+<div class="sn-tbl"><table class="fix">
+  <tr><th>You see</th><th>Look at</th></tr>
+  <tr><td>Cupped, <span class="tp-tag">T</span> climbs past <span class="val">2 V</span> and the LED stays dark</td><td>The tap's command isn't reaching the base. Compare <span class="tp-tag">W</span> with <span class="tp-tag">T</span>: different numbers mean the control wire isn't joining them. The same number means look at the 4.7 kΩ between <span class="tp-tag">W</span> and <span class="tp-tag">B</span>.</td></tr>
+  <tr><td>Room light: the LED glows and <span class="tp-tag">T</span> reads <span class="val">0.55 V</span> or more</td><td>Look back at check 2's room-light reading — it was already too high before the switch joined. That table has the suspects.</td></tr>
+  <tr><td>Room light: <span class="tp-tag">T</span> under <span class="val">0.5 V</span>, but the LED glows</td><td>Something besides the tap is feeding the base. Trace every wire that lands in the base row.</td></tr>
+  <tr><td>Your own shadow trips it</td><td>That's not a bug — the sensor is working. Angle the board toward the light.</td></tr>
+</table></div>
+
+<h2 id="s5"><span class="num">5</span> Part 2: the beam detector</h2>
+<p>Your divider with the LDR on top and a fixed resistor of your choosing on the bottom. The tap now <em>falls</em> in the dark and climbs in a beam.</p>
+<div class="sn-tbl"><table>
+  <tr><th>Red probe on <span class="tp-tag">T</span></th><th>Expect for a working beam detector</th><th class="yours">Yours</th></tr>
+  <tr><td>Room light</td><td>at or under <span class="val">0.5 V</span> — LED dark</td><td class="yours"></td></tr>
+  <tr><td>Flashlight on the disc, point-blank</td><td>at or above <span class="val">1 V</span> before you join the switch; after, it stalls near 0.8 V and the LED lights</td><td class="yours"></td></tr>
+</table></div>
+<div class="sn-tbl"><table class="fix">
+  <tr><th>You see</th><th>Look at</th></tr>
+  <tr><td>Room light already puts <span class="tp-tag">T</span> over 0.5 V — LED always on</td><td>In room light, the fixed resistor's share is too big. Your room-light LDR reading and the bigger-share rule say which way to change it.</td></tr>
+  <tr><td>The beam never gets <span class="tp-tag">T</span> past 1 V</td><td>In the beam, the fixed resistor's share is too small. Is the beam really on the squiggle face? Your flashlight reading and the same rule say the rest.</td></tr>
+</table></div>
+
+<div class="callout note">
+  <p class="label">Still stuck? Bring the numbers</p>
+  <p>A filled-in card is a bug report. <em>"Both stages pass alone. Joined and cupped, the tap reads 3.1 V, and the 4.7 kΩ's far row reads 0"</em> gets you fast help — and usually you'll see the bug yourself while you're writing the sentence.</p>
+</div>
+
+<footer class="lesson-foot">
+  <span>Electronics · Sensor voltage check v1</span>
+  <span>First wrong reading: stop there.</span>
+</footer>
+
+</body>
+</html>
