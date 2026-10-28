@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 12 · The Alarm</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+.part {
+  margin: 2.8em 0 .4em;
+  padding: 14px 20px;
+  border: 2px solid var(--copper);
+  border-radius: 12px;
+  background: var(--copper-soft);
+}
+.part .part-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper-ink);
+  margin: 0;
+}
+.part .part-title { font-size: 27px; font-weight: 800; line-height: 1.15; margin: 2px 0 4px; }
+.part p:last-child { margin-bottom: 0; }
+.part.further { border-style: dashed; border-color: var(--green); background: var(--green-soft); }
+.part.further .part-label { color: var(--green); }
+.part.further ~ h2 .num { background: var(--green); }
+.done {
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  padding: 12px 20px;
+  margin: 1.6em 0;
+  background: var(--card);
+}
+.done .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 0 0 4px;
+}
+.done ul { list-style: none; padding: 0; }
+.done li::before { content: "▢"; margin-right: .55em; color: var(--green); }
+.done p:last-child { margin-bottom: 2px; }
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox,
+    .part, .done
+    { break-inside: avoid; }
+  .part.further { break-before: page; }
+  .part { break-after: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.10.28-1943</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-the-blinker.html">8 &middot; The Blinker</a><a href="s1-09-sensors.html">9 &middot; Sensors</a><a href="s1-10-the-555-timer.html">10 &middot; The 555 Timer</a><a href="s1-11-sound-and-theremin.html">11 &middot; Sound &amp; the Light Theremin</a><a href="s1-12-the-alarm.html" class="cur">12 &middot; The Alarm</a><p class="sn-part">The basics</p><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: the night-light, from memory</a><a class="sub" href="#s4">4 &middot; Pin 4: run and stop</a><a class="sub" href="#s5">5 &middot; The light switch</a><a class="sub" href="#s6">6 &middot; One wire</a><a class="sub" href="#s7">7 &middot; Words to know</a><a class="sub" href="#s8">8 &middot; Exit ticket</a><p class="sn-part">Going further</p><a class="sub" href="#s9">9 &middot; Challenge: the tripwire</a><a class="sub" href="#s10">10 &middot; The two-tone siren</a><a class="sub" href="#s11">11 &middot; More to try</a><p class="sn-sec">Extras</p><a href="blinker-voltage-check.html">Blinker Voltage Check</a><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><a href="sensor-voltage-check.html">Sensor Voltage Check</a><a href="switch-voltage-check.html">Switch Voltage Check</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a><p class="sn-sec">Where this leads</p><a href="career-dc-power.html">Careers in DC Power</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav .sn-part{font:700 10.5px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--copper-ink,#8a3d07);margin:8px 0 2px 30px}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media screen and (max-width:899px){body{padding-top:56px}}
+@media screen and (max-width:599px){.val{white-space:normal}}
+.sn-tbl{overflow-x:auto}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}.sn-tbl{overflow:visible}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 12 · 55 min &middot; build 2026.10.28-1943</p>
+  <h1>The Alarm</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The big idea</p>
+  <p>A whole gadget is stages handing signals to each other. The 555 has a pin made for that: <strong>pin 4</strong>, its <strong>run/stop input</strong> — held high, the chip runs; pulled low, it stops, whatever its timing parts are doing. Wire a light-controlled transistor switch to pin 4 and the light in the room decides when the tone plays: the LDR and divider are the <strong>input</strong>, the transistor makes the decision — the <strong>processing</strong> — and the 555 and speaker are the <strong>output</strong>. That's an alarm. And pin 4, which cares only whether it's high or low, is your first <strong>digital</strong> input.</p>
+</div>
+
+<div class="part">
+  <p class="part-label">Part 1</p>
+  <p class="part-title">The basics</p>
+  <p>No new parts — the semester's parts in one gadget. Lesson 11's tone generator is standing in your box; you'll add a light switch beside it and join the two with one wire. This part <em>is</em> the lesson: finish it and you've done the day's work. Part 2, further down, is extra.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Find the 555's <strong>run/stop</strong> pin and work it by hand.</li>
+  <li>Rebuild lesson 9's light switch from your own drawing — with one change to what the transistor switches.</li>
+  <li>Join the two with <strong>one wire</strong> and build a box alarm: open the lid, it sounds.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Lesson 11's tone generator, standing in your box — 555, <span class="val">1 kΩ</span>, <span class="val">10 kΩ</span>, <span class="val">100 nF</span>, LED and speaker each with a <span class="val">220 Ω</span> — plus jumpers and the multimeter</li>
+  <li>For the light switch: lesson 9's <strong>LDR</strong>, a <span class="val">100 kΩ</span> (or both, if your teacher says "two"), a transistor, a <span class="val">4.7 kΩ</span>, and a second <span class="val">10 kΩ</span></li>
+  <li>For Part 2, if you get there: the spare 555, another <span class="val">1 kΩ</span> and <span class="val">10 kΩ</span>, the <span class="val">100 µF</span> and <span class="val">1000 µF</span>, a <span class="val">470 Ω</span>, a flashlight</li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span> Warm-up: the night-light, from memory</h2>
+<p><strong>Kits closed, one minute:</strong> draw lesson 9's <strong>night-light</strong> from memory — the sensing stage (100 kΩ over the LDR), the tap, the base resistor, the transistor switch with its LED. Blanks and guesses are fine. Keep the drawing out: you'll build from it in a few minutes. Then open the box and power on lesson 11's tone generator: you should hear its note. (Silent? Check pin 4 is on the + rail and the speaker still has its 220 Ω — then the Debugging Loop.) Power off.</p>
+
+<h2 id="s4"><span class="num">4</span> Pin 4: run and stop</h2>
+<p>Since lesson 10, pin 4 has had one jumper from it to the + rail, and the pin map called it the stop button. That jumper is a <strong>control wire</strong> — lesson 7's trick, aimed at a chip. Its free end can sit in one rail or the other, never both.</p>
+
+<div class="sn-tbl"><table>
+  <tr><th>Pin 4's wire</th><th>Predict</th><th>Heard / saw</th></tr>
+  <tr><td>In the + rail — as it is now</td><td>— (your note)</td><td></td></tr>
+  <tr><td>Moved to the ground rail</td><td></td><td></td></tr>
+  <tr><td>Back in the + rail</td><td></td><td></td></tr>
+</table></div>
+<p>Power on, then pull the wire's free end out of the + rail and plug it into the ground rail. Silence — and pin 3's LED goes dark. Pin 4 is the 555's <strong>run/stop input</strong>: <strong>high</strong> (near +5 V) means run, <strong>low</strong> (near 0 V) means stop, regardless of what the timing parts are doing. It doesn't care about anything in between — just high or low. A signal that matters only as high or low is called <strong>digital</strong>, and next semester is built from them.</p>
+<p><strong>Leave pin 4's wire in the ground rail</strong> while you build the next part: the chip stays stopped.</p>
+
+<h2 id="s5"><span class="num">5</span> The light switch</h2>
+<p>Pin 4 wants a high or a low. Lesson 9's night-light makes exactly that at its <strong>collector</strong>: low when its transistor is on (dark), high when it's off (light). One change, though. In lesson 9 the transistor switched an LED, which needs about 14 mA. The divider only feeds the base a small current, and a transistor can carry about 100 times its base current at most — not enough for an LED's 14 mA. Pin 4 needs almost nothing, so here the transistor switches a single <span class="val">10 kΩ</span>, a load it can pull all the way down.</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 330" role="img" aria-label="The light switch: 100 kilohms from the 5 volt rail to the tap, the LDR from the tap to ground, the tap through a 4.7 kilohm resistor to the transistor's base, emitter to ground, and a 10 kilohm resistor from the 5 volt rail to the collector">
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="390" y2="26"/>
+    <line class="w" x1="150" y1="26" x2="150" y2="48"/>
+    <path class="w" d="M150,48 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="112" y="88" text-anchor="end">100 kΩ</text>
+    <line class="w" x1="150" y1="120" x2="150" y2="158"/>
+    <circle class="jdot" cx="150" cy="146" r="5"/>
+    <line class="w" x1="150" y1="146" x2="212" y2="146"/>
+    <text class="lbl-muted" x="182" y="136" text-anchor="middle">tap</text>
+    <line class="w" x1="212" y1="146" x2="212" y2="220"/>
+    <line class="w" x1="212" y1="220" x2="246" y2="220"/>
+    <circle cx="150" cy="188" r="30" fill="none" stroke="var(--ink)" stroke-width="2.4"/>
+    <path class="w" d="M150,164 l-10,6 l20,12 l-20,12 l20,12 l-10,6"/>
+    <path class="w" d="M76,146 L102,168 M102,168 l-10,-2 M102,168 l-2,-10" style="stroke-width:1.8"/>
+    <path class="w" d="M92,132 L116,152 M116,152 l-10,-2 M116,152 l-2,-10" style="stroke-width:1.8"/>
+    <text class="lbl" x="108" y="234" text-anchor="end">LDR</text>
+    <line class="w" x1="150" y1="218" x2="150" y2="272"/>
+    <line class="w" x1="390" y1="26" x2="390" y2="70"/>
+    <path class="w" d="M390,70 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="412" y="110">10 kΩ</text>
+    <line class="w" x1="390" y1="142" x2="390" y2="190"/>
+    <line class="w" x1="372" y1="200" x2="372" y2="240"/>
+    <line class="w" x1="390" y1="190" x2="372" y2="210"/>
+    <line class="w" x1="372" y1="230" x2="390" y2="250"/>
+    <polygon points="390,250 373,247 381,235" fill="var(--ink)"/>
+    <line class="w" x1="390" y1="250" x2="390" y2="272"/>
+    <text class="lbl" x="362" y="192" text-anchor="end" font-weight="700">C</text>
+    <text class="lbl" x="362" y="266" text-anchor="end" font-weight="700">E</text>
+    <text class="lbl" x="352" y="212" text-anchor="end" font-weight="700">B</text>
+    <line class="w" x1="330" y1="220" x2="372" y2="220"/>
+    <path class="w" d="M246,220 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <text class="lbl" x="288" y="190" text-anchor="middle">4.7 kΩ</text>
+    <line class="w" x1="140" y1="272" x2="390" y2="272"/>
+    <text class="lbl" x="130" y="278" text-anchor="end">ground rail</text>
+  
+</svg>
+  <figcaption>Lesson 9's night-light, with one change: where the LED and its 220 Ω hung from the collector, a single 10 kΩ now goes from the + rail to the collector. Everything left of the transistor is your warm-up drawing.</figcaption>
+</figure>
+
+<ol class="steps">
+  <li><strong>Power off.</strong> On free rows beside the chip: <span class="val">100 kΩ</span> (brown · black · yellow) from the + rail to an empty row — the <strong>tap</strong>. If your teacher says "two," use both 100 kΩ end to end, as in lesson 9.</li>
+  <li>LDR from the tap row to the ground rail, face up.</li>
+  <li>Transistor into three free rows — flat face toward you, <strong>E · B · C</strong>, said out loud. Emitter row → ground rail.</li>
+  <li><span class="val">4.7 kΩ</span> from the tap row to the base row. <strong>Trace it:</strong> the base's only way in is through the 4.7 kΩ.</li>
+  <li><span class="val">10 kΩ</span> (brown · black · orange) from the + rail to the <strong>collector</strong> row.</li>
+</ol>
+
+<p>Black probe in the ground rail, red probe on a stub in the collector row. Power on, predict, measure:</p>
+<div class="sn-tbl"><table>
+  <tr><th>Light on the LDR</th><th>Predict: collector high or low?</th><th>Measured</th></tr>
+  <tr><td>Room light</td><td></td><td></td></tr>
+  <tr><td>Cupped under both hands</td><td></td><td></td></tr>
+</table></div>
+<p>Room light: the transistor is off and the 10 kΩ holds the collector near 5 V — <strong>high</strong>. Cupped: the tap climbs, the transistor turns on, and the collector drops to nearly 0 V — <strong>low</strong>. A light-controlled high-or-low: exactly what pin 4 listens for.</p>
+
+<h2 id="s6"><span class="num">6</span> One wire</h2>
+<figure class="schematic">
+  <svg viewBox="0 0 600 680" style="max-width:600px" role="img" aria-label="The alarm, drawn as two blocks on the same two rails. Top: lesson 9's sensing stage, 100 kilohms over the LDR with the tap feeding a 4.7 kilohm resistor into the transistor's base, and a 10 kilohm resistor from the 5 volt rail to the collector. Bottom: lesson 11's 555 tone generator with its speaker. One highlighted wire runs from the transistor's collector to pin 4 of the 555, which no longer goes to the 5 volt rail.">
+  <g>
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="390" y2="26"/>
+    <line class="w" x1="150" y1="26" x2="150" y2="48"/>
+    <path class="w" d="M150,48 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="112" y="88" text-anchor="end">100 kΩ</text>
+    <line class="w" x1="150" y1="120" x2="150" y2="158"/>
+    <circle class="jdot" cx="150" cy="146" r="5"/>
+    <line class="w" x1="150" y1="146" x2="212" y2="146"/>
+    <text class="lbl-muted" x="182" y="136" text-anchor="middle">tap</text>
+    <line class="w" x1="212" y1="146" x2="212" y2="220"/>
+    <line class="w" x1="212" y1="220" x2="246" y2="220"/>
+    <circle cx="150" cy="188" r="30" fill="none" stroke="var(--ink)" stroke-width="2.4"/>
+    <path class="w" d="M150,164 l-10,6 l20,12 l-20,12 l20,12 l-10,6"/>
+    <path class="w" d="M76,146 L102,168 M102,168 l-10,-2 M102,168 l-2,-10" style="stroke-width:1.8"/>
+    <path class="w" d="M92,132 L116,152 M116,152 l-10,-2 M116,152 l-2,-10" style="stroke-width:1.8"/>
+    <text class="lbl" x="108" y="234" text-anchor="end">LDR</text>
+    <line class="w" x1="150" y1="218" x2="150" y2="272"/>
+    <line class="w" x1="390" y1="26" x2="390" y2="70"/>
+    <path class="w" d="M390,70 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="412" y="110">10 kΩ</text>
+    <line class="w" x1="390" y1="142" x2="390" y2="190"/>
+    <line class="w" x1="372" y1="200" x2="372" y2="240"/>
+    <line class="w" x1="390" y1="190" x2="372" y2="210"/>
+    <line class="w" x1="372" y1="230" x2="390" y2="250"/>
+    <polygon points="390,250 373,247 381,235" fill="var(--ink)"/>
+    <line class="w" x1="390" y1="250" x2="390" y2="272"/>
+    <text class="lbl" x="362" y="192" text-anchor="end" font-weight="700">C</text>
+    <text class="lbl" x="362" y="266" text-anchor="end" font-weight="700">E</text>
+    <text class="lbl" x="352" y="212" text-anchor="end" font-weight="700">B</text>
+    <line class="w" x1="330" y1="220" x2="372" y2="220"/>
+    <path class="w" d="M246,220 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <text class="lbl" x="288" y="190" text-anchor="middle">4.7 kΩ</text>
+    <line class="w" x1="140" y1="272" x2="390" y2="272"/>
+    <text class="lbl" x="130" y="278" text-anchor="end">ground rail</text>
+  
+  </g>
+  <g transform="translate(0,340)">
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="296" y2="26"/>
+    <text class="lbl" x="130" y="306" text-anchor="end">ground rail</text>
+    <line class="w" x1="140" y1="300" x2="530" y2="300"/>
+    <rect class="w" x="260" y="90" width="90" height="170" rx="5"/>
+    <text x="305" y="182" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">555</text>
+    <line class="w" x1="280" y1="90" x2="280" y2="26"/>
+    <text class="lbl" x="272" y="62" text-anchor="end">8</text>
+    <line class="w" x1="330" y1="90" x2="330" y2="12"/>
+    <text class="lbl" x="338" y="62">4</text>
+    <line class="w" x1="305" y1="260" x2="305" y2="300"/>
+    <text class="lbl" x="313" y="284">1</text>
+    <line class="w" x1="170" y1="26" x2="170" y2="34"/>
+    <path class="w" d="M170,34 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="132" y="74" text-anchor="end">1 kΩ</text>
+    <line class="w" x1="170" y1="106" x2="170" y2="128"/>
+    <circle class="jdot" cx="170" cy="120" r="5"/>
+    <line class="w" x1="170" y1="120" x2="260" y2="120"/>
+    <text class="lbl" x="252" y="112" text-anchor="end">7</text>
+    <path class="w" d="M170,128 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="132" y="168" text-anchor="end">10 kΩ</text>
+    <line class="w" x1="170" y1="200" x2="170" y2="228"/>
+    <circle class="jdot" cx="170" cy="214" r="5"/>
+    <line class="w" x1="170" y1="214" x2="260" y2="214"/>
+    <text class="lbl" x="252" y="206" text-anchor="end">2</text>
+    <line class="w" x1="218" y1="214" x2="218" y2="170"/>
+    <circle class="jdot" cx="218" cy="214" r="5"/>
+    <line class="w" x1="218" y1="170" x2="260" y2="170"/>
+    <text class="lbl" x="252" y="162" text-anchor="end">6</text>
+    <g class="nodeb"><circle cx="196" cy="214" r="13"/><text x="196" y="219" text-anchor="middle">A</text></g>
+    <line class="w" x1="170" y1="228" x2="170" y2="248"/>
+    <line class="w" x1="146" y1="248" x2="194" y2="248"/>
+    <line class="w" x1="146" y1="258" x2="194" y2="258"/>
+    <line class="w" x1="170" y1="258" x2="170" y2="300"/>
+        <text class="lbl" x="204" y="272">100 nF</text>
+    <line class="w" x1="350" y1="130" x2="530" y2="130"/>
+    <circle class="jdot" cx="440" cy="130" r="5"/>
+    <text class="lbl" x="360" y="122">3</text>
+    <line class="w" x1="440" y1="130" x2="440" y2="146"/>
+    <path class="w" d="M440,146 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="422" y="186" text-anchor="end">220 Ω</text>
+    <line class="w" x1="440" y1="218" x2="440" y2="234"/>
+    <polygon class="w" points="426,234 454,234 440,258"/>
+    <line class="w" x1="426" y1="258" x2="454" y2="258"/>
+    <path class="w" style="stroke-width:1.75" d="M457,242 L471,230 M471,230 l-10,2 M471,230 l-2,10"/>
+    <line class="w" x1="440" y1="258" x2="440" y2="300"/>
+    <line class="w" x1="350" y1="230" x2="372" y2="230"/>
+    <text class="lbl-muted" x="380" y="234">5</text>
+    <line class="w" x1="530" y1="130" x2="530" y2="146"/>
+    <path class="w" d="M530,146 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="548" y="186">220 Ω</text>
+    <line class="w" x1="530" y1="218" x2="530" y2="232"/>
+    <rect class="w" x="520" y="232" width="20" height="28"/>
+    <path class="w" d="M540,236 L558,224 L558,268 L540,256 Z"/>
+    <path class="w" d="M566,236 a16,16 0 0 1 0,20" style="stroke-width:1.8"/>
+    <line class="w" x1="530" y1="260" x2="530" y2="300"/>
+    <text class="lbl" x="512" y="284" text-anchor="end">speaker</text>
+  
+  </g>
+  <path d="M390,175 H480 V352 H330" fill="none" stroke="var(--copper)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="390" cy="175" r="5" fill="var(--copper)"/>
+  <text class="lbl" x="466" y="306" text-anchor="end" style="fill:var(--copper-ink);font-weight:700">the one new wire:</text>
+  <text class="lbl" x="466" y="326" text-anchor="end" style="fill:var(--copper-ink);font-weight:700">collector → pin 4</text>
+</svg>
+  <figcaption>The alarm: two blocks you've built, on the same two rails. Top: the light switch from section 5. Bottom: lesson 11's tone generator. The highlighted wire is the only new connection — pin 4's wire, moved from the rail to the collector row.</figcaption>
+</figure>
+
+<div class="callout safety">
+  <p class="label">Moved, not added</p>
+  <p>Pin 4 gets <strong>one</strong> wire, and it lands in one place. Take its end out of the rail <em>before</em> it goes into the collector row — never a wire to a rail and a wire to the collector at the same time.</p>
+</div>
+
+<ol class="steps">
+  <li><strong>Power off.</strong> Pull pin 4's wire out of the ground rail.</li>
+  <li>Plug that same free end into the <strong>collector row</strong>. Trace it on the drawing: collector → pin 4.</li>
+</ol>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>In room light, the collector is high. With the LDR cupped, it's low. What will the speaker do in each — and why? Commit first: <span class="writeline"></span></p>
+</div>
+
+<p>Power on. Room light: the alarm sounds. Cup your hands around the LDR — or close it inside your kit box — and it goes quiet; open up and it sounds again. That's a <strong>box alarm</strong>: keep something dark, and the moment light gets in, the 555 is told to run. Follow the signal: light on the LDR → the tap sits low → the transistor is off → the 10 kΩ holds the collector high → pin 4 is high → the chip runs → the speaker sounds. Darkness flips every link in that chain. Three stages, three jobs — sensing, deciding, sounding — joined by wires that each carry one voltage.</p>
+
+<p>(Not working? Power off and run the Debugging Loop, then test each block alone: pin 4's wire back on the + rail should make the tone, and the collector should read high in light and low when cupped. The <strong>Sensor Voltage Check</strong> card's check 2, the sensing stage alone, works here unchanged.)</p>
+
+<div class="done">
+  <p class="label">Part 1 is done when…</p>
+  <ul>
+    <li>Pin 4 by hand: in the + rail the tone plays; in the ground rail it stops.</li>
+    <li>The collector reads high in room light and low when you cup the LDR.</li>
+    <li>Your alarm sounds in the light and goes quiet in the dark — and you can say what the transistor does to pin 4 when it's dark.</li>
+  </ul>
+  <p>All three? That's the lesson — and the semester in one gadget: a divider, an LDR, a transistor, a capacitor, a chip and a speaker, every one of them a part you met on its own first. The words and the exit ticket are right below; Part 2 comes after them, if you want more.</p>
+</div>
+
+<h2 id="s7"><span class="num">7</span> Words to know</h2>
+<dl class="vocab">
+  <dt>run/stop input</dt><dd>pin 4 on the 555 (its datasheet name is RESET): high, the chip runs; low, it stops</dd>
+  <dt>high · low</dt><dd>near the + rail · near ground — the only two answers a digital input listens for</dd>
+  <dt>digital</dt><dd>a signal that matters only as high or low, never in between</dd>
+  <dt>load</dt><dd>whatever a switch is switching; the transistor can only fully switch a load it can carry — an LED's 14 mA is too much here, a 10 kΩ isn't</dd>
+</dl>
+
+<h2 id="s8"><span class="num">8</span> Exit ticket</h2>
+<p>At the end of class — wherever you got to, Part 1 or deep in Part 2 — on your card: <strong>1.</strong> draw the alarm from memory — the light switch, the tone generator, and the wire that joins them, with pin numbers. <strong>2.</strong> One sentence: when the room goes dark, what does the transistor do to pin 4? Hand it in at the door.</p>
+<p><strong>Then power off and strip the board</strong> — the semester's last teardown. Every capacitor gets the reset first: a bare <span class="val">220 Ω</span> across its legs until the meter reads under <span class="val">0.1 V</span>. Chips come out with even pressure from both ends, not one corner. Every part back in the box, sorted, ready for next semester.</p>
+
+<div class="part further">
+  <p class="part-label">Part 2 · optional</p>
+  <p class="part-title">Going further</p>
+  <p>For the fast and the curious. A tripwire to design, a two-tone siren, and four stretches — every one starting from your working alarm. Pick any, or go in order. Power off before you change the board, and when time's called, stop wherever you are for the exit ticket (section 8).</p>
+</div>
+
+<h2 id="s9"><span class="num">9</span> Challenge: the tripwire</h2>
+<p>Spec, no recipe: <strong>a flashlight beam shines on the LDR; the alarm stays quiet while the beam is there and sounds the moment something breaks it.</strong> That's the box alarm turned inside out — it has to sound in the <em>dark</em> instead of the light. One part of the build changes: the divider. Two decisions are yours — <strong>which slot the LDR goes in</strong>, and <strong>how big the fixed resistor must be</strong>. Lesson 9's beam detector (if you built it) holds both answers; if you didn't, measure the LDR in the beam and in room light first, and use the bigger-share rule. Draw it, then build it, then test it with a hand through the beam.</p>
+<div class="callout note">
+  <p class="label">Drawing only</p>
+  <p>No numbered steps — your drawing is the whole recipe. Pin 4 stays on the collector; nothing right of the transistor changes. Read, wire, verify.</p>
+</div>
+
+<h2 id="s10"><span class="num">10</span> The two-tone siren</h2>
+<p>Real sirens don't hold one note; they swap between two. Your kit has a spare 555. Build lesson 10's slow blinker with it — <span class="val">1 kΩ</span>, <span class="val">10 kΩ</span>, <span class="val">100 µF</span>, its own pins 8 and 4 on the + rail and pin 1 on ground — on free rows of the board. Then one connection between the chips:</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 560 200" role="img" aria-label="Block diagram of the two-tone siren: a slow 555 blinker's pin 3 feeds a 10 kilohm resistor into pin 5 of the fast 555 tone generator, which drives the speaker">
+    <rect class="w" x="40" y="50" width="170" height="100" rx="8"/>
+    <text class="lbl" x="125" y="88" text-anchor="middle" font-weight="700">slow 555</text>
+    <text class="lbl-muted" x="125" y="110" text-anchor="middle">lesson 10's blinker</text>
+    <text class="lbl-muted" x="125" y="128" text-anchor="middle">1 kΩ · 10 kΩ · 100 µF</text>
+    <line class="w" x1="210" y1="100" x2="250" y2="100"/>
+    <text class="lbl" x="218" y="92">3</text>
+    <path class="w" d="M250,100 l7,-12 l14,24 l14,-24 l14,24 l14,-24 l14,24 l7,-12"/>
+    <text class="lbl" x="292" y="74" text-anchor="middle">10 kΩ</text>
+    <line class="w" x1="334" y1="100" x2="370" y2="100"/>
+    <text class="lbl" x="352" y="92">5</text>
+    <rect class="w" x="370" y="50" width="170" height="100" rx="8"/>
+    <text class="lbl" x="455" y="88" text-anchor="middle" font-weight="700">fast 555</text>
+    <text class="lbl-muted" x="455" y="110" text-anchor="middle">your tone generator</text>
+    <text class="lbl-muted" x="455" y="128" text-anchor="middle">+ speaker</text>
+    <text class="lbl-muted" x="280" y="180" text-anchor="middle">both chips share the + rail and the ground rail</text>
+</svg>
+
+  <figcaption>The slow chip's output, through a 10 kΩ, into the fast chip's pin 5 — the control pin, which moves the two marks the fast chip watches. Each time the slow chip flips, the marks shift and the note changes.</figcaption>
+</figure>
+
+<p>Predict first: when the slow chip's output goes high, does the note go up or down? Then listen. Pin 5, the <strong>control</strong> pin, has sat unused since lesson 10: it sets where the ⅓ and ⅔ marks sit. Pull it lower and the marks move closer together, the capacitor has less distance to travel, and the note rises. Now the alarm doesn't just sound — it wails.</p>
+
+<h2 id="s11"><span class="num">11</span> More to try</h2>
+<div class="callout tryit">
+  <p class="label">For the fast and the curious</p>
+  <p><strong>1. Why the LED had to go:</strong> put lesson 9's LED and 220 Ω back in place of the 10 kΩ on the collector. Predict: will the alarm still go quiet in the dark? Measure the collector, cupped. (The math box has the reason.) <strong>2. The entry delay:</strong> real alarms give you a few seconds to get in. Put the <span class="val">1000 µF</span> from the tap to the ground rail — stripe to ground, out loud. Predict what happens when you open the box now. <strong>3. Sensitivity:</strong> if you're running one 100 kΩ, add the second in series — does the alarm now trip in dimmer light, or need brighter? Predict, then test in a corner of the room. <strong>4. The memory problem:</strong> close the box again and your alarm goes quiet — a burglar just shuts the lid. A real alarm keeps sounding once it's tripped. Which lesson-10 build held its last answer after you let go? You don't have a spare part for it today, but you've already met the idea — next semester builds it from logic gates.</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>Why the LED couldn't stay on the collector. Cupped, the divider behaves like about 2.5 V behind about 50 kΩ, which lets only about 35 µA into the base. A transistor with a gain of 100 can carry at most:</p>
+  <math display="block"><mrow><mn>100</mn><mo>×</mo><mn>0.035</mn><mtext>&#160;mA</mtext><mo>=</mo><mn>3.5</mn><mtext>&#160;mA</mtext></mrow></math>
+  <p>The LED's loop wants about 14 mA, so the transistor can't fully close — the collector stalls around 2 V, which pin 4 still reads as high. The 10 kΩ asks for far less:</p>
+  <math display="block"><mrow><mfrac><mrow><mn>5</mn><mtext>&#160;V</mtext></mrow><mrow><mn>10000</mn><mtext>&#160;Ω</mtext></mrow></mfrac><mo>=</mo><mn>0.5</mn><mtext>&#160;mA</mtext></mrow></math>
+  <p>— well inside 3.5 mA, so the transistor pulls the collector all the way down. Pin 4 stops the chip below about 0.4 V and lets it run above about 1 V; the collector swings from about 0.1 V to about 4–5 V, far past both marks. That gap is a <strong>noise margin</strong>, and every digital chip next semester is designed around one.</p>
+</div>
+
+<h3>Words from Part 2</h3>
+<dl class="vocab">
+  <dt>control pin</dt><dd>pin 5 on the 555: sets where its two marks sit, and so the pitch</dd>
+  <dt>noise margin</dt><dd>how far a high or a low sits past the mark an input needs — room for messiness before a digital input gets the wrong answer</dd>
+  <dt>entry delay</dt><dd>the seconds a real alarm waits before sounding; here, a capacitor slowing the tap</dd>
+</dl>
+
+<footer class="lesson-foot">
+  <span>StarLeap Electronics · Lesson 12</span>
+  <span>Next: Semester 2 — Analog vs. Digital</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 11 · Sound &amp; the Light Theremin</title>
+<style>
+/* Embedded copy of assets/lesson.css — edit the canonical file, then re-embed. */
+:root {
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #232a38;
+  --muted: #6d7280;
+  --line: #ddd4c2;
+  --copper: #b4550f;
+  --copper-ink: #8a3d07;
+  --copper-soft: #f7e8d4;
+  --blue: #22598f;
+  --blue-soft: #e4eef7;
+  --green: #2e7d46;
+  --green-soft: #e5f2e8;
+  --red: #b23a32;
+  --red-soft: #fae7e4;
+  --violet: #6d4fa1;
+  --violet-soft: #f0eaf8;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 42px 28px 80px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 0 0 10px;
+}
+.lesson-head { border-bottom: 3px double var(--line); padding-bottom: 22px; }
+.lesson-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+.tagline { margin: 0; font-size: 19px; color: var(--muted); }
+h2 {
+  margin: 2.4em 0 .6em;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2 .num {
+  flex: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+h3 { margin: 1.6em 0 .4em; font-size: 19px; }
+p, ul, ol { margin: .7em 0; }
+li { margin: .3em 0; }
+strong { color: var(--copper-ink); }
+.val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  background: rgba(0,0,0,.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.callout {
+  border: 1.5px solid;
+  border-left-width: 7px;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  background: var(--card);
+}
+.callout .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.callout p:last-child { margin-bottom: 2px; }
+.callout.idea    { border-color: var(--copper); background: var(--copper-soft); }
+.callout.idea    .label { color: var(--copper-ink); }
+.callout.idea    p:not(.label) { font-size: 19px; }
+.callout.predict { border-color: var(--blue); background: var(--blue-soft); }
+.callout.predict .label { color: var(--blue); }
+.callout.tryit   { border-color: var(--green); background: var(--green-soft); }
+.callout.tryit   .label { color: var(--green); }
+.callout.safety  { border-color: var(--red); background: var(--red-soft); }
+.callout.safety  .label { color: var(--red); }
+.callout.note    { border-color: var(--line); }
+.callout.note    .label { color: var(--muted); }
+.callout.math    { border-color: var(--violet); background: var(--violet-soft); }
+.callout.math    .label { color: var(--violet); }
+.callout.math math[display="block"] {
+  margin: .6em auto .8em;
+  font-size: 1.15em;
+}
+.writeline {
+  display: inline-block;
+  min-width: 240px;
+  border-bottom: 1.5px dotted var(--muted);
+}
+.sw { display: inline-block; width: 28px; height: 15px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25); vertical-align: -2px; }
+figure.schematic {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 12px;
+  margin: 1.4em 0;
+  text-align: center;
+}
+figure.schematic svg { width: 100%; height: auto; max-width: 540px; }
+figure.schematic figcaption {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+svg .w    { stroke: var(--ink); stroke-width: 2.4; fill: none;
+            stroke-linecap: round; stroke-linejoin: round; }
+svg .jdot { fill: var(--ink); stroke: none; }
+svg .lbl       { fill: var(--ink);   font-size: 14px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .lbl-muted { fill: var(--muted); font-size: 12.5px;
+                 font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+svg .nodeb circle { fill: #fff; stroke: var(--copper); stroke-width: 2.5; }
+svg .nodeb text   { fill: var(--copper-ink); font-size: 15px; font-weight: 700; }
+svg .flow  { stroke: var(--copper); stroke-width: 1.8; fill: none;
+             stroke-dasharray: 5 6; stroke-linecap: round; }
+svg .flowhead { fill: var(--copper); stroke: none; }
+svg .softcard { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+.symbols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 1em 0;
+}
+figure.symbol {
+  margin: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px 14px;
+}
+figure.symbol svg { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
+figure.symbol figcaption { font-size: 15px; }
+figure.symbol figcaption b { display: block; font-size: 16px; }
+figure.symbol figcaption .irl { color: var(--muted); font-size: 14px; display: block; margin-top: 2px; }
+ul.kit {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 22px;
+}
+ul.kit li::before { content: "▢"; margin-right: .55em; color: var(--copper); }
+ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1em 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin: 16px 0;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node {
+  display: inline-flex;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: #fff;
+  color: var(--copper-ink);
+  font-weight: 800;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -5px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 15.5px;
+        background: var(--card); margin: 1em 0; }
+th, td { border: 1px solid var(--line); padding: 8px 12px;
+         text-align: left; vertical-align: top; }
+th { background: var(--copper-soft); font-size: 13px;
+     letter-spacing: .06em; text-transform: uppercase; }
+dl.vocab { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; }
+dl.vocab dt { font-weight: 700; color: var(--copper-ink); }
+dl.vocab dd { margin: 0; }
+.drawbox {
+  height: 280px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  background-image: radial-gradient(circle, #c9c0ad 1px, transparent 1.3px);
+  background-size: 18px 18px;
+  margin: 1em 0;
+}
+details.teacher {
+  border: 1.5px dashed var(--copper);
+  border-radius: 10px;
+  background: var(--copper-soft);
+  padding: 2px 18px;
+  margin: 1.6em 0;
+  font-size: 15.5px;
+}
+details.teacher summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--copper-ink);
+  padding: 9px 0;
+}
+.part {
+  margin: 2.8em 0 .4em;
+  padding: 14px 20px;
+  border: 2px solid var(--copper);
+  border-radius: 12px;
+  background: var(--copper-soft);
+}
+.part .part-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--copper-ink);
+  margin: 0;
+}
+.part .part-title { font-size: 27px; font-weight: 800; line-height: 1.15; margin: 2px 0 4px; }
+.part p:last-child { margin-bottom: 0; }
+.part.further { border-style: dashed; border-color: var(--green); background: var(--green-soft); }
+.part.further .part-label { color: var(--green); }
+.part.further ~ h2 .num { background: var(--green); }
+.done {
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  padding: 12px 20px;
+  margin: 1.6em 0;
+  background: var(--card);
+}
+.done .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 0 0 4px;
+}
+.done ul { list-style: none; padding: 0; }
+.done li::before { content: "▢"; margin-right: .55em; color: var(--green); }
+.done p:last-child { margin-bottom: 2px; }
+footer.lesson-foot {
+  margin-top: 70px;
+  border-top: 1.5px solid var(--line);
+  padding-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media print {
+  :root { --paper: #fff; }
+  body { max-width: none; padding: 0; font-size: 12pt; }
+  details.teacher { display: none; }
+  figure.schematic, figure.symbol, .callout, table, ol.steps > li, .drawbox,
+    .part, .done
+    { break-inside: avoid; }
+  .part.further { break-before: page; }
+  .part { break-after: avoid; }
+  h2, h3 { break-after: avoid; }
+}
+@media (max-width: 560px) {
+  body { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<nav id="sidenav"><p class="sn-head">StarLeap Electronics</p><span class="sn-build">build 2026.10.28-1943</span><a href="index.html">&#8962;&nbsp; Home</a><p class="sn-sec">Lessons</p><a href="s1-01-the-loop.html">1 &middot; The Loop</a><a href="s1-02-board-meter-switch.html">2 &middot; The Board, the Meter &amp; the Switch</a><a href="s1-03-series-and-parallel.html">3 &middot; Series &amp; Parallel</a><a href="s1-04-volts-and-ohms.html">4 &middot; Volts &amp; Ohms</a><a href="s1-05-dividers-and-pots.html">5 &middot; Dividers &amp; Pots</a><a href="s1-06-capacitors.html">6 &middot; Capacitors</a><a href="s1-07-transistor-switch.html">7 &middot; The Transistor Switch</a><a href="s1-08-the-blinker.html">8 &middot; The Blinker</a><a href="s1-09-sensors.html">9 &middot; Sensors</a><a href="s1-10-the-555-timer.html">10 &middot; The 555 Timer</a><a href="s1-11-sound-and-theremin.html" class="cur">11 &middot; Sound &amp; the Light Theremin</a><p class="sn-part">The basics</p><a class="sub" href="#s1">1 &middot; Today you will…</a><a class="sub" href="#s2">2 &middot; Your kit today</a><a class="sub" href="#s3">3 &middot; Warm-up: the blinker, from memory</a><a class="sub" href="#s4">4 &middot; New component: the speaker</a><a class="sub" href="#s5">5 &middot; Hear the blink</a><a class="sub" href="#s6">6 &middot; From clicks to a tone</a><a class="sub" href="#s7">7 &middot; Change the pitch</a><a class="sub" href="#s8">8 &middot; The light theremin</a><a class="sub" href="#s9">9 &middot; Words to know</a><a class="sub" href="#s10">10 &middot; Exit ticket</a><p class="sn-part">Going further</p><a class="sub" href="#s11">11 &middot; The pitch knob</a><a class="sub" href="#s12">12 &middot; Challenge: the doorbell</a><a class="sub" href="#s13">13 &middot; More to try</a><a href="s1-12-the-alarm.html">12 &middot; The Alarm</a><p class="sn-sec">Extras</p><a href="blinker-voltage-check.html">Blinker Voltage Check</a><a href="component-field-guide.html">Component Field Guide</a><a href="debugging-loop.html">The Debugging Loop</a><a href="making-wires.html">Making Wires</a><a href="multimeter-guide.html">The Multimeter</a><a href="sensor-voltage-check.html">Sensor Voltage Check</a><a href="switch-voltage-check.html">Switch Voltage Check</a><p class="sn-sec">Under the hood</p><a href="deep-how-ac-works.html">How AC Works</a><a href="deep-how-bridge-rectifiers-work.html">How Bridge Rectifiers Work</a><a href="deep-how-capacitors-work.html">How Capacitors Work</a><a href="deep-how-transistors-work.html">How Transistors Work</a><p class="sn-sec">Math shelf</p><a href="math-divider-formula.html">The Voltage Divider Formula</a><a href="math-kirchhoff.html">Kirchhoff&#8217;s Laws</a><a href="math-metric-prefixes.html">Milli, Kilo, Mega</a><a href="math-p-equals-iv.html">P = IV</a><a href="math-rc-time-constant.html">τ = RC</a><a href="math-series-parallel.html">Series &amp; Parallel Resistance</a><a href="math-tolerance.html">Tolerance &amp; Error</a><a href="math-transistor.html">The Transistor&#8217;s Arithmetic</a><a href="math-v-equals-ir.html">V = IR</a><a href="math-whats-a-coulomb.html">What&#8217;s a Coulomb?</a><p class="sn-sec">Where this leads</p><a href="career-dc-power.html">Careers in DC Power</a></nav><button id="sn-toggle" aria-label="Show or hide contents">&#9776;</button><style>
+#sidenav{position:fixed;top:0;left:0;bottom:0;width:232px;background:#f0e9db;border-right:1.5px solid var(--line,#ddd4c2);padding:16px 14px;overflow-y:auto;font:14px/1.45 system-ui,-apple-system,sans-serif;z-index:50;transform:translateX(-100%);transition:transform .15s ease}
+html.nav-open #sidenav{transform:none}
+#sidenav .sn-head{font-weight:800;color:var(--ink,#232a38);font-size:15px;margin:0 0 2px 42px}
+#sidenav .sn-build{display:block;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted,#6d7280);font-weight:400;margin:0 0 10px 42px}
+#sidenav .sn-sec{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6d7280);margin:14px 0 4px 8px}
+#sidenav a{display:block;padding:6px 8px;border-radius:7px;color:var(--copper-ink,#8a3d07);text-decoration:none;font-weight:600}
+#sidenav a:hover{background:var(--copper-soft,#f7e8d4)}
+#sidenav a.cur{background:var(--copper,#b4550f);color:#fff}
+#sidenav a.sub{padding:2px 8px 2px 30px;font-weight:400;font-size:12.5px;color:var(--ink,#232a38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidenav .sn-part{font:700 10.5px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--copper-ink,#8a3d07);margin:8px 0 2px 30px}
+#sidenav a.sub:hover{background:var(--copper-soft,#f7e8d4)}
+html{scroll-behavior:smooth}
+#sn-toggle{position:fixed;top:10px;left:10px;z-index:60;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line,#ddd4c2);background:var(--card,#fffdf8);color:var(--copper-ink,#8a3d07);font-size:16px;cursor:pointer;line-height:1}
+html.nav-open body{margin-left:248px;margin-right:auto}
+@media(max-width:899px){html.nav-open body{margin-left:auto}}
+@media screen and (max-width:899px){body{padding-top:56px}}
+@media screen and (max-width:599px){.val{white-space:normal}}
+.sn-tbl{overflow-x:auto}
+@media print{#sidenav,#sn-toggle{display:none}html.nav-open body{margin-left:auto}.sn-tbl{overflow:visible}}
+</style><script>(function(){function s(o){document.documentElement.classList.toggle('nav-open',o)}s(window.innerWidth>=900);document.getElementById('sn-toggle').addEventListener('click',function(){s(!document.documentElement.classList.contains('nav-open'))})})();</script>
+
+<header class="lesson-head">
+  <p class="kicker">Electronics · Semester 1 — Analog · Lesson 11 · 55 min &middot; build 2026.10.28-1943</p>
+  <h1>Sound &amp; the Light Theremin</h1>
+</header>
+
+<div class="callout idea">
+  <p class="label">The big idea</p>
+  <p>A sound is something moving back and forth hundreds of times a second. Feed the 555's flips to a <strong>speaker</strong> and each flip moves its cone; flip fast enough and the clicks become a <strong>tone</strong>. The resistor and capacitor that set the blink's tempo now set the <strong>pitch</strong> — more ohms or a bigger capacitor, a lower note. Put lesson 9's LDR in a resistor's place, and the light in the room plays the pitch.</p>
+</div>
+
+<div class="part">
+  <p class="part-label">Part 1</p>
+  <p class="part-title">The basics</p>
+  <p>One new part, one build — and you already built most of it. Every step today is a single change to lesson 10's blinker, and you predict before each one. This part <em>is</em> the lesson: finish it and you've done the day's work. Part 2, further down, is extra.</p>
+</div>
+
+<h2 id="s1"><span class="num">1</span> Today you will…</h2>
+<ul>
+  <li>Give the blinker a <strong>speaker</strong> and hear every flip.</li>
+  <li>Speed the flips up until the clicks become a <strong>tone</strong> — lesson 10's cliffhanger, heard at last.</li>
+  <li>Change the <strong>pitch</strong> with one resistor — then hand that job to the light.</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span> Your kit today</h2>
+<ul class="kit">
+  <li>Lesson 10's blinker, standing in your box — 555, <span class="val">1 kΩ</span>, <span class="val">10 kΩ</span>, <span class="val">100 µF</span>, LED and <span class="val">220 Ω</span> on pin 3 — plus jumpers and the multimeter</li>
+  <li><strong>Speaker</strong> — the small round one with two legs or two wires (new) — and another <span class="val">220 Ω</span></li>
+  <li>The <span class="val">100 nF</span> disc, a <span class="val">100 kΩ</span>, a <span class="val">4.7 kΩ</span>, and lesson 9's <strong>LDR</strong></li>
+  <li>For Part 2, if you get there: the pot, another <span class="val">1 kΩ</span>, a pushbutton, a second <span class="val">10 kΩ</span></li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span> Warm-up: the blinker, from memory</h2>
+<p><strong>Kits closed, one minute:</strong> draw lesson 10's blinker from memory — the 555 as a box, the pin numbers where wires land, both resistors, the capacitor, the LED. Pin numbers matter more than where they sit on the box. Then open the box: the blinker is standing where you left it. Check it against your drawing, power on, and count one blink. (Box lost it, or it never blinked? Build it now from your drawing — notch first, power after.) <strong>Keep it standing.</strong> Every step today is one change to it.</p>
+
+<h2 id="s4"><span class="num">4</span> New component: the speaker</h2>
+<p>Inside a speaker is a coil of thin wire sitting next to a magnet, glued to a paper or plastic cone. Current through the coil makes it a magnet too, so it pushes against the fixed magnet and moves the cone. Current off, the cone springs back. Cone out, cone back: the air in front of it gets squeezed and released, and your ear reads that as sound.</p>
+
+<div class="symbols">
+  <figure class="symbol">
+    <svg viewBox="0 0 150 80" role="img" aria-label="Speaker schematic symbol: a small box for the coil with a cone opening to the right">
+      <line class="w" x1="10" y1="30" x2="52" y2="30"/>
+      <line class="w" x1="10" y1="50" x2="52" y2="50"/>
+      <rect class="w" x="52" y="24" width="16" height="32"/>
+      <path class="w" d="M68,24 L92,10 L92,70 L68,56 Z"/>
+      <path class="w" d="M102,28 a18,18 0 0 1 0,24" style="stroke-width:1.8"/>
+      <path class="w" d="M113,19 a30,30 0 0 1 0,42" style="stroke-width:1.8"/>
+    </svg>
+    <figcaption><b>Speaker</b> the box is the coil, the flare is the cone
+    <span class="irl">Either way around — no stripe, no long leg.</span></figcaption>
+  </figure>
+  <figure class="symbol">
+    <svg viewBox="0 0 200 150" role="img" aria-label="A small speaker in real life: a round metal frame with a cone in the middle and two leads">
+      <circle cx="100" cy="66" r="52" fill="#3a3a44" stroke="#22222a" stroke-width="2"/>
+      <circle cx="100" cy="66" r="40" fill="#555560"/>
+      <circle cx="100" cy="66" r="14" fill="#2a2a32"/>
+      <line x1="82" y1="116" x2="82" y2="146" stroke="#b4550f" stroke-width="3"/>
+      <line x1="118" y1="116" x2="118" y2="146" stroke="#22598f" stroke-width="3"/>
+    </svg>
+    <figcaption><b>In real life</b> a round frame, a cone, two leads
+    <span class="irl">Thin wire leads? Push each end into its own row, or twist it round a short jumper.</span></figcaption>
+  </figure>
+</div>
+
+<div class="callout safety">
+  <p class="label">The coil is nearly a short</p>
+  <p>That coil is a few ohms — about <span class="val">8 Ω</span>. On its own across 5 V it would let through more than half an amp: hot wires, and a 555 driven far past its limit. So the speaker always gets a <span class="val">220 Ω</span> in series to limit the current — the same job the 220 Ω does for an LED. <strong>Never wire a speaker straight to pin 3 or across the rails.</strong></p>
+</div>
+
+<h2 id="s5"><span class="num">5</span> Hear the blink</h2>
+<figure class="schematic">
+  <svg viewBox="0 0 600 340" style="max-width:600px" role="img" aria-label="Lesson 10's 555 blinker with a speaker added: 1 kilohm from the 5 volt rail to pin 7, 10 kilohms from pin 7 to node A on pins 2 and 6, 100 microfarad capacitor from node A to ground; on pin 3, the LED with its 220 ohm and, beside it, a 220 ohm and the speaker to ground">
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="470" y2="26"/>
+    <text class="lbl" x="130" y="306" text-anchor="end">ground rail</text>
+    <line class="w" x1="140" y1="300" x2="530" y2="300"/>
+    <rect class="w" x="260" y="90" width="90" height="170" rx="5"/>
+    <text x="305" y="182" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">555</text>
+    <line class="w" x1="280" y1="90" x2="280" y2="26"/>
+    <text class="lbl" x="272" y="62" text-anchor="end">8</text>
+    <line class="w" x1="330" y1="90" x2="330" y2="26"/>
+    <text class="lbl" x="338" y="62">4</text>
+    <line class="w" x1="305" y1="260" x2="305" y2="300"/>
+    <text class="lbl" x="313" y="284">1</text>
+    <line class="w" x1="170" y1="26" x2="170" y2="34"/>
+    <path class="w" d="M170,34 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="132" y="74" text-anchor="end">1 kΩ</text>
+    <line class="w" x1="170" y1="106" x2="170" y2="128"/>
+    <circle class="jdot" cx="170" cy="120" r="5"/>
+    <line class="w" x1="170" y1="120" x2="260" y2="120"/>
+    <text class="lbl" x="252" y="112" text-anchor="end">7</text>
+    <path class="w" d="M170,128 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="132" y="168" text-anchor="end">10 kΩ</text>
+    <line class="w" x1="170" y1="200" x2="170" y2="228"/>
+    <circle class="jdot" cx="170" cy="214" r="5"/>
+    <line class="w" x1="170" y1="214" x2="260" y2="214"/>
+    <text class="lbl" x="252" y="206" text-anchor="end">2</text>
+    <line class="w" x1="218" y1="214" x2="218" y2="170"/>
+    <circle class="jdot" cx="218" cy="214" r="5"/>
+    <line class="w" x1="218" y1="170" x2="260" y2="170"/>
+    <text class="lbl" x="252" y="162" text-anchor="end">6</text>
+    <g class="nodeb"><circle cx="196" cy="214" r="13"/><text x="196" y="219" text-anchor="middle">A</text></g>
+    <line class="w" x1="170" y1="228" x2="170" y2="248"/>
+    <line class="w" x1="146" y1="248" x2="194" y2="248"/>
+    <path class="w" d="M146,260 a44,44 0 0 0 48,0"/>
+    <line class="w" x1="170" y1="267" x2="170" y2="300"/>
+    <text class="lbl" x="136" y="244" text-anchor="end">+</text>
+    <text class="lbl" x="204" y="272">100 µF</text>
+    <line class="w" x1="350" y1="130" x2="530" y2="130"/>
+    <circle class="jdot" cx="440" cy="130" r="5"/>
+    <text class="lbl" x="360" y="122">3</text>
+    <line class="w" x1="440" y1="130" x2="440" y2="146"/>
+    <path class="w" d="M440,146 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="422" y="186" text-anchor="end">220 Ω</text>
+    <line class="w" x1="440" y1="218" x2="440" y2="234"/>
+    <polygon class="w" points="426,234 454,234 440,258"/>
+    <line class="w" x1="426" y1="258" x2="454" y2="258"/>
+    <path class="w" style="stroke-width:1.75" d="M457,242 L471,230 M471,230 l-10,2 M471,230 l-2,10"/>
+    <line class="w" x1="440" y1="258" x2="440" y2="300"/>
+    <line class="w" x1="350" y1="230" x2="372" y2="230"/>
+    <text class="lbl-muted" x="380" y="234">5</text>
+    <line class="w" x1="530" y1="130" x2="530" y2="146"/>
+    <path class="w" d="M530,146 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="548" y="186">220 Ω</text>
+    <line class="w" x1="530" y1="218" x2="530" y2="232"/>
+    <rect class="w" x="520" y="232" width="20" height="28"/>
+    <path class="w" d="M540,236 L558,224 L558,268 L540,256 Z"/>
+    <path class="w" d="M566,236 a16,16 0 0 1 0,20" style="stroke-width:1.8"/>
+    <line class="w" x1="530" y1="260" x2="530" y2="300"/>
+    <text class="lbl" x="512" y="284" text-anchor="end">speaker</text>
+  </svg>
+  <figcaption>Lesson 10's blinker with one new branch: from pin 3, a <span class="val">220 Ω</span> and the speaker to ground, right beside the LED's branch. Pin 3 now drives both. Everything left of the chip is untouched.</figcaption>
+</figure>
+
+<ol class="steps">
+  <li><strong>Power off.</strong> <span class="val">220 Ω</span> from pin 3's row to an empty row.</li>
+  <li>Speaker from that row to the ground rail — one lead in the row, the other in the rail.</li>
+  <li><strong>Trace it:</strong> pin 3 → 220 Ω → speaker → ground. The speaker never touches pin 3 directly.</li>
+</ol>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>The blinker still flips about once a second. What will the speaker do? <span class="writeline"></span></p>
+</div>
+
+<p>Power on and listen close. A tick when the LED lights, a softer one when it goes dark — every flip moves the cone. That's all a speaker can do: move when the current changes. One flip a second is a click. So what happens if the flips come faster?</p>
+
+<h2 id="s6"><span class="num">6</span> From clicks to a tone</h2>
+<p>Lesson 10 left you a cliffhanger: the little <span class="val">100 nF</span> disc in place of the 100 µF made the LED blink about seven hundred times a second — too fast for your eye, too fast for the meter. Your ears are faster.</p>
+
+<ol class="steps">
+  <li><strong>Power off.</strong> Pull the <span class="val">100 µF</span> and give it the reset before it goes in the box — bare <span class="val">220 Ω</span> across its legs for a slow count of three.</li>
+  <li>The <span class="val">100 nF</span> disc into the same two rows: pin 6's row and the ground rail. It has no stripe — either way around.</li>
+</ol>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>Seven hundred clicks every second. What will you hear? <span class="writeline"></span></p>
+</div>
+
+<p>Power on. A steady tone. It's the same click, seven hundred times a second — too close together for your ear to hear separately. How many flips happen each second is the signal's <strong>frequency</strong>, measured in <strong>hertz</strong> (Hz): one hertz is one flip-and-back per second, so your tone is about <span class="val">700 Hz</span>. Your ear hears frequency as <strong>pitch</strong> — more hertz, higher note. People hear from about 20 Hz to about 20,000 Hz. And the LED? Look at it: a steady half-brightness. It's still blinking seven hundred times a second; the speaker is the only thing on the board that can keep up.</p>
+
+<div class="callout note">
+  <p class="label">Twenty speakers, one room</p>
+  <p>When a teacher raises a hand, power off — the whole room goes quiet at once. Power back on when the hand comes down.</p>
+</div>
+
+<h2 id="s7"><span class="num">7</span> Change the pitch</h2>
+<p>In lesson 10 the <span class="val">10 kΩ</span> — between pin 7 and pin 6 — set how fast the capacitor charged and discharged: more resistance, slower charging, slower blink. Same rule now, but you'll hear it instead of timing it. One swap at a time, <strong>power off</strong> for each, and predict before you listen:</p>
+
+<div class="sn-tbl"><table>
+  <tr><th>In the 10 kΩ's place</th><th>Predict: higher or lower?</th><th>Heard</th></tr>
+  <tr><td><span class="val">10 kΩ</span> — your build</td><td>— (your starting note)</td><td></td></tr>
+  <tr><td><span class="val">100 kΩ</span> (brown · black · yellow)</td><td></td><td></td></tr>
+  <tr><td><span class="val">4.7 kΩ</span> (yellow · violet · red)</td><td></td><td></td></tr>
+</table></div>
+
+<p>The 100 kΩ drops the note to a low buzz — about 70 flips a second, slow enough that you can almost hear the separate clicks again. The 4.7 kΩ sends it up to about twice your starting pitch. More ohms, slower flips, <strong>lower</strong> note. It's the blink-tempo rule from lesson 10, now played instead of timed. Put the <span class="val">10 kΩ</span> back.</p>
+
+<h2 id="s8"><span class="num">8</span> The light theremin</h2>
+<p>A <strong>theremin</strong> is a musical instrument you play without touching it — the player's hands move in the air near it, and the pitch follows. Yours will follow the light. You already own the part: lesson 9's LDR, a resistor whose resistance changes with light.</p>
+
+<figure class="schematic">
+  <svg viewBox="0 0 600 340" style="max-width:600px" role="img" aria-label="The light theremin: the 555 tone generator with the LDR in place of the 10 kilohm resistor between pin 7 and node A, a 100 nanofarad capacitor from node A to ground, and on pin 3 both the LED with its 220 ohm and the speaker with its own 220 ohm to ground">
+    <text class="lbl" x="130" y="30" text-anchor="end">+5 V rail</text>
+    <line class="w" x1="140" y1="26" x2="470" y2="26"/>
+    <text class="lbl" x="130" y="306" text-anchor="end">ground rail</text>
+    <line class="w" x1="140" y1="300" x2="530" y2="300"/>
+    <rect class="w" x="260" y="90" width="90" height="170" rx="5"/>
+    <text x="305" y="182" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">555</text>
+    <line class="w" x1="280" y1="90" x2="280" y2="26"/>
+    <text class="lbl" x="272" y="62" text-anchor="end">8</text>
+    <line class="w" x1="330" y1="90" x2="330" y2="26"/>
+    <text class="lbl" x="338" y="62">4</text>
+    <line class="w" x1="305" y1="260" x2="305" y2="300"/>
+    <text class="lbl" x="313" y="284">1</text>
+    <line class="w" x1="170" y1="26" x2="170" y2="34"/>
+    <path class="w" d="M170,34 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="132" y="74" text-anchor="end">1 kΩ</text>
+    <line class="w" x1="170" y1="106" x2="170" y2="128"/>
+    <circle class="jdot" cx="170" cy="120" r="5"/>
+    <line class="w" x1="170" y1="120" x2="260" y2="120"/>
+    <text class="lbl" x="252" y="112" text-anchor="end">7</text>
+    <line class="w" x1="170" y1="128" x2="170" y2="134"/>
+    <circle cx="170" cy="164" r="30" fill="none" stroke="var(--ink)" stroke-width="2.4"/>
+    <path class="w" d="M170,140 l-10,6 l20,12 l-20,12 l20,12 l-10,6"/>
+    <path class="w" d="M96,122 L122,144 M122,144 l-10,-2 M122,144 l-2,-10" style="stroke-width:1.8"/>
+    <path class="w" d="M110,106 L136,128 M136,128 l-10,-2 M136,128 l-2,-10" style="stroke-width:1.8"/>
+    <text class="lbl" x="128" y="196" text-anchor="end">LDR</text>
+    <line class="w" x1="170" y1="194" x2="170" y2="228"/>
+    <circle class="jdot" cx="170" cy="214" r="5"/>
+    <line class="w" x1="170" y1="214" x2="260" y2="214"/>
+    <text class="lbl" x="252" y="206" text-anchor="end">2</text>
+    <line class="w" x1="218" y1="214" x2="218" y2="170"/>
+    <circle class="jdot" cx="218" cy="214" r="5"/>
+    <line class="w" x1="218" y1="170" x2="260" y2="170"/>
+    <text class="lbl" x="252" y="162" text-anchor="end">6</text>
+    <g class="nodeb"><circle cx="196" cy="214" r="13"/><text x="196" y="219" text-anchor="middle">A</text></g>
+    <line class="w" x1="170" y1="228" x2="170" y2="248"/>
+    <line class="w" x1="146" y1="248" x2="194" y2="248"/>
+    <line class="w" x1="146" y1="258" x2="194" y2="258"/>
+    <line class="w" x1="170" y1="258" x2="170" y2="300"/>
+        <text class="lbl" x="204" y="272">100 nF</text>
+    <line class="w" x1="350" y1="130" x2="530" y2="130"/>
+    <circle class="jdot" cx="440" cy="130" r="5"/>
+    <text class="lbl" x="360" y="122">3</text>
+    <line class="w" x1="440" y1="130" x2="440" y2="146"/>
+    <path class="w" d="M440,146 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="422" y="186" text-anchor="end">220 Ω</text>
+    <line class="w" x1="440" y1="218" x2="440" y2="234"/>
+    <polygon class="w" points="426,234 454,234 440,258"/>
+    <line class="w" x1="426" y1="258" x2="454" y2="258"/>
+    <path class="w" style="stroke-width:1.75" d="M457,242 L471,230 M471,230 l-10,2 M471,230 l-2,10"/>
+    <line class="w" x1="440" y1="258" x2="440" y2="300"/>
+    <line class="w" x1="350" y1="230" x2="372" y2="230"/>
+    <text class="lbl-muted" x="380" y="234">5</text>
+    <line class="w" x1="530" y1="130" x2="530" y2="146"/>
+    <path class="w" d="M530,146 l-10,6 l20,12 l-20,12 l20,12 l-20,12 l20,12 l-10,6"/>
+    <text class="lbl" x="548" y="186">220 Ω</text>
+    <line class="w" x1="530" y1="218" x2="530" y2="232"/>
+    <rect class="w" x="520" y="232" width="20" height="28"/>
+    <path class="w" d="M540,236 L558,224 L558,268 L540,256 Z"/>
+    <path class="w" d="M566,236 a16,16 0 0 1 0,20" style="stroke-width:1.8"/>
+    <line class="w" x1="530" y1="260" x2="530" y2="300"/>
+    <text class="lbl" x="512" y="284" text-anchor="end">speaker</text>
+  </svg>
+  <figcaption>The light theremin. The only change from the tone generator: the LDR sits in the 10 kΩ's place, between pin 7's row and pin 6's row. Light on the disc sets its resistance; its resistance sets the pitch.</figcaption>
+</figure>
+
+<ol class="steps">
+  <li><strong>Power off.</strong> Pull the <span class="val">10 kΩ</span>. LDR into the same two rows — pin 7's row and pin 6's row — face up, where light can land.</li>
+</ol>
+
+<div class="callout predict">
+  <p class="label">Predict</p>
+  <p>You cup your hand over the disc. Does the note go up or down — and why? Commit before you move: <span class="writeline"></span></p>
+</div>
+
+<p>Power on and play it. Room light: the LDR is a few thousand ohms, somewhere near the 4.7 kΩ — a fairly high note. Cup it: the LDR swells toward a hundred thousand ohms and the note sinks into a buzz; seal it tight and it slows all the way back down into separate clicks. Lift your hand slowly and the pitch climbs back up. Same three steps as the night-light: the LDR is the <strong>input</strong>, the 555 does the <strong>processing</strong>, the speaker is the <strong>output</strong> — but this output isn't on or off, it follows your hand the whole way.</p>
+
+<div class="done">
+  <p class="label">Part 1 is done when…</p>
+  <ul>
+    <li>You heard the slow blink as clicks, then the 100 nF turn them into a tone.</li>
+    <li>You changed the pitch with a resistor swap and predicted which way it would go.</li>
+    <li>Your light theremin plays — and you can say why covering the LDR lowers the note.</li>
+  </ul>
+  <p>All three? That's the lesson — you built a musical instrument out of a timer. The words and the exit ticket are right below; Part 2 comes after them, if you want more.</p>
+</div>
+
+<h2 id="s9"><span class="num">9</span> Words to know</h2>
+<dl class="vocab">
+  <dt>speaker</dt><dd>a coil, a magnet and a cone: current through the coil moves the cone, and the cone moves the air</dd>
+  <dt>frequency</dt><dd>how many times a signal flips and comes back each second</dd>
+  <dt>hertz (Hz)</dt><dd>the unit of frequency: one hertz is once per second; your tone was about 700 Hz</dd>
+  <dt>pitch</dt><dd>how high or low a sound is — what your ear makes of frequency</dd>
+  <dt>theremin</dt><dd>an instrument played without touching it; yours is played with light</dd>
+</dl>
+
+<h2 id="s10"><span class="num">10</span> Exit ticket</h2>
+<p>At the end of class — wherever you got to, Part 1 or deep in Part 2 — on your card: <strong>1.</strong> draw the tone generator from memory — the 555 as a box with pin numbers, both resistors, the capacitor, and the speaker with its 220 Ω. <strong>2.</strong> One sentence: why does a bigger resistor give a lower note? Hand it in at the door.</p>
+<p><strong>Then power off — and leave the tone generator standing.</strong> Next lesson starts from it. Standard parts in: <span class="val">1 kΩ</span>, <span class="val">10 kΩ</span> back where the LDR was, <span class="val">100 nF</span>, the LED and the speaker each with its 220 Ω on pin 3, pin 4 on the + rail. The LDR goes back in the box — next lesson needs it. Any other capacitor from Part 2 gets the reset before it's boxed.</p>
+
+<div class="part further">
+  <p class="part-label">Part 2 · optional</p>
+  <p class="part-title">Going further</p>
+  <p>For the fast and the curious. A pitch knob, a design challenge, and four stretches — every one starting from your working tone generator. Pick any, or go in order. Power off before you change the board, and when time's called, stop wherever you are for the exit ticket (section 10).</p>
+</div>
+
+<h2 id="s11"><span class="num">11</span> The pitch knob</h2>
+<p>Lesson 10's tempo knob, retuned for sound. In the 10 kΩ's place: the pot wired as an adjustable resistor (wiper plus one outer leg) <strong>in series with</strong> a <span class="val">1 kΩ</span> — so even with the knob turned to zero, the 1 kΩ stays between pin 7 and pin 6. Sweep it slowly, end to end. Predict first: which way of turning gives the low end?</p>
+<div class="sn-tbl"><table>
+  <tr><th>Knob</th><th>Predict</th><th>Heard</th></tr>
+  <tr><td>One end</td><td></td><td></td></tr>
+  <tr><td>The other end</td><td></td><td></td></tr>
+</table></div>
+<p>One end gives a high whistle — nearly 5,000 Hz — and the other end lands close to your starting note, around 600 Hz: the pot only goes up to 10 kΩ, so the knob can only climb from there. Put the <span class="val">10 kΩ</span> back when you're done.</p>
+
+<h2 id="s12"><span class="num">12</span> Challenge: the doorbell</h2>
+<p>Spec, no recipe: <strong>the tone generator plays one note, and a different note for as long as you hold a pushbutton.</strong> Draw it first, then build it. Your parts: the standing build, a pushbutton (beep-test it for the pair of legs that connects only while pressed), and a second <span class="val">10 kΩ</span>. Two decisions are yours: <strong>where the button and the second resistor go</strong>, and <strong>whether pressing should raise the note or lower it</strong> — predict which your drawing does before you power on. Lesson 3 has a clue: two resistors side by side between the same two rows let more through than one.</p>
+<div class="callout note">
+  <p class="label">Drawing only</p>
+  <p>This build has no numbered steps — your drawing is the whole recipe. Nothing else changes: one row = one node, power off while you rewire, and the speaker keeps its 220 Ω. Read, wire, verify.</p>
+</div>
+
+<h2 id="s13"><span class="num">13</span> More to try</h2>
+<div class="callout tryit">
+  <p class="label">For the fast and the curious</p>
+  <p><strong>1. One octave down:</strong> borrow a neighbor's <span class="val">100 nF</span> and seat it right beside yours — same two rows. Predict the note. Twice the capacitance halves the frequency, and musicians have a name for a note at exactly half the frequency: the same note, one <strong>octave</strong> lower. Hum along and check. <strong>2. Tame the theremin:</strong> back on the theremin, put a <span class="val">4.7 kΩ</span> in series with the LDR. Predict what happens to the highest note in bright light. Then try a <span class="val">100 kΩ</span> beside the LDR instead (same two rows) — what happens to the lowest note when you cup it? You're choosing your instrument's range. <strong>3. The duet:</strong> two tables, two theremins, one song. Who plays the low part? <strong>4. Louder:</strong> trade the speaker's <span class="val">220 Ω</span> for a <span class="val">100 Ω</span> (brown · black · brown). Predict the volume. Then, power off, touch the 100 Ω — warm or cool? Never go below 100 Ω.</p>
+</div>
+
+<div class="callout math">
+  <p class="label">The math, for the curious — always optional</p>
+  <p>Lesson 10's blink formula gave the time for one full blink. Frequency is blinks per second — the time's <em>reciprocal</em>, 1 divided by it — which works out to:</p>
+  <math display="block"><mrow><mi>f</mi><mo>=</mo><mfrac><mn>1.44</mn><mrow><mo>(</mo><msub><mi>R</mi><mn>1</mn></msub><mo>+</mo><mn>2</mn><mo>·</mo><msub><mi>R</mi><mn>2</mn></msub><mo>)</mo><mo>×</mo><mi>C</mi></mrow></mfrac></mrow></math>
+  <p>With R1 = 1 kΩ, R2 = 10 kΩ and the 100 nF disc:</p>
+  <math display="block"><mrow><mi>f</mi><mo>=</mo><mfrac><mn>1.44</mn><mrow><mn>21000</mn><mtext>&#160;Ω</mtext><mo>×</mo><mn>0.0000001</mn><mtext>&#160;F</mtext></mrow></mfrac><mo>≈</mo><mn>690</mn><mtext>&#160;Hz</mtext></mrow></math>
+  <p>Swap R2 for 100 kΩ and the bottom becomes 201,000 × 0.0000001 — about ten times bigger — so the frequency falls to about <span class="val">70 Hz</span>. With the 4.7 kΩ it climbs to about <span class="val">1,400 Hz</span>. Double the capacitor and the bottom doubles: half the frequency, one octave down. The 1.44 is 1 divided by lesson 10's 0.693.</p>
+</div>
+
+<h3>Words from Part 2</h3>
+<dl class="vocab">
+  <dt>octave</dt><dd>the same note at twice (or half) the frequency</dd>
+  <dt>range</dt><dd>an instrument's lowest to highest note — for the theremin, set by what's in series and beside the LDR</dd>
+</dl>
+
+<footer class="lesson-foot">
+  <span>StarLeap Electronics · Lesson 11</span>
+  <span>Next: The Alarm</span>
+</footer>
+
+</body>
+</html>
