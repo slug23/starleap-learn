@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>20. Undo One Turtle Action · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a><a href="turtle-if-else-step-by-step.html">15. Conditions: Choose A Turtle Path</a><a href="turtle-elif-step-by-step.html">16. More Conditions: Choose A Turtle Color</a><a href="turtle-remove-from-list-step-by-step.html">17. Remove From A List: Which Turtle Leaves?</a><a href="turtle-lost-turtles-step-by-step.html">18. Lost Turtles: Leave The Safe Zone</a><a href="turtle-find-and-filter-step-by-step.html">19. Find And Filter: Choose Turtles By A Rule</a><a href="turtle-undo-step-by-step.html" aria-current="page">20. Undo One Turtle Action</a><a href="turtle-game-state-step-by-step.html">21. Game State: Catch A Falling Ball</a></nav><p class="stamp">Build 2026.11.04-195500-0500</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.11.04-195500-0500</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Draw Three Lines</a></li><li><a href="#section-3">Step 2 - Undo One Action</a></li><li><a href="#section-4">Step 3 - Compare With Clear</a></li><li><a href="#section-5">Step 4 - Inspect The Buffer</a></li><li><a href="#section-6">Step 5 - Try A Keyboard Shortcut</a></li><li><a href="#section-7">Teacher Check</a></li></ul></details><h1 id="section-1">20. Undo One Turtle Action</h1>
+<p>Lesson 19 changed which turtles stayed in a group. This short experiment uses one drawing turtle to learn what its own <code>undo()</code> can reverse. It extends the skill tree&#x27;s Keyboard Turtle project.</p>
+<h2 id="section-2">Step 1 - Draw Three Lines</h2>
+<p>Save a new file named <code>undo_drawing.py</code>. Type the complete program.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">LINE_LENGTH = 80</span>
+<span class="new">artist = turtle.Turtle()</span>
+<span class="new">artist.forward(LINE_LENGTH)</span>
+<span class="new">artist.left(90)</span>
+<span class="new">artist.forward(LINE_LENGTH)</span>
+<span class="new">artist.left(90)</span>
+<span class="new">artist.forward(LINE_LENGTH)</span>
+<span class="new"></span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p>Run it. Point to the three lines in the order they were drawn. <code>LINE_LENGTH</code> names the shared distance; change it once to make all three lines longer or shorter. The artist remembers recent Turtle actions in its undo buffer.</p>
+<h2 id="section-3">Step 2 - Undo One Action</h2>
+<p>Add one line just before <code>screen.mainloop()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">artist.forward(LINE_LENGTH)</span>
+<span class="new">artist.undo()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p>Predict what disappears, then run. The last forward move is reversed; the earlier lines remain. Add a second <code>artist.undo()</code> and run again. The preceding turn is reversed too. One call reverses one recorded action, not a whole project.</p>
+<h2 id="section-4">Step 3 - Compare With Clear</h2>
+<p>Temporarily replace both undo calls with <code>artist.clear()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">artist.forward(LINE_LENGTH)</span>
+<span class="new">artist.clear()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p>Run it. The drawing disappears, but the turtle stays at its final position and heading. Restore one <code>artist.undo()</code> and run again to see the difference.</p>
+<h2 id="section-5">Step 4 - Inspect The Buffer</h2>
+<p>Add these prints around the undo call.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">artist.forward(LINE_LENGTH)</span>
+<span class="new">print(&#x27;Actions available:&#x27;, artist.undobufferentries())</span>
+<span class="new">artist.undo()</span>
+<span class="new">print(&#x27;After one undo:&#x27;, artist.undobufferentries())</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p>Run and compare the two counts. The exact starting count can include setup actions, so focus on what changes after one undo. <code>setundobuffer(size)</code> can limit how many actions are remembered.</p>
+<h2 id="section-6">Step 5 - Try A Keyboard Shortcut</h2>
+<p>Start again from the Step 1 file. Add the function and binding before <code>screen.mainloop()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">artist.forward(LINE_LENGTH)</span>
+<span class="new">def undo_last():</span>
+<span class="new">    actions_left = artist.undobufferentries()</span>
+<span class="new">    if actions_left &gt; 0:</span>
+<span class="new">        artist.undo()</span>
+<span class="new"></span>
+<span class="new">screen.onkey(undo_last, &#x27;u&#x27;)</span>
+<span class="new">screen.listen()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p>Run it. Click the Turtle window, then press and release <code>u</code> once at a time. <code>actions_left</code> stores the number of actions the artist can undo; the <code>if</code> prevents an empty undo. The screen&#x27;s event loop calls <code>undo_last</code>; you do not call it at the bottom of the file. Undo belongs to this artist&#x27;s Turtle actions. It does not put an item back into a Python list after <code>pop()</code> or reverse your game&#x27;s score.</p>
+<h2 id="section-7">Teacher Check</h2>
+<p>Draw three lines and undo only the last action. Explain the difference between <code>undo()</code> and <code>clear()</code>. Show why restoring a popped list member would need separate Python code.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-find-and-filter-step-by-step.html">Previous: 19. Find And Filter: Choose Turtles By A Rule</a><a href="turtle-game-state-step-by-step.html">Next: 21. Game State: Catch A Falling Ball</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

@@ -1,6 +1,6 @@
 {
   "course": "turtle-python",
-  "build": "2026.10.14-173316-0400",
+  "build": "2026.11.04-195500-0500",
   "pages": [
     {
       "file": "turtle-variables-step-by-step.html",
@@ -144,7 +144,7 @@
       "number": 18,
       "group": "Lessons",
       "source": "src/turtle-lost-turtles-step-by-step.md",
-      "sha256": "df41142924cbcde96c6bc8a5540b1b6149644ffe898a3eca47f704f4c7d3249f"
+      "sha256": "c86b578aedc3b02078848c5acd77a45feee974fde596b8b0b07a086996e60210"
     },
     {
       "file": "turtle-find-and-filter-step-by-step.html",
@@ -152,7 +152,23 @@
       "number": 19,
       "group": "Lessons",
       "source": "src/turtle-find-and-filter-step-by-step.md",
-      "sha256": "f8c6b1a088371528f0dc003c0efed4784a8d81f7e1beca79e478a47e8f6dea3a"
+      "sha256": "4c7d915ef88afaf0964f8ebea6dfbf2e53cc5d19b755ef9bde955687094fc836"
+    },
+    {
+      "file": "turtle-undo-step-by-step.html",
+      "title": "20. Undo One Turtle Action",
+      "number": 20,
+      "group": "Lessons",
+      "source": "src/turtle-undo-step-by-step.md",
+      "sha256": "58bcb1c60da2e3360df9f45c0e48db707af452e0358fc97c3331cd506c0f19ad"
+    },
+    {
+      "file": "turtle-game-state-step-by-step.html",
+      "title": "21. Game State: Catch A Falling Ball",
+      "number": 21,
+      "group": "Lessons",
+      "source": "src/turtle-game-state-step-by-step.md",
+      "sha256": "faa1dd5b69cac5168c55c174bd974268cb85404a2814574761393e275f5c5b15"
     }
   ]
 }

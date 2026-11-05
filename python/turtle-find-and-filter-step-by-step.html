@@ -3,10 +3,10 @@
 <title>19. Find And Filter: Choose Turtles By A Rule · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
 <script src="assets/lesson.js" defer></script></head><body>
 <a class="skip" href="#main">Skip to lesson</a>
-<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a><a href="turtle-if-else-step-by-step.html">15. Conditions: Choose A Turtle Path</a><a href="turtle-elif-step-by-step.html">16. More Conditions: Choose A Turtle Color</a><a href="turtle-remove-from-list-step-by-step.html">17. Remove From A List: Which Turtle Leaves?</a><a href="turtle-lost-turtles-step-by-step.html">18. Lost Turtles: Leave The Safe Zone</a><a href="turtle-find-and-filter-step-by-step.html" aria-current="page">19. Find And Filter: Choose Turtles By A Rule</a></nav><p class="stamp">Build 2026.10.14-173316-0400</p></details>
-<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.10.14-173316-0400</p></header>
-<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Count Turtles On The Right</a></li><li><a href="#section-3">Step 2 - Find The Nearest Turtle To A Click</a></li><li><a href="#section-4">Step 3 - Keep Adding By Click</a></li><li><a href="#section-5">Step 4 - Keep Only The Orange Turtles</a></li><li><a href="#section-6">Step 5 - Change The Rule</a></li><li><a href="#section-7">Finished New Functions And Connections</a></li><li><a href="#section-8">Teacher Check</a></li></ul></details><h1 id="section-1">19. Find And Filter: Choose Turtles By A Rule</h1>
-<p>Open your finished <code>lost_turtles.py</code> from Lesson 16 and save a copy as <code>turtle_search.py</code>. A list is useful for more than moving every member. You can search it, count members that meet a rule, and keep a selected group.</p>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a><a href="turtle-if-else-step-by-step.html">15. Conditions: Choose A Turtle Path</a><a href="turtle-elif-step-by-step.html">16. More Conditions: Choose A Turtle Color</a><a href="turtle-remove-from-list-step-by-step.html">17. Remove From A List: Which Turtle Leaves?</a><a href="turtle-lost-turtles-step-by-step.html">18. Lost Turtles: Leave The Safe Zone</a><a href="turtle-find-and-filter-step-by-step.html" aria-current="page">19. Find And Filter: Choose Turtles By A Rule</a><a href="turtle-undo-step-by-step.html">20. Undo One Turtle Action</a><a href="turtle-game-state-step-by-step.html">21. Game State: Catch A Falling Ball</a></nav><p class="stamp">Build 2026.11.04-195500-0500</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.11.04-195500-0500</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Count Turtles On The Right</a></li><li><a href="#section-3">Step 2 - Find The Nearest Turtle To A Click</a></li><li><a href="#section-4">Step 3 - Reset The Whole Group</a></li><li><a href="#section-5">Step 4 - Remember The Orange Turtle</a></li><li><a href="#section-6">Step 5 - Keep Adding With Space</a></li><li><a href="#section-7">Step 6 - Keep Only The Orange Turtle</a></li><li><a href="#section-8">Step 7 - Change The Rule</a></li><li><a href="#section-9">Finished New Functions And Connections</a></li><li><a href="#section-10">Teacher Check</a></li></ul></details><h1 id="section-1">19. Find And Filter: Choose Turtles By A Rule</h1>
+<p>Open your finished <code>lost_turtles.py</code> from Lesson 18 and save a copy as <code>turtle_search.py</code>. A list is useful for more than moving every member. You can search it, count members that meet a rule, and keep a selected group.</p>
 <h2 id="section-2">Step 1 - Count Turtles On The Right</h2>
 <p>Add this function before <code>tick()</code>.</p>
 <div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def count_right():</span>
@@ -35,13 +35,43 @@
 <span class="new">    print(&#x27;Nearest distance:&#x27;, round(best_distance))</span></code></pre>
 <p>For this experiment, change the click connection at the bottom from <code>screen.onclick(add_turtle)</code> to:</p>
 <div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">screen.onclick(highlight_nearest)</span></code></pre>
-<p class="callout">Run the program. Use space to add several turtles, press <code>s</code>, and click close to one of them. It should turn orange. Click between two turtles. A search starts with one candidate, then replaces it only when it finds a closer one. It also works when there is just one turtle.</p>
-<h2 id="section-4">Step 3 - Keep Adding By Click</h2>
-<p>Restore the click connection to <code>screen.onclick(add_turtle)</code>. Connect <code>highlight_nearest</code> to a <strong>different</strong> mouse button so you can still add turtles with the usual left click.</p>
-<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">screen.onclick(add_turtle)</span>
-<span class="new">screen.onclick(highlight_nearest, btn=3)</span></code></pre>
-<p class="callout">Run the program. Left click to add; right click near one to highlight it. On a trackpad, use its secondary-click gesture. If secondary click is unavailable, use space to add during Step 2 and keep the single click connection for finding.</p>
-<h2 id="section-5">Step 4 - Keep Only The Orange Turtles</h2>
+<p class="callout">Run the program. Use space to add several turtles, press <code>s</code>, and click close to one of them. It should turn orange. Now click near a different turtle. What happens to the first orange turtle? Try a third click. The search finds a new nearest turtle each time, but this code never changes an earlier choice back to black.</p>
+<h2 id="section-4">Step 3 - Reset The Whole Group</h2>
+<p>First try the straightforward fix. Replace <code>nearest = turtles[0]</code> with these lines. Keep the rest of <code>highlight_nearest()</code> the same.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">    for member in turtles:</span>
+<span class="new">        member.color(&#x27;black&#x27;)</span>
+<span class="new">    nearest = turtles[0]</span></code></pre>
+<p>Run again and click near several different turtles. Each click makes every turtle black before the search turns the new nearest turtle orange. This fixes the problem, but it changes the color of every turtle on every click.</p>
+<h2 id="section-5">Step 4 - Remember The Orange Turtle</h2>
+<p>We can remember the last choice instead. Replace your whole <code>highlight_nearest()</code> function with the block below. The <code>nearest = None</code> line goes <strong>above</strong> the function, outside it. <code>global nearest</code> lets the function update that remembered turtle for the next click.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">nearest = None</span>
+<span class="new"></span>
+<span class="new">def highlight_nearest(x, y):</span>
+<span class="new">    global nearest</span>
+<span class="new">    if len(turtles) == 0:</span>
+<span class="new">        nearest = None</span>
+<span class="new">        print(&#x27;No turtle to find&#x27;)</span>
+<span class="new">        return</span>
+<span class="new">    if nearest not in turtles:</span>
+<span class="new">        nearest = turtles[0]</span>
+<span class="new">        nearest.color(&#x27;orange&#x27;)</span>
+<span class="new">    best_distance = nearest.distance(x, y)</span>
+<span class="new">    for member in turtles:</span>
+<span class="new">        distance = member.distance(x, y)</span>
+<span class="new">        if distance &lt; best_distance:</span>
+<span class="new">            nearest.color(&#x27;black&#x27;)</span>
+<span class="new">            nearest = member</span>
+<span class="new">            best_distance = distance</span>
+<span class="new">            nearest.color(&#x27;orange&#x27;)</span>
+<span class="new">    print(&#x27;Nearest distance:&#x27;, round(best_distance))</span></code></pre>
+<p>Run again. Click near different turtles. Before the search replaces <code>nearest</code>, it turns the old choice black; then it turns the new choice orange. At each point in the search, only the current best choice is orange. If that turtle was removed from the list, the next click starts with <code>turtles[0]</code> instead. Predict what happens when you click near the same turtle twice.</p>
+<h2 id="section-6">Step 5 - Keep Adding With Space</h2>
+<p>On a MacBook trackpad, keep one job for an ordinary click: finding the nearest turtle. Use the Space key to add another turtle at the center. Check that these connections appear once at the bottom of your file; the Space connection came from Lesson 11.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">screen.listen()</span>
+<span class="new">screen.onkey(add_at_center, &#x27;space&#x27;)</span>
+<span class="new">screen.onclick(highlight_nearest)</span></code></pre>
+<p class="callout">Run the program. Press Space to add a turtle, let it move away from the center, then press Space again. Use an ordinary trackpad click near either turtle to highlight it. You do not need a secondary-click gesture.</p>
+<h2 id="section-7">Step 6 - Keep Only The Orange Turtle</h2>
 <p>Add this function before <code>tick()</code>.</p>
 <div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def keep_orange():</span>
 <span class="new">    leaving = []</span>
@@ -54,12 +84,12 @@
 <span class="new">    print(&#x27;Kept:&#x27;, len(turtles), &#x27;Removed:&#x27;, len(leaving))</span></code></pre>
 <p>Connect it to <code>f</code>.</p>
 <div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">screen.onkey(keep_orange, &#x27;f&#x27;)</span></code></pre>
-<p class="callout">Run the program. Add four turtles, stop them, and right click near two to turn them orange. Press <code>f</code>. Only orange turtles should remain. Try <code>f</code> again, then add a new turtle and try it once more.</p>
-<p>This is <strong>filtering</strong>: keep the members that match a rule. Like Lesson 16, we first collect the ones that should leave, then change the main list in a second loop.</p>
-<h2 id="section-6">Step 5 - Change The Rule</h2>
+<p class="callout">Run the program. Press Space four times, allowing the turtles to spread out, then press <code>s</code> to stop them. Click near two different turtles. Only the most recently selected turtle should be orange. Press <code>f</code>: that one turtle should remain. Try <code>f</code> again, then press Space to add a new turtle and try it once more.</p>
+<p>This is <strong>filtering</strong>: keep the members that match a rule. Like Lesson 18, we first collect the ones that should leave, then change the main list in a second loop.</p>
+<h2 id="section-8">Step 7 - Change The Rule</h2>
 <p>Make a copy of your file. Change <code>&#x27;orange&#x27;</code> in <code>keep_orange()</code> to <code>&#x27;teal&#x27;</code>. Press <code>c</code> to color the current group teal, then add a new turtle and press <code>f</code>. Predict which turtles survive. The same loop can implement a new rule by changing its condition.</p>
-<h2 id="section-7">Finished New Functions And Connections</h2>
-<p>Check that these functions appear before <code>tick()</code>. Keep all earlier Lesson 16 functions and the original timer chain.</p>
+<h2 id="section-9">Finished New Functions And Connections</h2>
+<p>Check that these functions appear before <code>tick()</code>. Keep all earlier Lesson 18 functions and the original timer chain.</p>
 <div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def count_right():</span>
 <span class="new">    count = 0</span>
 <span class="new">    for member in turtles:</span>
@@ -67,18 +97,25 @@
 <span class="new">            count += 1</span>
 <span class="new">    print(&#x27;Right side:&#x27;, count, &#x27;Total:&#x27;, len(turtles))</span>
 <span class="new"></span>
+<span class="new">nearest = None</span>
+<span class="new"></span>
 <span class="new">def highlight_nearest(x, y):</span>
+<span class="new">    global nearest</span>
 <span class="new">    if len(turtles) == 0:</span>
+<span class="new">        nearest = None</span>
 <span class="new">        print(&#x27;No turtle to find&#x27;)</span>
 <span class="new">        return</span>
-<span class="new">    nearest = turtles[0]</span>
+<span class="new">    if nearest not in turtles:</span>
+<span class="new">        nearest = turtles[0]</span>
+<span class="new">        nearest.color(&#x27;orange&#x27;)</span>
 <span class="new">    best_distance = nearest.distance(x, y)</span>
 <span class="new">    for member in turtles:</span>
 <span class="new">        distance = member.distance(x, y)</span>
 <span class="new">        if distance &lt; best_distance:</span>
+<span class="new">            nearest.color(&#x27;black&#x27;)</span>
 <span class="new">            nearest = member</span>
 <span class="new">            best_distance = distance</span>
-<span class="new">    nearest.color(&#x27;orange&#x27;)</span>
+<span class="new">            nearest.color(&#x27;orange&#x27;)</span>
 <span class="new">    print(&#x27;Nearest distance:&#x27;, round(best_distance))</span>
 <span class="new"></span>
 <span class="new">def keep_orange():</span>
@@ -91,11 +128,12 @@
 <span class="new">        member.hideturtle()</span>
 <span class="new">    print(&#x27;Kept:&#x27;, len(turtles), &#x27;Removed:&#x27;, len(leaving))</span>
 <span class="new"></span>
-<span class="new"># Put these among the existing connections before tick().</span>
-<span class="new">screen.onclick(add_turtle)</span>
-<span class="new">screen.onclick(highlight_nearest, btn=3)</span>
+<span class="new"># Keep the Space connection; replace the old add-by-click connection.</span>
+<span class="new">screen.listen()</span>
+<span class="new">screen.onkey(add_at_center, &#x27;space&#x27;)</span>
+<span class="new">screen.onclick(highlight_nearest)</span>
 <span class="new">screen.onkey(count_right, &#x27;k&#x27;)</span>
 <span class="new">screen.onkey(keep_orange, &#x27;f&#x27;)</span></code></pre>
-<h2 id="section-8">Teacher Check</h2>
-<p>Count turtles on the right and explain why a turtle at zero is not counted. Find the nearest turtle to a click and point to the line that replaces the current best candidate. Filter the group, then explain why the code makes a <code>leaving</code> list before removing anything.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-lost-turtles-step-by-step.html">Previous: 18. Lost Turtles: Leave The Safe Zone</a></nav>
+<h2 id="section-10">Teacher Check</h2>
+<p>Count turtles on the right and explain why a turtle at zero is not counted. Show the multiple-orange problem, then explain both fixes. Point to the line that turns the old best candidate black before replacing it. Filter the group, then explain why the code makes a <code>leaving</code> list before removing anything.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-lost-turtles-step-by-step.html">Previous: 18. Lost Turtles: Leave The Safe Zone</a><a href="turtle-undo-step-by-step.html">Next: 20. Undo One Turtle Action</a></nav>
 <footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>

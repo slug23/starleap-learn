@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>21. Game State: Catch A Falling Ball · Turtle Python</title><link rel="stylesheet" href="assets/lesson.css">
+<script src="assets/lesson.js" defer></script></head><body>
+<a class="skip" href="#main">Skip to lesson</a>
+<details id="navigation" open><summary>Turtle Python · Contents</summary><nav aria-label="Course"><a href="index.html">Home</a><h2>Lessons</h2><a href="turtle-variables-step-by-step.html">1. Turtle Variables: One Change Controls Many Lines</a><a href="turtle-for-loops-step-by-step.html">2. Turtle Loops: Repeat A Chunk</a><a href="turtle-regular-polygon-step-by-step.html">3. Regular Polygon Builder: Variables Plus Loops</a><a href="turtle-functions-step-by-step.html">4. Turtle Functions: Name A Chunk</a><a href="turtle-circles-arcs-step-by-step.html">5. Turtle Circles And Arcs: Curves That Repeat</a><a href="turtle-scene-builder-step-by-step.html">6. Turtle Scene Builder: Many Functions Make One Picture</a><a href="turtle-random-flower-field-step-by-step.html">7. Random Flower Field: Let Python Choose</a><a href="turtle-layered-flower-design-step-by-step.html">8. Layered Flower Design: Small Flower, Big Flower</a><a href="turtle-keyboard-control-step-by-step.html">9. Keyboard-Controlled Turtle: Programs That Wait</a><a href="turtle-animation-step-by-step.html">10. Animation: One Frame At A Time</a><a href="turtle-lists-step-by-step.html">11. Lists: A Growing Group Of Turtles</a><a href="turtle-group-controls-step-by-step.html">12. Group Controls: One Key, Every Turtle</a><a href="turtle-animated-flower-field-step-by-step.html">13. Animated Flower Field: Redraw A New Frame</a><a href="turtle-return-values-step-by-step.html">14. Return Values: Make A Random Color</a><a href="turtle-if-else-step-by-step.html">15. Conditions: Choose A Turtle Path</a><a href="turtle-elif-step-by-step.html">16. More Conditions: Choose A Turtle Color</a><a href="turtle-remove-from-list-step-by-step.html">17. Remove From A List: Which Turtle Leaves?</a><a href="turtle-lost-turtles-step-by-step.html">18. Lost Turtles: Leave The Safe Zone</a><a href="turtle-find-and-filter-step-by-step.html">19. Find And Filter: Choose Turtles By A Rule</a><a href="turtle-undo-step-by-step.html">20. Undo One Turtle Action</a><a href="turtle-game-state-step-by-step.html" aria-current="page">21. Game State: Catch A Falling Ball</a></nav><p class="stamp">Build 2026.11.04-195500-0500</p></details>
+<main id="main"><header><p class="eyebrow">STARLEAP / PYTHON TURTLE</p><p class="stamp">Build 2026.11.04-195500-0500</p></header>
+<details class="on-page"><summary>On this page</summary><ul><li><a href="#section-2">Step 1 - Move The Catcher</a></li><li><a href="#section-3">Step 1A - Shorten The Edge Checks</a></li><li><a href="#section-4">Step 2 - Add A Ball And One Tick</a></li><li><a href="#section-5">Step 3 - Schedule The Next Tick</a></li><li><a href="#section-6">Step 4 - Add A Catch And A Miss</a></li><li><a href="#section-7">Step 5 - Stop At Three Misses</a></li><li><a href="#section-8">Step 6 - Send The Ball To A New Place</a></li><li><a href="#section-9">Step 7 - Trace One Tick</a></li><li><a href="#section-10">Step 8 - Test The Reset Rule</a></li><li><a href="#section-11">Teacher Check</a></li></ul></details><h1 id="section-1">21. Game State: Catch A Falling Ball</h1>
+<p>The skill tree&#x27;s Game State skill asks you to name what a game remembers and trace one tick. This lesson grows a small Catcher Game from Keyboard Turtle. A timer schedules each tick so arrow keys remain responsive.</p>
+<h2 id="section-2">Step 1 - Move The Catcher</h2>
+<p>Save a new file named <code>catcher.py</code>. Type this whole starter program.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">import turtle</span>
+<span class="new"></span>
+<span class="new">screen = turtle.Screen()</span>
+<span class="new">screen.setup(600, 600)</span>
+<span class="new">screen.tracer(0)</span>
+<span class="new">LEFT_BOUND = -280</span>
+<span class="new">RIGHT_BOUND = 280</span>
+<span class="new">CATCHER_STEP = 20</span>
+<span class="new">CATCHER_Y = -250</span>
+<span class="new"></span>
+<span class="new">catcher = turtle.Turtle()</span>
+<span class="new">catcher.shape(&#x27;square&#x27;)</span>
+<span class="new">catcher.penup()</span>
+<span class="new">catcher.goto(0, CATCHER_Y)</span>
+<span class="new"></span>
+<span class="new">def go_left():</span>
+<span class="new">    current_x = catcher.xcor()</span>
+<span class="new">    next_x = current_x - CATCHER_STEP</span>
+<span class="new">    if next_x &lt; LEFT_BOUND:</span>
+<span class="new">        next_x = LEFT_BOUND</span>
+<span class="new">    catcher.setx(next_x)</span>
+<span class="new">    screen.update()</span>
+<span class="new"></span>
+<span class="new">def go_right():</span>
+<span class="new">    current_x = catcher.xcor()</span>
+<span class="new">    next_x = current_x + CATCHER_STEP</span>
+<span class="new">    if next_x &gt; RIGHT_BOUND:</span>
+<span class="new">        next_x = RIGHT_BOUND</span>
+<span class="new">    catcher.setx(next_x)</span>
+<span class="new">    screen.update()</span>
+<span class="new"></span>
+<span class="new">screen.onkey(go_left, &#x27;Left&#x27;)</span>
+<span class="new">screen.onkey(go_right, &#x27;Right&#x27;)</span>
+<span class="new">screen.listen()</span>
+<span class="new">screen.update()</span>
+<span class="new">screen.mainloop()</span></code></pre>
+<p>Run it. Click the Turtle window, then press and release Left and Right. Names in ALL_CAPS are constants: values we set once as rules for the game. <code>LEFT_BOUND</code> and <code>RIGHT_BOUND</code> leave a 20-unit margin inside the 600-unit window; <code>CATCHER_STEP</code> controls one key press. For example, if <code>current_x</code> is <code>-270</code>, a Left press makes <code>next_x</code> equal <code>-290</code>; the <code>if</code> changes it to <code>LEFT_BOUND</code>, which is <code>-280</code>. Change <code>CATCHER_STEP</code> to <code>10</code>, run, then restore <code>20</code>. <code>screen.tracer(0)</code> turns off automatic drawing; each handler calls <code>screen.update()</code> to show its move.</p>
+<h2 id="section-3">Step 1A - Shorten The Edge Checks</h2>
+<p>Now that you have seen the <code>if</code> rule work, replace its two lines in <code>go_left()</code> with one line:</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    next_x = current_x - CATCHER_STEP</span>
+<span class="new">    next_x = max(LEFT_BOUND, next_x)</span>
+<span class="reference">    catcher.setx(next_x)</span></code></pre>
+<p><code>max</code> returns the larger of its two values. If <code>next_x</code> is <code>-290</code>, <code>max(-280, -290)</code> gives <code>-280</code>, so the catcher stops at <code>LEFT_BOUND</code>. If <code>next_x</code> is <code>-100</code>, the result is <code>-100</code>, so the move is unchanged. The constant makes the rule readable without memorizing what <code>-280</code> means.</p>
+<p>For the right edge, replace its <code>if</code> block with the matching <code>min</code> line:</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    next_x = current_x + CATCHER_STEP</span>
+<span class="new">    next_x = min(RIGHT_BOUND, next_x)</span>
+<span class="reference">    catcher.setx(next_x)</span></code></pre>
+<p><code>min</code> returns the smaller value. Predict the results when <code>next_x</code> is <code>290</code> and <code>100</code>, then run and test both edges. Keep these shorter handlers as you build the rest of the game.</p>
+<h2 id="section-4">Step 2 - Add A Ball And One Tick</h2>
+<p>Add two more constants below <code>CATCHER_Y</code>, above the catcher setup. They name the ball&#x27;s starting height and the amount it falls each tick.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">CATCHER_Y = -250</span>
+<span class="new">BALL_START_Y = 250</span>
+<span class="new">BALL_FALL_STEP = 4</span>
+<span class="reference"></span>
+<span class="reference">catcher = turtle.Turtle()</span></code></pre>
+<p>Just below <code>catcher.goto(...)</code>, add a second turtle.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">catcher.goto(0, CATCHER_Y)</span>
+<span class="new">ball = turtle.Turtle()</span>
+<span class="new">ball.shape(&#x27;circle&#x27;)</span>
+<span class="new">ball.penup()</span>
+<span class="new">ball.goto(0, BALL_START_Y)</span>
+<span class="reference"></span>
+<span class="reference">def go_left():</span></code></pre>
+<p>Add this function after <code>go_right</code>, before the key bindings.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def go_right():</span>
+<span class="reference">    current_x = catcher.xcor()</span>
+<span class="reference">    next_x = current_x + CATCHER_STEP</span>
+<span class="reference">    next_x = min(RIGHT_BOUND, next_x)</span>
+<span class="reference">    catcher.setx(next_x)</span>
+<span class="reference">    screen.update()</span>
+<span class="new"></span>
+<span class="new">def tick():</span>
+<span class="new">    current_y = ball.ycor()</span>
+<span class="new">    next_y = current_y - BALL_FALL_STEP</span>
+<span class="new">    ball.sety(next_y)</span>
+<span class="new">    screen.update()</span></code></pre>
+<p>Call <code>tick()</code> once after <code>screen.listen()</code>, before <code>screen.mainloop()</code>. Run it: the ball moves down only one small step. Close the window.</p>
+<h2 id="section-5">Step 3 - Schedule The Next Tick</h2>
+<p>Add <code>TICK_DELAY_MS = 30</code> with the other constants, then add one line at the end of <code>tick()</code>. The name records that this delay is measured in milliseconds.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">BALL_FALL_STEP = 4</span>
+<span class="new">TICK_DELAY_MS = 30</span>
+<span class="reference"></span>
+<span class="reference">catcher = turtle.Turtle()</span></code></pre>
+<p>Now add the timer line.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">def tick():</span>
+<span class="reference">    current_y = ball.ycor()</span>
+<span class="reference">    next_y = current_y - BALL_FALL_STEP</span>
+<span class="reference">    ball.sety(next_y)</span>
+<span class="reference">    screen.update()</span>
+<span class="new">    screen.ontimer(tick, TICK_DELAY_MS)</span></code></pre>
+<p>Run it. <code>current_y</code> records where the ball is now; <code>next_y</code> is <code>BALL_FALL_STEP</code> lower. The ball keeps falling and arrow keys still respond. <code>ontimer</code> asks the screen to call <code>tick</code> later. The single startup call begins one chain. Do not put a <code>while</code> loop around the Turtle window or call <code>tick()</code> from a key handler.</p>
+<h2 id="section-6">Step 4 - Add A Catch And A Miss</h2>
+<p>Add <code>CATCH_RADIUS = 30</code> and <code>MISS_BOUND_Y = -280</code> with the constants. The first names how close the ball must be to count as caught; the second names the bottom line where a miss is counted. Before <code>go_left</code>, add the changing state variables <code>score</code> and <code>misses</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">TICK_DELAY_MS = 30</span>
+<span class="new">CATCH_RADIUS = 30</span>
+<span class="new">MISS_BOUND_Y = -280</span>
+<span class="reference"></span>
+<span class="reference">catcher = turtle.Turtle()</span></code></pre>
+<p>Add the state variables after the ball setup.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">ball.goto(0, BALL_START_Y)</span>
+<span class="new">score = 0</span>
+<span class="new">misses = 0</span>
+<span class="reference"></span>
+<span class="reference">def go_left():</span></code></pre>
+<p>Replace the entire <code>tick()</code> function with this version.</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def tick():</span>
+<span class="new">    global score, misses</span>
+<span class="new">    current_y = ball.ycor()</span>
+<span class="new">    next_y = current_y - BALL_FALL_STEP</span>
+<span class="new">    ball.sety(next_y)</span>
+<span class="new">    distance_to_catcher = ball.distance(catcher)</span>
+<span class="new">    if distance_to_catcher &lt; CATCH_RADIUS:</span>
+<span class="new">        score = score + 1</span>
+<span class="new">        ball.goto(0, BALL_START_Y)</span>
+<span class="new">        print(&#x27;Score:&#x27;, score)</span>
+<span class="new">    elif ball.ycor() &lt; MISS_BOUND_Y:</span>
+<span class="new">        misses = misses + 1</span>
+<span class="new">        ball.goto(0, BALL_START_Y)</span>
+<span class="new">        print(&#x27;Misses:&#x27;, misses)</span>
+<span class="new">    screen.update()</span>
+<span class="new">    screen.ontimer(tick, TICK_DELAY_MS)</span></code></pre>
+<p>Run it. Catch the ball or let it pass. A catch needs the distance to be less than <code>CATCH_RADIUS</code>, not exactly zero. Each event resets the ball to <code>BALL_START_Y</code> so the next tick cannot count the same catch or miss again. <code>global</code> is needed because <code>tick</code> reassigns the two numbers.</p>
+<h2 id="section-7">Step 5 - Stop At Three Misses</h2>
+<p>Add <code>MAX_MISSES = 3</code> with the constants.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">MISS_BOUND_Y = -280</span>
+<span class="new">MAX_MISSES = 3</span>
+<span class="reference"></span>
+<span class="reference">catcher = turtle.Turtle()</span></code></pre>
+<p>Inside <code>def tick():</code>, find the <code>screen.update()</code> near the end. Replace the <code>screen.ontimer(...)</code> line immediately below it with this branch. Keep the <code>screen.update()</code> line where it is.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">    screen.update()</span>
+<span class="new">    if misses &lt; MAX_MISSES:</span>
+<span class="new">        screen.ontimer(tick, TICK_DELAY_MS)</span>
+<span class="new">    else:</span>
+<span class="new">        print(&#x27;Game over. Score:&#x27;, score)</span></code></pre>
+<p>Run it and let three balls fall. The window remains open, but no new tick is scheduled. <code>screen.mainloop()</code> is still the last line of the file.</p>
+<h2 id="section-8">Step 6 - Send The Ball To A New Place</h2>
+<p>So far every ball starts at <code>x = 0</code>, where the catcher waits. Give each new ball a random x position. Add <code>import random</code> at the top of the file, above <code>import turtle</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="new">import random</span>
+<span class="reference">import turtle</span></code></pre>
+<p>Remove <code>ball.goto(0, BALL_START_Y)</code> from the initial ball setup. After <code>go_right()</code> and before <code>tick()</code>, add one function for placing a new ball:</p>
+<div class="code-label">CODE</div><pre tabindex="0" aria-label="python code"><code><span class="new">def reset_ball():</span>
+<span class="new">    new_x = random.randint(LEFT_BOUND, RIGHT_BOUND)</span>
+<span class="new">    ball.goto(new_x, BALL_START_Y)</span></code></pre>
+<p><code>random.randint</code> picks an x position between the two named bounds. <code>new_x</code> lets you see the choice before the ball moves. In <code>tick()</code>, replace <strong>both</strong> <code>ball.goto(0, BALL_START_Y)</code> lines with <code>reset_ball()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">        score = score + 1</span>
+<span class="new">        reset_ball()</span>
+<span class="reference">        print(&#x27;Score:&#x27;, score)</span>
+<span class="reference">    elif ball.ycor() &lt; MISS_BOUND_Y:</span>
+<span class="reference">        misses = misses + 1</span>
+<span class="new">        reset_ball()</span>
+<span class="reference">        print(&#x27;Misses:&#x27;, misses)</span></code></pre>
+<p>Call <code>reset_ball()</code> once at startup, immediately before the existing <code>tick()</code> call. This places the first ball too; keep just one startup call to <code>tick()</code>.</p>
+<div class="code-label">EDIT VIEW - Gray = already there; dark = add or change</div><pre tabindex="0" aria-label="python code"><code><span class="reference">screen.listen()</span>
+<span class="new">reset_ball()</span>
+<span class="reference">tick()</span>
+<span class="reference">screen.mainloop()</span></code></pre>
+<p>Run it. Watch several catches and misses. Each new ball starts at the top at a chosen x, so you must steer toward it. A random choice can occasionally repeat the same x. Predict the range of possible x positions and point to the one function that handles every reset.</p>
+<h2 id="section-9">Step 7 - Trace One Tick</h2>
+<p>Write down this state before a tick: ball at <code>(0, -226)</code>, catcher at <code>(0, -250)</code>, score <code>4</code>, misses <code>1</code>. <code>next_y</code> becomes <code>-230</code>, then <code>distance_to_catcher</code> becomes <code>20</code>. Predict the new score and misses; the reset ball&#x27;s y becomes <code>BALL_START_Y</code> and its x will be somewhere between <code>LEFT_BOUND</code> and <code>RIGHT_BOUND</code>. Trace a miss too: ball starts at <code>(0, -280)</code> and catcher is at <code>(100, -250)</code>.</p>
+<h2 id="section-10">Step 8 - Test The Reset Rule</h2>
+<p>Make a copy of <code>catcher.py</code>. In the copy, temporarily remove <code>reset_ball()</code> from the catch branch. Run and catch the ball once. Watch the score: it rises more than once while the ball stays close to the catcher. Close the window and restore the reset call. Run again and show that one catch adds only one point.</p>
+<p>Now change <code>CATCH_RADIUS</code> from <code>30</code> to <code>20</code>, run, then try <code>40</code>. Predict which setting makes catching easier and explain why. Restore <code>30</code> when done. One change at the top of the file changes the rule wherever the constant is used.</p>
+<h2 id="section-11">Teacher Check</h2>
+<p>Show Left and Right working while balls fall at different x positions. Point to the one startup call, one timer call, and one reset function. Name the game&#x27;s state, trace a catch tick with numbers, and explain why resetting the ball prevents repeated scoring.</p><nav class="pager" aria-label="Previous and next"><a href="turtle-undo-step-by-step.html">Previous: 20. Undo One Turtle Action</a></nav>
+<footer>Open IDLE, Thonny, or your Python editor to write and run turtle code. Lesson pages work offline.</footer></main></body></html>
